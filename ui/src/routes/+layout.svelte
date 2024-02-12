@@ -1,5 +1,5 @@
 <script lang="ts">
-
+    import "../app.css";
     import {darkModeOn} from "$lib/provider/darkmode.js";
 
     let darkMode: boolean = $darkModeOn;

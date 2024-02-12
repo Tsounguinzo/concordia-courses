@@ -1,18 +1,15 @@
-import {Index} from 'flexsearch';
+import pkg from 'flexsearch';
+import type { Index as typeIndex } from 'flexsearch';
+const { Index } = pkg;
 import _ from 'lodash';
 
 import data from './data/searchData.json';
-import type {Course} from './model/Course';
 import type {Instructor} from './model/Instructor';
-import type {SearchResults} from './model/SearchResults';
+import {searchResults} from "$lib/store";
+import type {CourseData} from "$lib/types";
 
-let coursesIndex: Index | null = null;
-let instructorsIndex: Index | null = null;
-
-export type CourseData = Pick<
-    Course,
-    '_id' | 'subject' | 'title' | 'catalog' | 'instructors'
->;
+let coursesIndex: typeIndex | null = null;
+let instructorsIndex: typeIndex | null = null;
 
 export const getSearchIndex = () => {
     const courses = data as CourseData[];
@@ -29,7 +26,7 @@ export const getSearchIndex = () => {
         courses.forEach((course, i) =>
             coursesIndex?.add(
                 i,
-                `${course._id} ${course.subject} ${course.title} ${course.catalog}`
+                `${course._id} ${course.subject} ${course.title} ${course.code}`
             )
         );
     }
@@ -51,9 +48,8 @@ export const updateSearchResults = (
     query: string,
     courses: CourseData[],
     instructors: Instructor[],
-    coursesIndex: Index,
-    instructorsIndex: Index,
-    setResults: (_: SearchResults) => void
+    coursesIndex: typeIndex,
+    instructorsIndex: typeIndex,
 ) => {
     const courseSearchResults = coursesIndex
         .search(query, 4)
@@ -62,7 +58,7 @@ export const updateSearchResults = (
         .search(query, 2)
         ?.map((id) => instructors[id as number]);
 
-    setResults({
+    searchResults.set({
         query: query,
         courses: courseSearchResults,
         instructors: instructorSearchResults,
