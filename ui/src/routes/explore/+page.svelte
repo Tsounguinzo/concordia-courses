@@ -61,12 +61,12 @@
     const hasMore = writable(true);
     const offset = writable(limit);
 
-    $: query = writable<string>('');
-    let searchSelected = writable<boolean>(false);
-    let selectedLevels = writable<string[]>([]);
-    let selectedSubjects = writable<string[]>([]);
-    let selectedTerms = writable<string[]>([]);
-    let sortBy = writable<SortByType>('');
+    const query = writable<string>('');
+    const searchSelected = writable<boolean>(false);
+    const selectedLevels = writable<string[]>([]);
+    const selectedSubjects = writable<string[]>([]);
+    const selectedTerms = writable<string[]>([]);
+    const sortBy = writable<SortByType>('');
 
     const nullable = (arr: string[]) => (arr.length === 0 ? null : arr);
 
@@ -82,6 +82,19 @@
         sortBy: makeSortPayload($sortBy),
     };
 
+  /*  $: if ($selectedSubjects || $selectedLevels || $selectedTerms || $sortBy || $query) {
+        repo
+            .getCourses(limit, 0, filters) // Adjust according to how filters are defined or used
+            .then((data) => {
+                courses.set(data);
+                hasMore.set(true); // Assuming this logic is correct for your case
+                offset.set(limit); // Update offset based on limit
+            })
+            .catch(() => {
+                toast.error('Failed to fetch courses. Please try again later.');
+            });
+    } */
+
     onMount(() => {
         /*repo
             .getCourses(limit, 0, filters)
@@ -89,7 +102,7 @@
             .catch(() => {
                 toast.error('Failed to fetch courses. Please try again later.');
             });*/
-        courses.set(data)
+        courses.set(data) //to remove
         hasMore.set(true);
         offset.set(limit);
     });

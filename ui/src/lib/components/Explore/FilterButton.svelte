@@ -1,6 +1,6 @@
 <script lang="ts">
-    import {writable} from "svelte/store";
     import type {Writable} from "svelte/store";
+    import {writable} from "svelte/store";
     import {twMerge} from "tailwind-merge";
 
     export let icon: string = "";
@@ -8,7 +8,7 @@
     export let selectedClass: string;
     export let isSelected: boolean;
     export let name: string;
-    export let selections: Writable<any>;
+    export let selections: Writable<string[]>;
 
     const selected = writable(isSelected);
 
@@ -27,9 +27,9 @@
         on:click={() => {
         selected.set(!$selected);
         if ($selected) {
-          selections.set($selections.filter((select) => select !== name));
+            selections.set($selections.filter((select) => select !== name));
         } else {
-          selections.set($selections.concat(name));
+            selections.set($selections.concat(name));
         }
       }}
 >

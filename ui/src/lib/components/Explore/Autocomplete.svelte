@@ -2,8 +2,8 @@
     import {twMerge} from "tailwind-merge";
     import Transition from "svelte-transition";
     import {ChevronDown} from "lucide-svelte";
-    import {writable} from "svelte/store";
     import type {Writable} from "svelte/store";
+    import {writable} from "svelte/store";
     import {createCombobox} from "svelte-headlessui";
 
     export let options: readonly T[];
@@ -13,30 +13,31 @@
 
     const query = writable('');
 
-    const filtered =
-        $query !== ''
-            ? options.filter((x) => {
-                return x.toLowerCase().includes($query.toLowerCase());
-            })
-            : options;
+    $: filtered = $query !== '' ?
+        options.filter((x) => {
+            return x.toLowerCase().includes($query.toLowerCase());
+        })
+        : options;
 
-    const combobox = createCombobox({ label: 'Actions', selected: options[0] })
+    $: storeValue.set($combobox.selected)
+
+    const combobox = createCombobox({label: 'Actions', selected: ''})
 </script>
 
 <div class={className}>
-    <div value={$storeValue} on:change={(val) => storeValue.set(val)}>
+    <div>
         <div class='w-full'>
             <div class='relative max-w-[240px] rounded-md border bg-slate-200 p-2 dark:border-neutral-600 dark:bg-neutral-700'>
                 <input use:combobox.input
-                        class={twMerge(
-                'w-[87.5%] bg-slate-200 text-sm outline-none dark:bg-neutral-700 dark:text-gray-200 dark:caret-white',
+                       class={twMerge('w-[87.5%] bg-slate-200 text-sm outline-none dark:bg-neutral-700 dark:text-gray-200 dark:caret-white',
                 inputClassName
               )}
-                        on:change={(event) => query.set(event.target?.value)}
+                       on:input={(event) => query.set(event.target?.value)}
+                       value={$combobox.selected}
                 />
                 <button use:combobox.button class='absolute inset-y-0 flex w-full items-center'>
                     <ChevronDown class='ml-auto mr-4 h-5 w-5 text-gray-400'
-                            aria-hidden='true'
+                                 aria-hidden='true'
                     />
                 </button>
             </div>
@@ -50,17 +51,12 @@
                     leaveTo='transform scale-95 opacity-0'
             >
                 <ul use:combobox.items
-                        class='autocomplete absolute max-h-80 w-full max-w-[240px] overflow-scroll rounded-md text-sm shadow-md'>
-                    {#each filtered as value, i (i)}
-                        {@const active = $combobox.active === $storeValue}
+                    class='autocomplete absolute max-h-80 w-full max-w-[240px] overflow-scroll rounded-md text-sm shadow-md'>
+                    {#each filtered as value}
+                        {@const active = $combobox.active === value}
                         <li use:combobox.item={{ value }}
-                                value={value}
-                                class={
-                    twMerge(
-                      'cursor-pointer p-2 text-gray-900 dark:text-gray-200 min-h-[32px]',
-                      active ? 'bg-gray-100 dark:bg-neutral-500' : 'bg-white dark:bg-neutral-600'
-                    )
-                  }>
+                            class={twMerge('cursor-pointer p-2 text-gray-900 dark:text-gray-200 min-h-[32px]',
+                            active ? 'bg-gray-100 dark:bg-neutral-500' : 'bg-white dark:bg-neutral-600')}>
                             {value}
                         </li>
                     {/each}

@@ -2,7 +2,7 @@
     import {createDisclosure} from 'svelte-headlessui'
     import {ChevronUp} from "lucide-svelte";
 
-    const filter = createDisclosure({label: 'filter', expanded: true})
+    const filter = createDisclosure({label: 'filter', expanded: false})
 </script>
 
 

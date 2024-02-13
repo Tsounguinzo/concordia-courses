@@ -27,14 +27,16 @@
     export let sortBy: Writable<string>;
     export let variant: 'mobile' | 'desktop';
 
+    $: console.log('terms', $selectedTerms)
+    $: console.log('levels', $selectedLevels)
+    $: console.log('subjects', $selectedSubjects)
+
 </script>
 
-<div
-        class={twMerge(
+<div class={twMerge(
         variant === 'mobile' ? 'w-full' : 'w-[340px]',
         'relative flex h-fit flex-col flex-wrap rounded-lg bg-slate-50 px-8 py-6 dark:bg-neutral-800 dark:text-gray-200'
-      )}
->
+      )}>
     <ResetButton className='absolute right-4 top-4'>
         <button on:click={() => {
           selectedSubjects.set([]);
@@ -44,45 +46,29 @@
             <RefreshCw class={'h-5 w-5 text-gray-500 dark:text-neutral-400'}/>
         </button>
     </ResetButton>
-    <h1 class='text-sm font-semibold text-gray-600 dark:text-gray-400'>
-        Sort By
-    </h1>
+    <h1 class='text-sm font-semibold text-gray-600 dark:text-gray-400'>Sort By</h1>
     <div class='py-1'/>
     <div class='relative z-20'>
-        <Autocomplete
-                options={sortByOptions}
-                storeValue={sortBy}
-        />
+        <Autocomplete options={sortByOptions} storeValue={sortBy}/>
     </div>
     <div class='py-2.5'/>
-    <h1 class='text-sm font-semibold text-gray-600 dark:text-gray-400'>
-        Subject
-    </h1>
+    <h1 class='text-sm font-semibold text-gray-600 dark:text-gray-400'>Subject</h1>
     <div class='py-1'/>
-    <div class='relative z-10'>
-        <MultiSelect
-                options={courseCodes}
-                values={selectedSubjects}
-        />
+    <div class='relative z-10'><MultiSelect options={courseCodes} values={selectedSubjects}/>
     </div>
     <div class='py-2.5'/>
-    <h1 class='text-sm font-semibold text-gray-600 dark:text-gray-400'>
-        Level
-    </h1>
+    <h1 class='text-sm font-semibold text-gray-600 dark:text-gray-400'>Level</h1>
     <div class='py-1'/>
     <div class='flex flex-wrap gap-2 py-1'>
         {#each levelsOptions as level, i (i)}
-            <FilterButton
-                    name={level}
+            <FilterButton name={level}
                     isSelected={$selectedLevels.includes(level)}
                     selections={selectedLevels}
             />
         {/each}
     </div>
     <div class='py-2.5'/>
-    <h1 class='text-sm font-semibold text-gray-600 dark:text-gray-400'>
-        Term
-    </h1>
+    <h1 class='text-sm font-semibold text-gray-600 dark:text-gray-400'>Term</h1>
     <div class='py-1'/>
     <div class='flex flex-wrap gap-2'>
         {#each termsOptions as term, i (i)}
