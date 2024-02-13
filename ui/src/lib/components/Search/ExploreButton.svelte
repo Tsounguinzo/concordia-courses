@@ -1,6 +1,6 @@
 <script lang="ts">
     import {writable} from "svelte/store";
-    import {Layers, Link} from "lucide-svelte";
+    import {Layers} from "lucide-svelte";
     import {twMerge} from "tailwind-merge";
     import {highlightResultStyle} from "$lib/constants";
 
@@ -8,7 +8,7 @@
 </script>
 
 <a
-        href={`/explore`}
+        href="/explore"
         class='cursor-pointer'
         on:mouseenter={() => hovering.set(true)}
         on:mouseleave={() => hovering.set(false)}

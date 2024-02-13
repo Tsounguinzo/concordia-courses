@@ -29,6 +29,7 @@
 		"lodash": "^4.17.21",
 		"lucide-svelte": "^0.323.0",
 		"svelte-sonner": "^0.3.17",
+		"svelte-transition": "^0.0.10",
 		"tailwind-merge": "^2.2.1"
 	}
 }

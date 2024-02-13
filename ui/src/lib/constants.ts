@@ -1,4 +1,7 @@
-import {writable} from "svelte/store";
+export const highlightResultStyle = 'bg-blue-50 border-l-blue-500 border-l-4 dark:bg-blue-100 dark:border-l-blue-600 dark:bg-neutral-600';
 
-export const highlightResultStyle = 'bg-red-50 border-l-red-500 border-l-4 dark:bg-red-100 dark:border-l-red-600 dark:bg-neutral-600';
-export const hoveringResults = writable(false)
+export const navigationItems = [
+  { name: 'Home', href: '/' },
+  { name: 'Explore', href: '/explore' },
+  { name: 'About', href: '/about' },
+];

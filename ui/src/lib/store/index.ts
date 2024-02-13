@@ -7,3 +7,5 @@ export const searchResults = writable<SearchResults>({
         courses: [],
         instructors: [],
     });
+
+export const mobileMenuOpen = writable(false);

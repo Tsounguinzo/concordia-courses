@@ -3,6 +3,7 @@
     import {Layers, User} from "lucide-svelte";
     import {twMerge} from "tailwind-merge";
     import Highlight from "$lib/components/Highlight.svelte";
+    import {highlightResultStyle} from "$lib/constants";
 
     export let index: number;
     export let query: string = '';
@@ -13,8 +14,6 @@
 
     const hovering = writable(false);
     $: toHighlight = $hovering || selectedIndex === index;
-
-    const highlightResultStyle = 'bg-red-50 border-l-red-500 border-l-4 dark:bg-red-100 dark:border-l-red-600 dark:bg-neutral-600';
 
 </script>
 
