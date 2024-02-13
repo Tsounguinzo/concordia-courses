@@ -1,7 +1,8 @@
 <script lang="ts">
     import {Search} from 'lucide-svelte';
     import {twMerge} from 'tailwind-merge';
-    import {searchSelected} from "$lib/store";
+    import type {Writable} from "svelte/store";
+    import {writable} from "svelte/store";
 
     export let handleInputChange: (value: string) => void;
     export let iconStyle: string = '';
@@ -10,6 +11,7 @@
     export let outerInputStyle: string = '';
     export let placeholder: string = '';
     export let value: string = '';
+    export let searchSelected: Writable<boolean> = writable<boolean>(false);
 
 </script>
 

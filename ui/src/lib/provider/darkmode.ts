@@ -1,6 +1,6 @@
 import {writable} from 'svelte/store';
 
-export const darkModeOn = writable(false);
+export const darkModeOn = writable(true);
 
 export const setTheme = (dark: boolean) => {
     darkModeOn.set(dark);

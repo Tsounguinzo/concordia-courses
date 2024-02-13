@@ -2,7 +2,7 @@
     import _ from 'lodash';
 
     export let text: string;
-    export let query: string = '';
+    export let query: string;
     export let className: string = '';
 
     $: parts = text.split(new RegExp(`(${_.escapeRegExp(query)})`, 'gi'));

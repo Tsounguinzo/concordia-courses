@@ -8,13 +8,13 @@
     import {twMerge} from "tailwind-merge";
     import SearchResult from "$lib/components/Search/SearchResult.svelte";
     import ExploreButton from "$lib/components/Search/ExploreButton.svelte";
-    import {searchSelected} from "$lib/store";
 
     export let results: SearchResults;
     export let handleInputChange: (query: string) => void;
     export let onResultClick: () => void = () => {
     };
 
+    const searchSelected = writable(false);
     const selectedIndex = writable(0);
 
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -59,6 +59,7 @@
         )}
             on:keydown={handleKeyDown}
             placeholder='Search for courses, subjects or professors'
+            searchSelected={searchSelected}
     />
     {#if $searchSelected}
         <div class="absolute top-full z-50 w-full overflow-hidden bg-white shadow-md dark:bg-neutral-800">

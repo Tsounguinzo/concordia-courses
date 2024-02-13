@@ -17,8 +17,7 @@
     const arrowColor = writable('text-gray-900 dark:text-gray-200');
 
     const user = null; //useAuth();
-    let pathName = $page.url.pathname;
-
+    $: pathName = $page.url.pathname;
     const notifications = writable<Notification[]>([]);
 /*
     onMount(() => {
@@ -96,13 +95,11 @@
                 {:else}
                     <a href={`${getUrl()}/api/auth/login?redirect=${$page.url}`}
                        class='my-auto text-sm font-semibold leading-6 text-gray-900 dark:text-gray-200'
-                       on:mouseenter={() => arrowColor.set('text-red-600')}
+                       on:mouseenter={() => arrowColor.set('text-blue-400')}
                        on:mouseleave={() => arrowColor.set('text-gray-900 dark:text-gray-200')}
                     >
                         Log in{' '}
-                        <span class={arrowColor} aria-hidden='true'>
-                  &rarr;
-                </span>{' '}
+                        <span class={$arrowColor} aria-hidden='true'> &rarr; </span>{' '}
                     </a>
                 {/if}
             </div>
