@@ -10,9 +10,7 @@
     export let name: string;
     export let selections: Writable<string[]>;
 
-    const selected = writable(isSelected);
-
-    if (isSelected !== $selected) selected.set(isSelected);
+    $: selected = isSelected;
 
     const selectedColor = selectedClass ?? 'bg-blue-200 text-blue-900';
 
@@ -21,15 +19,15 @@
 
 <button class={twMerge(
         'rounded-full px-2 py-1 text-sm font-medium tracking-wider transition duration-150 ease-in-out',
-        $selected ? selectedColor : unselectedColor,
+        selected ? selectedColor : unselectedColor,
         className
       )}
         on:click={() => {
-        selected.set(!$selected);
-        if ($selected) {
-            selections.set($selections.filter((select) => select !== name));
-        } else {
+        selected = !selected
+        if (selected) {
             selections.set($selections.concat(name));
+        } else {
+            selections.set($selections.filter((select) => select !== name));
         }
       }}
 >

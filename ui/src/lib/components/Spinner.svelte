@@ -1,6 +1,6 @@
 <svg
         aria-hidden='true'
-        class='mr-2 inline h-8 w-8 animate-spin fill-red-200 text-red-600'
+        class='mr-2 inline h-8 w-8 animate-spin fill-blue-200 text-blue-600'
         viewBox='0 0 100 101'
         fill='none'
         xmlns='http://www.w3.org/2000/svg'

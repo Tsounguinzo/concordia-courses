@@ -27,9 +27,6 @@
     export let sortBy: Writable<string>;
     export let variant: 'mobile' | 'desktop';
 
-    $: console.log('terms', $selectedTerms)
-    $: console.log('levels', $selectedLevels)
-    $: console.log('subjects', $selectedSubjects)
 
 </script>
 
