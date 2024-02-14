@@ -30,7 +30,6 @@
 		"lodash": "^4.17.21",
 		"lucide-svelte": "^0.323.0",
 		"svelte-headlessui": "^0.0.33",
-		"svelte-loading-skeleton": "^1.0.1",
 		"svelte-sonner": "^0.3.17",
 		"svelte-transition": "^0.0.10",
 		"tailwind-merge": "^2.2.1"
