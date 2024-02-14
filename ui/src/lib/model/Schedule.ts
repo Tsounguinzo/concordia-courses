@@ -1,17 +1,31 @@
 export type Block = {
-  campus: string;
-  display: string;
-  location: string;
-  timeblocks: TimeBlock[];
+    componentCode: string;
+    componentDescription: string;
+    locationCode: string;
+    roomCode: string;
+    buildingCode: string;
+    room: string;
+    section: string;
+    classNumber: number;
+    classAssociation: number;
+    instructionModeCode: string;
+    instructionModeDescription: string;
+    meetingPatternNumber: string;
+    modays: boolean;
+    tuesdays: boolean;
+    wednesdays: boolean;
+    thursdays: boolean;
+    fridays: boolean;
+    saturdays: boolean;
+    sundays: boolean;
+    classStartTime: string;
+    classEndTime: string;
+    classStartDate: string;
+    classEndDate: string;
 };
 
-export type TimeBlock = {
-  day: string;
-  t1: string;
-  t2: string;
-};
 
 export type Schedule = {
-  blocks: Block[];
-  term: string;
+    blocks: Block[];
+    term: string;
 };

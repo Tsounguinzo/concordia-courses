@@ -82,7 +82,7 @@
                             <div class='flex items-center justify-between'>
                                 <div>{value}</div>
                                 {#if selected}
-                                    <Check className='stroke-red-600' size={18}/>
+                                    <Check class='stroke-blue-600' size={18}/>
                                 {/if}
                             </div>
                         </li>
