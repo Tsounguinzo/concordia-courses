@@ -31,6 +31,7 @@
                        on:input={(event) => query.set(event.target?.value)}
                        value={$combobox.selected}
                        on:blur={(event) => event.target.value = $combobox.selected}
+                       placeholder="Select..."
                 />
                 <button use:combobox.button class='absolute inset-y-0 flex w-full items-center'>
                     <ChevronDown class='ml-auto mr-4 h-5 w-5 text-gray-400'

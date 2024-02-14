@@ -79,7 +79,7 @@ export const repo = {
     });
   },
 
-  async addSubcription(courseId: string): Promise<Response> {
+  async addSubscription(courseId: string): Promise<Response> {
     return client.post('/subscriptions', {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ course_id: courseId }),
