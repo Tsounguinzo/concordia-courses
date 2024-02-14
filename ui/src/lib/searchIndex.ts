@@ -3,7 +3,7 @@ import type { Index as typeIndex } from 'flexsearch';
 const { Index } = pkg;
 import _ from 'lodash';
 
-import data from './data/searchData.json';
+import data from './data/searchCourses.json';
 import type {Instructor} from './model/Instructor';
 import {searchResults} from "$lib/store";
 import type {CourseData} from "$lib/types";
@@ -26,7 +26,7 @@ export const getSearchIndex = () => {
         courses.forEach((course, i) =>
             coursesIndex?.add(
                 i,
-                `${course._id} ${course.subject} ${course.title} ${course.code}`
+                `${course._id} ${course.subject} ${course.title} ${course.catalog}`
             )
         );
     }
