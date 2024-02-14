@@ -4,7 +4,6 @@
     import {writable} from "svelte/store";
     import {onMount} from "svelte";
     import {repo} from "$lib/repo";
-    import {toast} from "svelte-sonner";
     import FilterToggle from "$lib/components/Explore/FilterToggle.svelte";
     import ExploreFilter from "$lib/components/Explore/ExploreFilter.svelte";
     import SearchBar from "$lib/components/Search/SearchBar.svelte";
@@ -14,6 +13,8 @@
     import CourseCard from "$lib/components/Explore/CourseCard.svelte";
     import {sortByOptions} from "$lib/types";
     import data from '$lib/data/test.json'
+    import {darkModeOn} from "$lib/provider/darkmode";
+    import Skeleton from "$lib/components/Skeleton.svelte";
 
     type SortByType = (typeof sortByOptions)[number];
 
@@ -82,18 +83,18 @@
         sortBy: makeSortPayload($sortBy),
     };
 
-  /*  $: if ($selectedSubjects || $selectedLevels || $selectedTerms || $sortBy || $query) {
-        repo
-            .getCourses(limit, 0, filters) // Adjust according to how filters are defined or used
-            .then((data) => {
-                courses.set(data);
-                hasMore.set(true); // Assuming this logic is correct for your case
-                offset.set(limit); // Update offset based on limit
-            })
-            .catch(() => {
-                toast.error('Failed to fetch courses. Please try again later.');
-            });
-    } */
+    /*  $: if ($selectedSubjects || $selectedLevels || $selectedTerms || $sortBy || $query) {
+          repo
+              .getCourses(limit, 0, filters) // Adjust according to how filters are defined or used
+              .then((data) => {
+                  courses.set(data);
+                  hasMore.set(true); // Assuming this logic is correct for your case
+                  offset.set(limit); // Update offset based on limit
+              })
+              .catch(() => {
+                  toast.error('Failed to fetch courses. Please try again later.');
+              });
+      } */
 
     onMount(() => {
         /*repo
@@ -154,19 +155,7 @@
                     {/each}
                 {:else }
                     <div class='mx-2 text-gray-50'>
-                        <!--Skeleton
-                                baseColor={
-                        $darkModeOn ? 'rgb(38 38 38)' : 'rgb(248 250 252)'
-                      }
-                                class='mb-2 rounded-lg first:mt-2'
-                                count={10}
-                                duration={2}
-                                height={256}
-                                highlightColor={
-                        $darkModeOn ? 'rgb(64 64 64)' : 'rgb(226 232 240)'
-                      }
-                        /-->
-                        THISSSSSSSSSSSSSS
+                        <Skeleton className='mb-2 rounded-lg first:mt-2' color={$darkModeOn ? 'rgb(38 38 38)' : 'rgb(226 232 240)'}/>
                     </div>
                 {/if}
 
