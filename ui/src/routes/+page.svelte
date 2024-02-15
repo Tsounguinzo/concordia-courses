@@ -37,7 +37,7 @@
         <div class='hidden sm:mb-8 sm:flex sm:justify-center'></div>
         <div class='text-center'>
             <h1 class='mb-6 py-3 text-left text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-200 md:text-5xl'>
-                Explore thousands of course and professor reviews from Concordia
+                Explore thousands of course and <span class="line-through">professor</span> reviews from Concordia
                 students
             </h1>
             <CourseSearchBar

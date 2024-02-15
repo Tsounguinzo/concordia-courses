@@ -1,4 +1,5 @@
 <script lang="ts">
+    import type {Writable} from "svelte/store";
     import {writable} from "svelte/store";
     import Transition from "svelte-transition";
     import {twMerge} from "tailwind-merge";
@@ -7,32 +8,14 @@
     export let offset: { x: number; y: number } = {x: 0, y: 0};
     export let className: string = '';
 
-    const show = writable(false);
+    export let show: Writable<boolean> = writable(false);
 
-    /*{cloneElement<any>(elem, {
-        onMouseEnter: () => {
-          elem.props.onMouseEnter?.();
-          setShow(true);
-        },
-        onMouseLeave: () => {
-          elem.props.onMouseLeave?.();
-          setShow(false);
-        },
-      })}*/
-
+    $:console.log($show)
 </script>
 
 <span class='relative'>
       <Transition
-              show={show && !!text}
-              class={twMerge(
-          'absolute z-10 min-w-fit -translate-x-0 -translate-y-full rounded-md bg-white p-2 text-center text-xs font-medium text-gray-700 dark:bg-neutral-500 dark:text-gray-100',
-          className
-        )}
-              style={{
-          left: offset.x,
-          top: offset.y,
-        }}
+              show={$show && !!text}
               enter='transition-opacity duration-200'
               enterFrom='opacity-0'
               enterTo='opacity-100'
@@ -40,7 +23,10 @@
               leaveFrom='opacity-100'
               leaveTo='opacity-0'
       >
-        <div>{text}</div>
+        <div class={twMerge('absolute z-10 min-w-fit -translate-x-0 -translate-y-full rounded-md bg-white p-2 text-center text-xs font-medium text-gray-700 dark:bg-neutral-500 dark:text-gray-100',className)}
+        style={`left: ${offset.x}px; top: ${offset.y}px;`}>
+            {text}
+        </div>
       </Transition>
     <slot/>
 </span>
