@@ -1,5 +1,5 @@
-import type {Instructor} from "$lib/model/Instructor";
-import type {Schedule} from "$lib/model/Schedule";
+import type {Instructor} from "./Instructor";
+import type {Schedule} from "./Schedule";
 
 export type Course = {
     _id: string;

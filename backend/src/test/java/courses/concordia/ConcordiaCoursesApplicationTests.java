@@ -1,10 +1,10 @@
-package courses.concordia.concordiacourses;
+package courses.concordia;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ConcordiacoursesApplicationTests {
+class ConcordiaCoursesApplicationTests {
 
 	@Test
 	void contextLoads() {

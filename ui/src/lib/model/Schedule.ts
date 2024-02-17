@@ -11,7 +11,7 @@ export type Block = {
     instructionModeCode: string;
     instructionModeDescription: string;
     meetingPatternNumber: string;
-    modays: boolean;
+    mondays: boolean;
     tuesdays: boolean;
     wednesdays: boolean;
     thursdays: boolean;
