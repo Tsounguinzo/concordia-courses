@@ -1,8 +1,8 @@
 <script lang="ts">
     import {twMerge} from "tailwind-merge";
-    import FilterButton from "$lib/components/Explore/FilterButton.svelte";
-    import ResetButton from "$lib/components/Explore/ResetButton.svelte";
-    import Autocomplete from "$lib/components/Explore/Autocomplete.svelte";
+    import FilterButton from "$lib/components/Filter/FilterButton.svelte";
+    import ResetButton from "$lib/components/Filter/ResetButton.svelte";
+    import Autocomplete from "$lib/components/Filter/Autocomplete.svelte";
     import MultiSelect from "$lib/components/Explore/MultiSelect.svelte";
     import courseCodes from '$lib/data/courseCodes.json'
     import {sortByOptions, termsOptions} from "$lib/types";

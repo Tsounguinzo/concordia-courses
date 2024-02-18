@@ -4,7 +4,7 @@
     import {writable} from "svelte/store";
     import {onMount} from "svelte";
     import {repo} from "$lib/repo";
-    import FilterToggle from "$lib/components/Explore/FilterToggle.svelte";
+    import FilterToggle from "$lib/components/Filter/FilterToggle.svelte";
     import ExploreFilter from "$lib/components/Explore/ExploreFilter.svelte";
     import SearchBar from "$lib/components/Search/SearchBar.svelte";
     import InfiniteScroll from 'svelte-infinite-scroll';
