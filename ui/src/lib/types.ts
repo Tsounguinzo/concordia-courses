@@ -14,7 +14,4 @@ export const sortByOptions = [
         'Most Reviews',
         'Least Reviews',
     ] as const;
-export type SortByType = (typeof sortByOptions)[number];
-
 export const termsOptions = ["Summer","Fall","Fall/Winter","Winter","Spring"] as const;
-export type CourseTerm = (typeof termsOptions)[number];
