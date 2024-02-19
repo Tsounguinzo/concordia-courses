@@ -28,7 +28,7 @@
     const sortBy = writable<ReviewSortType>('Most Recent');
     const uniqueInstructors = _.uniq(course?.instructors.map((ins) => ins.name));
 
-    $: if ($sortBy) {
+    if (sortBy) {
         allReviews.set(
             $allReviews
                 .filter(

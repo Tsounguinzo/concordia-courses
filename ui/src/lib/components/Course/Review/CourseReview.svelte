@@ -11,10 +11,14 @@
     import {writable} from "svelte/store";
     import {format} from 'date-fns';
     import IconRating from "$lib/components/Course/Review/IconRating.svelte";
+    import ReviewInteractions from "$lib/components/Course/Review/ReviewInteractions.svelte";
+    import type {Interaction} from "$lib/model/Interaction";
 
     export let canModify: boolean;
     export let handleDelete: () => void;
     export let editReview: Writable<boolean>;
+    export let interactions: Interaction[];
+    export let likesUpdate: Writable<number>;
     export let review: Review;
     export let includeTaughtBy: boolean = false;
     export let className: string = '';
@@ -26,7 +30,6 @@
 
     const shortDate = format(date, 'P'),
         longDate = format(date, 'EEEE, MMMM d, yyyy');
-
 </script>
 
 <div class={twMerge(
@@ -125,14 +128,14 @@
                     </div>
                 {/if}
             </div>
-           <!-- {#if updateLikes && interactions}
+            {#if likesUpdate && interactions}
                 <ReviewInteractions
-                        review={review}
-                        interactions={interactions}
-                        setPromptLogin={setPromptLogin}
-                        updateLikes={updateLikes}
+                        {review}
+                        {interactions}
+                        {promptLogin}
+                        {likesUpdate}
                 />
-            {/if} -->
+            {/if}
         </div>
     </div>
 </div>

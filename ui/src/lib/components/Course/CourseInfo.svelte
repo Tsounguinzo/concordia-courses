@@ -9,7 +9,7 @@
     import CourseInfoStats from "$lib/components/Course/Stats/CourseInfoStats.svelte";
 
     export let course: Course;
-    export let allReviews: Review[];
+    export let reviews: Review[];
 
     const user = null; //useAuth();
 
@@ -108,20 +108,20 @@
             {course.description}
         </p>
         <div class='grow py-3'/>
-        <CourseInfoStats className='mb-4 sm:hidden' allReviews={allReviews}/>
+        <CourseInfoStats className='mb-4 sm:hidden' allReviews={reviews}/>
         <CourseInfoStats
                 className='hidden gap-x-6 sm:mb-6 sm:flex md:mb-0 md:hidden'
                 variant='medium'
-                allReviews={allReviews}
+                allReviews={reviews}
         />
         <p class='mb-6 text-sm text-gray-500 dark:text-gray-400'>
-            {allReviews.length} review(s)
+            {reviews.length} review(s)
         </p>
     </div>
     <div class='hidden w-5/12 justify-center rounded-md bg-neutral-50 py-4 dark:bg-neutral-800 md:mx-5 md:flex lg:ml-12 lg:mt-6 xl:justify-start'>
         <CourseInfoStats
                 variant='large'
-                allReviews={allReviews}
+                allReviews={reviews}
                 className='lg:mr-8'
         />
     </div>

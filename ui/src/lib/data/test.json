@@ -12,7 +12,7 @@
     "department": "Law",
     "faculty": "Faculty of Law",
     "facultyUrl": "https://www.mcgill.ca/study/2023-2024/faculties/law",
-    "terms": ["Fall 2023", "Winter 2024"],
+    "terms": ["Fall", "Winter"],
     "description": "Legal clinic that complements legal education through practical work.",
     "instructors": [],
     "prerequisitesText": null,
@@ -33,7 +33,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Summer 2023"
+        "term": "Summer"
       },
       {
         "blocks": [
@@ -44,7 +44,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Fall 2023"
+        "term": "Fall"
       },
       {
         "blocks": [
@@ -55,7 +55,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Winter 2024"
+        "term": "Winter"
       }
     ]
   },
@@ -72,7 +72,7 @@
     "department": "Law",
     "faculty": "Faculty of Law",
     "facultyUrl": "https://www.mcgill.ca/study/2023-2024/faculties/law",
-    "terms": ["Fall 2023", "Winter 2024"],
+    "terms": ["Fall", "Winter"],
     "description": "Legal clinic that complements legal education through practical work.",
     "instructors": [],
     "prerequisitesText": "Prerequisite: <a href=\"/study/2023-2024/courses/writ-434\">WRIT 434</a>",
@@ -93,7 +93,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Summer 2023"
+        "term": "Summer"
       },
       {
         "blocks": [
@@ -104,7 +104,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Fall 2023"
+        "term": "Fall"
       },
       {
         "blocks": [
@@ -115,7 +115,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Winter 2024"
+        "term": "Winter"
       }
     ]
   },
@@ -132,7 +132,7 @@
     "department": "Law",
     "faculty": "Faculty of Law",
     "facultyUrl": "https://www.mcgill.ca/study/2023-2024/faculties/law",
-    "terms": ["Fall 2023", "Winter 2024"],
+    "terms": ["Fall", "Winter"],
     "description": "Students who have completed four terms in the Faculty may, with permission of the Dean or the Dean's delegate, work only once as a student clerk for a judge of the Quebec Court of Appeal, Quebec Superior Court, Quebec Court or an\nadministrative tribunal under general Faculty Supervision.",
     "instructors": [],
     "prerequisitesText": null,
@@ -153,7 +153,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Summer 2023"
+        "term": "Summer"
       },
       {
         "blocks": [
@@ -164,7 +164,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Fall 2023"
+        "term": "Fall"
       },
       {
         "blocks": [
@@ -175,7 +175,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Winter 2024"
+        "term": "Winter"
       }
     ]
   },
@@ -192,7 +192,7 @@
     "department": "Law",
     "faculty": "Faculty of Law",
     "facultyUrl": "https://www.mcgill.ca/study/2023-2024/faculties/law",
-    "terms": ["Fall 2023", "Winter 2024"],
+    "terms": ["Fall", "Winter"],
     "description": "Students who have completed four terms in the Faculty may, with permission of the Dean or the Dean's delegate, work only once as a student clerk for a judge of the Quebec Court of Appeal, Quebec Superior Court, Quebec Court or an administrative tribunal under general Faculty Supervision.",
     "instructors": [],
     "prerequisitesText": null,
@@ -213,7 +213,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Fall 2023"
+        "term": "Fall"
       },
       {
         "blocks": [
@@ -224,7 +224,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Winter 2024"
+        "term": "Winter"
       }
     ]
   },
@@ -241,7 +241,7 @@
     "department": "Law",
     "faculty": "Faculty of Law",
     "facultyUrl": "https://www.mcgill.ca/study/2023-2024/faculties/law",
-    "terms": ["Fall 2023", "Winter 2024"],
+    "terms": ["Fall", "Winter"],
     "description": "See WRIT 440D1 for course description.",
     "instructors": [],
     "prerequisitesText": "Prerequisite: <a href=\"/study/2023-2024/courses/writ-440d1\">WRIT 440D1</a>",
@@ -262,7 +262,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Fall 2023"
+        "term": "Fall"
       },
       {
         "blocks": [
@@ -273,7 +273,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Winter 2024"
+        "term": "Winter"
       }
     ]
   },
@@ -290,7 +290,7 @@
     "department": "Law",
     "faculty": "Faculty of Law",
     "facultyUrl": "https://www.mcgill.ca/study/2023-2024/faculties/law",
-    "terms": ["Fall 2023", "Winter 2024"],
+    "terms": ["Fall", "Winter"],
     "description": "Students who have completed four terms in the Faculty may, with permission of the Dean or the Dean's delegate, work only once as a student clerk for a judge of the Quebec Court of Appeal, Quebec Superior Court, Quebec Court or an\nadministrative tribunal under general Faculty Supervision.",
     "instructors": [],
     "prerequisitesText": null,
@@ -311,7 +311,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Summer 2023"
+        "term": "Summer"
       },
       {
         "blocks": [
@@ -322,7 +322,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Fall 2023"
+        "term": "Fall"
       },
       {
         "blocks": [
@@ -333,7 +333,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Winter 2024"
+        "term": "Winter"
       }
     ]
   },
@@ -350,7 +350,7 @@
     "department": "Law",
     "faculty": "Faculty of Law",
     "facultyUrl": "https://www.mcgill.ca/study/2023-2024/faculties/law",
-    "terms": ["Fall 2023"],
+    "terms": ["Fall"],
     "description": "The Capstone Project is meant to provide an opportunity for reflection on a student\u2019s trajectory as a jurist towards the end of that student\u2019s formal legal education at the Faculty and may be undertaken using various modes of communication including but not limited to academic writing. Students completing Capstone Projects will present their work to the graduating class.",
     "instructors": [],
     "prerequisitesText": null,
@@ -371,7 +371,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Summer 2023"
+        "term": "Summer"
       },
       {
         "blocks": [
@@ -382,7 +382,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Fall 2023"
+        "term": "Fall"
       }
     ]
   },
@@ -399,7 +399,7 @@
     "department": "Law",
     "faculty": "Faculty of Law",
     "facultyUrl": "https://www.mcgill.ca/study/2023-2024/faculties/law",
-    "terms": ["Fall 2023", "Winter 2024"],
+    "terms": ["Fall", "Winter"],
     "description": "The Capstone Project is meant to provide an opportunity for reflection on a student\u2019s trajectory as a jurist towards the end of that student\u2019s formal legal education at the Faculty and may be undertaken using various modes of communication including but not limited to academic writing. Students completing Capstone Projects will present their work to the graduating class.",
     "instructors": [],
     "prerequisitesText": null,
@@ -420,7 +420,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Fall 2023"
+        "term": "Fall"
       },
       {
         "blocks": [
@@ -431,7 +431,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Winter 2024"
+        "term": "Winter"
       }
     ]
   },
@@ -448,7 +448,7 @@
     "department": "Law",
     "faculty": "Faculty of Law",
     "facultyUrl": "https://www.mcgill.ca/study/2023-2024/faculties/law",
-    "terms": ["Fall 2023", "Winter 2024"],
+    "terms": ["Fall", "Winter"],
     "description": "Preparation of honours thesis proposal and literature review.",
     "instructors": [],
     "prerequisitesText": null,
@@ -469,7 +469,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Summer 2023"
+        "term": "Summer"
       },
       {
         "blocks": [
@@ -480,7 +480,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Fall 2023"
+        "term": "Fall"
       },
       {
         "blocks": [
@@ -491,7 +491,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Winter 2024"
+        "term": "Winter"
       }
     ]
   },
@@ -508,7 +508,7 @@
     "department": "Law",
     "faculty": "Faculty of Law",
     "facultyUrl": "https://www.mcgill.ca/study/2023-2024/faculties/law",
-    "terms": ["Fall 2023", "Winter 2024"],
+    "terms": ["Fall", "Winter"],
     "description": "Thesis research report.",
     "instructors": [],
     "prerequisitesText": "Prerequisite: <a href=\"/study/2023-2024/courses/writ-450\">WRIT 450</a>",
@@ -529,7 +529,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Summer 2023"
+        "term": "Summer"
       },
       {
         "blocks": [
@@ -540,7 +540,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Fall 2023"
+        "term": "Fall"
       },
       {
         "blocks": [
@@ -551,7 +551,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Winter 2024"
+        "term": "Winter"
       }
     ]
   },
@@ -568,7 +568,7 @@
     "department": "Law",
     "faculty": "Faculty of Law",
     "facultyUrl": "https://www.mcgill.ca/study/2023-2024/faculties/law",
-    "terms": ["Fall 2023", "Winter 2024"],
+    "terms": ["Fall", "Winter"],
     "description": "Completion of Honours thesis.",
     "instructors": [],
     "prerequisitesText": "Prerequisites: <a href=\"/study/2023-2024/courses/writ-450\">WRIT 450</a>, <a href=\"/study/2023-2024/courses/writ-451\">WRIT 451</a>",
@@ -592,7 +592,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Summer 2023"
+        "term": "Summer"
       },
       {
         "blocks": [
@@ -603,7 +603,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Fall 2023"
+        "term": "Fall"
       },
       {
         "blocks": [
@@ -614,7 +614,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Winter 2024"
+        "term": "Winter"
       }
     ]
   },
@@ -683,7 +683,7 @@
     "department": "Law",
     "faculty": "Faculty of Law",
     "facultyUrl": "https://www.mcgill.ca/study/2023-2024/faculties/law",
-    "terms": ["Fall 2023", "Winter 2024"],
+    "terms": ["Fall", "Winter"],
     "description": "Students who have completed two terms of legal studies may elect with the permission of the Dean or the Dean's delegate to write an essay for 3 credits under the supervision of an instructor in the Faculty.",
     "instructors": [],
     "prerequisitesText": null,
@@ -704,7 +704,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Summer 2023"
+        "term": "Summer"
       },
       {
         "blocks": [
@@ -715,7 +715,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Fall 2023"
+        "term": "Fall"
       },
       {
         "blocks": [
@@ -726,7 +726,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Winter 2024"
+        "term": "Winter"
       }
     ]
   },
@@ -743,7 +743,7 @@
     "department": "Law",
     "faculty": "Faculty of Law",
     "facultyUrl": "https://www.mcgill.ca/study/2023-2024/faculties/law",
-    "terms": ["Fall 2023", "Winter 2024"],
+    "terms": ["Fall", "Winter"],
     "description": "Students who have completed two terms of legal studies may elect with the permission of the Dean or the Dean's delegate to write an essay for 3 credits under the supervision of an instructor in the Faculty.",
     "instructors": [],
     "prerequisitesText": null,
@@ -764,7 +764,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Summer 2023"
+        "term": "Summer"
       },
       {
         "blocks": [
@@ -775,7 +775,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Fall 2023"
+        "term": "Fall"
       },
       {
         "blocks": [
@@ -786,7 +786,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Winter 2024"
+        "term": "Winter"
       }
     ]
   },
@@ -803,7 +803,7 @@
     "department": "Law",
     "faculty": "Faculty of Law",
     "facultyUrl": "https://www.mcgill.ca/study/2023-2024/faculties/law",
-    "terms": ["Fall 2023", "Winter 2024"],
+    "terms": ["Fall", "Winter"],
     "description": "Students who have completed two terms of legal studies may elect with the permission of the Dean or the Dean's delegate to write an essay for 3 credits under the supervision of an instructor in the Faculty.",
     "instructors": [],
     "prerequisitesText": null,
@@ -824,7 +824,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Summer 2023"
+        "term": "Summer"
       },
       {
         "blocks": [
@@ -835,7 +835,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Fall 2023"
+        "term": "Fall"
       },
       {
         "blocks": [
@@ -846,7 +846,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Winter 2024"
+        "term": "Winter"
       }
     ]
   },
@@ -863,7 +863,7 @@
     "department": "Law",
     "faculty": "Faculty of Law",
     "facultyUrl": "https://www.mcgill.ca/study/2023-2024/faculties/law",
-    "terms": ["Fall 2023", "Winter 2024"],
+    "terms": ["Fall", "Winter"],
     "description": "Students who have completed two terms of legal studies may elect with the permission of the Dean or the Dean's delegate to write an essay for 3 credits under the supervision of an instructor in the Faculty.",
     "instructors": [],
     "prerequisitesText": null,
@@ -884,7 +884,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Summer 2023"
+        "term": "Summer"
       },
       {
         "blocks": [
@@ -895,7 +895,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Fall 2023"
+        "term": "Fall"
       },
       {
         "blocks": [
@@ -906,7 +906,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Winter 2024"
+        "term": "Winter"
       }
     ]
   },
@@ -923,7 +923,7 @@
     "department": "Law",
     "faculty": "Faculty of Law",
     "facultyUrl": "https://www.mcgill.ca/study/2023-2024/faculties/law",
-    "terms": ["Fall 2023", "Winter 2024"],
+    "terms": ["Fall", "Winter"],
     "description": "Students who have completed two terms of legal studies may elect with the permission of the Dean or the Dean's delegate to write an essay for 3 credits under the supervision of an instructor in the Faculty.",
     "instructors": [],
     "prerequisitesText": null,
@@ -944,7 +944,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Summer 2023"
+        "term": "Summer"
       },
       {
         "blocks": [
@@ -955,7 +955,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Fall 2023"
+        "term": "Fall"
       },
       {
         "blocks": [
@@ -966,7 +966,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Winter 2024"
+        "term": "Winter"
       }
     ]
   },
@@ -1087,7 +1087,7 @@
     "department": "Law",
     "faculty": "Faculty of Law",
     "facultyUrl": "https://www.mcgill.ca/study/2023-2024/faculties/law",
-    "terms": ["Fall 2023", "Winter 2024"],
+    "terms": ["Fall", "Winter"],
     "description": "A one-credit add-on to existing substantive law courses. Students undertake one or more writing exercises, e.g. drafting opinion letters or research memoranda. This add-on may be used once only, in final year of study, with permission of Dean or Dean's delegate. For undergraduate students, project must relate to a course successfully completed in a previous term and be supervised by full-time member of the Faculty with expertise in the area.",
     "instructors": [],
     "prerequisitesText": null,
@@ -1108,7 +1108,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Summer 2023"
+        "term": "Summer"
       },
       {
         "blocks": [
@@ -1119,7 +1119,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Fall 2023"
+        "term": "Fall"
       },
       {
         "blocks": [
@@ -1130,7 +1130,7 @@
             "timeblocks": []
           }
         ],
-        "term": "Winter 2024"
+        "term": "Winter"
       }
     ]
   }

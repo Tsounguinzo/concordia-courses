@@ -9,12 +9,14 @@
         ["T", block.tuesdays === 'Y'],
         ["W", block.wednesdays === 'Y'],
         ["T", block.thursdays === 'Y'],
-        ["F", block.fridays === 'Y']
+        ["F", block.fridays === 'Y'],
+        ["S", block.saturdays === 'Y'],
+        ["S", block.sundays === 'Y']
     ]);
 </script>
 
 <div class='flex gap-1'>
-    {#each ['M', 'T', 'W', 'T', 'F'] as day}
+    {#each ['M', 'T', 'W', 'T', 'F', 'S', 'S'] as day}
         <span class={twMerge('sm:text-base text-sm',
                 days.get(day)
                     ? 'font-semibold text-gray-800 dark:text-gray-100'

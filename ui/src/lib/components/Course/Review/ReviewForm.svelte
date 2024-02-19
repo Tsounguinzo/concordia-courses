@@ -35,7 +35,6 @@
 <FieldLabel For='instructors'>Instructor(s)</FieldLabel>
 <MultiSelect
         className='mt-2'
-        inputClassName='bg-neutral-100'
         options={instructorNames}
         values={instructors}
 />
