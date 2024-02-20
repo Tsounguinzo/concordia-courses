@@ -9,5 +9,6 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 public class Instructor {
     @MongoId
     private String _id;
+    private String name;
     private String term;
 }
