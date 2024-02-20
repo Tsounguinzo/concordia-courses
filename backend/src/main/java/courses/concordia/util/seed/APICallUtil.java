@@ -1,6 +1,7 @@
 package courses.concordia.util.seed;
 
 import com.google.gson.reflect.TypeToken;
+import courses.concordia.util.JsonUtil;
 import courses.concordia.util.seed.model.CourseWithDescription;
 import lombok.extern.slf4j.Slf4j;
 

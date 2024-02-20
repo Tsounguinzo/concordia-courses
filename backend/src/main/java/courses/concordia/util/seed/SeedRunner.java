@@ -1,5 +1,6 @@
 package courses.concordia.util.seed;
 
+import courses.concordia.util.JsonUtil;
 import courses.concordia.util.seed.model.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -120,13 +121,15 @@ public class SeedRunner {
     }
 
     private static List<CourseWithTermsAndInstructors> getCourseWithTermsAndInstructors() {
+        return null;
     }
 
     private static List<CourseWithDetails> getCourseWithDetails() {
+        return null;
     }
 
     private static List<CourseCatalogue> getCourseCatalogues() {
-
+        return null;
     }
 
 

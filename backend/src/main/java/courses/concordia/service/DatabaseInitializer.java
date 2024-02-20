@@ -43,12 +43,13 @@ public class DatabaseInitializer {
 
         log.info("Starting database initialization...");
 
-        Path seedDir = Paths.get("src", "main", "resources", "seeds");
+        Path seedDir = Paths.get("backend","src", "main", "resources", "seeds");
         try (var files = Files.walk(seedDir)){
             files.filter(Files::isRegularFile)
                     .forEach(path -> {
                         if (path.toString().endsWith("courses.json")) {
                             List<Course> courses = seedServiceCourse.readSeedFromFile(path);
+                            courseRepository.deleteAll();
                             courseRepository.saveAll(courses);
                             log.info("Loaded and saved {} courses from {}", courses.size(), path);
                         }

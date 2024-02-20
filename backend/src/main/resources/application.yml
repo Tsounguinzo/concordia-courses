@@ -1,6 +1,9 @@
 spring:
-  profiles:
-    active: default
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/db
 
 app:
+  cors:
+    allowed-origins: http://localhost:8080
   init-db: false

@@ -1,4 +1,4 @@
-package courses.concordia.util.seed;
+package courses.concordia.util;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
