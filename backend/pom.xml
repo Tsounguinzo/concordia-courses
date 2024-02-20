@@ -34,22 +34,6 @@
 			<groupId>com.azure.spring</groupId>
 			<artifactId>spring-cloud-azure-starter-active-directory</artifactId>
 		</dependency>
-<<<<<<< Updated upstream
-
-		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-oauth2-core -->
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-oauth2-core</artifactId>
-			<version>6.2.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-config</artifactId>
-			<version>6.2.0</version>
-		</dependency>
-
-=======
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
@@ -61,7 +45,6 @@
 			<artifactId>slf4j-api</artifactId>
 			<version>2.0.10</version>
 		</dependency>
->>>>>>> Stashed changes
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>
