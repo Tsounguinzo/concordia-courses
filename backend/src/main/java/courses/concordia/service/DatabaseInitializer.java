@@ -44,9 +44,8 @@ public class DatabaseInitializer {
         log.info("Starting database initialization...");
 
         Path seedDir = Paths.get("src", "main", "resources", "seeds");
-        try {
-            Files.walk(seedDir)
-                    .filter(Files::isRegularFile)
+        try (var files = Files.walk(seedDir)){
+            files.filter(Files::isRegularFile)
                     .forEach(path -> {
                         if (path.toString().endsWith("courses.json")) {
                             List<Course> courses = seedServiceCourse.readSeedFromFile(path);
