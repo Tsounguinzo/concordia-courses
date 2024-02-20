@@ -17,6 +17,9 @@ public class Course {
     private String description;
     private String catalog;
     private String title;
+    private double avgDifficulty;
+    private double avgRating;
+    private int reviewCount;
     private Schedule[] schedules;
 
     @Data

@@ -1,0 +1,6 @@
+spring:
+  profiles:
+    active: default
+
+app:
+  init-db: false
