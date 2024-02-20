@@ -2,22 +2,32 @@ package courses.concordia.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
+
+import java.util.List;
 
 @Data
 @Document(collection = "courses")
 public class Course {
     @MongoId
     private String _id;
-    private String[] terms;
-    private Instructor[] instructors;
+    private List<String> terms;
+    private List<Instructor> instructors;
     private String prerequisites;
     private String subject;
     private String description;
     private String catalog;
     private String title;
-    private Schedule[] schedules;
+    @ToString.Exclude @EqualsAndHashCode.Exclude
+    private float avgDifficulty = 0.0f;
+    @ToString.Exclude @EqualsAndHashCode.Exclude
+    private float avgRating = 0.0f;
+    @ToString.Exclude @EqualsAndHashCode.Exclude
+    private int reviewCount = 0;
+    private List<Schedule> schedules;
 
     @Data
     @AllArgsConstructor
@@ -26,7 +36,7 @@ public class Course {
         private String locationCode;
         private String roomCode;
         private String section;
-        private int classAssociation;
+        private String classAssociation;
         private String instructionModeCode;
         private String instructionModeDescription;
         private String mondays;
@@ -43,7 +53,7 @@ public class Course {
     @Data
     @AllArgsConstructor
     public static class Schedule {
-        private Block[] blocks;
+        private List<Block> blocks;
         private String term;
     }
 }
