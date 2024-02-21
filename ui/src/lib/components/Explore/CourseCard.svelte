@@ -6,7 +6,7 @@
 
     export let course: Course;
   export let className: string;
-  export let query: string = '';
+  export let query: string;
 
     const courseDescriptionShortened =
     course.description.length > 400

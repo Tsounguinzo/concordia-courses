@@ -12,16 +12,16 @@
     import JumpToTopButton from "$lib/components/Explore/JumpToTopButton.svelte";
     import CourseCard from "$lib/components/Explore/CourseCard.svelte";
     import {sortByOptions} from "$lib/types";
-    import data from '$lib/data/test.json'
     import {darkModeOn} from "$lib/provider/darkmode";
     import Skeleton from "$lib/components/Skeleton.svelte";
+    import {toast, Toaster} from "svelte-sonner";
 
     type SortByType = (typeof sortByOptions)[number];
 
     const makeSortPayload = (sort: SortByType) => {
         switch (sort) {
             case '':
-                return undefined;
+                return null;
             case 'Highest Rating':
                 return {
                     sortType: 'rating',
@@ -83,27 +83,27 @@
         sortBy: makeSortPayload($sortBy),
     };
 
-    /*  $: if ($selectedSubjects || $selectedLevels || $selectedTerms || $sortBy || $query) {
+      $: if ($selectedSubjects || $selectedLevels || $selectedTerms || $sortBy || $query) {
           repo
-              .getCourses(limit, 0, filters) // Adjust according to how filters are defined or used
+              .getCourses(limit, 0, filters)
               .then((data) => {
                   courses.set(data);
-                  hasMore.set(true); // Assuming this logic is correct for your case
-                  offset.set(limit); // Update offset based on limit
+                  hasMore.set(true);
+                  offset.set(limit);
               })
               .catch(() => {
                   toast.error('Failed to fetch courses. Please try again later.');
               });
-      } */
+      }
+
 
     onMount(() => {
-        /*repo
+        repo
             .getCourses(limit, 0, filters)
             .then((data) => courses.set(data))
-            .catch(() => {
-                toast.error('Failed to fetch courses. Please try again later.');
-            });*/
-        courses.set(data) //to remove
+            .catch((e) => {
+                toast.error('Failed to fetch courses. Please try again later.', e);
+            });
         hasMore.set(true);
         offset.set(limit);
     });
@@ -111,14 +111,16 @@
     const fetchMore = async () => {
         const batch = await repo.getCourses(limit, $offset, filters);
 
-        if (batch.length === 0) hasMore.set(false);
-        else {
+        if (batch.length === 0) {
+            hasMore.set(false);
+        } else {
             courses.set($courses?.concat(batch));
             offset.set($offset + limit);
         }
     };
 </script>
 
+<Toaster closeButton/>
 <div class='flex flex-col items-center py-8'>
     <h1 class='mb-16 text-center text-5xl font-bold tracking-tight text-gray-900 dark:text-gray-200 sm:text-5xl'>
         Explore all courses

@@ -7,9 +7,7 @@
     let hovering = writable(false)
 </script>
 
-<a
-        href="/explore"
-        class='cursor-pointer'
+<a href="/explore"
         on:mouseenter={() => hovering.set(true)}
         on:mouseleave={() => hovering.set(false)}
 >

@@ -10,7 +10,7 @@
 
 <span class={className}>
         {#each parts as part, i}
-            <span class:underline={part.toLowerCase().trim() === query?.toLowerCase().trim()}>{part}</span>
+            <span class:underline={part.toLowerCase().trim() === query?.toLowerCase().trim() && query !== ''}>{part}</span>
         {/each}
 </span>
 
