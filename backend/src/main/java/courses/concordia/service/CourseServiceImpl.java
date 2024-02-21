@@ -62,8 +62,9 @@ public class CourseServiceImpl implements CourseService{
 
         // Handle 'levels' filter
         if (filter.getLevels() != null && !filter.getLevels().isEmpty()) {
-            criteriaList.add(Criteria.where("level").in(filter.getLevels()));
-            log.info("Filtering by levels: {}", filter.getLevels());
+            String regexPattern = "^(" + String.join("|", filter.getLevels()) + ")";
+            criteriaList.add(Criteria.where("catalog").regex(regexPattern));
+            log.info("Filtering by levels starting with: {}", filter.getLevels());
         }
 
         // Handle 'subjects' filter
