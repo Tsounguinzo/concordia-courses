@@ -4,7 +4,6 @@ import {XSquare} from "lucide-svelte";
 
 <!--https://cssloaders.github.io-->
 <span class="loader">Loading</span>
-<XSquare class="text-white absolute cursor-pointer dark:text-gray-200 z-50 top-10" on:click={() => console.log("cliked")}/>
 
 <style>
 .loader {

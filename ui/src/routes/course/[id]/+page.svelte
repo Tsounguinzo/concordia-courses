@@ -19,7 +19,7 @@
     import EditReviewForm from "$lib/components/Course/Review/EditReviewForm.svelte";
     import type {Interaction} from "$lib/model/Interaction";
 
-
+/*
     const test = {
         _id: "WRIT434",
         idNgrams: null,
@@ -353,7 +353,7 @@
             }
         ]
     }
-
+*/
     const params = $page.params.id;
 
     const user = {}; //useAuth();
@@ -386,7 +386,7 @@
         toast.info("loading complete")
     });
 
-    /*  const refetch = () => {
+      const refetch = () => {
           const id = params?.replace('-', '').toUpperCase();
 
           const inner = async () => {
@@ -423,7 +423,7 @@
 
       $: if (params) refetch()
 
-       if ($course === null) {
+      /* if ($course === null) {
            throw Error()
        } */
 
@@ -443,7 +443,7 @@
             if (res.ok) {
                 toast.success(successMessage);
                 addReviewOpen.set(false);
-                //refetch();
+                refetch();
             } else {
                 toast.error('An error occurred.');
             }
@@ -470,20 +470,20 @@
     $: console.log("Review open in page", $editReviewOpen)
 </script>
 
+
 {#if $course === undefined || $showingReviews === undefined}
-    <!--{#if false}-->
     <Loading/>
 {:else }
     <div class='mx-auto mt-10 max-w-6xl md:mt-0'>
         <CourseInfo
-                course={test}
+                course={$course}
                 reviews={$showingReviews}
         />
         <div class='py-2.5'/>
         <div class='hidden gap-x-6 lg:grid lg:grid-cols-5'>
             <div class='col-span-3'>
                 <SchedulesDisplay
-                        course={test}
+                        course={$course}
                         className={canReview ? 'mb-4' : ''}
                 />
                 {#if canReview}
@@ -492,7 +492,7 @@
                 <div class='py-2'/>
                 {#if $allReviews?.length > 0}
                     <div class='mb-2'>
-                        <ReviewFilter {allReviews} {showAllReviews} course={test} {selectedInstructor}/>
+                        <ReviewFilter {allReviews} {showAllReviews} course={$course} {selectedInstructor}/>
                     </div>
                 {:else }
                     <ReviewEmptyPrompt className='my-8' variant='course'/>
@@ -544,7 +544,7 @@
             <div class='mb-4 flex'>
                 <CourseRequirements {course}/>
             </div>
-            <SchedulesDisplay course={test}/>
+            <SchedulesDisplay course={$course}/>
             <div class='mt-4 flex w-full flex-row justify-between'>
                 <div class='w-full'>
                     {#if canReview}
@@ -553,7 +553,7 @@
 
                     {#if $allReviews.length > 0}
                         <div class='my-2'>
-                            <ReviewFilter {allReviews} {showAllReviews} course={test} {selectedInstructor}/>
+                            <ReviewFilter {allReviews} {showAllReviews} course={$course} {selectedInstructor}/>
                         </div>
                     {:else }
                         <ReviewEmptyPrompt className='my-8' variant='course'/>
@@ -610,7 +610,7 @@
         /-->
         {#if userReview}
             <EditReviewForm
-                    course={test}
+                    course={$course}
                     open={editReviewOpen}
                     review={userReview}
                     handleSubmit={handleSubmit('Review edited successfully.')}

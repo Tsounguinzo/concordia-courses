@@ -32,7 +32,6 @@
     }
 
 </script>
-<Toaster closeButton/>
 <div class='relative isolate px-6 pt-14 lg:px-8'>
     <div class='mx-auto max-w-2xl py-8'>
         <div class='hidden sm:mb-8 sm:flex sm:justify-center'></div>

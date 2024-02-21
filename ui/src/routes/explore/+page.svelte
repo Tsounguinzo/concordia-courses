@@ -14,7 +14,7 @@
     import {sortByOptions} from "$lib/types";
     import {darkModeOn} from "$lib/provider/darkmode";
     import Skeleton from "$lib/components/Skeleton.svelte";
-    import {toast, Toaster} from "svelte-sonner";
+    import {toast} from "svelte-sonner";
 
     type SortByType = (typeof sortByOptions)[number];
 
@@ -58,8 +58,8 @@
     const limit = 20;
     const currentTerms = getCurrentTerms();
 
-    const courses = writable<Course[] | undefined>(undefined);
-    const hasMore = writable(true);
+    let courses: Course[];
+    let hasMore = true;
     const offset = writable(limit);
 
     const query = writable<string>('');
@@ -71,24 +71,20 @@
 
     const nullable = (arr: string[]) => (arr.length === 0 ? null : arr);
 
-    const filters = {
+    $: filters = {
         subjects: nullable($selectedSubjects),
         levels: nullable($selectedLevels.map((l) => l.charAt(0))),
-        terms: nullable(
-            $selectedTerms.map(
-                (term) => currentTerms.filter((t) => t.split(' ')[0] === term)[0]
-            )
-        ),
+        terms: nullable($selectedTerms),
         query: $query === '' ? null : query,
         sortBy: makeSortPayload($sortBy),
     };
 
-      $: if ($selectedSubjects || $selectedLevels || $selectedTerms || $sortBy || $query) {
+      $: {
           repo
               .getCourses(limit, 0, filters)
               .then((data) => {
-                  courses.set(data);
-                  hasMore.set(true);
+                  courses = [...data];
+                  hasMore = true;
                   offset.set(limit);
               })
               .catch(() => {
@@ -100,27 +96,28 @@
     onMount(() => {
         repo
             .getCourses(limit, 0, filters)
-            .then((data) => courses.set(data))
+            .then((data) => courses = [...data])
             .catch((e) => {
                 toast.error('Failed to fetch courses. Please try again later.', e);
             });
-        hasMore.set(true);
+        hasMore = true;
         offset.set(limit);
+        fetchMore()
     });
 
     const fetchMore = async () => {
+        console.log("FETCH CALlllll")
         const batch = await repo.getCourses(limit, $offset, filters);
 
-        if (batch.length === 0) {
-            hasMore.set(false);
+        if (!batch?.length) {
+            hasMore = false;
         } else {
-            courses.set($courses?.concat(batch));
+            courses = [...courses, ...batch];
             offset.set($offset + limit);
         }
     };
 </script>
 
-<Toaster closeButton/>
 <div class='flex flex-col items-center py-8'>
     <h1 class='mb-16 text-center text-5xl font-bold tracking-tight text-gray-900 dark:text-gray-200 sm:text-5xl'>
         Explore all courses
@@ -139,7 +136,7 @@
         </div>
         <div class='lg:flex-1'>
             <div class='ml-auto flex w-full max-w-xl flex-col overflow-y-hidden'>
-                {#if $courses}
+                {#if courses?.length}
                     <SearchBar
                             handleInputChange={(value) => query.set(value)}
                             iconStyle='mt-2 lg:mt-0'
@@ -148,21 +145,22 @@
                             placeholder='Search by course identifier, title, description or instructor name'
                             searchSelected={searchSelected}
                     />
-                    {#each $courses as course, i (i)}
+                    {#each courses as course}
                         <CourseCard
                                 className='my-1.5'
                                 course={course}
                                 query={$query}
                         />
                     {/each}
+                     <InfiniteScroll hasMore={hasMore} threshold={courses?.length || 20} on:loadMore={() => fetchMore()}/>
                 {:else }
                     <div class='mx-2 text-gray-50'>
                         <Skeleton className='mb-2 rounded-lg first:mt-2' color={$darkModeOn ? 'rgb(38 38 38)' : 'rgb(226 232 240)'}/>
                     </div>
                 {/if}
 
-                {#if !$hasMore}
-                    {#if $courses?.length}
+                {#if !hasMore}
+                    {#if courses?.length}
                         <div class='mx-[200px] mt-4 text-center'>
                             <p class='text-gray-500 dark:text-gray-400'>
                                 No more courses to show
@@ -175,7 +173,6 @@
                     {/if}
                 {/if}
             </div>
-            <InfiniteScroll threshold={$courses?.length || 0} on:loadMore={fetchMore}/>
         </div>
         <div class='m-2 mx-4 hidden lg:flex'>
             <ExploreFilter

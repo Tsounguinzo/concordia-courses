@@ -16,5 +16,6 @@ export const POST = async ({url, request }) => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(requestBody),
         });
+    console.log(JSON.stringify(requestBody))
     return new Response(JSON.stringify(await response.json()), { status: 200 })
 }
