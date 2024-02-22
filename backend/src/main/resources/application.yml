@@ -2,21 +2,11 @@ spring:
   profiles:
     active: default
 
-  cloud:
-    azure:
-      active-directory:
-        enabled: true
-        profile:
-          tenant-id: 81b9b473-132d-4efa-b355-55ca32482817
-        credential:
-          client-id: fdb53ef1-b2d0-4f6c-afad-406a0d15bd41
-          client-secret: WX78Q~cARA0_IEBXf-aiE_IR1KT71jOQwmS3zc82
-
 app:
   init-db: false
-
 
 
 server:
   port: 9191
   forward-headers-strategy: native
+

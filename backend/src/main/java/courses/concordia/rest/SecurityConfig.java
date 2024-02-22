@@ -1,3 +1,4 @@
+/*
 package courses.concordia.rest;
 
 
@@ -24,3 +25,4 @@ public class SecurityConfig{
                 .build();
     }
 }
+*/
