@@ -5,45 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="49511bc1-5b95-415f-85e3-74dc213d25ef" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/courses/concordia/ConcordiaCoursesApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/courses/concordia/ConcordiaCoursesApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/courses/concordia/rest/AuthorizationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/courses/concordia/rest/AuthorizationController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/courses/concordia/rest/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/courses/concordia/rest/SecurityConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/application-dev.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/target/classes/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/dto/CourseReviewsDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/model/Course$Block.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/courses/concordia/model/Course$Block.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/model/Course$Schedule.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/courses/concordia/model/Course$Schedule.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/model/Course.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/courses/concordia/model/Course.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/model/CourseFilter$CourseSort.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/model/CourseFilter$CourseSortType.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/model/CourseFilter.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/model/Instructor.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/courses/concordia/model/Instructor.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/model/Review.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/courses/concordia/model/Review.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/rest/AuthorizationController.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/courses/concordia/rest/AuthorizationController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/rest/CourseController.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/courses/concordia/rest/CourseController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/service/CourseService.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/courses/concordia/service/CourseService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/service/CourseServiceImpl$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/service/CourseServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/courses/concordia/service/CourseServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/service/DatabaseInitializer.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/service/SeedService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/service/SeedServiceCourse$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/service/SeedServiceCourse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/util/seed/APICallUtil$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/util/seed/APICallUtil$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/util/seed/APICallUtil.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/util/seed/JsonUtil.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/util/seed/model/Course$Block.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/util/seed/model/Course$Schedule.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/util/seed/model/Course.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/util/seed/model/CourseCatalogue.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/util/seed/model/CourseWithDescription.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/util/seed/model/CourseWithDetails.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/util/seed/model/CourseWithTermsAndInstructors.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/seeds/2023-2024-courses.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/classes/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/static/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

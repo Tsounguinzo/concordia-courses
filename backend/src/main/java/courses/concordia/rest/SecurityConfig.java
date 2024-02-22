@@ -1,4 +1,3 @@
-/*
 package courses.concordia.rest;
 
 
@@ -17,12 +16,11 @@ public class SecurityConfig{
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .authorizeHttpRequests(authz -> {
-                            authz.requestMatchers("/").permitAll();// Allow unauthenticated access to these paths
-                            authz.anyRequest().authenticated(); // Require authentication for any other request
-                })
+                .authorizeHttpRequests(authz -> authz
+                        .requestMatchers("/","/auth/home").permitAll() // Allow unauthenticated access
+                        .anyRequest().authenticated()
+                )
                 .oauth2Login(withDefaults())
                 .build();
     }
 }
-*/
