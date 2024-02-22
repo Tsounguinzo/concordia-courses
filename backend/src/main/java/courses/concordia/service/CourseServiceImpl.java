@@ -71,15 +71,14 @@ public class CourseServiceImpl implements CourseService{
         // Handle 'subjects' filter
         if (filter.getSubjects() != null && !filter.getSubjects().isEmpty()) {
             String regexPattern = "^(" + String.join("|", filter.getSubjects()) + ")";
-            criteriaList.add(Criteria.where("subject").in(regexPattern));
+            criteriaList.add(Criteria.where("subject").regex(regexPattern));
             log.info("Filtering by subjects: {}", filter.getSubjects());
         }
 
         // Handle 'terms' filter
         if (filter.getTerms() != null && !filter.getTerms().isEmpty()) {
-            String regexPattern = "^(" + String.join("|", filter.getTerms()) + ")";
-            criteriaList.add(Criteria.where("terms").in(regexPattern));
-            log.info("Filtering by terms: {}", filter.getTerms());
+            criteriaList.add(Criteria.where("terms").all(filter.getTerms()));
+            log.info("Filtering by terms to include all specified: {}", filter.getTerms());
         }
 
         // Handle 'query' filter ('query' can be matched against multiple fields like title or description)
