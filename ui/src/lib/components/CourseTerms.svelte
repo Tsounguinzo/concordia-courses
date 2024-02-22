@@ -1,6 +1,7 @@
 <script lang="ts">
     import type {Course} from "$lib/model/Course";
     import {
+        addAcademicYear,
         filterCurrentInstructors,
         getCurrentTerms,
         termColorMap,
@@ -21,7 +22,7 @@
     const instructors = filterCurrentInstructors(uniqueTermInstructors(course));
 
     const currentlyOfferedTerms = course.terms.filter((c) =>
-        getCurrentTerms().includes(c));
+        getCurrentTerms().map(term => term.split(" ")[0]).includes(c));
 
     const show = writable(false);
 </script>
@@ -61,10 +62,7 @@
                         </div>
                     {/if}
                     <div class={twMerge('pr-1 font-medium dark:text-gray-200')}>
-                        <Highlight
-                                text={term}
-                                query={query}
-                        />
+                        <Highlight text={addAcademicYear(term)} {query}/>
                     </div>
                 </div>
             </div>

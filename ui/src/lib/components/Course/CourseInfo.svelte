@@ -1,0 +1,128 @@
+<script lang="ts">
+    import type {Review} from "$lib/model/Review";
+    import type {Course} from "$lib/model/Course";
+    import {writable} from "svelte/store";
+    import {repo} from "$lib/repo";
+    import {toast} from "svelte-sonner";
+    import {Bell, BellOff} from "lucide-svelte";
+    import CourseTerms from "$lib/components/CourseTerms.svelte";
+    import CourseInfoStats from "$lib/components/Course/Stats/CourseInfoStats.svelte";
+
+    export let course: Course;
+    export let reviews: Review[];
+
+    const user = null; //useAuth();
+
+    const isSubscribed = writable(false);
+
+    /* $: if (course) {
+        if (!user) return;
+
+        repo
+            .getSubscription(course._id)
+            .then((data) => {
+                isSubscribed.set(data !== null);
+            })
+            .catch(() =>
+                toast.error(
+                    `Failed to check subscription for course ${course.subject} ${course.catalog}`
+                )
+            );
+    }
+
+    onMount(() => {
+        if (!user) return;
+
+        repo
+            .getSubscription(course._id)
+            .then((data) => {
+                isSubscribed.set(data !== null);
+            })
+            .catch(() =>
+                toast.error(
+                    `Failed to check subscription for course ${course.subject} ${course.catalog}`
+                )
+            );
+    });
+
+     */
+
+    const subscribe = async () => {
+        try {
+            await repo.addSubscription(course._id);
+            isSubscribed.set(true);
+            toast.success(`Subscribed to course ${course.subject} ${course.catalog}.`);
+        } catch (err) {
+            toast.error(
+                `Failed to subscribe to course ${course.subject} ${course.catalog}.`
+            );
+        }
+    };
+
+    const unsubscribe = async () => {
+        try {
+            await repo.removeSubscription(course._id);
+            isSubscribed.set(false);
+            toast.success(
+                `Unsubscribed from course ${course.subject} ${course.catalog}`
+            );
+        } catch (err) {
+            toast.error(
+                `Failed to unsubscribe from course ${course.subject} ${course.catalog}`
+            );
+        }
+    };
+</script>
+
+<div class='relative flex w-full flex-row rounded-md bg-slate-50 px-6 pt-8 shadow-sm dark:bg-neutral-800 md:mt-10'>
+    <div class='flex w-full flex-col md:w-7/12'>
+        <div class='flex flex-row space-x-2 align-middle'>
+            <h1 class='text-3xl font-semibold text-gray-800 dark:text-gray-200'>
+                {course.subject} {course.catalog}
+            </h1>
+            <div class='flex items-center gap-2'>
+                {#if user}
+                    {#if $isSubscribed}
+                        <BellOff
+                                size={20}
+                                on:click={unsubscribe}
+                                class='my-auto ml-1 cursor-pointer stroke-2 transition-colors duration-300 hover:stroke-blue-600 dark:text-gray-200'
+                        />
+                    {:else }
+                        <Bell
+                                size={20}
+                                on:click={subscribe}
+                                class='my-auto ml-1 cursor-pointer stroke-2 transition-colors duration-300 hover:stroke-blue-600 dark:text-gray-200'
+                        />
+                    {/if}
+                {/if}
+            </div>
+        </div>
+        <div class='py-1'/>
+        <h2 class='text-2xl text-gray-800 dark:text-gray-200'>
+            {course.title}
+        </h2>
+        <CourseTerms course={course} variant='large'/>
+        <div class='py-1'/>
+        <p class='break-words text-gray-500 dark:text-gray-400'>
+            {course.description}
+        </p>
+        <div class='grow py-3'/>
+        <CourseInfoStats className='mb-4 sm:hidden' allReviews={reviews}/>
+        <CourseInfoStats
+                className='hidden gap-x-6 sm:mb-6 sm:flex md:mb-0 md:hidden'
+                variant='medium'
+                allReviews={reviews}
+        />
+        <p class='mb-6 text-sm text-gray-500 dark:text-gray-400'>
+            {reviews.length} review(s)
+        </p>
+    </div>
+    <div class='hidden w-5/12 justify-center rounded-md bg-neutral-50 py-4 dark:bg-neutral-800 md:mx-5 md:flex lg:ml-12 lg:mt-6 xl:justify-start'>
+        <CourseInfoStats
+                variant='large'
+                allReviews={reviews}
+                className='lg:mr-8'
+        />
+    </div>
+</div>

@@ -49,6 +49,7 @@ const client = {
       fn: (endpoint: string, init?: RequestInit) => Promise<Response>
     ): Promise<T> => (await (await fn(endpoint, init)).json()) as T;
 
+    console.log(await run(this.post))
     switch (method) {
       case 'GET':
         return run(this.get);
@@ -226,7 +227,7 @@ export const repo = {
   ): Promise<Course[]> {
     return client.deserialize<Course[]>(
       'POST',
-      `/courses?limit=${limit}&offset=${offset}`,
+      `/courses/filter?limit=${limit}&offset=${offset}`,
       {
         headers: {
           'Content-Type': 'application/json',

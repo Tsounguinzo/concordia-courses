@@ -4,7 +4,7 @@
     import {writable} from "svelte/store";
     import {onMount} from "svelte";
     import {repo} from "$lib/repo";
-    import FilterToggle from "$lib/components/Explore/FilterToggle.svelte";
+    import FilterToggle from "$lib/components/Filter/FilterToggle.svelte";
     import ExploreFilter from "$lib/components/Explore/ExploreFilter.svelte";
     import SearchBar from "$lib/components/Search/SearchBar.svelte";
     import InfiniteScroll from 'svelte-infinite-scroll';
@@ -12,16 +12,16 @@
     import JumpToTopButton from "$lib/components/Explore/JumpToTopButton.svelte";
     import CourseCard from "$lib/components/Explore/CourseCard.svelte";
     import {sortByOptions} from "$lib/types";
-    import data from '$lib/data/test.json'
     import {darkModeOn} from "$lib/provider/darkmode";
     import Skeleton from "$lib/components/Skeleton.svelte";
+    import {toast} from "svelte-sonner";
 
     type SortByType = (typeof sortByOptions)[number];
 
     const makeSortPayload = (sort: SortByType) => {
         switch (sort) {
             case '':
-                return undefined;
+                return null;
             case 'Highest Rating':
                 return {
                     sortType: 'rating',
@@ -58,11 +58,11 @@
     const limit = 20;
     const currentTerms = getCurrentTerms();
 
-    const courses = writable<Course[] | undefined>(undefined);
-    const hasMore = writable(true);
+    let courses: Course[];
+    let hasMore = true;
     const offset = writable(limit);
 
-    const query = writable<string>('');
+    let query = '';
     const searchSelected = writable<boolean>(false);
     const selectedLevels = writable<string[]>([]);
     const selectedSubjects = writable<string[]>([]);
@@ -71,49 +71,48 @@
 
     const nullable = (arr: string[]) => (arr.length === 0 ? null : arr);
 
-    const filters = {
+    $: filters = {
         subjects: nullable($selectedSubjects),
         levels: nullable($selectedLevels.map((l) => l.charAt(0))),
-        terms: nullable(
-            $selectedTerms.map(
-                (term) => currentTerms.filter((t) => t.split(' ')[0] === term)[0]
-            )
-        ),
-        query: $query === '' ? null : query,
+        terms: nullable($selectedTerms),
+        query: query === '' ? null : query,
         sortBy: makeSortPayload($sortBy),
     };
 
-    /*  $: if ($selectedSubjects || $selectedLevels || $selectedTerms || $sortBy || $query) {
+      $: {
           repo
-              .getCourses(limit, 0, filters) // Adjust according to how filters are defined or used
+              .getCourses(limit, 0, filters)
               .then((data) => {
-                  courses.set(data);
-                  hasMore.set(true); // Assuming this logic is correct for your case
-                  offset.set(limit); // Update offset based on limit
+                  courses = [...data];
+                  hasMore = true;
+                  offset.set(limit);
               })
               .catch(() => {
                   toast.error('Failed to fetch courses. Please try again later.');
               });
-      } */
+      }
+
 
     onMount(() => {
-        /*repo
+        repo
             .getCourses(limit, 0, filters)
-            .then((data) => courses.set(data))
-            .catch(() => {
-                toast.error('Failed to fetch courses. Please try again later.');
-            });*/
-        courses.set(data) //to remove
-        hasMore.set(true);
+            .then((data) => courses = [...data])
+            .catch((e) => {
+                toast.error('Failed to fetch courses. Please try again later.', e);
+            });
+        hasMore = true;
         offset.set(limit);
+        fetchMore()
     });
 
     const fetchMore = async () => {
+        console.log("FETCH CALlllll")
         const batch = await repo.getCourses(limit, $offset, filters);
 
-        if (batch.length === 0) hasMore.set(false);
-        else {
-            courses.set($courses?.concat(batch));
+        if (!batch?.length) {
+            hasMore = false;
+        } else {
+            courses = [...courses, ...batch];
             offset.set($offset + limit);
         }
     };
@@ -137,30 +136,31 @@
         </div>
         <div class='lg:flex-1'>
             <div class='ml-auto flex w-full max-w-xl flex-col overflow-y-hidden'>
-                {#if $courses}
+                {#if courses !== undefined}
                     <SearchBar
-                            handleInputChange={(value) => query.set(value)}
+                            handleInputChange={(value) => query = value}
                             iconStyle='mt-2 lg:mt-0'
                             inputStyle='block rounded-lg w-full bg-slate-200 p-3 pr-5 pl-10 text-sm text-black outline-none dark:border-neutral-50 dark:bg-neutral-800 dark:text-gray-200 dark:placeholder:text-neutral-500'
                             outerInputStyle='my-2 mt-4 lg:mt-2'
                             placeholder='Search by course identifier, title, description or instructor name'
                             searchSelected={searchSelected}
                     />
-                    {#each $courses as course, i (i)}
+                    {#each courses as course}
                         <CourseCard
                                 className='my-1.5'
                                 course={course}
-                                query={$query}
+                                {query}
                         />
                     {/each}
+                     <InfiniteScroll hasMore={hasMore} threshold={courses?.length || 20} on:loadMore={() => fetchMore()}/>
                 {:else }
                     <div class='mx-2 text-gray-50'>
                         <Skeleton className='mb-2 rounded-lg first:mt-2' color={$darkModeOn ? 'rgb(38 38 38)' : 'rgb(226 232 240)'}/>
                     </div>
                 {/if}
 
-                {#if !$hasMore}
-                    {#if $courses?.length}
+                {#if !hasMore}
+                    {#if courses?.length}
                         <div class='mx-[200px] mt-4 text-center'>
                             <p class='text-gray-500 dark:text-gray-400'>
                                 No more courses to show
@@ -173,7 +173,6 @@
                     {/if}
                 {/if}
             </div>
-            <InfiniteScroll threshold={$courses?.length || 0} on:loadMore={fetchMore}/>
         </div>
         <div class='m-2 mx-4 hidden lg:flex'>
             <ExploreFilter

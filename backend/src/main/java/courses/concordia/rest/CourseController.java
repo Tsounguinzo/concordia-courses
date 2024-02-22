@@ -1,12 +1,10 @@
 package courses.concordia.rest;
 
 import courses.concordia.model.Course;
+import courses.concordia.model.CourseFilter;
 import courses.concordia.service.CourseService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,8 +20,16 @@ public class CourseController {
     }
 
     @GetMapping("/courses/{id}")
-    public Course getCourseById(@PathVariable String id) {
-        return courseService.getCourseById(id);
+    public Object getCourseById(@PathVariable String id, @RequestParam(name = "with_reviews", defaultValue = "false") boolean withReviews) {
+        if (withReviews) {
+            return courseService.getCourseAndReviewsById(id);
+        } else {
+            return courseService.getCourseById(id);
+        }
     }
 
+    @PostMapping("/courses/filter")
+    public List<Course> getCourses(@RequestBody CourseFilter filters, @RequestParam int limit, @RequestParam int offset) {
+        return courseService.getCourses(limit, offset, filters);
+    }
 }

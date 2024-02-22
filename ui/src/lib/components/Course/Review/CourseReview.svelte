@@ -1,0 +1,141 @@
+<script lang="ts">
+    import Tooltip from "$lib/components/Tooltip.svelte";
+    import {twMerge} from "tailwind-merge";
+    import Transition from "svelte-transition";
+    import DeleteButton from "$lib/components/Course/Review/DeleteButton.svelte";
+    import {Edit, Pin} from "lucide-svelte";
+    import LoginPrompt from "$lib/components/Course/Review/LoginPrompt.svelte";
+    import {courseIdToUrlParam} from "$lib/utils.js";
+    import type {Review} from "$lib/model/Review";
+    import type {Writable} from "svelte/store";
+    import {writable} from "svelte/store";
+    import {format} from 'date-fns';
+    import IconRating from "$lib/components/Course/Review/IconRating.svelte";
+    import ReviewInteractions from "$lib/components/Course/Review/ReviewInteractions.svelte";
+    import type {Interaction} from "$lib/model/Interaction";
+
+    export let canModify: boolean;
+    export let handleDelete: () => void;
+    export let editReview: Writable<boolean>;
+    export let interactions: Interaction[];
+    export let likesUpdate: Writable<number>;
+    export let review: Review;
+    export let includeTaughtBy: boolean = false;
+    export let className: string = '';
+
+    const readMore = writable(false);
+    const promptLogin = writable(false);
+
+    const date = new Date(parseInt(review.timestamp.$date.$numberLong, 10));
+
+    const shortDate = format(date, 'P'),
+        longDate = format(date, 'EEEE, MMMM d, yyyy');
+</script>
+
+<div class={twMerge(
+        'relative flex w-full flex-col gap-4 border-b-[1px] border-b-gray-300 bg-slate-50 px-6 py-3 first:rounded-t-md last:rounded-b-md last:border-b-0 dark:border-b-gray-600 dark:bg-neutral-800',
+        className
+      )}
+>
+    <div class='flex flex-col'>
+        <div class='flex w-full'>
+            <div class='relative flex w-full flex-col'>
+                <div class='flex w-full'>
+                    <Tooltip text={longDate}>
+                        <p class='cursor-default py-2 text-xs font-medium text-gray-700 dark:text-gray-300'>
+                            {shortDate}
+                        </p>
+                    </Tooltip>
+                    {#if canModify}
+                        <Pin class='ml-2 mt-2 text-blue-600'/>
+                    {/if}
+                    <div class='grow'/>
+                    <div class='flex w-64 flex-col items-end rounded-lg p-2'>
+                        <div class='flex items-center gap-x-2'>
+                            <div class='text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
+                                Rating
+                            </div>
+                            <IconRating rating={review.rating} icon="user"/>
+                        </div>
+                        <div class='flex items-center gap-x-2'>
+                            <div class='text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
+                                Difficulty
+                            </div>
+                            <IconRating rating={review.difficulty} icon="flame"/>
+                        </div>
+                    </div>
+                </div>
+                {#if review.content.length < 300 || $readMore}
+                    <div class='ml-1 mr-4 mt-2 hyphens-auto text-left text-gray-800 dark:text-gray-300'>
+                        {review.content}
+                    </div>
+                {:else }
+                    <div class='ml-1 mr-4 mt-2 hyphens-auto text-left text-gray-800 dark:text-gray-300'>
+                        {review.content.substring(0, 300) + '...'}
+                    </div>
+                    <button class='ml-1 mr-auto pt-1 text-gray-700 underline transition duration-300 ease-in-out hover:text-red-500 dark:text-gray-300 dark:hover:text-red-500'
+                            on:click={() => readMore.set(true)}>
+                        Show more
+                    </button>
+                {/if}
+            </div>
+        </div>
+    </div>
+    <div class='flex items-center'>
+        <p class='mb-2 mt-auto flex-1 text-sm italic leading-4 text-gray-700 dark:text-gray-200'>
+            {#if includeTaughtBy}
+                Taught by{' '}
+                {#each review.instructors as instructor, i}
+                    {@const separator = (i === review.instructors.length - 2) ? ' and ' : ', ' }
+                    <span class='font-medium transition hover:text-red-600'>
+                        {instructor}
+                    </span>
+                    {separator}
+                {/each}
+            {:else }
+                Written for{' '}
+                <a href={`/course/${courseIdToUrlParam(review.courseId)}`}
+                   class='font-medium transition hover:text-red-600'>
+                    {review.courseId}
+                </a>
+            {/if}
+        </p>
+        <Transition
+                show={$promptLogin}
+                enter='transition-opacity duration-150'
+                enterFrom='opacity-0'
+                enterTo='opacity-100'
+                leave='transition-opacity duration-150'
+                leaveFrom='opacity-100'
+                leaveTo='opacity-0'
+        >
+            <LoginPrompt/>
+        </Transition>
+        <div class='flex items-center'>
+            <div class='mb-1 flex'>
+                {#if canModify}
+                    <div class='ml-2 mr-1 flex h-fit space-x-2'>
+                        <button on:click={() => editReview.set(true)}>
+                            <Edit class='cursor-pointer stroke-gray-500 transition duration-200 hover:stroke-gray-800 dark:stroke-gray-400 dark:hover:stroke-gray-200'
+                                  size={20}/>
+                        </button>
+                        <DeleteButton
+                                title='Delete Review'
+                                text={`Are you sure you want to delete your review of ${review.courseId}? `}
+                                onConfirm={handleDelete}
+                                size={20}
+                        />
+                    </div>
+                {/if}
+            </div>
+            {#if likesUpdate && interactions}
+                <ReviewInteractions
+                        {review}
+                        {interactions}
+                        {promptLogin}
+                        {likesUpdate}
+                />
+            {/if}
+        </div>
+    </div>
+</div>

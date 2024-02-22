@@ -7,14 +7,12 @@
     let hovering = writable(false)
 </script>
 
-<a
-        href="/explore"
-        class='cursor-pointer'
+<a href="/explore"
         on:mouseenter={() => hovering.set(true)}
         on:mouseleave={() => hovering.set(false)}
 >
     <div class={twMerge(
-          'flex cursor-pointer items-center p-3 text-left dark:border-gray-600 dark:bg-neutral-800 dark:text-gray-200 transition-all duration-75',
+          'flex items-center p-3 text-left dark:border-gray-600 dark:bg-neutral-800 dark:text-gray-200 transition-all duration-75',
           $hovering ? highlightResultStyle : 'bg-gray-100 dark:bg-neutral-800'
         )}
     >

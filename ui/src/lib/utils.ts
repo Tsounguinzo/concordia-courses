@@ -40,6 +40,17 @@ export const getCurrentTerms = (): [string, string, string, string, string] => {
     return [`Fall ${year - 1}`, `Fall/Winter ${year - 1}-${year}`, `Winter ${year}`, `Spring ${year}` , `Summer ${year}`];
 };
 
+export const addAcademicYear = (term: string) => {
+    const now = new Date();
+    const month = now.getMonth() + 1;
+    const year = now.getFullYear();
+
+    if (month >= 8)
+        return [`Fall ${year}`, `Fall/Winter ${year}-${year + 1}`, `Winter ${year + 1}`, `Spring ${year + 1}` , `Summer ${year + 1}`].filter(current => current.split(" ")[0] === term)[0];
+
+    return [`Fall ${year - 1}`, `Fall/Winter ${year - 1}-${year}`, `Winter ${year}`, `Spring ${year}` , `Summer ${year}`].filter(current => current.split(" ")[0] === term)[0];
+};
+
 export const filterCurrentInstructors = (instructors: Instructor[]) => {
     const currentTerm = getCurrentTerms();
     return instructors.filter((i) => currentTerm.includes(i.term));
