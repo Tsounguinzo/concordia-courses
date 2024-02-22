@@ -101,8 +101,8 @@ public class CourseServiceImpl implements CourseService{
         }
 
         // Handle sorting
-        if (filter.getSortBy() != null && !filter.getSortBy().isEmpty()) {
-            for (CourseFilter.CourseSort sort : filter.getSortBy()) {
+        if (filter.getSortBy() != null) {
+            CourseFilter.CourseSort sort = filter.getSortBy();
                 log.info("Applying sort by {} in {} order", sort.getSortType(), sort.isReverse() ? "DESC" : "ASC");
                 switch (sort.getSortType()) {
                     case Difficulty:
@@ -119,9 +119,6 @@ public class CourseServiceImpl implements CourseService{
                         break;
                 }
             }
-        } else {
-            query.with(Sort.by(Sort.Direction.ASC, "_id"));
-        }
 
         long count = mongoTemplate.count(query, Course.class);
         List<Course> courses = mongoTemplate.find(query, Course.class);
