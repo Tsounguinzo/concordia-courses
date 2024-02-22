@@ -3,7 +3,6 @@ const baseUrl = "http://localhost:8080";
 export async function GET({ url }) {
     try {
         console.log("Proxy GET request initiated");
-        // Correct the logic for appending search parameters
         const query = url.search ? `${baseUrl}${url.pathname}${url.search}` : `${baseUrl}${url.pathname}`;
         const response = await fetch(query, {
             method: 'GET',

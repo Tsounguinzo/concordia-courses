@@ -15,23 +15,23 @@
     let schedules = course.schedules;
 
     const offeredTerms = sortTerms(
-        _.uniq(schedules.map((schedule) => schedule.term))
+        _.uniq(schedules.map((schedule) => schedule?.term))
     );
 
-    const selectedTerm = writable(offeredTerms.at(0));
+    const selectedTerm = writable(offeredTerms?.at(0));
     const showAll = writable(false);
-    const blocks: Writable<Block[] | undefined> = writable($selectedTerm ? schedules.filter(term => term.term === $selectedTerm)[0].blocks: undefined);
+    const blocks: Writable<Block[] | undefined> = writable($selectedTerm ? schedules.filter(term => term?.term === $selectedTerm)[0]?.blocks : undefined);
 
     $: if (course) {
-        selectedTerm.set(offeredTerms.at(0))
+        selectedTerm.set(offeredTerms?.at(0))
     }
 
-    $: if (course || selectedTerm) {
-        blocks.set($selectedTerm ? schedules.filter(term => term.term === $selectedTerm)[0].blocks : undefined)
+    $: if (course || $selectedTerm) {
+        blocks.set($selectedTerm ? schedules.filter(term => term?.term === $selectedTerm)[0]?.blocks : undefined)
     }
 
 </script>
-{#if !schedules || !$selectedTerm || $blocks !== undefined}
+{#if schedules.length && (!$selectedTerm || $blocks !== undefined)}
     <div class={twMerge('flex flex-col text-gray-800 shadow-sm lg:border-t-0',className)}>
         <div class='flex'>
             {#each offeredTerms as term, i (i)}
@@ -55,7 +55,7 @@
         </div>
         <div class='flex flex-col rounded-b-lg bg-slate-50 dark:bg-neutral-800 dark:text-gray-200'>
             <table>
-                {#if $blocks.length <= 5 || $showAll}
+                {#if $blocks?.length <= 5 || $showAll}
                     {#each $blocks as block}
                         <ScheduleRow {block}/>
                     {/each}
@@ -65,7 +65,7 @@
                     {/each}
                 {/if}
             </table>
-            {#if $blocks.length > 5}
+            {#if $blocks?.length > 5}
                 <div class='flex flex-row justify-center'>
                     <button
                             class='flex flex-row items-center justify-center py-2 text-center font-medium transition duration-300 ease-in-out hover:cursor-pointer dark:text-gray-200'
