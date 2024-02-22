@@ -13,20 +13,10 @@ import java.util.Map;
 @RestController
 @RequestMapping("/auth")
 public class AuthorizationController {
-
     @GetMapping("/authorized")
     public Map<String, Object> authorize(@AuthenticationPrincipal OAuth2User principal) {
+        //if the user is authorized then get name
         return Collections.singletonMap("name", principal.getAttribute("name"));
-    }
-
-    @GetMapping("/login")
-    public String Login() {
-        return "???";
-    }
-
-    @GetMapping("/logout")
-    public String logout(){
-        return "successfully logout";
     }
 
 }
