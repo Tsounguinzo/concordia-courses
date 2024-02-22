@@ -12,6 +12,7 @@ import org.springframework.data.domain.*;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -81,12 +82,9 @@ public class CourseServiceImpl implements CourseService{
 
         // Handle 'query' filter ('query' can be matched against multiple fields like title or description)
         if (filter.getQuery() != null && !filter.getQuery().isEmpty()) {
-            Criteria queryCriteria = new Criteria().orOperator(
-                    Criteria.where("title").regex(filter.getQuery(), "i"),
-                    Criteria.where("description").regex(filter.getQuery(), "i")
-            );
-            criteriaList.add(queryCriteria);
-            log.info("Applying query filter: {}", filter.getQuery());
+            TextCriteria textCriteria = TextCriteria.forDefaultLanguage().matching(filter.getQuery());
+            query.addCriteria(textCriteria);
+            log.info("Applying text search filter: {}", filter.getQuery());
         }
 
         if (!criteriaList.isEmpty()) {
