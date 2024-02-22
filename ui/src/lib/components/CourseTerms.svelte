@@ -62,10 +62,7 @@
                         </div>
                     {/if}
                     <div class={twMerge('pr-1 font-medium dark:text-gray-200')}>
-                        <Highlight
-                                text={addAcademicYear(term)}
-                                query={query}
-                        />
+                        <Highlight text={addAcademicYear(term)} {query}/>
                     </div>
                 </div>
             </div>

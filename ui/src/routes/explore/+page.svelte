@@ -62,7 +62,7 @@
     let hasMore = true;
     const offset = writable(limit);
 
-    const query = writable<string>('');
+    let query = '';
     const searchSelected = writable<boolean>(false);
     const selectedLevels = writable<string[]>([]);
     const selectedSubjects = writable<string[]>([]);
@@ -75,7 +75,7 @@
         subjects: nullable($selectedSubjects),
         levels: nullable($selectedLevels.map((l) => l.charAt(0))),
         terms: nullable($selectedTerms),
-        query: $query === '' ? null : query,
+        query: query === '' ? null : query,
         sortBy: makeSortPayload($sortBy),
     };
 
@@ -136,9 +136,9 @@
         </div>
         <div class='lg:flex-1'>
             <div class='ml-auto flex w-full max-w-xl flex-col overflow-y-hidden'>
-                {#if courses?.length}
+                {#if courses !== undefined}
                     <SearchBar
-                            handleInputChange={(value) => query.set(value)}
+                            handleInputChange={(value) => query = value}
                             iconStyle='mt-2 lg:mt-0'
                             inputStyle='block rounded-lg w-full bg-slate-200 p-3 pr-5 pl-10 text-sm text-black outline-none dark:border-neutral-50 dark:bg-neutral-800 dark:text-gray-200 dark:placeholder:text-neutral-500'
                             outerInputStyle='my-2 mt-4 lg:mt-2'
@@ -149,7 +149,7 @@
                         <CourseCard
                                 className='my-1.5'
                                 course={course}
-                                query={$query}
+                                {query}
                         />
                     {/each}
                      <InfiniteScroll hasMore={hasMore} threshold={courses?.length || 20} on:loadMore={() => fetchMore()}/>

@@ -23,17 +23,17 @@
             {#if query}
                 <Highlight
                     text={`${spliceCourseCode(course._id, ' ')} - ${course.title}`}
-                    query={query}
+                    {query}
                 />
             {:else }
                 {spliceCourseCode(course._id, ' ')} - {course.title}
             {/if}
 
         </div>
-        <CourseTerms course={course} variant='small' query={query}/>
+        <CourseTerms course={course} variant='small' {query}/>
         <div class='mt-2 text-gray-600 dark:text-gray-400'>
             {#if query}
-                <Highlight text={course.description} query={query}/>
+                <Highlight text={course.description} {query}/>
             {:else }
                 {courseDescriptionShortened}
             {/if}
