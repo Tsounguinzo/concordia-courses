@@ -70,21 +70,31 @@ public class CourseServiceImpl implements CourseService{
 
         // Handle 'subjects' filter
         if (filter.getSubjects() != null && !filter.getSubjects().isEmpty()) {
-            criteriaList.add(Criteria.where("subject").in(filter.getSubjects()));
+            String regexPattern = "^(" + String.join("|", filter.getSubjects()) + ")";
+            criteriaList.add(Criteria.where("subject").in(regexPattern));
             log.info("Filtering by subjects: {}", filter.getSubjects());
         }
 
         // Handle 'terms' filter
         if (filter.getTerms() != null && !filter.getTerms().isEmpty()) {
-            criteriaList.add(Criteria.where("terms").in(filter.getTerms()));
+            String regexPattern = "^(" + String.join("|", filter.getTerms()) + ")";
+            criteriaList.add(Criteria.where("terms").in(regexPattern));
             log.info("Filtering by terms: {}", filter.getTerms());
         }
 
         // Handle 'query' filter ('query' can be matched against multiple fields like title or description)
         if (filter.getQuery() != null && !filter.getQuery().isEmpty()) {
-            TextCriteria textCriteria = TextCriteria.forDefaultLanguage().matching(filter.getQuery());
-            query.addCriteria(textCriteria);
-            log.info("Applying text search filter: {}", filter.getQuery());
+            String idRegexPattern = ".*" + filter.getQuery().replace(" ", "") + ".*";
+            String restRegexPattern = ".*" + filter.getQuery() + ".*";
+            Criteria queryCriteria = new Criteria().orOperator(
+                    Criteria.where("_id").regex(idRegexPattern, "i"),
+                    Criteria.where("catalog").regex(restRegexPattern, "i"),
+                    Criteria.where("title").regex(restRegexPattern, "i"),
+                    Criteria.where("subject").regex(restRegexPattern, "i"),
+                    Criteria.where("description").regex(restRegexPattern, "i")
+            );
+            criteriaList.add(queryCriteria);
+            log.info("Applying query filter: {}", filter.getQuery());
         }
 
         if (!criteriaList.isEmpty()) {
@@ -106,9 +116,12 @@ public class CourseServiceImpl implements CourseService{
                         query.with(Sort.by(sort.isReverse() ? Sort.Direction.DESC : Sort.Direction.ASC, "reviewCount"));
                         break;
                     default:
+                        query.with(Sort.by(Sort.Direction.ASC, "_id"));
                         break;
                 }
             }
+        } else {
+            query.with(Sort.by(Sort.Direction.ASC, "_id"));
         }
 
         long count = mongoTemplate.count(query, Course.class);

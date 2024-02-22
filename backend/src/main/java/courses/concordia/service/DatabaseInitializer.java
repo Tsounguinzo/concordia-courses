@@ -7,9 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.index.IndexInfo;
-import org.springframework.data.mongodb.core.index.TextIndexDefinition;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -25,7 +22,6 @@ public class DatabaseInitializer {
 
     private final SeedServiceCourse seedServiceCourse;
     private final CourseRepository courseRepository;
-    private final MongoTemplate mongoTemplate;
     private final Environment environment;
 
     @Value("${app.init-db:false}")
@@ -47,9 +43,8 @@ public class DatabaseInitializer {
                 return;
             }
 
-            log.info("Initializing database with seed data and creating text indexes.");
+            log.info("Initializing database with seed data.");
             seedDatabase();
-            createTextIndexes();
             log.info("Database initialization process completed successfully.");
         } catch (Exception e) {
             log.error("Database initialization process failed", e);
@@ -82,30 +77,5 @@ public class DatabaseInitializer {
         } catch (Exception e) {
             log.error("Failed to load courses from {}: {}", path, e.getMessage(), e);
         }
-    }
-
-    private void createTextIndexes() {
-        log.info("Checking for existing text indexes on the courses collection.");
-        List<IndexInfo> indexInfoList = mongoTemplate.indexOps(Course.class).getIndexInfo();
-
-        boolean textIndexExists = indexInfoList.stream()
-                .anyMatch(indexInfo -> indexInfo.getName().equals("TextSearchIndex"));
-
-        if (textIndexExists) {
-            log.warn("A text index already exists on the courses collection. Deleting current text index...");
-            mongoTemplate.indexOps(Course.class).dropIndex("TextSearchIndex");
-        }
-
-        log.info("Creating text indexes for courses collection.");
-        TextIndexDefinition textIndex = TextIndexDefinition.builder()
-                .onField("subject", 3.0f)
-                .onField("catalog", 3.0f)
-                .onField("title", 2.0f)
-                .onField("description", 1.0f)
-                .named("TextSearchIndex")
-                .build();
-
-        mongoTemplate.indexOps(Course.class).ensureIndex(textIndex);
-        log.info("Text indexes created successfully.");
     }
 }
