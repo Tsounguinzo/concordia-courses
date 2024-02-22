@@ -1,0 +1,9 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/db
+
+app:
+  cors:
+    allowed-origins: "*"
+  init-db: true
