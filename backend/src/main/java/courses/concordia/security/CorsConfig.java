@@ -1,4 +1,4 @@
-package courses.concordia.security;
+/*package courses.concordia.security;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -23,4 +23,4 @@ public class CorsConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-}
+}*/
