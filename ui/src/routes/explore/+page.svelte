@@ -1,5 +1,4 @@
 <script lang="ts">
-    import {getCurrentTerms} from "$lib/utils";
     import type {Course} from "$lib/model/Course";
     import {writable} from "svelte/store";
     import {onMount} from "svelte";
@@ -56,12 +55,9 @@
     };
 
     const limit = 20;
-    const currentTerms = getCurrentTerms();
-
     let courses: Course[];
     let hasMore = true;
-    const offset = writable(limit);
-
+    let offset = limit;
     let query = '';
     const searchSelected = writable<boolean>(false);
     const selectedLevels = writable<string[]>([]);
@@ -85,7 +81,7 @@
               .then((data) => {
                   courses = [...data];
                   hasMore = true;
-                  offset.set(limit);
+                  offset = limit;
               })
               .catch(() => {
                   toast.error('Failed to fetch courses. Please try again later.');
@@ -101,19 +97,18 @@
                 toast.error('Failed to fetch courses. Please try again later.', e);
             });
         hasMore = true;
-        offset.set(limit);
+        offset = limit;
         fetchMore()
     });
 
     const fetchMore = async () => {
-        console.log("FETCH CALlllll")
-        const batch = await repo.getCourses(limit, $offset, filters);
+        const batch = await repo.getCourses(limit, offset, filters);
 
         if (!batch?.length) {
             hasMore = false;
         } else {
             courses = [...courses, ...batch];
-            offset.set($offset + limit);
+            offset = offset + limit;
         }
     };
 </script>

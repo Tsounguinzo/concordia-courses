@@ -1,6 +1,6 @@
 <script lang="ts">
     import {page} from "$app/stores";
-    import {getCurrentTerms} from "$lib/utils";
+    import {addAcademicYear, getCurrentTerms} from "$lib/utils";
     import {writable} from "svelte/store";
     import type {Review} from "$lib/model/Review";
     import type {Course} from "$lib/model/Course";
@@ -15,7 +15,7 @@
     import ReviewFilter from "$lib/components/Course/ReviewFilter.svelte";
     import SchedulesDisplay from "$lib/components/Course/Schedule/SchedulesDisplay.svelte";
     import CourseReview from "$lib/components/Course/Review/CourseReview.svelte";
-    import data from "$lib/data/reviews.json"
+    //import data from "$lib/data/reviews.json"
     import EditReviewForm from "$lib/components/Course/Review/EditReviewForm.svelte";
     import type {Interaction} from "$lib/model/Interaction";
 
@@ -354,37 +354,28 @@
         ]
     }
 */
-    const params = $page.params.id;
+    let params = $page.params.id;
 
     const user = {}; //useAuth();
     const currentTerms = getCurrentTerms();
 
     let firstFetch = true;
     const addReviewOpen = writable(false);
-    //const allReviews = writable<Review[] | undefined>([]);
-    const allReviews = writable<Review[]>([]);
-    //const course = writable<Course | null | undefined>(undefined);
-    const course = writable<Course | null>(null);
+    const allReviews = writable<Review[] | undefined>(undefined);
+    const course = writable<Course | null | undefined>(undefined);
     const editReviewOpen = writable(false);
     const showAllReviews = writable(false);
-    const showingReviews = writable<Review[] | undefined>(undefined);
-    const selectedInstructor = writable<string>('');
+    const showingReviews = writable<Review[]>([]);
     const userInteractions = writable<Interaction[] | undefined>([]);
+
+    const selectedInstructor = writable<string>('');
     const likesUpdate = writable<number>(0);
 
-    onMount(() => {
+    $: if(params) {
         firstFetch = true;
         showAllReviews.set(false);
-        showingReviews.set(data);
-        allReviews.set(data);
-        userInteractions.set([{
-            kind: 'like',
-            courseId: 'WRIT434',
-            userId: "9ca37101-4003-4898-94d6-d2c941167bc8",
-            referrer: "me",
-        }])
-        toast.info("loading complete")
-    });
+        refetch()
+    }
 
       const refetch = () => {
           const id = params?.replace('-', '').toUpperCase();
@@ -405,7 +396,7 @@
 
                   if (user && id) {
                       const courseInteractionsPayload =
-                          await repo.getUserInteractionsForCourse(id, user.id);
+                          await repo.getUserInteractionsForCourse(id, user?.id);
 
                       userInteractions.set(courseInteractionsPayload.interactions);
                   }
@@ -421,22 +412,20 @@
           inner();
       };
 
-      $: if (params) refetch()
-
-      /* if ($course === null) {
-           throw Error()
+     /* if ($course === null) {
+           goto()
        } */
 
-    if ($course?.terms.some((term) => !currentTerms.includes(term))) {
+    if ($course?.terms.some((term) => !currentTerms.includes(addAcademicYear(term)))) {
         course.set({
             ...$course,
-            terms: $course.terms.filter((term) => currentTerms.includes(term)),
+            terms: $course.terms.filter((term) => currentTerms.includes(addAcademicYear(term))),
         });
     }
 
 
-    $: userReview = $showingReviews?.find((r) => r.userId === "9ca37101-4003-4898-94d6-d2c941167bc8");
-    $: canReview = Boolean(user && !$allReviews?.find((r) => r.userId === "9ca37101-4003-4898-94d6-d2c941167bc8"));
+    $: userReview = $showingReviews?.find((r) => r.userId === user?.id);
+    $: canReview = Boolean(user && !$allReviews?.find((r) => r.userId === user?.id));
 
     const handleSubmit = (successMessage: string) => {
         return (res: Response) => {
@@ -464,10 +453,29 @@
 
         handleSubmit('Review deleted successfully.')(res);
 
-        // localStorage.removeItem($course?._id);
+        localStorage.removeItem($course?._id);
     };
 
-    $: console.log("Review open in page", $editReviewOpen)
+    const updateLikes = (review: Review) => {
+        return (likes: number) => {
+            if ($allReviews) {
+                const updated = $allReviews.slice();
+                const r = updated.find(
+                    (r) => r.courseId == review.courseId && r.userId == review.userId
+                );
+
+                if (r === undefined) {
+                    toast.error("Can't update likes for review that doesn't exist.");
+                    return;
+                }
+
+                r.likes = likes;
+                allReviews.set(updated);
+            }
+        };
+    };
+
+    //likesUpdate={updateLikes(userReview)}
 </script>
 
 
@@ -490,7 +498,7 @@
                     <CourseReviewPrompt openAddReview={addReviewOpen}/>
                 {/if}
                 <div class='py-2'/>
-                {#if $allReviews?.length > 0}
+                {#if $allReviews && $allReviews?.length > 0}
                     <div class='mb-2'>
                         <ReviewFilter {allReviews} {showAllReviews} course={$course} {selectedInstructor}/>
                     </div>
@@ -500,7 +508,7 @@
                 <div class='w-full shadow-sm'>
                     {#if userReview}
                         <CourseReview
-                                canModify={Boolean(user && userReview.userId === "9ca37101-4003-4898-94d6-d2c941167bc8")}
+                                canModify={Boolean(user && userReview.userId === user?.id)}
                                 handleDelete={() => handleDelete(userReview)}
                                 editReview={editReviewOpen}
                                 review={userReview}
@@ -510,10 +518,10 @@
                     {/if}
                     {#if $showingReviews}
                         {#each $showingReviews
-                            .filter((review) => (user ? review.userId !== "9ca37101-4003-4898-94d6-d2c941167bc8" : true))
+                            .filter((review) => (user ? review.userId !== user?.id : true))
                             .slice(0, $showAllReviews ? $showingReviews.length : 8) as review, i (i)}
                             <CourseReview
-                                    canModify={Boolean(user && review.userId === "9ca37101-4003-4898-94d6-d2c941167bc8")}
+                                    canModify={Boolean(user && review.userId === user?.id)}
                                     handleDelete={() => handleDelete(review)}
                                     editReview={editReviewOpen}
                                     review={review}
@@ -530,7 +538,7 @@
                                 class='h-full w-full border border-dashed border-neutral-400 py-2 dark:border-neutral-500'
                                 on:click={() => showAllReviews.set(true)}
                         >
-                            Show all {$showingReviews.length} reviews
+                            Show all {$showingReviews.length} review(s)
                         </button>
                     </div>
                 {/if}
@@ -595,7 +603,7 @@
                                     class='h-full w-full border border-dashed border-neutral-400 py-2 dark:border-neutral-500'
                                     on:click={() => showAllReviews.set(true)}
                             >
-                                Show all {$showingReviews.length} reviews
+                                Show all {$showingReviews.length} review(s)
                             </button>
                         </div>
                     {/if}
