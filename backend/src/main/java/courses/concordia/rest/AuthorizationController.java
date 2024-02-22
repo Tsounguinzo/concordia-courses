@@ -3,24 +3,28 @@ package courses.concordia.rest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
+import java.util.Map;
+
+
+@RestController
+@RequestMapping("/auth")
 public class AuthorizationController {
 
-    @GetMapping("/auth/user")
-    public String checkAuthorization(@AuthenticationPrincipal OAuth2User principal) {
-        if(principal != null){
-            return "user is authorized";
-        } else {
-            return "user is not authorized";
-        }
+    @GetMapping("/authorized")
+    public Map<String, Object> authorize(@AuthenticationPrincipal OAuth2User principal) {
+        return Collections.singletonMap("name", principal.getAttribute("name"));
     }
 
-    @GetMapping("/auth/login")
-    public String login(){
-        return "redirecting to Microsoft";
+    @GetMapping("/login")
+    public String Login() {
+        return "???";
     }
 
-    @GetMapping("/auth/logout")
+    @GetMapping("/logout")
     public String logout(){
         return "successfully logout";
     }
