@@ -28,7 +28,7 @@ public class CourseController {
         }
     }
 
-    @GetMapping("/courses/filter")
+    @PostMapping("/courses/filter")
     public List<Course> getCourses(@RequestBody CourseFilter filters, @RequestParam int limit, @RequestParam int offset) {
         return courseService.getCourses(limit, offset, filters);
     }

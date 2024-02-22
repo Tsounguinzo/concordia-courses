@@ -15,9 +15,11 @@ public class SecurityConfiguration{
         http
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         .requestMatchers( "/api/courses", "/api/courses/**").permitAll()
+                        .requestMatchers( HttpMethod.POST,"/api/courses/filter").permitAll()
                         .requestMatchers("/","auth/login").permitAll()
                         .anyRequest().authenticated()
                 )
+                //.csrf().disable() //for testing
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .logoutSuccessUrl("/").permitAll()
