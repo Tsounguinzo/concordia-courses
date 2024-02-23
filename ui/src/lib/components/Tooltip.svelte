@@ -9,8 +9,6 @@
     export let className: string = '';
 
     export let show: Writable<boolean> = writable(false);
-
-    $:console.log($show)
 </script>
 
 <span class='relative'>

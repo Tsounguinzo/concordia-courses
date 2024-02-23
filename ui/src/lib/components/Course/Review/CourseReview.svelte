@@ -20,16 +20,17 @@
     export let interactions: Interaction[];
     export let likesUpdate: Writable<number>;
     export let review: Review;
-    export let includeTaughtBy: boolean = false;
+    export let includeTaughtBy: boolean = true;
     export let className: string = '';
 
     const readMore = writable(false);
     const promptLogin = writable(false);
 
-    const date = new Date(parseInt(review.timestamp.$date.$numberLong, 10));
+    const date = review.timestamp;
 
     const shortDate = format(date, 'P'),
         longDate = format(date, 'EEEE, MMMM d, yyyy');
+    const show = writable(false);
 </script>
 
 <div class={twMerge(
@@ -41,8 +42,10 @@
         <div class='flex w-full'>
             <div class='relative flex w-full flex-col'>
                 <div class='flex w-full'>
-                    <Tooltip text={longDate}>
-                        <p class='cursor-default py-2 text-xs font-medium text-gray-700 dark:text-gray-300'>
+                    <Tooltip {show} text={longDate}>
+                        <p class='cursor-default py-2 text-xs font-medium text-gray-700 dark:text-gray-300'
+                           on:mouseenter={() => show.set(true)}
+                           on:mouseleave={() => show.set(false)}>
                             {shortDate}
                         </p>
                     </Tooltip>
@@ -85,17 +88,13 @@
         <p class='mb-2 mt-auto flex-1 text-sm italic leading-4 text-gray-700 dark:text-gray-200'>
             {#if includeTaughtBy}
                 Taught by{' '}
-                {#each review.instructors as instructor, i}
-                    {@const separator = (i === review.instructors.length - 2) ? ' and ' : ', ' }
-                    <span class='font-medium transition hover:text-red-600'>
-                        {instructor}
+                    <span class='font-medium'>
+                        {review.instructor}
                     </span>
-                    {separator}
-                {/each}
             {:else }
                 Written for{' '}
                 <a href={`/course/${courseIdToUrlParam(review.courseId)}`}
-                   class='font-medium transition hover:text-red-600'>
+                   class='font-medium transition hover:text-blue-600'>
                     {review.courseId}
                 </a>
             {/if}

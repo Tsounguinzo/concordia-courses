@@ -16,55 +16,54 @@
     export let values: ReviewFormInitialValues;
     export let resetForm: () => void;
 
-    const instructorNames = Array.from(
-        new Set(course.instructors.map((instructor) => instructor.name))
-    );
-
-    instructorNames.push('Other');
     type ReviewFormInitialValues = {
         content: string;
-        instructors: string[];
+        instructor: string;
         rating: number;
         difficulty: number;
     };
-    const instructors = writable(values.instructors);
+    const instructor = writable(values.instructor);
     const rating = writable(values.rating);
     const difficulty = writable(values.difficulty);
 </script>
 <div class='flex flex-col'>
-    <FieldLabel For='instructors'>Instructor(s) Name</FieldLabel>
+    <FieldLabel For='instructors'>Instructor Name</FieldLabel>
     <!--MultiSelect
             className='mt-2'
             options={instructorNames}
             values={instructors}
     /-->
     <Field
-            on:input={(e) => props.values.instructors = e.target.value}
+            on:input={(e) => props.values.instructor = e.target.value}
             on:change={props.handleChange}
             on:blur={props.handleBlur}
-            value={props.values.instructors}
-            id='instructors'
-            name='instructors'
+            value={props.values.instructor}
+            id='instructor'
+            name='instructor'
             placeholder='Who was your prof...'
-            class='resize-none rounded-md border bg-gray-50 p-3 outline-none dark:border-neutral-600 dark:bg-neutral-700 dark:text-gray-200 dark:caret-white'
+            class='capitalize resize-none rounded-md border bg-gray-50 p-3 outline-none dark:border-neutral-600 dark:bg-neutral-700 dark:text-gray-200 dark:caret-white'
     />
-    <FieldError name='instructors'/>
+    <FieldError name='instructor'/>
 </div>
 <div class='flex gap-x-10'>
     <div class='flex flex-col gap-y-1'>
         <FieldLabel For='rating'>Rating</FieldLabel>
         <IconRatingInput
+                on:change={props.handleChange}
+                on:blur={props.handleBlur}
+                bind:value={props.values.rating}
                 name='rating'
                 icon='user'
-                fieldValue={rating}
         />
     </div>
     <div class='flex flex-col gap-y-0.5'>
         <FieldLabel For='difficulty'>Difficulty</FieldLabel>
         <IconRatingInput
+                on:change={props.handleChange}
+                on:blur={props.handleBlur}
+                bind:value={props.values.difficulty}
                 name='difficulty'
                 icon='flame'
-                fieldValue={difficulty}
         />
     </div>
 </div>
@@ -92,10 +91,7 @@
         >
             Discard
         </button>
-        <button
-                type='submit'
-                class='ml-auto w-fit rounded-md bg-red-600 px-4 py-2 font-medium text-white transition duration-300 hover:bg-red-800'
-        >
+        <button type='submit' class='ml-auto w-fit rounded-md bg-red-600 px-4 py-2 font-medium text-white transition duration-300 hover:bg-red-800'>
             Submit
         </button>
     </div>

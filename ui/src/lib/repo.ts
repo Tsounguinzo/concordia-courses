@@ -83,14 +83,14 @@ export const repo = {
   async addSubscription(courseId: string): Promise<Response> {
     return client.post('/subscriptions', {
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ course_id: courseId }),
+      body: JSON.stringify({ courseId: courseId }),
     });
   },
 
   async removeSubscription(courseId: string): Promise<Response> {
     return client.delete('/subscriptions', {
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ course_id: courseId }),
+      body: JSON.stringify({ courseId: courseId }),
     });
   },
 
@@ -102,7 +102,8 @@ export const repo = {
     return client.post(`/reviews`, {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        course_id: courseId,
+        courseId: courseId,
+        timestamp: new Date(),
         ...values,
       }),
     });
@@ -112,7 +113,8 @@ export const repo = {
     return client.put(`/reviews`, {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        course_id: courseId,
+        courseId: courseId,
+        timestamp: new Date(),
         ...values,
       }),
     });
@@ -121,7 +123,7 @@ export const repo = {
   async deleteReview(courseId: string): Promise<Response> {
     return client.delete('/reviews', {
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ course_id: courseId }),
+      body: JSON.stringify({ courseId: courseId }),
     });
   },
 
@@ -156,7 +158,7 @@ export const repo = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         kind,
-        course_id: courseId,
+        courseId: courseId,
         user_id: userId,
         referrer,
       }),
@@ -171,7 +173,7 @@ export const repo = {
     return client.delete('/interactions', {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        course_id: courseId,
+        courseId: courseId,
         user_id: userId,
         referrer,
       }),
@@ -190,7 +192,7 @@ export const repo = {
     return client.put('/notifications', {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        course_id: courseId,
+        courseId: courseId,
         creator_id: creatorId,
         seen: seen,
       }),
@@ -200,7 +202,7 @@ export const repo = {
   async deleteNotification(courseId: string): Promise<Response> {
     return client.delete('/notifications', {
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ course_id: courseId }),
+      body: JSON.stringify({ courseId: courseId }),
     });
   },
 

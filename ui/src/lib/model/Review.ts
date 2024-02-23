@@ -1,16 +1,10 @@
-type Timestamp = {
-  $date: {
-    $numberLong: string;
-  };
-};
-
 export type Review = {
   content: string;
   courseId: string;
-  instructors: string[];
+  instructor: string;
   rating: number; // 0-5
   difficulty: number; // 0-5
-  timestamp: Timestamp;
+  timestamp: Date;
   userId: string;
   likes: number;
 };

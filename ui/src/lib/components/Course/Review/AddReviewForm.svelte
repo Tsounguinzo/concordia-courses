@@ -16,7 +16,7 @@
 
     let initialValues = {
         content: '',
-        instructors: [],
+        instructor: '',
         rating: 0,
         difficulty: 0,
     };
@@ -32,7 +32,7 @@
 
     function reset() {
         initialValues.content = '';
-        initialValues.instructors = [];
+        initialValues.instructor = '';
         initialValues.rating = 0;
         initialValues.difficulty = 0;
     }
@@ -71,7 +71,7 @@
                             </h3>
                             <Sveltik
                                     initialValues={initialValues}
-                                    on:submit={async (values, actions) => {
+                                    onSubmit={async (values, actions) => {
                                     const res = await repo.addReview(course._id, values);
                                     actions.setSubmitting(false);
                                     open.set(false)

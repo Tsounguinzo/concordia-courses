@@ -32,12 +32,7 @@
         allReviews.set(
             $allReviews
                 .filter(
-                    (review: Review) =>
-                        $selectedInstructor === '' ||
-                        review.instructors
-                            .map((ins) => ins.toLowerCase())
-                            .includes($selectedInstructor.toLowerCase())
-                )
+                    (review: Review) => $selectedInstructor === '' || review.instructor === $selectedInstructor.toLowerCase())
                 .sort((a: Review, b: Review) => {
                     switch ($sortBy) {
                         case 'Most Recent':

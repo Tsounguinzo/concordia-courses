@@ -8,10 +8,9 @@
     import type {Course} from "$lib/model/Course";
     import {Form, Sveltik} from "sveltik/src";
     import {repo} from "$lib/repo";
-    import {Toaster, toast} from "svelte-sonner";
+    import {toast} from "svelte-sonner";
     import * as Yup from "yup";
     import type {Writable} from "svelte/store";
-    import {XSquare} from "lucide-svelte";
 
     export let course: Course;
     export let review: Review;
@@ -20,7 +19,7 @@
 
     let initialValues = {
         content: review.content,
-        instructors: review.instructors,
+        instructor: review.instructor,
         rating: review.rating,
         difficulty: review.difficulty,
     };
@@ -49,7 +48,7 @@
 
     function reset() {
         initialValues.content = '';
-        initialValues.instructors = [];
+        initialValues.instructor = '';
         initialValues.rating = 0;
         initialValues.difficulty = 0;
     };
@@ -90,7 +89,7 @@
 
                             <Sveltik
                                     initialValues={initialValues}
-                                    on:submit={async (values, actions) => {
+                                    onSubmit={async (values, actions) => {
                                         const res = await repo.updateReview(course._id, values);
                                         actions.setSubmitting(false);
                                         open.set(false);
