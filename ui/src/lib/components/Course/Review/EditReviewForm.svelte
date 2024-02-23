@@ -25,7 +25,6 @@
         difficulty: review.difficulty,
     };
 
-    $: console.log("Review open in edit", $open)
     const handleClose = () => {
         open.set(false)
        toast.success('Review draft saved.');
@@ -48,15 +47,19 @@
 
     let setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => {};
 
-    let reset: () => {};
+    function reset() {
+        initialValues.content = '';
+        initialValues.instructors = [];
+        initialValues.rating = 0;
+        initialValues.difficulty = 0;
+    };
 
     const dialog = createDialog({label: 'Edit'})
 </script>
 
-<Toaster closeButton/>
 
 {#if $open}
-    <Transition appear show={$open}>
+    <Transition appear show={$open} unmount={true}>
         <div class={twMerge('relative z-50', $darkModeOn ? 'dark' : '')}>
             <Transition
                     enter='ease-out duration-200'
@@ -66,7 +69,7 @@
                     leaveFrom='opacity-100'
                     leaveTo='opacity-0'
             >
-                <div class='fixed inset-0 bg-black/25'/>
+                <button class='fixed inset-0 bg-black/25 cursor-default' on:click={handleClose}/>
             </Transition>
 
             <div class='fixed inset-y-0 left-0 w-screen overflow-y-auto'>
@@ -79,11 +82,8 @@
                             leaveFrom='opacity-100 scale-100'
                             leaveTo='opacity-0 scale-95'
                     >
-                        <div class='relative w-[448px] overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all dark:bg-neutral-800'
+                        <div class='w-full overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all dark:bg-neutral-800'
                              use:dialog.modal>
-                            <button class="text-gray-900 absolute top-5 right-5 cursor-pointer dark:text-gray-200 " on:click={handleClose}>
-                                <XSquare/>
-                            </button>
                             <h3 class='mb-4 text-lg font-medium leading-6 text-gray-900 dark:text-gray-200'>
                                 {`Editing review of ${course.subject} ${course.catalog} - ${course.title}`}
                             </h3>
@@ -91,14 +91,16 @@
                             <Sveltik
                                     initialValues={initialValues}
                                     on:submit={async (values, actions) => {
-                    const res = await repo.updateReview(course._id, values);
-                    actions.setSubmitting(false);
-                    open.set(false);
-                    handleSubmit(res);
-                  }}
+                                        const res = await repo.updateReview(course._id, values);
+                                        actions.setSubmitting(false);
+                                        open.set(false);
+                                        handleSubmit(res);
+                                    }}
+                                    let:props
                             >
                                 <Form>
                                     <ReviewForm
+                                            {props}
                                             course={course}
                                             values={initialValues}
                                             setFieldValue={setFieldValue}

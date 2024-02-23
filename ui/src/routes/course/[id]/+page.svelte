@@ -18,6 +18,7 @@
     //import data from "$lib/data/reviews.json"
     import EditReviewForm from "$lib/components/Course/Review/EditReviewForm.svelte";
     import type {Interaction} from "$lib/model/Interaction";
+    import AddReviewForm from "$lib/components/Course/Review/AddReviewForm.svelte";
 
 /*
     const test = {
@@ -610,12 +611,11 @@
                 </div>
             </div>
         </div>
-        <!--AddReviewForm
-                course={course}
+        <AddReviewForm
+                course={$course}
                 open={addReviewOpen}
-                onClose={() => addReviewOpen.set(false)}
                 handleSubmit={handleSubmit('Review added successfully.')}
-        /-->
+        />
         {#if userReview}
             <EditReviewForm
                     course={$course}

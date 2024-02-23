@@ -1,12 +1,12 @@
 <script lang="ts">
     import type {Course} from "$lib/model/Course";
-    import MultiSelect from "$lib/components/Explore/MultiSelect.svelte";
     import {Field} from "sveltik/src";
     import FieldLabel from "$lib/components/Course/Review/FieldLabel.svelte";
     import FieldError from "$lib/components/Course/Review/FieldError.svelte";
     import IconRatingInput from "$lib/components/Course/Review/IconRatingInput.svelte";
     import {writable} from "svelte/store";
 
+    export let props;
     export let course: Course;
     export let setFieldValue: (
         field: string,
@@ -31,20 +31,30 @@
     const rating = writable(values.rating);
     const difficulty = writable(values.difficulty);
 </script>
-
-<FieldLabel For='instructors'>Instructor(s)</FieldLabel>
-<MultiSelect
-        className='mt-2'
-        options={instructorNames}
-        values={instructors}
-/>
-<FieldError name='instructors'/>
+<div class='flex flex-col'>
+    <FieldLabel For='instructors'>Instructor(s) Name</FieldLabel>
+    <!--MultiSelect
+            className='mt-2'
+            options={instructorNames}
+            values={instructors}
+    /-->
+    <Field
+            on:input={(e) => props.values.instructors = e.target.value}
+            on:change={props.handleChange}
+            on:blur={props.handleBlur}
+            value={props.values.instructors}
+            id='instructors'
+            name='instructors'
+            placeholder='Who was your prof...'
+            class='resize-none rounded-md border bg-gray-50 p-3 outline-none dark:border-neutral-600 dark:bg-neutral-700 dark:text-gray-200 dark:caret-white'
+    />
+    <FieldError name='instructors'/>
+</div>
 <div class='flex gap-x-10'>
     <div class='flex flex-col gap-y-1'>
         <FieldLabel For='rating'>Rating</FieldLabel>
         <IconRatingInput
                 name='rating'
-                rating={values.rating}
                 icon='user'
                 fieldValue={rating}
         />
@@ -53,7 +63,6 @@
         <FieldLabel For='difficulty'>Difficulty</FieldLabel>
         <IconRatingInput
                 name='difficulty'
-                rating={values.difficulty}
                 icon='flame'
                 fieldValue={difficulty}
         />
@@ -65,8 +74,12 @@
 <div class='flex flex-col'>
     <FieldLabel For='content'>Content</FieldLabel>
     <Field
-            component='textarea'
-            rows='8'
+            on:input={(e) => props.values.content = e.target.value}
+            on:change={props.handleChange}
+            on:blur={props.handleBlur}
+            value={props.values.content}
+            as='textarea'
+            rows="8"
             id='content'
             name='content'
             placeholder='Write your thoughts on this course...'
@@ -74,7 +87,7 @@
     />
     <FieldError name='content'/>
     <div class='mt-8 flex justify-end space-x-4'>
-        <button on:click={() => resetForm()}
+        <button on:click|preventDefault={resetForm}
                 class='w-fit cursor-pointer rounded-md bg-gray-100 px-4 py-2 font-medium text-gray-700 duration-200 hover:bg-gray-200 dark:bg-neutral-700 dark:text-gray-200 dark:hover:bg-neutral-600'
         >
             Discard

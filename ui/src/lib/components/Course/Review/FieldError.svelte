@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {ErrorMessage} from "sveltik";
+    import {ErrorMessage} from "sveltik/src";
     export let name: string;
 </script>
 
