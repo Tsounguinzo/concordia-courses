@@ -5,14 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e28b6dde-6667-4870-b6d3-c8597a932e3a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/courses/concordia/ConcordiaCoursesApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/courses/concordia/ConcordiaCoursesApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/courses/concordia/rest/AuthorizationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/courses/concordia/rest/AuthorizationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/courses/concordia/rest/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/courses/concordia/security/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/rest/AuthorizationController.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/courses/concordia/rest/AuthorizationController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/rest/SecurityConfig.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +18,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -45,7 +41,8 @@
     "last_opened_file_path": "/Users/zhengxuanzhao/IdeaProjects/concordia-courses",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0"
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices"
   }
 }]]></component>
   <component name="RunManager">
