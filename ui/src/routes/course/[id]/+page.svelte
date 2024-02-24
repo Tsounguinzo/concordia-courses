@@ -236,7 +236,7 @@
                     <div class='w-full shadow-sm'>
                         {#if userReview}
                             <CourseReview
-                                    canModify={Boolean(user && userReview.userId === "9ca37101-4003-4898-94d6-d2c941167bc8")}
+                                    canModify={Boolean(user && userReview.userId === user?.id)}
                                     handleDelete={() => handleDelete(userReview)}
                                     editReview={editReviewOpen}
                                     review={userReview}
@@ -252,7 +252,7 @@
                                 )
                                 .slice(0, $showAllReviews ? $showingReviews.length : 8) as review, i (i)}
                                 <CourseReview
-                                        canModify={Boolean(user && review.userId === "9ca37101-4003-4898-94d6-d2c941167bc8")}
+                                        canModify={Boolean(user && review.userId === user?.id)}
                                         handleDelete={() => handleDelete(review)}
                                         editReview={editReviewOpen}
                                         review={review}

@@ -115,25 +115,23 @@
 </script>
 
 <div class='mb-0.5 flex items-center'>
-    <div class='flex h-8 w-8 items-center justify-center rounded-md text-gray-700 focus:outline-none dark:text-white'>
+    <button on:click={handleLike} class='flex h-8 w-8 items-center justify-center rounded-md text-gray-700 focus:outline-none dark:text-white'>
         <ThumbsUp
-                on:click={handleLike}
                 class={twMerge(
               'h-4 w-4 cursor-pointer stroke-gray-500',
               $kind === 'like' ? 'stroke-blue-600' : ''
             )}
         />
-    </div>
+    </button>
     <span class='text-sm font-bold text-gray-700 dark:text-white'>
           {likes}
     </span>
-    <div class='flex h-8 w-8 items-center justify-center rounded-md text-gray-700 focus:outline-none dark:text-white'>
+    <button on:click={handleDislike} class='flex h-8 w-8 items-center justify-center rounded-md text-gray-700 focus:outline-none dark:text-white'>
         <ThumbsDown
-                on:click={handleDislike}
                 class={twMerge(
               'h-4 w-4 cursor-pointer stroke-gray-500',
               $kind === 'dislike' ? 'stroke-blue-600' : ''
             )}
         />
-    </div>
+    </button>
 </div>

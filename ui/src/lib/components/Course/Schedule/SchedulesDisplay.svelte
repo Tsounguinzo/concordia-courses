@@ -3,7 +3,7 @@
     import type {Course} from "$lib/model/Course";
     import ScheduleRow from "$lib/components/Course/Schedule/ScheduleRow.svelte";
     import {ArrowDown} from "lucide-svelte";
-    import {sortTerms} from "$lib/utils";
+    import {addAcademicYear, sortTerms} from "$lib/utils";
     import _ from "lodash";
     import {writable} from "svelte/store";
     import type {Writable} from "svelte/store";
@@ -49,7 +49,7 @@
                     showAll.set(false);
                 }}
                 >
-                    {term}
+                    {addAcademicYear(term)}
                 </button>
             {/each}
         </div>

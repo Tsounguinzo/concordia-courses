@@ -79,6 +79,7 @@ public class SeedRunner {
                                     blockDetails.getLocationCode(),
                                     blockDetails.getRoomCode(),
                                     blockDetails.getSection(),
+                                    blockDetails.getBuildingCode(),
                                     blockDetails.getInstructionModeCode(),
                                     blockDetails.getInstructionModeDescription(),
                                     blockDetails.getModays(),
