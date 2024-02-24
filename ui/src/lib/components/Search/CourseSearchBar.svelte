@@ -58,7 +58,7 @@
           $searchSelected ? 'border-b-1' : ''
         )}
             on:keydown={handleKeyDown}
-            placeholder='Search for courses, subjects or professors'
+            placeholder='Search for courses or subjects'
             searchSelected={searchSelected}
     />
     {#if $searchSelected}

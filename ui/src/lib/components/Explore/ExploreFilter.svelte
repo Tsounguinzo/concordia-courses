@@ -17,6 +17,19 @@
     export let variant: 'mobile' | 'desktop';
 
 
+    let rotate = false;
+
+    function resetFilters() {
+        selectedSubjects.set([]);
+        selectedLevels.set([]);
+        selectedTerms.set([]);
+        sortBy.set('')
+        rotate = true;
+
+        setTimeout(() => {
+            rotate = false;
+        }, 500);
+    }
 </script>
 
 <div class={twMerge(
@@ -24,11 +37,7 @@
         'relative flex h-fit flex-col flex-wrap rounded-lg bg-slate-50 px-8 py-6 dark:bg-neutral-800 dark:text-gray-200'
       )}>
     <ResetButton className='absolute right-4 top-4'>
-        <button on:click={() => {
-          selectedSubjects.set([]);
-          selectedLevels.set([]);
-          selectedTerms.set([]);
-        }}>
+        <button on:click={resetFilters} class:rotate-once={rotate}>
             <RefreshCw class={'h-5 w-5 text-gray-500 dark:text-neutral-400'}/>
         </button>
     </ResetButton>
@@ -68,3 +77,18 @@
         {/each}
     </div>
 </div>
+
+<style>
+    @keyframes rotate {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .rotate-once {
+        animation: rotate 0.5s ease-in-out;
+    }
+</style>
