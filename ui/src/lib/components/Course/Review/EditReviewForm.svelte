@@ -62,7 +62,7 @@
                 <button class='fixed inset-0 bg-black/25 cursor-default' on:click={handleClose}/>
             </Transition>
 
-            <div class='fixed inset-y-0 left-0 w-screen overflow-y-auto'>
+            <div class='fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 overflow-y-auto'>
                 <div class='flex min-h-full items-center justify-center p-4 text-center'>
                     <Transition
                             enter='ease-out duration-200'
