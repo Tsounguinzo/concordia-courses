@@ -61,7 +61,7 @@ public class DatabaseInitializer {
         Path seedDir = Paths.get(seedDirPath);
         try (var files = Files.walk(seedDir)) {
             files.filter(Files::isRegularFile)
-                    .filter(path -> path.toString().endsWith("courses.json"))
+                    .filter(path -> path.toString().endsWith("courses-v2.json"))
                     .forEach(this::processSeedFile);
         } catch (IOException e) {
             log.error("Failed to access or process seed directory: {}", seedDirPath, e);

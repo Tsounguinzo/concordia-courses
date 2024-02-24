@@ -36,7 +36,6 @@ public class Course {
         private String locationCode;
         private String roomCode;
         private String section;
-        private String classAssociation;
         private String instructionModeCode;
         private String instructionModeDescription;
         private String mondays;

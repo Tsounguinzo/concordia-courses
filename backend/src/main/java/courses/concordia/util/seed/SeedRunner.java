@@ -1,19 +1,22 @@
 package courses.concordia.util.seed;
 
+import com.google.gson.reflect.TypeToken;
 import courses.concordia.util.JsonUtil;
 import courses.concordia.util.seed.model.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.nio.file.Paths;
+import java.util.*;
+
+import static courses.concordia.util.seed.APICallUtil.*;
 
 @Slf4j
 public class SeedRunner {
 
     private static final Map<String, String> TERM_CODE_MAPPING = new HashMap<>();
     private static final Map<String, String> CODE_TERM_MAPPING = new HashMap<>();
+    private static final String SEED_FILENAME = "2023-2024-courses-v2.json";
 
     static {
         TERM_CODE_MAPPING.put("2231", "Summer");
@@ -31,17 +34,21 @@ public class SeedRunner {
     }
 
     public static void main(String[] args) {
-        
+        log.info("Starting the seed runner process...");
+
         List<CourseCatalogue> courseCatalogues = getCourseCatalogues();
-        List<CourseWithDetails> courseWithDetails = getCourseWithDetails();
-        List<CourseWithTermsAndInstructors> courseWithTermsAndInstructors = getCourseWithTermsAndInstructors();
         List<CourseWithDescription> courseWithDescriptions = getCourseWithDescriptions();
-        
+        List<CourseWithDetails> courseWithDetails = getCourseWithDetails();
+        List<CourseWithTermsAndInstructors> courseWithTermsAndInstructors = getCourseWithTermsAndInstructors(courseWithDetails);
+        int coursesNotOffered = 0;
+
         List<Course> newCourses = new ArrayList<>();
 
         if (courseCatalogues == null || courseCatalogues.isEmpty()) {
-            log.error("Course catalogues list is null or empty.");
+            log.error("Course catalogues list is null or empty. Terminating process.");
             return;
+        } else {
+            log.info("Found {} course catalogues.", courseCatalogues.size());
         }
 
         for (CourseCatalogue course : courseCatalogues) {
@@ -51,7 +58,8 @@ public class SeedRunner {
 
             List<String> terms;
             if (Terms == null) {
-                System.out.println("terms was null for " + course.getSubject() + " " + course.getCatalog() + " using empty list");
+                log.warn("Terms were null for {} {}. Using empty list.", course.getSubject(), course.getCatalog());
+                coursesNotOffered++;
                 terms = new ArrayList<>();
             } else {
                 terms = Terms.getTerms();
@@ -63,7 +71,7 @@ public class SeedRunner {
 
             if (terms != null) {
                 for (String term : terms) {
-                    var blocks = new ArrayList<Course.Block>();
+                    var blocks = new LinkedHashSet<Course.Block>();
                     for (CourseWithDetails blockDetails : coursesBlock) {
                         if (blockDetails.getTermCode().equals(CODE_TERM_MAPPING.get(term)) || (term.equals("Summer") && blockDetails.getTermCode().equals("2236"))) {
                             blocks.add(new Course.Block(
@@ -71,7 +79,6 @@ public class SeedRunner {
                                     blockDetails.getLocationCode(),
                                     blockDetails.getRoomCode(),
                                     blockDetails.getSection(),
-                                    blockDetails.getClassAssociation(),
                                     blockDetails.getInstructionModeCode(),
                                     blockDetails.getInstructionModeDescription(),
                                     blockDetails.getModays(),
@@ -92,7 +99,7 @@ public class SeedRunner {
             }
             String description;
             if (Description == null) {
-                System.out.println("description was null for " + course.getID());
+                log.warn("Description was null for course ID {}. Using empty description.", course.getID());
                 description = "";
             } else {
                 description = Description.getDescription();
@@ -113,22 +120,88 @@ public class SeedRunner {
 
         }
 
-        JsonUtil.toJson(newCourses, "2023-2024-courses.json");
+        log.info("Finished processing {} courses with {} not beign offered. Saving to JSON.", newCourses.size(), coursesNotOffered);
+        JsonUtil.toJson(newCourses, Paths.get("backend","src","main","resources","seeds", SEED_FILENAME).toString());
     }
 
     private static List<CourseWithDescription> getCourseWithDescriptions() {
-        return APICallUtil.fetchCourseDescription();
+        String urlStr = BASE_URL + COURSE_DESCRIPTION_ENDPOINT + "*";
+        try {
+            log.info("Fetching course descriptions from URL: {}", urlStr);
+            String response = getRequest(urlStr);
+            List<CourseWithDescription> courses = JsonUtil.getData(response, new TypeToken<List<CourseWithDescription>>(){});
+            assert courses != null;
+            log.info("Successfully fetched {} course descriptions", courses.size());
+            return courses;
+        } catch (Exception e) {
+            log.error("Failed to fetch course descriptions from URL: {}, Error: {}", urlStr, e.getMessage(), e);
+        }
+        return null;
     }
 
-    private static List<CourseWithTermsAndInstructors> getCourseWithTermsAndInstructors() {
-        return null;
+    private static List<CourseWithTermsAndInstructors> getCourseWithTermsAndInstructors(List<CourseWithDetails> courseWithDetails) {
+        log.info("Composing courses with terms and instructors");
+        HashMap<String, List<String>> courseTerms = new HashMap<>();
+        for (CourseWithDetails course: courseWithDetails){
+            String key = course.getSubject() + " " + course.getCatalog();
+            String term = TERM_CODE_MAPPING.get(course.getTermCode());
+            courseTerms.computeIfAbsent(key, k -> new ArrayList<>()).add(term);
+        }
+
+        List<CourseWithTermsAndInstructors> result = new ArrayList<>();
+        for (Map.Entry<String, List<String>> entry : courseTerms.entrySet()) {
+            String key = entry.getKey();
+            List<String> terms = entry.getValue();
+
+            String[] subjectAndCatalog = key.split(" ",2);
+            String subject = subjectAndCatalog[0];
+            String catalog = subjectAndCatalog[1];
+
+            CourseWithTermsAndInstructors course = new CourseWithTermsAndInstructors();
+            course.setSubject(subject);
+            course.setCatalog(catalog);
+            course.setTerms(new ArrayList<>(new HashSet<>(terms))); // Remove duplicate terms
+            course.setInstructors(new ArrayList<>()); // Placeholder for instructors
+
+            result.add(course);
+        }
+
+        log.info("Successfully finished composing the terms of {} course", result.size());
+        return result;
     }
 
     private static List<CourseWithDetails> getCourseWithDetails() {
-        return null;
+        Set<String> termCodes = TERM_CODE_MAPPING.keySet();
+        List<CourseWithDetails> courses = new ArrayList<>();
+
+        for (String termCode : termCodes) {
+            String urlStr = BASE_URL + COURSE_SCHEDULE_TERM_ENDPOINT + "*/" + termCode;
+            try {
+                log.info("Fetching course with details for {} from URL: {}",TERM_CODE_MAPPING.get(termCode), urlStr);
+                String response = APICallUtil.getRequest(urlStr);
+                courses.addAll(Objects.requireNonNull(JsonUtil.getData(response, new TypeToken<List<CourseWithDetails>>() {})));
+            } catch (Exception e) {
+                log.error("Failed to fetch course with details from URL: {}, Error: {}", urlStr, e.getMessage(), e);
+            }
+        }
+
+        log.info("Successfully fetched {} course with details", courses.size());
+        return courses;
     }
 
     private static List<CourseCatalogue> getCourseCatalogues() {
+        String urlStr = BASE_URL + COURSE_CATALOG_ENDPOINT + "*/*/*";
+        try {
+            log.info("Fetching course catalogues from URL: {}", urlStr);
+            String response = APICallUtil.getRequest(urlStr);
+            List<CourseCatalogue> courses = JsonUtil.getData(response, new TypeToken<List<CourseCatalogue>>(){});
+            assert courses != null;
+            log.info("Successfully fetched {} course descriptions", courses.size());
+            return courses;
+        } catch (Exception e) {
+            log.error("Failed to fetch course catalogues from URL: {}, Error: {}", urlStr, e.getMessage(), e);
+        }
+
         return null;
     }
 

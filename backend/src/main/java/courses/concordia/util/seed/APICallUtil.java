@@ -16,37 +16,24 @@ import java.util.List;
 
 @Slf4j
 public class APICallUtil {
-    private static String BASE_URL = "https://opendata.concordia.ca/API/v1/";
-    private static String COURSE_CATALOG_ENDPOINT = "course/catalog/filter/";
-    private static String COURSE_DESCRIPTION_ENDPOINT = "course/description/filter/";
+    /**
+     * https://github.com/opendataConcordiaU/documentation/
+     */
+    public static final String BASE_URL = "https://opendata.concordia.ca/API/v1/";
+    /**
+     * GET course/catalog/filter/{subject}/{catalog}/{carreer}
+     */
+    public static final String COURSE_CATALOG_ENDPOINT = "course/catalog/filter/";
+    /**
+     * GET course/description/filter/{courseID}
+     */
+    public static final String COURSE_DESCRIPTION_ENDPOINT = "course/description/filter/";
+    /**
+     * GET course/scheduleTerm/filter/{subject}/{termcode}
+     */
+    public static final String COURSE_SCHEDULE_TERM_ENDPOINT = "course/scheduleTerm/filter/";
 
-    public static <T> List<T> fetchCourseByTerm(String subject, String catalogue,String term) {
-        String urlStr = BASE_URL + COURSE_CATALOG_ENDPOINT + "*/*/" + term;
-        try {
-            String response = getRequest(urlStr);
-            return JsonUtil.getData(response, new TypeToken<List<T>>(){});
-
-        } catch (Exception e) {
-            log.error("Failed to fetch data by term. URL: {}, Error: {}", urlStr, e.getMessage(), e);
-        }
-
-        return null;
-    }
-
-
-    public static List<CourseWithDescription> fetchCourseDescription() {
-        String urlStr = BASE_URL + COURSE_DESCRIPTION_ENDPOINT + "*";
-        try {
-            String response = getRequest(urlStr);
-            return JsonUtil.getData(response, new TypeToken<List<CourseWithDescription>>(){});
-
-        } catch (Exception e) {
-            log.error("Failed to fetch course descriptions. URL: {}, Error: {}", urlStr, e.getMessage(), e);
-        }
-        return null;
-    }
-
-    private static String getRequest(String requestUrl) throws MalformedURLException, IOException {
+    public static String getRequest(String requestUrl) throws MalformedURLException, IOException {
         /*String apiUser = System.getenv("CONCORDIA_API_USER");
         String apiKey = System.getenv("CONCORDIA_API_KEY");
 
