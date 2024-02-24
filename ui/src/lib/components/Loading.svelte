@@ -1,9 +1,9 @@
 <script>
-    import Spinner from "$lib/components/Spinner.svelte";
+    import Loader from "$lib/components/Loader.svelte";
 </script>
 
 <div class='flex min-h-screen items-center justify-center'>
     <div class='text-center'>
-        <Spinner/>
+        <Loader/>
     </div>
 </div>

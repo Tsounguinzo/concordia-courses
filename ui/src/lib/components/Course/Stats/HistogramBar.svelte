@@ -10,9 +10,9 @@
 </script>
 
 <Tooltip {show} text={count.toString()} offset={{ x: 4, y: -8 }}>
-    <div class='ml-0.5 rounded-t-sm bg-blue-500 transition-all duration-700 ease-in-out'
+    <p class='ml-0.5 rounded-t-sm bg-blue-500 transition-all duration-700 ease-in-out'
          style={`width: ${width}px; height: ${height}px; margin-left: ${gap / 2}px; margin-right: ${gap / 2}px;`}
          on:mouseenter={() => show.set(true)}
          on:mouseleave={() => show.set(false)}
-    />
+    ></p>
 </Tooltip>

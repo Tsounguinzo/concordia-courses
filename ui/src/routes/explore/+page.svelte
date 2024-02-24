@@ -64,6 +64,7 @@
     const selectedSubjects = writable<string[]>([]);
     const selectedTerms = writable<string[]>([]);
     const sortBy = writable<SortByType>('');
+    let isMounted = false;
 
     const nullable = (arr: string[]) => (arr.length === 0 ? null : arr);
 
@@ -75,31 +76,30 @@
         sortBy: makeSortPayload($sortBy),
     };
 
-      $: {
-          repo
-              .getCourses(limit, 0, filters)
-              .then((data) => {
-                  courses = [...data];
-                  hasMore = true;
-                  offset = limit;
-              })
-              .catch(() => {
-                  toast.error('Failed to fetch courses. Please try again later.');
-              });
-      }
-
+    const fetchCourses = async (reset = false) => {
+        try {
+            const data = await repo.getCourses(limit, reset ? 0 : offset, filters);
+            if (reset) {
+                courses = data;
+                offset = limit; // Reset offset if it's a fresh fetch
+            } else {
+                courses = [...courses, ...data];
+                offset += limit;
+            }
+            hasMore = true;
+        } catch (error) {
+            toast.error('Failed to fetch courses. Please try again later.');
+        }
+    };
 
     onMount(() => {
-        repo
-            .getCourses(limit, 0, filters)
-            .then((data) => courses = [...data])
-            .catch((e) => {
-                toast.error('Failed to fetch courses. Please try again later.', e);
-            });
-        hasMore = true;
-        offset = limit;
-        fetchMore()
+        fetchCourses(true);
+        isMounted = true;
     });
+
+    $: if (isMounted && (query !== '' || $selectedSubjects.length > 0 || $selectedLevels.length > 0 || $selectedTerms.length > 0 || $sortBy !== '')) {
+        fetchCourses(true);
+    }
 
     const fetchMore = async () => {
         const batch = await repo.getCourses(limit, offset, filters);
@@ -143,14 +143,16 @@
                     {#each courses as course}
                         <CourseCard
                                 className='my-1.5'
-                                course={course}
+                                {course}
                                 {query}
                         />
                     {/each}
-                     <InfiniteScroll hasMore={hasMore} threshold={courses?.length || 20} on:loadMore={() => fetchMore()}/>
+                    <InfiniteScroll hasMore={hasMore} threshold={courses?.length || 20}
+                                    on:loadMore={() => fetchMore()}/>
                 {:else }
                     <div class='mx-2 text-gray-50'>
-                        <Skeleton className='mb-2 rounded-lg first:mt-2' color={$darkModeOn ? 'rgb(38 38 38)' : 'rgb(226 232 240)'}/>
+                        <Skeleton className='mb-2 rounded-lg first:mt-2'
+                                  color={$darkModeOn ? 'rgb(38 38 38)' : 'rgb(226 232 240)'}/>
                     </div>
                 {/if}
 

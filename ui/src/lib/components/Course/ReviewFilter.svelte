@@ -36,15 +36,9 @@
                 .sort((a: Review, b: Review) => {
                     switch ($sortBy) {
                         case 'Most Recent':
-                            return (
-                                parseInt(b.timestamp.$date.$numberLong, 10) -
-                                parseInt(a.timestamp.$date.$numberLong, 10)
-                            );
+                            return b.timestamp - a.timestamp
                         case 'Least Recent':
-                            return (
-                                parseInt(a.timestamp.$date.$numberLong, 10) -
-                                parseInt(b.timestamp.$date.$numberLong, 10)
-                            );
+                            return a.timestamp - b.timestamp
                         case 'Highest Rating':
                             return b.rating - a.rating;
                         case 'Lowest Rating':
@@ -58,10 +52,7 @@
                         case 'Most Disliked':
                             return a.likes - b.likes;
                         default:
-                            return (
-                                parseInt(b.timestamp.$date.$numberLong, 10) -
-                                parseInt(a.timestamp.$date.$numberLong, 10)
-                            );
+                            return b.timestamp - a.timestamp
                     }
                 })
         );

@@ -19,15 +19,10 @@
     export let variant: 'large' | 'small';
     export let query: string = '';
 
-    const instructors = filterCurrentInstructors(uniqueTermInstructors(course));
-
-    const currentlyOfferedTerms = course.terms.filter((c) =>
-        getCurrentTerms().map(term => term.split(" ")[0]).includes(c));
-
     const show = writable(false);
 </script>
 
-{#if currentlyOfferedTerms.length === 0}
+{#if course.terms.length === 0}
     <div class='my-1.5 w-fit text-sm'>
         <div class='rounded-xl bg-gray-200 p-1 dark:bg-neutral-700'>
             <div class='flex items-center space-x-1'>

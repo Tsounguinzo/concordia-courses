@@ -4,27 +4,10 @@
     import FieldLabel from "$lib/components/Course/Review/FieldLabel.svelte";
     import FieldError from "$lib/components/Course/Review/FieldError.svelte";
     import IconRatingInput from "$lib/components/Course/Review/IconRatingInput.svelte";
-    import {writable} from "svelte/store";
 
     export let props;
     export let course: Course;
-    export let setFieldValue: (
-        field: string,
-        value: any,
-        shouldValidate?: boolean | undefined
-    ) => void;
-    export let values: ReviewFormInitialValues;
-    export let resetForm: () => void;
 
-    type ReviewFormInitialValues = {
-        content: string;
-        instructor: string;
-        rating: number;
-        difficulty: number;
-    };
-    const instructor = writable(values.instructor);
-    const rating = writable(values.rating);
-    const difficulty = writable(values.difficulty);
 </script>
 <div class='flex flex-col'>
     <FieldLabel For='instructors'>Instructor Name</FieldLabel>
@@ -35,7 +18,6 @@
     /-->
     <Field
             on:input={(e) => props.values.instructor = e.target.value}
-            on:change={props.handleChange}
             on:blur={props.handleBlur}
             value={props.values.instructor}
             id='instructor'
@@ -49,7 +31,6 @@
     <div class='flex flex-col gap-y-1'>
         <FieldLabel For='rating'>Rating</FieldLabel>
         <IconRatingInput
-                on:change={props.handleChange}
                 on:blur={props.handleBlur}
                 bind:value={props.values.rating}
                 name='rating'
@@ -59,7 +40,6 @@
     <div class='flex flex-col gap-y-0.5'>
         <FieldLabel For='difficulty'>Difficulty</FieldLabel>
         <IconRatingInput
-                on:change={props.handleChange}
                 on:blur={props.handleBlur}
                 bind:value={props.values.difficulty}
                 name='difficulty'
@@ -74,7 +54,6 @@
     <FieldLabel For='content'>Content</FieldLabel>
     <Field
             on:input={(e) => props.values.content = e.target.value}
-            on:change={props.handleChange}
             on:blur={props.handleBlur}
             value={props.values.content}
             as='textarea'
@@ -86,7 +65,7 @@
     />
     <FieldError name='content'/>
     <div class='mt-8 flex justify-end space-x-4'>
-        <button on:click|preventDefault={resetForm}
+        <button on:click|preventDefault={props.handleReset}
                 class='w-fit cursor-pointer rounded-md bg-gray-100 px-4 py-2 font-medium text-gray-700 duration-200 hover:bg-gray-200 dark:bg-neutral-700 dark:text-gray-200 dark:hover:bg-neutral-600'
         >
             Discard

@@ -28,16 +28,6 @@
 
     const dialog = createDialog({label: 'Add'})
 
-    let setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => {};
-
-    function reset() {
-        initialValues.content = '';
-        initialValues.instructor = '';
-        initialValues.rating = 0;
-        initialValues.difficulty = 0;
-    }
-
-    $: console.log("IN add review", $open)
 </script>
 
 {#if $open}
@@ -80,13 +70,7 @@
                                     let:props
                             >
                                 <Form>
-                                    <ReviewForm
-                                            {props}
-                                            course={course}
-                                            values={initialValues}
-                                            setFieldValue={setFieldValue}
-                                            resetForm={reset}
-                                    />
+                                    <ReviewForm {props} {course}/>
                                 </Form>
                             </Sveltik>
                         </div>

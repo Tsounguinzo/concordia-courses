@@ -44,15 +44,6 @@
             .required('Difficulty is required'),
     });
 
-    let setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => {};
-
-    function reset() {
-        initialValues.content = '';
-        initialValues.instructor = '';
-        initialValues.rating = 0;
-        initialValues.difficulty = 0;
-    };
-
     const dialog = createDialog({label: 'Edit'})
 </script>
 
@@ -98,13 +89,7 @@
                                     let:props
                             >
                                 <Form>
-                                    <ReviewForm
-                                            {props}
-                                            course={course}
-                                            values={initialValues}
-                                            setFieldValue={setFieldValue}
-                                            resetForm={reset}
-                                    />
+                                    <ReviewForm {props} {course}/>
                                 </Form>
                             </Sveltik>
                         </div>
