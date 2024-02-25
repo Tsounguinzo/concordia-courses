@@ -34,7 +34,6 @@
 		"svelte-sonner": "^0.3.17",
 		"svelte-transition": "^0.0.10",
 		"sveltik": "^0.1.16",
-		"tailwind-merge": "^2.2.1",
-		"yup": "^1.3.3"
+		"tailwind-merge": "^2.2.1"
 	}
 }

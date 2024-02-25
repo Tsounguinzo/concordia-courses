@@ -7,6 +7,7 @@
 
     export let props;
     export let course: Course;
+    export let setFieldValue: (name: string, value: any) => void;
 
 </script>
 <div class='flex flex-col'>
@@ -31,8 +32,9 @@
     <div class='flex flex-col gap-y-1'>
         <FieldLabel For='rating'>Rating</FieldLabel>
         <IconRatingInput
+                {setFieldValue}
                 on:blur={props.handleBlur}
-                bind:value={props.values.rating}
+                rating={props.values.rating}
                 name='rating'
                 icon='user'
         />
@@ -40,8 +42,9 @@
     <div class='flex flex-col gap-y-0.5'>
         <FieldLabel For='difficulty'>Difficulty</FieldLabel>
         <IconRatingInput
+                {setFieldValue}
                 on:blur={props.handleBlur}
-                bind:value={props.values.difficulty}
+                rating={props.values.difficulty}
                 name='difficulty'
                 icon='flame'
         />

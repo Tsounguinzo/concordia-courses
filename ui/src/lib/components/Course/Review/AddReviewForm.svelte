@@ -28,6 +28,26 @@
 
     const dialog = createDialog({label: 'Add'})
 
+    const validate = (values, actions) => {
+        const errors = {
+            content: '',
+            instructor: '',
+            rating: '',
+            difficulty: ''
+        };
+
+        if (values.content ==='') {
+            errors.content = 'Review content is required';
+        } else if (values.instructor == '') {
+            errors.instructor = "The instructor's name is required" ;
+        } else if (values.rating === 0) {
+            errors.rating = "Rating is required" ;
+        } else if (values.difficulty === 0) {
+            errors.difficulty = "Difficulty is required" ;
+        }
+
+        return errors;
+    };
 </script>
 
 {#if $open}
@@ -60,7 +80,8 @@
                                 {`Reviewing ${course.subject} ${course.catalog} - ${course.title}`}
                             </h3>
                             <Sveltik
-                                    initialValues={initialValues}
+                                    {validate}
+                                    {initialValues}
                                     onSubmit={async (values, actions) => {
                                     const res = await repo.addReview(course._id, values);
                                     actions.setSubmitting(false);
@@ -68,9 +89,10 @@
                                     handleSubmit(res);
                                 }}
                                     let:props
+                                    let:setFieldValue
                             >
                                 <Form>
-                                    <ReviewForm {props} {course}/>
+                                    <ReviewForm {setFieldValue} {props} {course}/>
                                 </Form>
                             </Sveltik>
                         </div>

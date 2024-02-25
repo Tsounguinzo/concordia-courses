@@ -9,7 +9,6 @@
     import {Form, Sveltik} from "sveltik/src";
     import {repo} from "$lib/repo";
     import {toast} from "svelte-sonner";
-    import * as Yup from "yup";
     import type {Writable} from "svelte/store";
 
     export let course: Course;
@@ -29,22 +28,32 @@
        toast.success('Review draft saved.');
     };
 
-    const ReviewSchema = Yup.object().shape({
-        content: Yup.string()
-            .required('Review content is required')
-            .max(3000, 'Must be less than 3000 characters'),
-        instructors: Yup.array().min(1, 'At least 1 instructor is required'),
-        rating: Yup.number()
-            .min(1, 'Rating must be between 1 and 5')
-            .max(5, 'Rating must be between 1 and 5')
-            .required('Rating is required'),
-        difficulty: Yup.number()
-            .min(1, 'Difficulty must be between 1 and 5')
-            .max(5, 'Difficulty must be between 1 and 5')
-            .required('Difficulty is required'),
-    });
-
     const dialog = createDialog({label: 'Edit'})
+
+    const validate = (values, actions) => {
+        const errors = {
+            content: '',
+            instructor: '',
+            rating: '',
+            difficulty: ''
+        };
+
+        if (values.content ==='') {
+            errors.content = 'Review content is required';
+        } else if (values.instructor == '') {
+            errors.instructor = "The instructor's name is required" ;
+        } else if (values.rating < 1) {
+            errors.rating = "Rating must be between 1 and 5" ;
+        } else if (values.rating > 5) {
+            errors.rating = "Rating must be between 1 and 5" ;
+        } else if (values.difficulty < 1) {
+            errors.difficulty = "Difficulty must be between 1 and 5" ;
+        } else if (values.difficulty > 5) {
+            errors.difficulty = "Difficulty must be between 1 and 5" ;
+        }
+
+        return errors;
+    };
 </script>
 
 
@@ -79,7 +88,8 @@
                             </h3>
 
                             <Sveltik
-                                    initialValues={initialValues}
+                                    {validate}
+                                    {initialValues}
                                     onSubmit={async (values, actions) => {
                                         const res = await repo.updateReview(course._id, values);
                                         actions.setSubmitting(false);
@@ -87,9 +97,10 @@
                                         handleSubmit(res);
                                     }}
                                     let:props
+                                    let:setFieldValue
                             >
                                 <Form>
-                                    <ReviewForm {props} {course}/>
+                                    <ReviewForm {setFieldValue} {props} {course}/>
                                 </Form>
                             </Sveltik>
                         </div>
