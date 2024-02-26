@@ -30,7 +30,7 @@
 
     const shortDate = format(date, 'P'),
         longDate = format(date, 'EEEE, MMMM d, yyyy');
-    const show = writable(false);
+    let show = false;
 </script>
 
 <div class={twMerge(
@@ -44,8 +44,8 @@
                 <div class='flex w-full'>
                     <Tooltip {show} text={longDate}>
                         <p class='cursor-default py-2 text-xs font-medium text-gray-700 dark:text-gray-300'
-                           on:mouseenter={() => show.set(true)}
-                           on:mouseleave={() => show.set(false)}>
+                           on:mouseenter={() => show = true}
+                           on:mouseleave={() => show = false}>
                             {shortDate}
                         </p>
                     </Tooltip>
