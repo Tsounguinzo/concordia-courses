@@ -13,6 +13,9 @@
     onMount(() => {
         loaded.set(true);
     });
+
+    let dynamicPercentage = 0;
+    setTimeout(() => dynamicPercentage = percentage, 200);
 </script>
 
 <div
@@ -27,7 +30,7 @@
           'bg-blue-500 transition-all duration-1000 ease-in-out',
           variant === 'large' ? 'h-5' : 'h-4'
         )}
-        style={`width: ${!$loaded ? 0 : (percentage / 100) * width}px; `}
+        style={`width: ${!$loaded ? 0 : (dynamicPercentage / 100) * width}px; `}
       />
       <div class='absolute inset-y-0 flex w-full justify-center text-sm font-bold leading-4 text-white'>
         {text}
