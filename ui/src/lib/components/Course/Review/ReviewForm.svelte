@@ -33,6 +33,7 @@
                 name='rating'
                 icon='user'
         />
+        <FieldError name='rating'/>
     </div>
     <div class='flex flex-col gap-y-0.5'>
         <FieldLabel For='difficulty'>Difficulty</FieldLabel>
@@ -43,10 +44,9 @@
                 name='difficulty'
                 icon='flame'
         />
+        <FieldError name='difficulty'/>
     </div>
 </div>
-<FieldError name='rating'/>
-<FieldError name='difficulty'/>
 <div class='py-1'/>
 <div class='flex flex-col'>
     <FieldLabel For='content'>Content</FieldLabel>
