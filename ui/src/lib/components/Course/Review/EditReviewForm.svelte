@@ -42,13 +42,13 @@
             errors.content = 'Review content is required';
         } else if (values.instructor == '') {
             errors.instructor = "The instructor's name is required" ;
-        } else if (values.rating < 1) {
+        } else if (values.rating === 0) {
+            errors.rating = "Rating is required" ;
+        } else if (values.rating < 1 || values.rating > 5) {
             errors.rating = "Rating must be between 1 and 5" ;
-        } else if (values.rating > 5) {
-            errors.rating = "Rating must be between 1 and 5" ;
-        } else if (values.difficulty < 1) {
-            errors.difficulty = "Difficulty must be between 1 and 5" ;
-        } else if (values.difficulty > 5) {
+        } else if (values.difficulty === 0) {
+            errors.difficulty = "Difficulty is required" ;
+        } else if (values.difficulty < 1 || values.difficulty > 5) {
             errors.difficulty = "Difficulty must be between 1 and 5" ;
         }
 

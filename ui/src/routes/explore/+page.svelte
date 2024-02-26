@@ -158,7 +158,7 @@
 
                 {#if !hasMore}
                     {#if courses?.length}
-                        <div class='mx-[200px] mt-4 text-center'>
+                        <div class='mx-auto mt-4 text-center'>
                             <p class='text-gray-500 dark:text-gray-400'>
                                 No more courses to show
                             </p>

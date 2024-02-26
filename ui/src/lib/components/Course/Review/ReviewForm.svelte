@@ -12,11 +12,6 @@
 </script>
 <div class='flex flex-col'>
     <FieldLabel For='instructors'>Instructor Name</FieldLabel>
-    <!--MultiSelect
-            className='mt-2'
-            options={instructorNames}
-            values={instructors}
-    /-->
     <Field
             on:input={(e) => props.values.instructor = e.target.value}
             on:blur={props.handleBlur}

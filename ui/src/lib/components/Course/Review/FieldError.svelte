@@ -1,8 +1,12 @@
 <script lang="ts">
-    import {ErrorMessage} from "sveltik/src";
+    import {getContext} from "svelte";
     export let name: string;
-</script>
+    const errors = getContext('errors')
+    $: error = $errors[name]
 
-<div class='text-sm italic text-red-400'>
-    <ErrorMessage name={name} />
-  </div>
+</script>
+{#if error}
+    <div class='text-sm italic text-red-400'>
+        {$errors[name]}
+    </div>
+{/if}
