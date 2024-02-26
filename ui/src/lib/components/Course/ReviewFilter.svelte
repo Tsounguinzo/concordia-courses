@@ -58,6 +58,17 @@
         );
         showAllReviews.set(false);
     }
+
+    let rotate = false;
+
+    function resetFilters() {
+        sortBy.set('Most Recent')
+        rotate = true;
+
+        setTimeout(() => {
+            rotate = false;
+        }, 500);
+    }
 </script>
 
 <div class='flex flex-col rounded-lg dark:bg-neutral-900 dark:text-gray-200'>
@@ -93,7 +104,7 @@
                 </div>
             </div>
             <ResetButton className='absolute -top-4 right-2 ml-auto'>
-                <button on:click={() => {sortBy.set('Most Recent');}}>
+                <button on:click={resetFilters} class:rotate-once={rotate}>
                     <RefreshCw class={'h-5 w-5 text-gray-500 dark:text-neutral-400'}/>
                 </button>
             </ResetButton>

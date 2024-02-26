@@ -147,7 +147,7 @@
                                 {query}
                         />
                     {/each}
-                    <InfiniteScroll hasMore={hasMore} threshold={courses?.length || 20}
+                    <InfiniteScroll hasMore={hasMore} threshold={courses?.length || 20} window={true}
                                     on:loadMore={() => fetchMore()}/>
                 {:else }
                     <div class='mx-2 text-gray-50'>

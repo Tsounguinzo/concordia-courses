@@ -10,8 +10,9 @@
     let hoveredIndex = -1;
 </script>
 
+<div class="flex flex-row gap-1.5">
     {#each Array(5) as _, i }
-        <button class='cursor-pointer w-fit'
+        <button class='cursor-pointer'
                 on:blur
                 on:click|preventDefault={() => setFieldValue(name, i + 1)}
                 on:mouseenter={() => hoveredIndex = i}
@@ -23,3 +24,4 @@
         {/if}
             </button>
     {/each}
+</div>

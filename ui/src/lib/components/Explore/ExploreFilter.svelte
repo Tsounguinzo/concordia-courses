@@ -77,18 +77,3 @@
         {/each}
     </div>
 </div>
-
-<style>
-    @keyframes rotate {
-        from {
-            transform: rotate(0deg);
-        }
-        to {
-            transform: rotate(360deg);
-        }
-    }
-
-    .rotate-once {
-        animation: rotate 0.5s ease-in-out;
-    }
-</style>
