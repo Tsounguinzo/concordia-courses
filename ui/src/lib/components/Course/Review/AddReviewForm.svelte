@@ -1,7 +1,7 @@
 <script lang="ts">
     import Transition from "svelte-transition";
     import {twMerge} from "tailwind-merge";
-    import {Form, Sveltik} from "sveltik/src";
+    import {Sveltik} from "sveltik/src";
     import {repo} from "$lib/repo.js";
     import ReviewForm from "$lib/components/Course/Review/ReviewForm.svelte";
     import {toast} from "svelte-sonner";
@@ -9,6 +9,7 @@
     import type {Course} from "$lib/model/Course";
     import {createDialog} from "svelte-headlessui";
     import type {Writable} from "svelte/store";
+    import Form from "$lib/components/Course/Review/Form.svelte";
 
     export let course: Course;
     export let open: Writable<boolean>;

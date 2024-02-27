@@ -6,10 +6,11 @@
     import ReviewForm from "$lib/components/Course/Review/ReviewForm.svelte";
     import type {Review} from "$lib/model/Review";
     import type {Course} from "$lib/model/Course";
-    import {Form, Sveltik} from "sveltik/src";
+    import {Sveltik} from "sveltik/src";
     import {repo} from "$lib/repo";
     import {toast} from "svelte-sonner";
     import type {Writable} from "svelte/store";
+    import Form from "$lib/components/Course/Review/Form.svelte";
 
     export let course: Course;
     export let review: Review;

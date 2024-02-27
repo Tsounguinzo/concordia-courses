@@ -63,7 +63,7 @@
     />
     <FieldError name='content'/>
     <div class='mt-8 flex justify-end space-x-4'>
-        <button on:click|preventDefault={props.handleReset}
+        <button type="reset"
                 class='w-fit cursor-pointer rounded-md bg-gray-100 px-4 py-2 font-medium text-gray-700 duration-200 hover:bg-gray-200 dark:bg-neutral-700 dark:text-gray-200 dark:hover:bg-neutral-600'
         >
             Discard

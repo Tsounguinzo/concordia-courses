@@ -9,6 +9,7 @@
     import {Menu} from "lucide-svelte";
     import SideNav from "$lib/components/Layout/SideNav.svelte";
     import ProfileDropdown from "$lib/components/profile/ProfileDropdown.svelte";
+    import NotificationDropdown from "$lib/components/profile/NotificationDropdown.svelte";
 
     const {courses, instructors, coursesIndex, instructorsIndex} = getSearchIndex();
 
@@ -64,7 +65,7 @@
         {/if}
         {#if user}
             <div class='mr-2 lg:hidden'>
-                <!--NotificationDropdown {notifications}/-->
+                <NotificationDropdown {notifications}/>
             </div>
         {/if}
         <div class='flex lg:hidden'>
@@ -84,7 +85,7 @@
             <div class='my-auto hidden gap-x-1 lg:ml-auto lg:flex lg:items-center'>
                 <DarkModeToggle/>
                 {#if user}
-                    <!--NotificationDropdown {notifications} setNotifications={setNotifications}/-->
+                    <NotificationDropdown {notifications}/>
                 {/if}
             </div>
             <div class='hidden lg:ml-4 lg:flex lg:justify-end'>
