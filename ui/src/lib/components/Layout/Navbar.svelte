@@ -1,9 +1,6 @@
 <script lang="ts">
     import {getSearchIndex, updateSearchResults} from "$lib/searchIndex";
     import {writable} from "svelte/store";
-    import {repo} from "$lib/repo";
-    import {onMount} from "svelte";
-    import {toast} from "svelte-sonner";
     import {mobileMenuOpen, searchResults} from "$lib/store";
     import CourseSearchBar from "$lib/components/Search/CourseSearchBar.svelte";
     import {page} from "$app/stores";
@@ -11,6 +8,7 @@
     import DarkModeToggle from "$lib/components/Layout/DarkModeToggle.svelte";
     import {Menu} from "lucide-svelte";
     import SideNav from "$lib/components/Layout/SideNav.svelte";
+    import ProfileDropdown from "$lib/components/profile/ProfileDropdown.svelte";
 
     const {courses, instructors, coursesIndex, instructorsIndex} = getSearchIndex();
 
@@ -56,7 +54,7 @@
     >
         <div class='z-40 my-auto mr-auto flex min-w-[48px] lg:flex-1'>
             <a href='/' class='-m-1.5 p-1.5'>
-                <img class='h-12 w-auto' src='/favicon.png' alt='concordia logo'/>
+                <img class='h-12 w-auto' src='/favicon.png' alt='Study Hub'/>
             </a>
         </div>
         {#if pathName !== '/'}
@@ -91,7 +89,7 @@
             </div>
             <div class='hidden lg:ml-4 lg:flex lg:justify-end'>
                 {#if $user}
-                    <!--ProfileDropdown/-->
+                    <ProfileDropdown/>
                 {:else}
                     <a href={`${getUrl()}/api/auth/login?redirect=${$page.url}`}
                        class='my-auto text-sm font-semibold leading-6 text-gray-900 dark:text-gray-200'

@@ -4,7 +4,6 @@ import com.google.gson.reflect.TypeToken;
 import courses.concordia.util.JsonUtil;
 import courses.concordia.util.seed.model.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.nio.file.Paths;
 import java.util.*;
@@ -121,7 +120,7 @@ public class SeedRunner {
 
         }
 
-        log.info("Finished processing {} courses with {} not beign offered. Saving to JSON.", newCourses.size(), coursesNotOffered);
+        log.info("Finished processing {} courses with {} not being offered and {} being offered for the current academic year. Saving to JSON.", newCourses.size(), coursesNotOffered, newCourses.size() - coursesNotOffered);
         JsonUtil.toJson(newCourses, Paths.get("backend","src","main","resources","seeds", SEED_FILENAME).toString());
     }
 

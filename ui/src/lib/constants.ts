@@ -3,5 +3,5 @@ export const highlightResultStyle = 'bg-blue-50 border-l-blue-500 border-l-4 dar
 export const navigationItems = [
   { name: 'Home', href: '/' },
   { name: 'Explore', href: '/explore' },
-  { name: 'About', href: '/about' },
+  { name: 'Study Groups', href: 'https://concordia-groups.web.app/search' },
 ];

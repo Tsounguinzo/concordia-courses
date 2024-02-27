@@ -48,7 +48,7 @@ public class JsonUtil {
         String json = gson.toJson(data);
         try (FileWriter writer = new FileWriter(fileName)) {
             writer.write(json);
-            log.info("Successfully wrote JSON to {}", fileName);
+            log.info("Successfully saved JSON in {}", fileName);
         } catch (Exception e) {
             log.error("Failed to write JSON to file. File: {}, Error: {}", fileName, e.getMessage(), e);
         }
