@@ -18,7 +18,7 @@
 <button type='button' class={twMerge('h-fit', className)} on:click={dialog.open}>
     <Trash2 class='stroke-gray-500 transition duration-200 hover:stroke-red-600 dark:stroke-gray-400 dark:hover:stroke-red-600' size={size}/>
 </button>
-<Transition appear show={$dialog.expanded}>
+<Transition show={$dialog.expanded}>
     <button class={twMerge('relative z-50', $darkModeOn ? 'dark' : '')} on:click={dialog.close}>
         <Transition
                 enter='ease-out duration-200'
