@@ -18,6 +18,7 @@
     import EditReviewForm from "$lib/components/Course/Review/EditReviewForm.svelte";
     import type {Interaction} from "$lib/model/Interaction";
     import AddReviewForm from "$lib/components/Course/Review/AddReviewForm.svelte";
+    import {goto} from "$app/navigation";
 
     let params = $page.params.id;
 
@@ -78,9 +79,9 @@
           inner();
       };
 
-     /* if ($course === null) {
-           goto()
-       } */
+     if ($course === null) {
+           goto("/explore")
+     }
 
     if ($course?.terms.some((term) => !currentTerms.includes(addAcademicYear(term)))) {
         course.set({
@@ -151,7 +152,7 @@
     <div class='mx-auto mt-10 max-w-6xl md:mt-0'>
         <CourseInfo
                 course={$course}
-                reviews={$showingReviews}
+                reviews={$allReviews}
         />
         <div class='py-2.5'/>
         <div class='hidden gap-x-6 lg:grid lg:grid-cols-5'>
@@ -248,7 +249,7 @@
                         {#if $showingReviews}
                             {#each $showingReviews
                                 .filter((review) =>
-                                    user ? review.userId !== "9ca37101-4003-4898-94d6-d2c941167bc8" : true
+                                    user ? review.userId !== user?.id : true
                                 )
                                 .slice(0, $showAllReviews ? $showingReviews.length : 8) as review, i (i)}
                                 <CourseReview

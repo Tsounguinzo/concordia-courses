@@ -6,14 +6,12 @@
     import {page} from "$app/stores";
     import {getUrl} from "$lib/utils";
     import DarkModeToggle from "$lib/components/Layout/DarkModeToggle.svelte";
-    import {Menu} from "lucide-svelte";
+    import {Menu, User} from "lucide-svelte";
     import SideNav from "$lib/components/Layout/SideNav.svelte";
     import ProfileDropdown from "$lib/components/profile/ProfileDropdown.svelte";
     import NotificationDropdown from "$lib/components/profile/NotificationDropdown.svelte";
 
     const {courses, instructors, coursesIndex, instructorsIndex} = getSearchIndex();
-
-    const arrowColor = writable('text-gray-900 dark:text-gray-200');
 
     const user = null; //useAuth();
     $: pathName = $page.url.pathname;
@@ -92,13 +90,10 @@
                 {#if $user}
                     <ProfileDropdown/>
                 {:else}
+
                     <a href={`${getUrl()}/api/auth/login?redirect=${$page.url}`}
-                       class='my-auto text-sm font-semibold leading-6 text-gray-900 dark:text-gray-200'
-                       on:mouseenter={() => arrowColor.set('text-blue-400')}
-                       on:mouseleave={() => arrowColor.set('text-gray-900 dark:text-gray-200')}
-                    >
-                        Log in{' '}
-                        <span class={$arrowColor} aria-hidden='true'> &rarr; </span>{' '}
+                       class='rounded-md bg-slate-50 px-3 py-2 text-sm font-semibold text-gray-500 hover:bg-gray-100 dark:bg-neutral-800 dark:text-gray-200 dark:hover:bg-neutral-700'>
+                        Log in
                     </a>
                 {/if}
             </div>

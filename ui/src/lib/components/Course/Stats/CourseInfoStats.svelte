@@ -27,10 +27,11 @@
 
     const lg = useMediaQuery('(min-width: 1024px)');
 
-    const ratings = allReviews.map((r) => r.rating);
-    const averageRating = _.sum(ratings) / allReviews.length;
-    const difficulties = allReviews.map((r) => r.difficulty);
-    const averageDifficulty = _.sum(difficulties) / allReviews.length;
+    $: ratings = allReviews.map((r) => r.rating);
+    $: averageRating = _.sum(ratings) / allReviews.length;
+    $: difficulties = allReviews.map((r) => r.difficulty);
+    $: averageDifficulty = _.sum(difficulties) / allReviews.length;
+
 
 </script>
 
