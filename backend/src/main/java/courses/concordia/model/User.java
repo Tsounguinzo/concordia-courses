@@ -10,4 +10,6 @@ public class User {
     @MongoId
     private String _id;
     private String email;
+    private String firstName;
+    private String lastName;
 }

@@ -4,7 +4,6 @@
     import {writable} from "svelte/store";
     import type {Review} from "$lib/model/Review";
     import type {Course} from "$lib/model/Course";
-    import {onMount} from "svelte";
     import {repo} from "$lib/repo";
     import {toast} from "svelte-sonner";
     import Loading from "$lib/components/Loading.svelte";
@@ -107,7 +106,7 @@
     };
 
     const handleDelete = async (review: Review) => {
-        const res = await repo.deleteReview(review.courseId);
+        const res = await repo.deleteReview(review._id);
 
         if (res.ok) {
             showingReviews.set($showingReviews?.filter((r) => r.userId !== review.userId));

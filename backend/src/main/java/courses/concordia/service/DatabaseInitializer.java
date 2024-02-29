@@ -2,6 +2,7 @@ package courses.concordia.service;
 
 import courses.concordia.model.Course;
 import courses.concordia.repository.CourseRepository;
+import courses.concordia.service.implementation.SeedServiceCourse;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

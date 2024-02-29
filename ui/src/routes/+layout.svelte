@@ -1,6 +1,6 @@
 <script lang="ts">
     import "../app.css";
-    import {darkModeOn} from "$lib/provider/darkmode";
+    import {darkModeOn} from "$lib/darkmode";
     import Navbar from "$lib/components/Layout/Navbar.svelte";
     import {onMount} from "svelte";
     import {Toaster} from "svelte-sonner";

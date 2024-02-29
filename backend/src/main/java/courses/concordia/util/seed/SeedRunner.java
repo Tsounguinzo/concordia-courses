@@ -1,7 +1,7 @@
 package courses.concordia.util.seed;
 
 import com.google.gson.reflect.TypeToken;
-import courses.concordia.util.JsonUtil;
+import courses.concordia.util.JsonUtils;
 import courses.concordia.util.seed.model.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -108,7 +108,6 @@ public class SeedRunner {
             var newCourse = new Course(
                     course.getSubject()+course.getCatalog(),
                     terms,
-                    List.of(),
                     course.getPrerequisites(),
                     course.getSubject(),
                     description,
@@ -121,7 +120,7 @@ public class SeedRunner {
         }
 
         log.info("Finished processing {} courses with {} not being offered and {} being offered for the current academic year. Saving to JSON.", newCourses.size(), coursesNotOffered, newCourses.size() - coursesNotOffered);
-        JsonUtil.toJson(newCourses, Paths.get("backend","src","main","resources","seeds", SEED_FILENAME).toString());
+        JsonUtils.toJson(newCourses, Paths.get("backend","src","main","resources","seeds", SEED_FILENAME).toString());
     }
 
     private static List<CourseWithDescription> getCourseWithDescriptions() {
@@ -129,7 +128,7 @@ public class SeedRunner {
         try {
             log.info("Fetching course descriptions from URL: {}", urlStr);
             String response = getRequest(urlStr);
-            List<CourseWithDescription> courses = JsonUtil.getData(response, new TypeToken<List<CourseWithDescription>>(){});
+            List<CourseWithDescription> courses = JsonUtils.getData(response, new TypeToken<List<CourseWithDescription>>(){});
             assert courses != null;
             log.info("Successfully fetched {} course descriptions", courses.size());
             return courses;
@@ -179,7 +178,7 @@ public class SeedRunner {
             try {
                 log.info("Fetching course with details for {} from URL: {}",TERM_CODE_MAPPING.get(termCode), urlStr);
                 String response = APICallUtil.getRequest(urlStr);
-                courses.addAll(Objects.requireNonNull(JsonUtil.getData(response, new TypeToken<List<CourseWithDetails>>() {})));
+                courses.addAll(Objects.requireNonNull(JsonUtils.getData(response, new TypeToken<List<CourseWithDetails>>() {})));
             } catch (Exception e) {
                 log.error("Failed to fetch course with details from URL: {}, Error: {}", urlStr, e.getMessage(), e);
             }
@@ -194,7 +193,7 @@ public class SeedRunner {
         try {
             log.info("Fetching course catalogues from URL: {}", urlStr);
             String response = APICallUtil.getRequest(urlStr);
-            List<CourseCatalogue> courses = JsonUtil.getData(response, new TypeToken<List<CourseCatalogue>>(){});
+            List<CourseCatalogue> courses = JsonUtils.getData(response, new TypeToken<List<CourseCatalogue>>(){});
             assert courses != null;
             log.info("Successfully fetched {} course descriptions", courses.size());
             return courses;

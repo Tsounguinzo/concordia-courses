@@ -1,4 +1,5 @@
 export type Review = {
+  _id: string;
   content: string;
   courseId: string;
   instructor: string;

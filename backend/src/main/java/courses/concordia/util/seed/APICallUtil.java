@@ -1,8 +1,5 @@
 package courses.concordia.util.seed;
 
-import com.google.gson.reflect.TypeToken;
-import courses.concordia.util.JsonUtil;
-import courses.concordia.util.seed.model.CourseWithDescription;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
@@ -12,7 +9,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Base64;
-import java.util.List;
 
 @Slf4j
 public class APICallUtil {

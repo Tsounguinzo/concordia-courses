@@ -1,6 +1,6 @@
 <script>
     import {Moon, Sun} from 'lucide-svelte';
-    import {darkModeOn, setTheme} from "$lib/provider/darkmode";
+    import {darkModeOn, setTheme} from "$lib/darkmode";
 
     const toggleDarkMode = () => {
         setTheme(!$darkModeOn);

@@ -11,7 +11,7 @@
     import JumpToTopButton from "$lib/components/Explore/JumpToTopButton.svelte";
     import CourseCard from "$lib/components/Explore/CourseCard.svelte";
     import {sortByOptions} from "$lib/types";
-    import {darkModeOn} from "$lib/provider/darkmode";
+    import {darkModeOn} from "$lib/darkmode";
     import Skeleton from "$lib/components/Skeleton.svelte";
     import {toast} from "svelte-sonner";
 

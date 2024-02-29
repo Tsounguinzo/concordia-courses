@@ -1,14 +1,15 @@
 package courses.concordia.service;
 
-import courses.concordia.dto.CourseReviewsDTO;
+import courses.concordia.dto.model.course.CourseDto;
+import courses.concordia.dto.model.course.CourseReviewsDto;
 import courses.concordia.model.Course;
-import courses.concordia.model.CourseFilter;
+import courses.concordia.dto.model.course.CourseFilterDto;
 
 import java.util.List;
 
 public interface CourseService {
-    List<Course> getCourses();
-    List<Course> getCourses(int limit, int offset, CourseFilter filters);
-    Course getCourseById(String id);
-    CourseReviewsDTO getCourseAndReviewsById(String id);
+    List<CourseDto> getCourses();
+    List<CourseDto> getCoursesWithFilter(int limit, int offset, CourseFilterDto filters);
+    CourseDto getCourseById(String id);
+    CourseReviewsDto getCourseAndReviewsById(String id);
 }

@@ -31,5 +31,5 @@ app:
 
 
 server:
-  port: 9191
+  port: 8080
   forward-headers-strategy: native

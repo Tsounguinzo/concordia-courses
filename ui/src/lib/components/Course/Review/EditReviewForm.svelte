@@ -2,7 +2,7 @@
     import Transition from "svelte-transition";
     import {createDialog} from "svelte-headlessui";
     import {twMerge} from "tailwind-merge";
-    import {darkModeOn} from "$lib/provider/darkmode.js";
+    import {darkModeOn} from "$lib/darkmode";
     import ReviewForm from "$lib/components/Course/Review/ReviewForm.svelte";
     import type {Review} from "$lib/model/Review";
     import type {Course} from "$lib/model/Course";
@@ -92,7 +92,7 @@
                                     {validate}
                                     {initialValues}
                                     onSubmit={async (values, actions) => {
-                                        const res = await repo.updateReview(course._id, values);
+                                        const res = await repo.updateReview(review, values);
                                         actions.setSubmitting(false);
                                         open.set(false);
                                         handleSubmit(res);

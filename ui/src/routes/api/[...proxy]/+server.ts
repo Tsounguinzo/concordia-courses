@@ -1,50 +1,63 @@
 const baseUrl = "http://localhost:8080";
 
-export async function GET({ url }) {
-    try {
-        const query = url.search ? `${baseUrl}${url.pathname}${url.search}` : `${baseUrl}${url.pathname}`;
-        const response = await fetch(query, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        });
-
-        // Check for HTTP errors
-        if (!response.ok) {
-            console.error(`GET request to ${url.search ? url.pathname : url.pathname + url.search} failed with status: ${response.status}`);
-            return new Response(JSON.stringify({ error: "Upstream GET request failed" }), { status: response.status });
-        }
-
-        const responseData = await response.json();
-        console.log(`GET request to ${url.search ? url.pathname : url.pathname + url.search} was successful`);
-        return new Response(JSON.stringify(responseData), { status: 200 });
-    } catch (error) {
-        console.error(`GET request to ${url.search ? url.pathname : url.pathname + url.search} failed:`, error);
-        return new Response(JSON.stringify({ error: "Internal server error" }), { status: 500 });
-    }
-}
+export const GET = async ({ url }) => {
+    return await sendRequest({ url, method: 'GET' });
+};
 
 export const POST = async ({ url, request }) => {
+    const requestBody = await request.json();
+    return await sendRequest({ url, method: 'POST', requestBody });
+};
+
+export const PUT = async ({ url, request }) => {
+    const requestBody = await request.json();
+    return await sendRequest({ url, method: 'PUT', requestBody });
+};
+
+
+export const DELETE = async ({ url, request }) => {
+    const requestBody = await request.json();
+    return await sendRequest({ url, method: 'DELETE', requestBody });
+};
+
+
+
+const sendRequest = async ({ url, method, requestBody = null }) => {
+    const query = url.search ? `${baseUrl}${url.pathname}${url.search}` : `${baseUrl}${url.pathname}`;
     try {
-        const requestBody = await request.json();
-        const query = url.search ? `${baseUrl}${url.pathname}${url.search}` : `${baseUrl}${url.pathname}`;
-
-        const response = await fetch(query, {
-            method: 'POST',
+        const options: RequestOptions = {
+            method,
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(requestBody),
-        });
+        };
 
-        // Check for HTTP errors
+        if (requestBody) {
+            options.body = JSON.stringify(requestBody);
+        }
+
+        const response = await fetch(query, options);
+
         if (!response.ok) {
-            console.error(`POST request to ${url.search ? url.pathname : url.pathname + url.search} failed with status: ${response.status}`);
-            return new Response(JSON.stringify({ error: "Upstream POST request failed" }), { status: response.status });
+            console.error(`Request to ${query} failed with status: ${response.status}`);
+            return new Response(JSON.stringify({ error: "Upstream request failed" }), { status: response.status });
         }
 
         const responseData = await response.json();
-        console.log(`POST request to ${url.search ? url.pathname : url.pathname + url.search} was successful`);
-        return new Response(JSON.stringify(responseData), { status: 200 });
+
+        if (responseData.status !== 'OK') {
+            const errorMessage = responseData.errors?.message || 'Unknown error';
+            return new Response(JSON.stringify({ error: errorMessage }), { status: 400 });
+        }
+
+        console.log(`Request to ${query} was successful`);
+        return new Response(JSON.stringify(responseData.payload), { status: 200 });
     } catch (error) {
-        console.error(`POST request to ${url.search ? url.pathname : url.pathname + url.search} failed:`, error.message);
-        return new Response(JSON.stringify({ error: "Internal server error" }), { status: 500 });
+        console.error(`Request to ${query} failed:`, error.message);
+        return new Response(JSON.stringify({ error: "Internal server error", message: error.message }), { status: 500 });
     }
+};
+
+interface RequestOptions {
+    method: string;
+    headers: { 'Content-Type': string };
+    body?: string;
 }

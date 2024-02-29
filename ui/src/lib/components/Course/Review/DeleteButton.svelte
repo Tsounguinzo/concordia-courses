@@ -3,7 +3,7 @@
     import {Trash2} from "lucide-svelte";
     import Transition from "svelte-transition";
     import {createDialog} from "svelte-headlessui";
-    import {darkModeOn} from "$lib/provider/darkmode";
+    import {darkModeOn} from "$lib/darkmode";
 
     export let title: string;
     export let text: string;

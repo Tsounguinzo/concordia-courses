@@ -5,7 +5,7 @@
     import {repo} from "$lib/repo.js";
     import ReviewForm from "$lib/components/Course/Review/ReviewForm.svelte";
     import {toast} from "svelte-sonner";
-    import {darkModeOn} from "$lib/provider/darkmode";
+    import {darkModeOn} from "$lib/darkmode";
     import type {Course} from "$lib/model/Course";
     import {createDialog} from "svelte-headlessui";
     import type {Writable} from "svelte/store";

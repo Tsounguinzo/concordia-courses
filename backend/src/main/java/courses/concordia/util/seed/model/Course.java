@@ -1,6 +1,5 @@
 package courses.concordia.util.seed.model;
 
-import courses.concordia.model.Instructor;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -12,7 +11,6 @@ import java.util.Set;
 public class Course {
     private String _id;
     private List<String> terms;
-    private List<Instructor> instructors;
     private String prerequisites;
     private String subject;
     private String description;

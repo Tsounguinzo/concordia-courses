@@ -6,7 +6,6 @@
     import {writable} from "svelte/store";
     import {RefreshCw} from "lucide-svelte";
     import type {Review} from "$lib/model/Review";
-    import _ from "lodash";
     import type {Course} from "$lib/model/Course";
 
     export let allReviews: Writable<Review[]>;
@@ -26,7 +25,6 @@
     ] as const;
     type ReviewSortType = (typeof sortTypes)[number];
     const sortBy = writable<ReviewSortType>('Most Recent');
-    const uniqueInstructors = _.uniq(course?.instructors.map((ins) => ins.name));
 
     if (sortBy) {
         allReviews.set(
@@ -88,19 +86,19 @@
                             />
                         </div>
                     </div>
-                    {#if uniqueInstructors.length > 0}
+                    <!--{#if false}
                         <div class='w-3/5'>
                             <h2 class='mb-2 text-sm font-medium text-gray-600 dark:text-gray-400'>
                                 Instructor
                             </h2>
                             <div class='relative z-10'>
                                 <Autocomplete
-                                        options={uniqueInstructors}
+                                        options={[]}
                                         storeValue={selectedInstructor}
                                 />
                             </div>
                         </div>
-                    {/if}
+                    {/if}-->
                 </div>
             </div>
             <ResetButton className='absolute -top-4 right-2 ml-auto'>

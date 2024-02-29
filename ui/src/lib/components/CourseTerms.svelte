@@ -2,11 +2,8 @@
     import type {Course} from "$lib/model/Course";
     import {
         addAcademicYear,
-        filterCurrentInstructors,
-        getCurrentTerms,
         termColorMap,
         termToIcon,
-        uniqueTermInstructors,
         variantToSize
     } from "$lib/utils";
     import {X} from "lucide-svelte";
