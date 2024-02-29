@@ -9,5 +9,15 @@
 *.ipr
 
 #mac-os
-*.DS_Store
-/backend/*.DS_Store
+**/*.DS_Store
+
+### UI ###
+/ui/node_modules
+/ui/build
+/ui/.svelte-kit
+/ui/package
+/ui/.env
+/ui/.env.*
+!.env.example
+/ui/vite.config.js.timestamp-*
+/ui/vite.config.ts.timestamp-*

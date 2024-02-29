@@ -1,6 +1,6 @@
 <script>
     import { getContext } from 'svelte'
-    import { persist } from 'svelte-use-persist';
+    import { persist } from '$lib/persist';
 
     const handleSubmit = getContext('handleSubmit')
     const handleReset = getContext('handleReset')

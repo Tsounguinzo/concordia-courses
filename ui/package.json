@@ -34,7 +34,6 @@
 		"svelte-local-storage-store": "^0.6.4",
 		"svelte-sonner": "^0.3.17",
 		"svelte-transition": "^0.0.10",
-		"svelte-use-persist": "^0.5.0",
 		"sveltik": "^0.1.16",
 		"tailwind-merge": "^2.2.1"
 	}
