@@ -25,6 +25,7 @@ public class SecurityConfig{
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .oauth2Login(oauth2 -> oauth2
                         //login unsuccessfully, redirect to /login
+                        .defaultSuccessUrl("/auth/authorized")
                         .failureUrl("/login"))
                 .logout(withDefaults())
                 .build();

@@ -7,17 +7,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 
 @RestController
 @RequestMapping("/auth")
 public class AuthorizationController {
     @GetMapping("/authorized")
-    public Map<String, Object> authorize(@AuthenticationPrincipal OAuth2User principal) {
-        //if the user is authorized then get name
-        return Collections.singletonMap("name", principal.getAttribute("name"));
-    }
+    public Map<String, String> authorize(@AuthenticationPrincipal OAuth2User principal) {
+        Map<String, String> map = new HashMap<>();
 
+        String email = principal.getAttribute("email");
+        if(email != null){
+            if(email.contains("concordia")){
+                map.put("name", principal.getAttribute("name"));
+                map.put("email",principal.getAttribute("email"));
+                //if the user is authorized then get name and email
+                return map;
+            }
+        }
+        //test
+        map.put("name", principal.getAttribute("name"));
+        map.put("email",principal.getAttribute("email"));
+        return map;
+
+        //return null;
+    }
 }
 
