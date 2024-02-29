@@ -4,21 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e28b6dde-6667-4870-b6d3-c8597a932e3a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/courses/concordia/rest/AuthorizationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/courses/concordia/rest/AuthorizationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/courses/concordia/rest/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/courses/concordia/rest/HomeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/courses/concordia/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/courses/concordia/security/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/rest/AuthorizationController.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/courses/concordia/rest/AuthorizationController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/rest/HomeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/courses/concordia/rest/HomeController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/security/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/courses/concordia/security/SecurityConfig.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/courses/concordia/security/UserConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/static/index.html" afterDir="false" />
-    </list>
+    <list default="true" id="e28b6dde-6667-4870-b6d3-c8597a932e3a" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -49,9 +35,9 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;/Users/zhengxuanzhao/IdeaProjects/concordia-courses&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15537383&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.repository.indices&quot;
   }
 }</component>
