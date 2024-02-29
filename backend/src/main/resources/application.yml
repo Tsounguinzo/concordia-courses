@@ -14,7 +14,7 @@ spring:
             client-Secret: m518Q~c2Zz3n5Vj_oKmfLP2lCk-UQ3DTvwVBFb7z
             redirect-uri: http://localhost:9191/login/oauth2/code/ccc
             scope: "https://graph.microsoft.com/.default"
-            client-name:
+            client-name: Concordia Account
         provider:
           ccc:
             issuer-uri: https://login.microsoftonline.com/81b9b473-132d-4efa-b355-55ca32482817/v2.0
