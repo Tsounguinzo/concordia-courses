@@ -6,7 +6,6 @@
     import {writable} from "svelte/store";
     import {RefreshCw} from "lucide-svelte";
     import type {Review} from "$lib/model/Review";
-    import _ from "lodash";
     import type {Course} from "$lib/model/Course";
 
     export let allReviews: Writable<Review[]>;
@@ -26,30 +25,18 @@
     ] as const;
     type ReviewSortType = (typeof sortTypes)[number];
     const sortBy = writable<ReviewSortType>('Most Recent');
-    const uniqueInstructors = _.uniq(course?.instructors.map((ins) => ins.name));
 
     if (sortBy) {
         allReviews.set(
             $allReviews
                 .filter(
-                    (review: Review) =>
-                        $selectedInstructor === '' ||
-                        review.instructors
-                            .map((ins) => ins.toLowerCase())
-                            .includes($selectedInstructor.toLowerCase())
-                )
+                    (review: Review) => $selectedInstructor === '' || review.instructor === $selectedInstructor.toLowerCase())
                 .sort((a: Review, b: Review) => {
                     switch ($sortBy) {
                         case 'Most Recent':
-                            return (
-                                parseInt(b.timestamp.$date.$numberLong, 10) -
-                                parseInt(a.timestamp.$date.$numberLong, 10)
-                            );
+                            return b.timestamp - a.timestamp
                         case 'Least Recent':
-                            return (
-                                parseInt(a.timestamp.$date.$numberLong, 10) -
-                                parseInt(b.timestamp.$date.$numberLong, 10)
-                            );
+                            return a.timestamp - b.timestamp
                         case 'Highest Rating':
                             return b.rating - a.rating;
                         case 'Lowest Rating':
@@ -63,14 +50,22 @@
                         case 'Most Disliked':
                             return a.likes - b.likes;
                         default:
-                            return (
-                                parseInt(b.timestamp.$date.$numberLong, 10) -
-                                parseInt(a.timestamp.$date.$numberLong, 10)
-                            );
+                            return b.timestamp - a.timestamp
                     }
                 })
         );
         showAllReviews.set(false);
+    }
+
+    let rotate = false;
+
+    function resetFilters() {
+        sortBy.set('Most Recent')
+        rotate = true;
+
+        setTimeout(() => {
+            rotate = false;
+        }, 500);
     }
 </script>
 
@@ -91,23 +86,23 @@
                             />
                         </div>
                     </div>
-                    {#if uniqueInstructors.length > 0}
+                    <!--{#if false}
                         <div class='w-3/5'>
                             <h2 class='mb-2 text-sm font-medium text-gray-600 dark:text-gray-400'>
                                 Instructor
                             </h2>
                             <div class='relative z-10'>
                                 <Autocomplete
-                                        options={uniqueInstructors}
+                                        options={[]}
                                         storeValue={selectedInstructor}
                                 />
                             </div>
                         </div>
-                    {/if}
+                    {/if}-->
                 </div>
             </div>
             <ResetButton className='absolute -top-4 right-2 ml-auto'>
-                <button on:click={() => {sortBy.set('Most Recent');}}>
+                <button on:click={resetFilters} class:rotate-once={rotate}>
                     <RefreshCw class={'h-5 w-5 text-gray-500 dark:text-neutral-400'}/>
                 </button>
             </ResetButton>

@@ -15,7 +15,6 @@ public class Course {
     @MongoId
     private String _id;
     private List<String> terms;
-    private List<Instructor> instructors;
     private String prerequisites;
     private String subject;
     private String description;
@@ -36,7 +35,7 @@ public class Course {
         private String locationCode;
         private String roomCode;
         private String section;
-        private String classAssociation;
+        private String buildingCode;
         private String instructionModeCode;
         private String instructionModeDescription;
         private String mondays;

@@ -7,3 +7,4 @@ app:
   cors:
     allowed-origins: "*"
   init-db: true
+  seed-dir: backend/src/main/resources/seeds

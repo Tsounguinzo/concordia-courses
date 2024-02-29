@@ -2,32 +2,20 @@
     import type {Course} from "$lib/model/Course";
     import {
         addAcademicYear,
-        filterCurrentInstructors,
-        getCurrentTerms,
         termColorMap,
         termToIcon,
-        uniqueTermInstructors,
         variantToSize
     } from "$lib/utils";
     import {X} from "lucide-svelte";
     import {twMerge} from "tailwind-merge";
     import Highlight from "$lib/components/Highlight.svelte";
-    import Tooltip from "$lib/components/Tooltip.svelte";
-    import {writable} from "svelte/store";
 
     export let course: Course;
     export let variant: 'large' | 'small';
     export let query: string = '';
-
-    const instructors = filterCurrentInstructors(uniqueTermInstructors(course));
-
-    const currentlyOfferedTerms = course.terms.filter((c) =>
-        getCurrentTerms().map(term => term.split(" ")[0]).includes(c));
-
-    const show = writable(false);
 </script>
 
-{#if currentlyOfferedTerms.length === 0}
+{#if course.terms.length === 0}
     <div class='my-1.5 w-fit text-sm'>
         <div class='rounded-xl bg-gray-200 p-1 dark:bg-neutral-700'>
             <div class='flex items-center space-x-1'>
@@ -49,18 +37,7 @@
               )}
             >
                 <div class='flex items-center space-x-1.5 whitespace-nowrap dark:text-gray-400'>
-                    {#if variant === 'large'}
-                        <Tooltip {show} text="">
-                            <div on:mouseenter={() => show.set(true)}
-                                 on:mouseleave={() => show.set(false)}>
-                                {@html termToIcon(term, variant)}
-                            </div>
-                        </Tooltip>
-                    {:else }
-                        <div>
-                            {@html termToIcon(term, variant)}
-                        </div>
-                    {/if}
+                    {@html termToIcon(term, variant)}
                     <div class={twMerge('pr-1 font-medium dark:text-gray-200')}>
                         <Highlight text={addAcademicYear(term)} {query}/>
                     </div>

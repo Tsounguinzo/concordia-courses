@@ -1,17 +1,16 @@
 package courses.concordia.util.seed.model;
 
-import courses.concordia.model.Instructor;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
 public class Course {
     private String _id;
     private List<String> terms;
-    private List<Instructor> instructors;
     private String prerequisites;
     private String subject;
     private String description;
@@ -26,7 +25,7 @@ public class Course {
         private String locationCode;
         private String roomCode;
         private String section;
-        private String classAssociation;
+        private String buildingCode;
         private String instructionModeCode;
         private String instructionModeDescription;
         private String mondays;
@@ -43,7 +42,7 @@ public class Course {
     @Data
     @AllArgsConstructor
     public static class Schedule {
-        private List<Block> blocks;
+        private Set<Block> blocks;
         private String term;
     }
 }

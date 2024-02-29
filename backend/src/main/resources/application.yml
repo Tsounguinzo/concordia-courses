@@ -1,4 +1,7 @@
 spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/db
   profiles:
     active: default
 
@@ -21,10 +24,12 @@ spring:
 
 
 app:
+  cors:
+    allowed-origins: http://localhost:8080
   init-db: false
+  seed-dir: backend/src/main/resources/seeds
 
 
 server:
-  port: 9191
+  port: 8080
   forward-headers-strategy: native
-

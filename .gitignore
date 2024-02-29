@@ -1,0 +1,23 @@
+/backend/HELP.md
+/backend/target/
+!.mvn/wrapper/maven-wrapper.jar
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+#mac-os
+**/*.DS_Store
+
+### UI ###
+/ui/node_modules
+/ui/build
+/ui/.svelte-kit
+/ui/package
+/ui/.env
+/ui/.env.*
+!.env.example
+/ui/vite.config.js.timestamp-*
+/ui/vite.config.ts.timestamp-*

@@ -2,8 +2,6 @@
     import {onMount} from "svelte";
     import {page} from "$app/stores";
     import Transition from 'svelte-transition'
-    import {twMerge} from "tailwind-merge";
-    import {darkModeOn} from "$lib/provider/darkmode";
     import DarkModeToggle from "$lib/components/Layout/DarkModeToggle.svelte";
     import {X} from "lucide-svelte";
     import {getUrl} from "$lib/utils";
@@ -64,23 +62,11 @@
                                 {#each navigationItems as item}
                                     <a href={item.href}
                                        class='-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-neutral-700'
-                                       on:click|preventDefault={() => mobileMenuOpen.set(false)}
+                                       on:click={() => mobileMenuOpen.set(false)}
                                     >
                                         {item.name}
                                     </a>
                                 {/each}
-                                <a
-                                        href={'/privacy'}
-                                        class='-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-neutral-700'
-                                >
-                                    Privacy Policy
-                                </a>
-                                <a
-                                        href={'tos'}
-                                        class='-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-neutral-700'
-                                >
-                                    Terms and Conditions
-                                </a>
                             </div>
                             <div class='py-6'>
                                 {#if user}

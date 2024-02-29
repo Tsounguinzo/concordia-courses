@@ -1,20 +1,17 @@
 <script lang="ts">
     import {getSearchIndex, updateSearchResults} from "$lib/searchIndex";
     import {writable} from "svelte/store";
-    import {repo} from "$lib/repo";
-    import {onMount} from "svelte";
-    import {toast} from "svelte-sonner";
     import {mobileMenuOpen, searchResults} from "$lib/store";
     import CourseSearchBar from "$lib/components/Search/CourseSearchBar.svelte";
     import {page} from "$app/stores";
     import {getUrl} from "$lib/utils";
     import DarkModeToggle from "$lib/components/Layout/DarkModeToggle.svelte";
-    import {Menu} from "lucide-svelte";
+    import {Menu, User} from "lucide-svelte";
     import SideNav from "$lib/components/Layout/SideNav.svelte";
+    import ProfileDropdown from "$lib/components/profile/ProfileDropdown.svelte";
+    import NotificationDropdown from "$lib/components/profile/NotificationDropdown.svelte";
 
     const {courses, instructors, coursesIndex, instructorsIndex} = getSearchIndex();
-
-    const arrowColor = writable('text-gray-900 dark:text-gray-200');
 
     const user = null; //useAuth();
     $: pathName = $page.url.pathname;
@@ -56,7 +53,7 @@
     >
         <div class='z-40 my-auto mr-auto flex min-w-[48px] lg:flex-1'>
             <a href='/' class='-m-1.5 p-1.5'>
-                <img class='h-12 w-auto' src='/favicon.png' alt='concordia logo'/>
+                <img class='h-12 w-auto' src='/favicon.png' alt='Study Hub'/>
             </a>
         </div>
         {#if pathName !== '/'}
@@ -66,7 +63,7 @@
         {/if}
         {#if user}
             <div class='mr-2 lg:hidden'>
-                <!--NotificationDropdown {notifications}/-->
+                <NotificationDropdown {notifications}/>
             </div>
         {/if}
         <div class='flex lg:hidden'>
@@ -86,20 +83,17 @@
             <div class='my-auto hidden gap-x-1 lg:ml-auto lg:flex lg:items-center'>
                 <DarkModeToggle/>
                 {#if user}
-                    <!--NotificationDropdown {notifications} setNotifications={setNotifications}/-->
+                    <NotificationDropdown {notifications}/>
                 {/if}
             </div>
             <div class='hidden lg:ml-4 lg:flex lg:justify-end'>
                 {#if $user}
-                    <!--ProfileDropdown/-->
+                    <ProfileDropdown/>
                 {:else}
+
                     <a href={`${getUrl()}/api/auth/login?redirect=${$page.url}`}
-                       class='my-auto text-sm font-semibold leading-6 text-gray-900 dark:text-gray-200'
-                       on:mouseenter={() => arrowColor.set('text-blue-400')}
-                       on:mouseleave={() => arrowColor.set('text-gray-900 dark:text-gray-200')}
-                    >
-                        Log in{' '}
-                        <span class={$arrowColor} aria-hidden='true'> &rarr; </span>{' '}
+                       class='rounded-md bg-slate-50 px-3 py-2 text-sm font-semibold text-gray-500 hover:bg-gray-100 dark:bg-neutral-800 dark:text-gray-200 dark:hover:bg-neutral-700'>
+                        Log in
                     </a>
                 {/if}
             </div>

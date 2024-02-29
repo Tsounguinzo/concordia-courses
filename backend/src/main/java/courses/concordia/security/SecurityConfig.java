@@ -1,12 +1,12 @@
 package courses.concordia.security;
 
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -15,19 +15,17 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfig{
 
     @Bean
-    public SecurityFilterChain oauth2LoginFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .authorizeHttpRequests(authz -> {
-                    authz.requestMatchers(AntPathRequestMatcher.antMatcher("/")).permitAll(); // Allow unauthenticated access
-                    authz.anyRequest().authenticated();
-                })
-                .csrf(csrf -> csrf.ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/**")))
-                .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
-                .oauth2Login(oauth2 -> oauth2
-                        //login unsuccessfully, redirect to /login
-                        .defaultSuccessUrl("/auth/authorized")
-                        .failureUrl("/login"))
-                .logout(withDefaults())
+                .authorizeHttpRequests(authz -> authz
+                        .requestMatchers("/api/v1/courses/**").permitAll() // Allow unauthenticated access
+                        .requestMatchers("/api/v1/reviews/**").permitAll() // Allow unauthenticated access
+                        .requestMatchers(HttpMethod.DELETE,"/api/v1/reviews/**").permitAll() // Allow unauthenticated access
+                        .requestMatchers(HttpMethod.PUT,"/api/v1/reviews/**").permitAll() // Allow unauthenticated access
+                        //.anyRequest().authenticated()
+                )
+                .csrf().disable()
+                //.oauth2Login(withDefaults())
                 .build();
     }
 }

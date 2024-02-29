@@ -60,9 +60,7 @@ export const sortTerms = (terms: string[]) => {
     const order = ['Fall', 'Fall/Winter', 'Winter', 'Spring', 'Summer'];
 
     return terms.sort((a, b) => {
-        return a.split(' ')[1] === b.split(' ')[1]
-            ? order.indexOf(a.split(' ')[0]) - order.indexOf(b.split(' ')[0])
-            : parseInt(a.split(' ')[1], 10) - parseInt(b.split(' ')[1], 10);
+        return a === b ? 0 : order.indexOf(a) - order.indexOf(b);
     });
 };
 
@@ -70,13 +68,13 @@ export const sortSchedulesByBlocks = (schedules: Schedule[]) => {
     const order = ['LEC', 'TUT', 'LAB'];
 
     return schedules.sort((a, b) => {
-        const aNum = a.blocks[0].classNumber;
-        const bNum = b.blocks[0].classNumber;
+        const aNum = a.blocks[0].section;
+        const bNum = b.blocks[0].section;
         const aType = a.blocks[0].componentCode;
         const bType = b.blocks[0].componentCode;
 
         return aType === bType
-            ? aNum - bNum
+            ? aNum.localeCompare(bNum)
             : order.indexOf(aType) - order.indexOf(bType);
     });
 };

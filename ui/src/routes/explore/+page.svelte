@@ -1,5 +1,4 @@
 <script lang="ts">
-    import {getCurrentTerms} from "$lib/utils";
     import type {Course} from "$lib/model/Course";
     import {writable} from "svelte/store";
     import {onMount} from "svelte";
@@ -12,7 +11,7 @@
     import JumpToTopButton from "$lib/components/Explore/JumpToTopButton.svelte";
     import CourseCard from "$lib/components/Explore/CourseCard.svelte";
     import {sortByOptions} from "$lib/types";
-    import {darkModeOn} from "$lib/provider/darkmode";
+    import {darkModeOn} from "$lib/darkmode";
     import Skeleton from "$lib/components/Skeleton.svelte";
     import {toast} from "svelte-sonner";
 
@@ -56,18 +55,16 @@
     };
 
     const limit = 20;
-    const currentTerms = getCurrentTerms();
-
     let courses: Course[];
     let hasMore = true;
-    const offset = writable(limit);
-
+    let offset = limit;
     let query = '';
     const searchSelected = writable<boolean>(false);
     const selectedLevels = writable<string[]>([]);
     const selectedSubjects = writable<string[]>([]);
     const selectedTerms = writable<string[]>([]);
     const sortBy = writable<SortByType>('');
+    let isMounted = false;
 
     const nullable = (arr: string[]) => (arr.length === 0 ? null : arr);
 
@@ -79,41 +76,39 @@
         sortBy: makeSortPayload($sortBy),
     };
 
-      $: {
-          repo
-              .getCourses(limit, 0, filters)
-              .then((data) => {
-                  courses = [...data];
-                  hasMore = true;
-                  offset.set(limit);
-              })
-              .catch(() => {
-                  toast.error('Failed to fetch courses. Please try again later.');
-              });
-      }
-
+    const fetchCourses = async (reset = false) => {
+        try {
+            const data = await repo.getCourses(limit, reset ? 0 : offset, filters);
+            if (reset) {
+                courses = data;
+                offset = limit; // Reset offset if it's a fresh fetch
+            } else {
+                courses = [...courses, ...data];
+                offset += limit;
+            }
+            hasMore = true;
+        } catch (error) {
+            toast.error('Failed to fetch courses. Please try again later.');
+        }
+    };
 
     onMount(() => {
-        repo
-            .getCourses(limit, 0, filters)
-            .then((data) => courses = [...data])
-            .catch((e) => {
-                toast.error('Failed to fetch courses. Please try again later.', e);
-            });
-        hasMore = true;
-        offset.set(limit);
-        fetchMore()
+        fetchCourses(true);
+        isMounted = true;
     });
 
+    $: if (isMounted && (query !== '' || $selectedSubjects.length > 0 || $selectedLevels.length > 0 || $selectedTerms.length > 0 || $sortBy !== '')) {
+        fetchCourses(true);
+    }
+
     const fetchMore = async () => {
-        console.log("FETCH CALlllll")
-        const batch = await repo.getCourses(limit, $offset, filters);
+        const batch = await repo.getCourses(limit, offset, filters);
 
         if (!batch?.length) {
             hasMore = false;
         } else {
             courses = [...courses, ...batch];
-            offset.set($offset + limit);
+            offset = offset + limit;
         }
     };
 </script>
@@ -148,20 +143,22 @@
                     {#each courses as course}
                         <CourseCard
                                 className='my-1.5'
-                                course={course}
+                                {course}
                                 {query}
                         />
                     {/each}
-                     <InfiniteScroll hasMore={hasMore} threshold={courses?.length || 20} on:loadMore={() => fetchMore()}/>
+                    <InfiniteScroll hasMore={hasMore} threshold={courses?.length || 20} window={true}
+                                    on:loadMore={() => fetchMore()}/>
                 {:else }
                     <div class='mx-2 text-gray-50'>
-                        <Skeleton className='mb-2 rounded-lg first:mt-2' color={$darkModeOn ? 'rgb(38 38 38)' : 'rgb(226 232 240)'}/>
+                        <Skeleton className='mb-2 rounded-lg first:mt-2'
+                                  color={$darkModeOn ? 'rgb(38 38 38)' : 'rgb(226 232 240)'}/>
                     </div>
                 {/if}
 
                 {#if !hasMore}
                     {#if courses?.length}
-                        <div class='mx-[200px] mt-4 text-center'>
+                        <div class='mx-auto mt-4 text-center'>
                             <p class='text-gray-500 dark:text-gray-400'>
                                 No more courses to show
                             </p>
