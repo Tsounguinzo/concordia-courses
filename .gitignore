@@ -1,2 +1,12 @@
+/backend/HELP.md
+/backend/target/
+!.mvn/wrapper/maven-wrapper.jar
+
+### IntelliJ IDEA ###
 .idea
-backend/target/
+*.iws
+*.iml
+*.ipr
+
+#mac-os
+*.DS_Store
