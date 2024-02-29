@@ -10,3 +10,4 @@
 
 #mac-os
 *.DS_Store
+/backend/*.DS_Store
