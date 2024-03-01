@@ -5,7 +5,7 @@
 </script>
 
 {#if ($page.status === 404) }
-    <div class="flex min-h-[calc(100vh-96px)] flex-col items-center justify-center">
+    <div class="flex min-h-[calc(100vh-19vh)] flex-col items-center justify-center">
         <div class='space-y-10 text-center justify-center'>
             <div class="flex items-center max-w-[32rem] my-1">
                 <span class="text-5xl mr-1 font-bold text-gray-900 dark:text-gray-200">{$page.status}</span>
@@ -20,28 +20,11 @@
         </div>
     </div>
 {:else }
-<div class='mt-32 flex h-screen justify-center'>
+<div class='flex min-h-[calc(100vh-19vh)] items-center justify-center'>
         <div class='text-center'>
-          <div>
             <div class='text-xl text-gray-700 dark:text-gray-300'>
               Something went wrong :(
             </div>
-            <div class='py-1.5' />
-            <XCircle
-              class='mx-auto stroke-gray-400 dark:stroke-gray-600'
-              size={40}
-              strokeWidth={2}
-            />
-          </div>
-          <div class='py-4' />
-          <div class='text-red-700 dark:text-red-400'>{$page.error?.message}</div>
-          <div class='py-6' />
-          <button
-            class='mx-auto rounded-lg border border-gray-300 px-3 py-2 text-gray-900 duration-200 hover:bg-gray-300 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-700'
-            on:click={goto($page.url)}
-          >
-            Try again
-          </button>
           <div class='py-3' />
           <div class='text-sm dark:text-gray-200'>
             Help us fix it by reporting this error with a screenshot on{' '}
