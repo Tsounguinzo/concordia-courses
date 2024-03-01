@@ -17,7 +17,7 @@
         <main class='mx-2 md:mx-16 lg:mx-24 xl:mx-40'>
             <slot/>
         </main>
-        <div class='hidden lg:block {$page.url.pathname === "/" ? "absolute" : "static"} bottom-0'>
+        <div class='hidden lg:block {$page.url.pathname.match(/^(\/|\/login|\/profile)$/) ? "absolute" : "static"} bottom-0'>
             <Footer />
         </div>
     </div>

@@ -4,7 +4,6 @@
     import {mobileMenuOpen, searchResults} from "$lib/store";
     import CourseSearchBar from "$lib/components/Search/CourseSearchBar.svelte";
     import {page} from "$app/stores";
-    import {getUrl} from "$lib/utils";
     import DarkModeToggle from "$lib/components/Layout/DarkModeToggle.svelte";
     import {Menu, User} from "lucide-svelte";
     import SideNav from "$lib/components/Layout/SideNav.svelte";
@@ -91,7 +90,7 @@
                     <ProfileDropdown/>
                 {:else}
 
-                    <a href={`${getUrl()}/api/auth/login?redirect=${$page.url}`}
+                    <a href="/login"
                        class='rounded-md bg-slate-50 px-3 py-2 text-sm font-semibold text-gray-500 hover:bg-gray-100 dark:bg-neutral-800 dark:text-gray-200 dark:hover:bg-neutral-700'>
                         Log in
                     </a>
