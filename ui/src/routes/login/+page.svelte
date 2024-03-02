@@ -6,6 +6,7 @@
     import FieldError from "$lib/components/common/form/FieldError.svelte";
     import FieldLabel from "$lib/components/common/form/FieldLabel.svelte";
     import Submit from "$lib/components/login/Submit.svelte";
+    import Seo from "$lib/components/common/Seo.svelte";
 
     const initialValues = {
         username: '',
@@ -34,7 +35,7 @@
     const keys = ['SingIn', 'SingUp'];
     const tabs = createTabs({selected: 'SingIn'})
 </script>
-
+<Seo title="StudyHub | Login" description="Login to concordia.courses" />
 <div class='mx-auto max-w-2xl'>
     <div use:tabs.list class='m-4 flex space-x-1 rounded-xl bg-slate-200 p-1 dark:bg-neutral-700/20'>
         {#each keys as value}

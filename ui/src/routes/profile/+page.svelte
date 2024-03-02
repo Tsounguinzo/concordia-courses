@@ -13,6 +13,7 @@
     import {createTabs} from "svelte-headlessui";
     import {twMerge} from "tailwind-merge";
     import {onMount} from "svelte";
+    import Seo from "$lib/components/common/Seo.svelte";
 
     const user = {};
 
@@ -61,7 +62,7 @@
     const keys = ['Reviews', 'Subscriptions'];
     const tabs = createTabs({selected: 'Reviews'})
 </script>
-
+<Seo title="StudyHub | Profile" description="Profile on concordia.courses" />
 <div class='mx-auto max-w-2xl'>
     <JumpToTopButton/>
     <div class='flex w-full justify-center'>

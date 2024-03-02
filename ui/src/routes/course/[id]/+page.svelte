@@ -18,6 +18,7 @@
     import type {Interaction} from "$lib/model/Interaction";
     import AddReviewForm from "$lib/components/course/review/AddReviewForm.svelte";
     import {goto} from "$app/navigation";
+    import Seo from "$lib/components/common/Seo.svelte";
 
     let params = $page.params.id;
 
@@ -139,7 +140,7 @@
     };
 
 </script>
-
+<Seo title={params?.replace('-', ' ').toUpperCase()} description="{'Give and see reviews of ' + params?.replace('-', ' ').toUpperCase() + ' on concordia.courses'}" />
 
 {#if $course === undefined || $showingReviews === undefined}
     <Loading/>

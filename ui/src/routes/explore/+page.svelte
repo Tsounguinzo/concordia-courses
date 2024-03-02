@@ -14,6 +14,7 @@
     import {darkModeOn} from "$lib/darkmode";
     import Skeleton from "$lib/components/common/loader/Skeleton.svelte";
     import {toast} from "svelte-sonner";
+    import Seo from "$lib/components/common/Seo.svelte";
 
     type SortByType = (typeof sortByOptions)[number];
 
@@ -112,7 +113,7 @@
         }
     };
 </script>
-
+<Seo title="StudyHub | Explore" description="Explore courses at concordia.courses" />
 <div class='flex flex-col items-center py-8'>
     <h1 class='mb-16 text-center text-5xl font-bold tracking-tight text-gray-900 dark:text-gray-200 sm:text-5xl'>
         Explore all courses
