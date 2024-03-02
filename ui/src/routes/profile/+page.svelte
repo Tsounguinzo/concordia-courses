@@ -20,25 +20,25 @@
     const userSubscriptions = writable<Subscription[]>([]);
 
     onMount(() => {
-        if (!user) return;
+        if (user) {
+            repo
+                .getReviews(user.id)
+                .then((data) => userReviews.set(data))
+                .catch(() =>
+                    toast.error(
+                        'An error occurred while fetching your reviews, please try again later.'
+                    )
+                );
 
-        repo
-            .getReviews(user.id)
-            .then((data) => userReviews.set(data))
-            .catch(() =>
-                toast.error(
-                    'An error occurred while fetching your reviews, please try again later.'
-                )
-            );
-
-        repo
-            .getSubscriptions()
-            .then((data) => userSubscriptions.set(data))
-            .catch(() =>
-                toast.error(
-                    'An error occurred while fetching your subscriptions, please try again later.'
-                )
-            );
+            repo
+                .getSubscriptions()
+                .then((data) => userSubscriptions.set(data))
+                .catch(() =>
+                    toast.error(
+                        'An error occurred while fetching your subscriptions, please try again later.'
+                    )
+                );
+        }
     })
 
 

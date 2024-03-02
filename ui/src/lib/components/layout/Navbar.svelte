@@ -20,12 +20,12 @@
     const notifications = writable<Notification[]>([]);
 
     onMount(() => {
-        if (!user) return;
-
-        repo
-            .getNotifications()
-            .then((data) => notifications.set(data))
-            .catch(() => toast.error('Failed to get notifications.'));
+        if (user) {
+            repo
+                .getNotifications()
+                .then((data) => notifications.set(data))
+                .catch(() => toast.error('Failed to get notifications.'));
+        }
     });
 
     const handleInputChange = (query: string) => {

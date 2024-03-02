@@ -16,34 +16,34 @@
 
     const isSubscribed = writable(false);
 
-     $: if (course) {
-        if (!user) return;
-
-        repo
-            .getSubscription(course._id)
-            .then((data) => {
-                isSubscribed.set(data !== null);
-            })
-            .catch(() =>
-                toast.error(
-                    `Failed to check subscription for course ${course.subject} ${course.catalog}`
-                )
-            );
+    $: if (course) {
+        if (user) {
+            repo
+                .getSubscription(course._id)
+                .then((data) => {
+                    isSubscribed.set(data !== null);
+                })
+                .catch(() =>
+                    toast.error(
+                        `Failed to check subscription for course ${course.subject} ${course.catalog}`
+                    )
+                );
+        }
     }
 
     onMount(() => {
-        if (!user) return;
-
-        repo
-            .getSubscription(course._id)
-            .then((data) => {
-                isSubscribed.set(data !== null);
-            })
-            .catch(() =>
-                toast.error(
-                    `Failed to check subscription for course ${course.subject} ${course.catalog}`
-                )
-            );
+        if (user) {
+            repo
+                .getSubscription(course._id)
+                .then((data) => {
+                    isSubscribed.set(data !== null);
+                })
+                .catch(() =>
+                    toast.error(
+                        `Failed to check subscription for course ${course.subject} ${course.catalog}`
+                    )
+                );
+        }
     });
 
 
