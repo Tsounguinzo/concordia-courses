@@ -7,7 +7,7 @@ import type { Notification } from './model/Notification';
 import type { Review } from './model/Review';
 import type { SearchResults } from './model/SearchResults';
 import type { Subscription } from './model/Subscription';
-import type { UserResponse } from './model/User';
+import type {User, UserResponse} from './model/User';
 
 const prefix = '/api/v1';
 
@@ -242,6 +242,24 @@ export const repo = {
         body: JSON.stringify(filters),
       }
     );
+  },
+
+  async signUp(user: User): Promise<Response> {
+    return client.deserialize<Response>('POST', '/auth/signup', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    });
+  },
+
+  async signIn(user: User): Promise<Response> {
+    return client.deserialize<Response>('POST', '/auth/signin', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    });
   },
 
   async getUser(): Promise<UserResponse> {
