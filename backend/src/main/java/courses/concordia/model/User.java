@@ -1,15 +1,21 @@
 package courses.concordia.model;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@Accessors(chain = true)
 @Document(collection = "users")
 public class User {
     @MongoId
     private String _id;
-    private String email;
-    private String firstName;
-    private String lastName;
+    private String username;
+    private String password;
 }

@@ -6,18 +6,19 @@
     import type {Course} from "$lib/model/Course";
     import {repo} from "$lib/repo";
     import {toast} from "svelte-sonner";
-    import Loading from "$lib/components/Loading.svelte";
-    import CourseInfo from "$lib/components/Course/CourseInfo.svelte";
-    import CourseReviewPrompt from "$lib/components/Course/CourseReviewPrompt.svelte";
-    import ReviewEmptyPrompt from "$lib/components/Course/ReviewEmptyPrompt.svelte";
-    import CourseRequirements from "$lib/components/Course/CourseRequirements.svelte";
-    import ReviewFilter from "$lib/components/Course/ReviewFilter.svelte";
-    import SchedulesDisplay from "$lib/components/Course/Schedule/SchedulesDisplay.svelte";
-    import CourseReview from "$lib/components/Course/Review/CourseReview.svelte";
-    import EditReviewForm from "$lib/components/Course/Review/EditReviewForm.svelte";
+    import Loading from "$lib/components/common/loader/Loading.svelte";
+    import CourseInfo from "$lib/components/course/CourseInfo.svelte";
+    import CourseReviewPrompt from "$lib/components/course/CourseReviewPrompt.svelte";
+    import ReviewEmptyPrompt from "$lib/components/course/ReviewEmptyPrompt.svelte";
+    import CourseRequirements from "$lib/components/course/CourseRequirements.svelte";
+    import ReviewFilter from "$lib/components/course/review/ReviewFilter.svelte";
+    import SchedulesDisplay from "$lib/components/course/schedule/SchedulesDisplay.svelte";
+    import CourseReview from "$lib/components/course/review/CourseReview.svelte";
+    import EditReviewForm from "$lib/components/course/review/EditReviewForm.svelte";
     import type {Interaction} from "$lib/model/Interaction";
-    import AddReviewForm from "$lib/components/Course/Review/AddReviewForm.svelte";
+    import AddReviewForm from "$lib/components/course/review/AddReviewForm.svelte";
     import {goto} from "$app/navigation";
+    import Seo from "$lib/components/common/Seo.svelte";
 
     let params = $page.params.id;
 
@@ -32,9 +33,7 @@
     const showAllReviews = writable(false);
     const showingReviews = writable<Review[]>([]);
     const userInteractions = writable<Interaction[] | undefined>([]);
-
     const selectedInstructor = writable<string>('');
-    const likesUpdate = writable<number>(0);
 
     $: if(params) {
         firstFetch = true;
@@ -59,13 +58,12 @@
                   showingReviews.set(payload.reviews);
                   allReviews.set(payload.reviews);
 
-                /*  if (user && id) {
+                  if (user && id) {
                       const courseInteractionsPayload =
                           await repo.getUserInteractionsForCourse(id, user?.id);
 
                       userInteractions.set(courseInteractionsPayload.interactions);
                   }
-                 */
 
                   firstFetch = false;
               } catch (err) {
@@ -141,9 +139,8 @@
         };
     };
 
-    //likesUpdate={updateLikes(userReview)}
 </script>
-
+<Seo title={params?.replace('-', ' ').toUpperCase()} description="{'Give and see reviews of ' + params?.replace('-', ' ').toUpperCase() + ' on concordia.courses'}" />
 
 {#if $course === undefined || $showingReviews === undefined}
     <Loading/>
@@ -179,7 +176,7 @@
                                 editReview={editReviewOpen}
                                 review={userReview}
                                 interactions={$userInteractions}
-                                {likesUpdate}
+                                likesUpdate={updateLikes(userReview)}
                         />
                     {/if}
                     {#if $showingReviews}
@@ -192,7 +189,7 @@
                                     editReview={editReviewOpen}
                                     review={review}
                                     interactions={$userInteractions}
-                                    {likesUpdate}
+                                    likesUpdate={updateLikes(userReview)}
                             />
                         {/each}
                     {/if}
@@ -241,7 +238,7 @@
                                     editReview={editReviewOpen}
                                     review={userReview}
                                     interactions={$userInteractions}
-                                    {likesUpdate}
+                                    likesUpdate={updateLikes(userReview)}
                             />
                         {/if}
 
@@ -257,7 +254,7 @@
                                         editReview={editReviewOpen}
                                         review={review}
                                         interactions={$userInteractions}
-                                        {likesUpdate}
+                                        likesUpdate={updateLikes(userReview)}
                                 />
                             {/each}
                         {/if}

@@ -1,7 +1,7 @@
 <script lang="ts">
-    import DeleteButton from "$lib/components/Course/Review/DeleteButton.svelte";
-    import CourseReview from "$lib/components/Course/Review/CourseReview.svelte";
-    import JumpToTopButton from "$lib/components/Explore/JumpToTopButton.svelte";
+    import DeleteButton from "$lib/components/course/review/DeleteButton.svelte";
+    import CourseReview from "$lib/components/course/review/CourseReview.svelte";
+    import JumpToTopButton from "$lib/components/common/JumpToTopButton.svelte";
     import {Bell, FileText, User} from "lucide-svelte";
     import {writable} from "svelte/store";
     import type {Review} from "$lib/model/Review";
@@ -9,37 +9,39 @@
     import {repo} from "$lib/repo";
     import {courseIdToUrlParam, spliceCourseCode} from "$lib/utils";
     import {toast} from "svelte-sonner";
-    import Spinner from "$lib/components/Spinner.svelte";
+    import Spinner from "$lib/components/common/loader/Spinning.svelte";
     import {createTabs} from "svelte-headlessui";
     import {twMerge} from "tailwind-merge";
+    import {onMount} from "svelte";
+    import Seo from "$lib/components/common/Seo.svelte";
 
     const user = {};
 
     const userReviews = writable<Review[]>([]);
     const userSubscriptions = writable<Subscription[]>([]);
 
-   /* onMount(() => {
-        if (!user) return;
+    onMount(() => {
+        if (user) {
+            repo
+                .getReviews(user.id)
+                .then((data) => userReviews.set(data))
+                .catch(() =>
+                    toast.error(
+                        'An error occurred while fetching your reviews, please try again later.'
+                    )
+                );
 
-        repo
-            .getReviews(user.id)
-            .then((data) => userReviews.set(data))
-            .catch(() =>
-                toast.error(
-                    'An error occurred while fetching your reviews, please try again later.'
-                )
-            );
-
-        repo
-            .getSubscriptions()
-            .then((data) => userSubscriptions.set(data))
-            .catch(() =>
-                toast.error(
-                    'An error occurred while fetching your subscriptions, please try again later.'
-                )
-            );
+            repo
+                .getSubscriptions()
+                .then((data) => userSubscriptions.set(data))
+                .catch(() =>
+                    toast.error(
+                        'An error occurred while fetching your subscriptions, please try again later.'
+                    )
+                );
+        }
     })
-    */
+
 
     const removeSubscription = async (courseId: string) => {
         try {
@@ -60,7 +62,7 @@
     const keys = ['Reviews', 'Subscriptions'];
     const tabs = createTabs({selected: 'Reviews'})
 </script>
-
+<Seo title="StudyHub | Profile" description="Profile on concordia.courses" />
 <div class='mx-auto max-w-2xl'>
     <JumpToTopButton/>
     <div class='flex w-full justify-center'>

@@ -1,13 +1,15 @@
 package courses.concordia.model;
 
 import com.fasterxml.jackson.annotation.JsonValue;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
+import lombok.experimental.Accessors;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@Accessors(chain = true)
 @Document(collection = "interactions")
 public class Interaction {
     @MongoId

@@ -4,10 +4,10 @@
     import {writable} from "svelte/store";
     import {goto} from "$app/navigation";
     import type {SearchResults} from "$lib/model/SearchResults";
-    import SearchBar from "$lib/components/Search/SearchBar.svelte";
+    import SearchBar from "./SearchBar.svelte";
     import {twMerge} from "tailwind-merge";
-    import SearchResult from "$lib/components/Search/SearchResult.svelte";
-    import ExploreButton from "$lib/components/Search/ExploreButton.svelte";
+    import SearchResult from "./SearchResult.svelte";
+    import ExploreButton from "./ExploreButton.svelte";
 
     export let results: SearchResults;
     export let handleInputChange: (query: string) => void;

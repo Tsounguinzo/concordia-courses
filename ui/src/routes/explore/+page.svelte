@@ -3,17 +3,18 @@
     import {writable} from "svelte/store";
     import {onMount} from "svelte";
     import {repo} from "$lib/repo";
-    import FilterToggle from "$lib/components/Filter/FilterToggle.svelte";
-    import ExploreFilter from "$lib/components/Explore/ExploreFilter.svelte";
+    import FilterToggle from "$lib/components/common/filter/FilterToggle.svelte";
+    import ExploreFilter from "$lib/components/explore/ExploreFilter.svelte";
     import SearchBar from "$lib/components/Search/SearchBar.svelte";
     import InfiniteScroll from 'svelte-infinite-scroll';
-    import Spinner from "$lib/components/Spinner.svelte";
-    import JumpToTopButton from "$lib/components/Explore/JumpToTopButton.svelte";
-    import CourseCard from "$lib/components/Explore/CourseCard.svelte";
+    import Spinner from "$lib/components/common/loader/Spinning.svelte";
+    import JumpToTopButton from "$lib/components/common/JumpToTopButton.svelte";
+    import CourseCard from "$lib/components/explore/CourseCard.svelte";
     import {sortByOptions} from "$lib/types";
     import {darkModeOn} from "$lib/darkmode";
-    import Skeleton from "$lib/components/Skeleton.svelte";
+    import Skeleton from "$lib/components/common/loader/Skeleton.svelte";
     import {toast} from "svelte-sonner";
+    import Seo from "$lib/components/common/Seo.svelte";
 
     type SortByType = (typeof sortByOptions)[number];
 
@@ -112,7 +113,7 @@
         }
     };
 </script>
-
+<Seo title="StudyHub | Explore" description="Explore courses at concordia.courses" />
 <div class='flex flex-col items-center py-8'>
     <h1 class='mb-16 text-center text-5xl font-bold tracking-tight text-gray-900 dark:text-gray-200 sm:text-5xl'>
         Explore all courses

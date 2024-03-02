@@ -1,10 +1,10 @@
 <script lang="ts">
     import "../app.css";
     import {darkModeOn} from "$lib/darkmode";
-    import Navbar from "$lib/components/Layout/Navbar.svelte";
+    import Navbar from "$lib/components/layout/Navbar.svelte";
     import {onMount} from "svelte";
     import {Toaster} from "svelte-sonner";
-    import Footer from "$lib/components/Layout/Footer.svelte";
+    import Footer from "$lib/components/layout/Footer.svelte";
     import {page} from "$app/stores";
 
     onMount(() => darkModeOn.set(localStorage.getItem('theme') === 'dark'))
@@ -17,7 +17,7 @@
         <main class='mx-2 md:mx-16 lg:mx-24 xl:mx-40'>
             <slot/>
         </main>
-        <div class='hidden lg:block {$page.url.pathname === "/" ? "absolute" : "static"} bottom-0'>
+        <div class='hidden lg:block {$page.url.pathname.match(/^(\/|\/login|\/profile)$/) ? "absolute" : "static"} bottom-0'>
             <Footer />
         </div>
     </div>
