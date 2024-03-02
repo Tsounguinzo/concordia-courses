@@ -1,21 +1,31 @@
 package courses.concordia.dto.model.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.Accessors;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
-@Getter
-@Setter
-@Accessors(chain = true)
-@NoArgsConstructor
-@ToString
-@JsonInclude(value = JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDto {
+
+    @NotNull
+    @NotEmpty
     private String username;
+
+    @NotNull
+    @NotEmpty
+    private String email;
+
+    @NotNull
+    @NotEmpty
     private String password;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 }
