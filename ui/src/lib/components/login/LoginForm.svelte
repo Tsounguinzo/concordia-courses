@@ -1,7 +1,7 @@
 <script>
     import {Field} from "sveltik/src";
-    import FieldError from "$lib/components/Course/Review/FieldError.svelte";
-    import FieldLabel from "$lib/components/Course/Review/FieldLabel.svelte";
+    import FieldError from "$lib/components/common/form/FieldError.svelte";
+    import FieldLabel from "$lib/components/common/form/FieldLabel.svelte";
 
     export let props;
 </script>
@@ -38,7 +38,7 @@
     </div>
     <div class='flex max-sm:hidden sm:w-1/2 items-center justify-center'>
         <a href='https://concordia-groups.web.app' class='-m-1.5 p-1.5'>
-            <img class='md:h-28 w-auto' src='/favicon.png' alt='Study Hub'/>
+            <img class='md:h-28 w-auto' src='/studyhub.png' alt='Study Hub'/>
         </a>
     </div>
 </div>

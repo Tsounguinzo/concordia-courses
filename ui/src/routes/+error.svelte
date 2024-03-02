@@ -1,7 +1,5 @@
 <script>
     import {page} from "$app/stores";
-    import {XCircle} from "lucide-svelte";
-    import {goto} from "$app/navigation";
 </script>
 
 {#if ($page.status === 404) }

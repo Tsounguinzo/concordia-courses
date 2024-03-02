@@ -3,8 +3,8 @@
     import {twMerge} from "tailwind-merge";
     import {Field, Form, Sveltik} from "sveltik/src";
     import LoginForm from "$lib/components/login/LoginForm.svelte";
-    import FieldError from "$lib/components/Course/Review/FieldError.svelte";
-    import FieldLabel from "$lib/components/Course/Review/FieldLabel.svelte";
+    import FieldError from "$lib/components/common/form/FieldError.svelte";
+    import FieldLabel from "$lib/components/common/form/FieldLabel.svelte";
     import Submit from "$lib/components/login/Submit.svelte";
 
     const initialValues = {

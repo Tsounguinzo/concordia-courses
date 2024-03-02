@@ -3,16 +3,16 @@
     import {writable} from "svelte/store";
     import {onMount} from "svelte";
     import {repo} from "$lib/repo";
-    import FilterToggle from "$lib/components/Filter/FilterToggle.svelte";
-    import ExploreFilter from "$lib/components/Explore/ExploreFilter.svelte";
+    import FilterToggle from "$lib/components/common/filter/FilterToggle.svelte";
+    import ExploreFilter from "$lib/components/explore/ExploreFilter.svelte";
     import SearchBar from "$lib/components/Search/SearchBar.svelte";
     import InfiniteScroll from 'svelte-infinite-scroll';
-    import Spinner from "$lib/components/Spinner.svelte";
-    import JumpToTopButton from "$lib/components/Explore/JumpToTopButton.svelte";
-    import CourseCard from "$lib/components/Explore/CourseCard.svelte";
+    import Spinner from "$lib/components/common/loader/Spinning.svelte";
+    import JumpToTopButton from "$lib/components/common/JumpToTopButton.svelte";
+    import CourseCard from "$lib/components/explore/CourseCard.svelte";
     import {sortByOptions} from "$lib/types";
     import {darkModeOn} from "$lib/darkmode";
-    import Skeleton from "$lib/components/Skeleton.svelte";
+    import Skeleton from "$lib/components/common/loader/Skeleton.svelte";
     import {toast} from "svelte-sonner";
 
     type SortByType = (typeof sortByOptions)[number];
@@ -131,7 +131,7 @@
         </div>
         <div class='lg:flex-1'>
             <div class='ml-auto flex w-full max-w-xl flex-col overflow-y-hidden'>
-                {#if courses !== undefined}
+                {#if false}
                     <SearchBar
                             handleInputChange={(value) => query = value}
                             iconStyle='mt-2 lg:mt-0'

@@ -1,10 +1,10 @@
 <script lang="ts">
     import "../app.css";
     import {darkModeOn} from "$lib/darkmode";
-    import Navbar from "$lib/components/Layout/Navbar.svelte";
+    import Navbar from "$lib/components/layout/Navbar.svelte";
     import {onMount} from "svelte";
     import {Toaster} from "svelte-sonner";
-    import Footer from "$lib/components/Layout/Footer.svelte";
+    import Footer from "$lib/components/layout/Footer.svelte";
     import {page} from "$app/stores";
 
     onMount(() => darkModeOn.set(localStorage.getItem('theme') === 'dark'))

@@ -3,7 +3,7 @@
     import {getSearchIndex, updateSearchResults} from "$lib/searchIndex";
     import {page} from "$app/stores";
     import {onMount} from "svelte";
-    import {toast, Toaster} from "svelte-sonner";
+    import {toast} from "svelte-sonner";
     import {searchResults} from "$lib/store";
 
 

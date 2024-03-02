@@ -1,7 +1,7 @@
 <script lang="ts">
-    import DeleteButton from "$lib/components/Course/Review/DeleteButton.svelte";
-    import CourseReview from "$lib/components/Course/Review/CourseReview.svelte";
-    import JumpToTopButton from "$lib/components/Explore/JumpToTopButton.svelte";
+    import DeleteButton from "$lib/components/course/review/DeleteButton.svelte";
+    import CourseReview from "$lib/components/course/review/CourseReview.svelte";
+    import JumpToTopButton from "$lib/components/common/JumpToTopButton.svelte";
     import {Bell, FileText, User} from "lucide-svelte";
     import {writable} from "svelte/store";
     import type {Review} from "$lib/model/Review";
@@ -9,16 +9,17 @@
     import {repo} from "$lib/repo";
     import {courseIdToUrlParam, spliceCourseCode} from "$lib/utils";
     import {toast} from "svelte-sonner";
-    import Spinner from "$lib/components/Spinner.svelte";
+    import Spinner from "$lib/components/common/loader/Spinning.svelte";
     import {createTabs} from "svelte-headlessui";
     import {twMerge} from "tailwind-merge";
+    import {onMount} from "svelte";
 
     const user = {};
 
     const userReviews = writable<Review[]>([]);
     const userSubscriptions = writable<Subscription[]>([]);
 
-   /* onMount(() => {
+    onMount(() => {
         if (!user) return;
 
         repo
@@ -39,7 +40,7 @@
                 )
             );
     })
-    */
+
 
     const removeSubscription = async (courseId: string) => {
         try {

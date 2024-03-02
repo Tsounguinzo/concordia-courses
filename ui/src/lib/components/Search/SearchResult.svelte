@@ -2,7 +2,7 @@
     import {writable} from "svelte/store";
     import {Layers, User} from "lucide-svelte";
     import {twMerge} from "tailwind-merge";
-    import Highlight from "$lib/components/Highlight.svelte";
+    import Highlight from "$lib/components/common/Highlight.svelte";
     import {highlightResultStyle} from "$lib/constants";
 
     export let index: number;
