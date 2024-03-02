@@ -131,7 +131,7 @@
         </div>
         <div class='lg:flex-1'>
             <div class='ml-auto flex w-full max-w-xl flex-col overflow-y-hidden'>
-                {#if false}
+                {#if courses !== undefined}
                     <SearchBar
                             handleInputChange={(value) => query = value}
                             iconStyle='mt-2 lg:mt-0'
