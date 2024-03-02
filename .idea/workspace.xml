@@ -46,7 +46,7 @@
       <recent name="$PROJECT_DIR$/backend/src/main/resources/template" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.ConcordiaCoursesApplication">
     <configuration name="ConcordiaCoursesApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="courses.concordia.ConcordiaCoursesApplication" />
       <module name="concordiacourses" />
@@ -60,6 +60,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="ConcordiaCoursesApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="concordiacourses" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="courses.concordia.ConcordiaCoursesApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.ConcordiaCoursesApplication" />
+      <item itemvalue="Spring Boot.ConcordiaCoursesApplication" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.ConcordiaCoursesApplication" />
