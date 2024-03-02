@@ -21,7 +21,7 @@ public class AuthorizationController {
 
     @Autowired
      EmailServiceImpl emailService;
-    private static final Logger LOG = LoggerFactory.getLogger(EmailController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AuthorizationController.class);
     @PostMapping("/authorized")
     public String processSignup(@ModelAttribute("user") @Valid UserDto userDto,
                                 BindingResult result) {

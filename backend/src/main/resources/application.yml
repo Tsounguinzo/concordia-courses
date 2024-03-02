@@ -5,22 +5,17 @@ spring:
   profiles:
     active: default
 
-  security:
-    oauth2:
-      client:
-        registration:
-          ccc:
-            client-Id: fdb53ef1-b2d0-4f6c-afad-406a0d15bd41
-            client-Secret: m518Q~c2Zz3n5Vj_oKmfLP2lCk-UQ3DTvwVBFb7z
-            redirect-uri: http://localhost:9191/login/oauth2/code/ccc
-            scope: "https://graph.microsoft.com/.default"
-            client-name: Concordia Account
-        provider:
-          ccc:
-            issuer-uri: https://login.microsoftonline.com/81b9b473-132d-4efa-b355-55ca32482817/v2.0
-            authorization-Uri: https://login.microsoftonline.com/common/oauth2/v2.0/authorize
-            token-Uri: https://login.microsoftonline.com/common/oauth2/v2.0/token
-            user-Info-Uri: https://graph.microsoft.com/oidc/userinfo
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: cdpl4ter@gmail.com
+    password: tyatgaqfjkfueqyf
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 
 app:
