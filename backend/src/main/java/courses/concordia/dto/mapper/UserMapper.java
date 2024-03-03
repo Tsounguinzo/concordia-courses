@@ -7,8 +7,8 @@ import courses.concordia.model.User;
 
 public class UserMapper {
     public static UserDto toDto(User user) {
-        return new UserDto()
-                .setUsername(user.getUsername())
-                .setPassword(user.getPassword());
+        return new UserDto(user.getUsername(),
+                user.getEmail(),
+                user.getPassword());
     }
 }

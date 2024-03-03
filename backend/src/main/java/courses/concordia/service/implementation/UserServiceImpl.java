@@ -30,9 +30,9 @@ public class UserServiceImpl implements UserService {
     public UserDto signup(UserDto userDto) {
         User user = userRepository.findByUsername(userDto.getUsername());
         if (user == null) {
-            user = new User()
-                    .setUsername(userDto.getUsername())
-                    .setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
+            user = new User(userDto.getUsername(),
+                    userDto.getEmail(),
+                    bCryptPasswordEncoder.encode(userDto.getPassword()));
             return UserMapper.toDto(userRepository.save(user));
         }
         throw exception(USER, DUPLICATE_ENTITY, userDto.getUsername());
