@@ -21,7 +21,7 @@ public class Interaction {
 
     @Getter
     @AllArgsConstructor
-    private enum InteractionKind {
+    public enum InteractionKind {
         LIKE("like"),
         DISLIKE("dislike");
         private final String value;

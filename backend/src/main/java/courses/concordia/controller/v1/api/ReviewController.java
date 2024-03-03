@@ -17,25 +17,25 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @GetMapping
-    public Response getReviews(@RequestParam String userId) {
+    public Response<?> getReviews(@RequestParam String userId) {
         List<ReviewDto> reviews = reviewService.getUserReviews(userId);
         return Response.ok().setPayload(reviews);
     }
 
     @PostMapping
-    public Response addReview(@RequestBody Review review) {
+    public Response<?> addReview(@RequestBody Review review) {
         ReviewDto addedReview = reviewService.addReview(review);
         return Response.ok().setPayload(addedReview);
     }
 
     @PutMapping
-    public Response updateReview(@RequestBody Review review) {
+    public Response<?> updateReview(@RequestBody Review review) {
         ReviewDto addedReview = reviewService.updateReview(review);
         return Response.ok().setPayload(addedReview);
     }
 
     @DeleteMapping
-    public Response deleteReview(@RequestBody IdDto idDto) {
+    public Response<?> deleteReview(@RequestBody IdDto idDto) {
         reviewService.deleteReview(idDto.getId());
         return Response.ok().setPayload("Review was deleted successfully");
     }

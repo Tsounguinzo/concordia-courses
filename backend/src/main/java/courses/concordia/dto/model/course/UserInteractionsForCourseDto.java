@@ -2,9 +2,13 @@ package courses.concordia.dto.model.course;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonValue;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -13,21 +17,9 @@ import lombok.experimental.Accessors;
 @ToString
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class InteractionDto {
-    private InteractionKind kind;
+public class UserInteractionsForCourseDto {
     private String courseId;
-    private String userId;
     private String referrer;
+    private List<InteractionDto> interactions;
 
-    @Getter
-    @AllArgsConstructor
-    public enum InteractionKind {
-        LIKE("like"),
-        DISLIKE("dislike");
-        private final String value;
-        @JsonValue
-        public String toValue() {
-            return this.value;
-        }
-    }
 }
