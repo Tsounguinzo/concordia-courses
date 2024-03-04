@@ -5,7 +5,7 @@ import courses.concordia.dto.model.user.UserDto;
 import courses.concordia.model.User;
 
 public interface UserService {
-    UserDto signup(SignupRequest signupRequest);
+    void signup(SignupRequest signupRequest);
     UserDto changeUsername(UserDto userDto);
     UserDto changePassword(UserDto userDto, String newPassword);
     UserDto getUserFromSession();

@@ -48,22 +48,14 @@ public class AuthorizationController {
 
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signUpUser(@Valid @RequestBody SignupRequest signupRequest) {
+    public Response<?> registerUser(@Valid @RequestBody SignupRequest signupRequest) {
 
         if (!signupRequest.getEmail().endsWith("concordia.ca")) {
-            return ResponseEntity.badRequest().body("Email must be a Concordia email address.");
+            return Response.badRequest().setErrors("Email must be a Concordia email address.");
         }
 
-        UserDto userDto = userService.signup(signupRequest);
-
-        String token = userService.generateTokenForUser(userDto);
-
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("Authorization", "Bearer " + token);
-
-        return ResponseEntity.ok()
-                .headers(responseHeaders)
-                .body(userDto);
+        userService.signup(signupRequest);
+        return Response.ok().setPayload("Registration was successful");
     }
 
 }

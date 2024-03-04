@@ -9,14 +9,10 @@ import courses.concordia.exception.ExceptionType;
 import courses.concordia.model.User;
 import courses.concordia.repository.UserRepository;
 import courses.concordia.service.UserService;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.Optional;
 
 import static courses.concordia.exception.EntityType.USER;
@@ -30,29 +26,25 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Value("${app.jwt-key}")
-    private String jwtSecret;
-    @Value("${app.jwt-exp:604800000}")
-    private String jwtExpirationMs;
-
     @Override
-    public UserDto signup(SignupRequest signupRequest) {
-        User user = userRepository.findByUsername(signupRequest.getUsername());
-        if (user == null) {
-            user = new User()
+    public void signup(SignupRequest signupRequest) {
+        Optional<User> user1 = userRepository.findByUsername(signupRequest.getUsername());
+        Optional<User> user2 = userRepository.findByEmail(signupRequest.getEmail());
+        if (user1.isEmpty() && user2.isEmpty()) {
+            User user = new User()
                     .setUsername(signupRequest.getUsername())
                             .setEmail(signupRequest.getEmail())
                                     .setPassword(bCryptPasswordEncoder.encode(signupRequest.getPassword()));
 
             emailService.sendSimpleEmail(signupRequest.getEmail(), "Welcome", "This is a welcome email for your!!");
-            return UserMapper.toDto(userRepository.save(user));
+            userRepository.save(user);
         }
         throw exception(USER, DUPLICATE_ENTITY, signupRequest.getUsername());
     }
 
     @Override
     public UserDto changeUsername(UserDto userDto) {
-        Optional<User> user = Optional.ofNullable(userRepository.findByUsername(userDto.getUsername()));
+        Optional<User> user = userRepository.findByUsername(userDto.getUsername());
         if (user.isPresent()) {
             User userModel = user.get();
             userModel.setUsername(userDto.getUsername());
@@ -63,7 +55,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto changePassword(UserDto userDto, String newPassword) {
-        Optional<User> user = Optional.ofNullable(userRepository.findByUsername(userDto.getUsername()));
+        Optional<User> user = userRepository.findByUsername(userDto.getUsername());
         if (user.isPresent()) {
             User userModel = user.get();
             userModel.setPassword(bCryptPasswordEncoder.encode(newPassword));
@@ -75,15 +67,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUserFromSession() {
         return null;
-    }
-
-    public String generateTokenForUser(UserDto userDto) {
-        return Jwts.builder()
-                .setSubject(userDto.getEmail())
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(new Date().getTime() + jwtExpirationMs))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
-                .compact();
     }
 
     private RuntimeException exception(EntityType entityType, ExceptionType exceptionType, String... args) {
