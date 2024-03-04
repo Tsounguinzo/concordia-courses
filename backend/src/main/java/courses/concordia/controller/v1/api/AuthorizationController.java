@@ -6,9 +6,12 @@ import courses.concordia.dto.response.Response;
 import courses.concordia.service.implementation.EmailServiceImpl;
 import courses.concordia.service.implementation.UserServiceImpl;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
@@ -18,18 +21,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 
-@Controller
+@RequiredArgsConstructor
+@RestController
+@Slf4j
 @RequestMapping("/api/v1/auth")
 public class AuthorizationController {
+    private final EmailServiceImpl emailService;
+    private final UserServiceImpl userService;
 
-    @Autowired
-    EmailServiceImpl emailService;
-
-    @Autowired
-    UserServiceImpl userService;
-
-
-    private static final Logger LOG = LoggerFactory.getLogger(AuthorizationController.class);
     @PostMapping("/authorized")
     public String processSignup(@ModelAttribute("user") @Valid UserDto userDto,
                                 BindingResult result) {
@@ -39,7 +38,7 @@ public class AuthorizationController {
         try {
             emailService.sendSimpleEmail(userDto.getEmail(), "Welcome", "This is a welcome email for your!!");
         } catch (MailException mailException) {
-            LOG.error("Error while sending out email..{}", mailException.getStackTrace());
+            log.error("Error while sending out email..{}", mailException.getStackTrace());
             return "Unable to send email"+ HttpStatus.INTERNAL_SERVER_ERROR;
         }
         System.out.println(userDto);
@@ -49,34 +48,23 @@ public class AuthorizationController {
 
 
     @PostMapping("/signup")
-    public Response showSignupForm(@RequestBody SignupRequest signupRequest) {
-        UserDto userDto;
+    public ResponseEntity<?> signUpUser(@Valid @RequestBody SignupRequest signupRequest) {
 
-        if(signupRequest.getEmail().contains("concordia.ca")){
-            try {
-                emailService.sendSimpleEmail(signupRequest.getEmail(),
-                        "Message",
-                        "This is a welcome email for you!");
-            }catch (MailException mailException) {
-                LOG.error("Error while sending out email..{}", mailException.getStackTrace());
-                return Response.ok();
-            }
+        if (!signupRequest.getEmail().endsWith("concordia.ca")) {
+            return ResponseEntity.badRequest().body("Email must be a Concordia email address.");
         }
 
-        try{
-            userDto = userService.signup(new UserDto(
-                    signupRequest.getUsername(),
-                    signupRequest.getEmail(),
-                    signupRequest.getPassword()
-            ));
-        }catch (Exception e){
-            return Response.duplicateEntity();
-        }
+        UserDto userDto = userService.signup(signupRequest);
 
-        return Response.ok().setPayload(userDto);
+        String token = userService.generateTokenForUser(userDto);
+
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Authorization", "Bearer " + token);
+
+        return ResponseEntity.ok()
+                .headers(responseHeaders)
+                .body(userDto);
     }
-
-
 
 }
 
