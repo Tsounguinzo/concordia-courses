@@ -1,11 +1,15 @@
 package courses.concordia.controller.v1.api;
 
+import courses.concordia.controller.v1.request.LoginRequest;
 import courses.concordia.controller.v1.request.SignupRequest;
 import courses.concordia.dto.model.user.UserDto;
+import courses.concordia.dto.response.AuthenticationResponse;
 import courses.concordia.dto.response.Response;
+import courses.concordia.service.implementation.AuthenticationServiceImpl;
 import courses.concordia.service.implementation.EmailServiceImpl;
 import courses.concordia.service.implementation.UserServiceImpl;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +22,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 
-@Controller
+@RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
 public class AuthorizationController {
 
@@ -28,10 +33,12 @@ public class AuthorizationController {
     @Autowired
     UserServiceImpl userService;
 
+    private final AuthenticationServiceImpl authenticationService;
+
 
     private static final Logger LOG = LoggerFactory.getLogger(AuthorizationController.class);
     @PostMapping("/authorized")
-    public String processSignup(@ModelAttribute("user") @Valid UserDto userDto,
+    public String authorized(@ModelAttribute("user") @Valid UserDto userDto,
                                 BindingResult result) {
         if (result.hasErrors()) {
             return "signUpForm";
@@ -47,36 +54,20 @@ public class AuthorizationController {
     }
 
 
-
     @PostMapping("/signup")
-    public Response showSignupForm(@RequestBody SignupRequest signupRequest) {
+    public ResponseEntity<AuthenticationResponse> signup(@Valid @RequestBody SignupRequest signupRequest) {
         UserDto userDto;
 
-        if(signupRequest.getEmail().contains("concordia.ca")){
-            try {
-                emailService.sendSimpleEmail(signupRequest.getEmail(),
-                        "Message",
-                        "This is a welcome email for you!");
-            }catch (MailException mailException) {
-                LOG.error("Error while sending out email..{}", mailException.getStackTrace());
-                return Response.ok();
-            }
-        }
+        /*if(!signupRequest.getEmail().endsWith("concordia.ca")){
+            return Response.badRequest().setErrors("Email must be a Concordia email address");
+        }*/
 
-        try{
-            userDto = userService.signup(new UserDto(
-                    signupRequest.getUsername(),
-                    signupRequest.getEmail(),
-                    signupRequest.getPassword()
-            ));
-        }catch (Exception e){
-            return Response.duplicateEntity();
-        }
-
-        return Response.ok().setPayload(userDto);
+        userService.signup(new UserDto(
+                signupRequest.getUsername(),
+                signupRequest.getEmail(),
+                signupRequest.getPassword()
+        ));
+        return ResponseEntity.ok(authenticationService.signup(signupRequest));
     }
-
-
-
 }
 
