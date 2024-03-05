@@ -28,7 +28,7 @@ public class SecurityConfig{
 
         return http
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/api/v1/courses/**","/api/v1/auth/signup").permitAll() // Allow unauthenticated access
+                        .requestMatchers("/api/v1/courses/**","/api/v1/auth/signup","/api/v1/auth/signin","/api/v1/auth/authorized").permitAll() // Allow unauthenticated access
                         .requestMatchers("/api/v1/reviews/**").permitAll() // Allow unauthenticated access
                         .requestMatchers(HttpMethod.DELETE,"/api/v1/reviews/**").permitAll() // Allow unauthenticated access
                         .requestMatchers(HttpMethod.PUT,"/api/v1/reviews/**").permitAll() // Allow unauthenticated access

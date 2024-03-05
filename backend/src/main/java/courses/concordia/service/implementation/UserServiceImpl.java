@@ -1,7 +1,11 @@
 package courses.concordia.service.implementation;
 
+import courses.concordia.controller.v1.request.AuthenticationRequest;
+import courses.concordia.controller.v1.request.LoginRequest;
+import courses.concordia.controller.v1.request.SignupRequest;
 import courses.concordia.dto.mapper.UserMapper;
 import courses.concordia.dto.model.user.UserDto;
+import courses.concordia.dto.response.AuthenticationResponse;
 import courses.concordia.exception.CCException;
 import courses.concordia.exception.EntityType;
 import courses.concordia.exception.ExceptionType;
@@ -10,6 +14,8 @@ import courses.concordia.repository.UserRepository;
 import courses.concordia.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,17 +31,39 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final JwtServiceImpl jwtService;
+    private final AuthenticationManager authenticationManager;
 
     @Override
-    public UserDto signup(UserDto userDto) {
+    public AuthenticationResponse signup(UserDto userDto) {
         User user = userRepository.findByUsername(userDto.getUsername());
+        //userRepository.deleteAll();
         if (user == null) {
             user = new User(userDto.getUsername(),
                     userDto.getEmail(),
                     bCryptPasswordEncoder.encode(userDto.getPassword()));
-            return UserMapper.toDto(userRepository.save(user));
+            var jwtToken = jwtService.generateToken(user);
+            userRepository.save(user);
+            return AuthenticationResponse.builder()
+                    .token(jwtToken)
+                    .build();
         }
         throw exception(USER, DUPLICATE_ENTITY, userDto.getUsername());
+    }
+
+    public AuthenticationResponse authenticate(LoginRequest LoginRequest){
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        LoginRequest.getUsername(),
+                        LoginRequest.getPassword()
+                )
+        );
+        var user = Optional.ofNullable(userRepository.findByUsername(LoginRequest.getUsername()))
+                .orElseThrow();
+        var jwtToken = jwtService.generateToken(user);
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .build();
     }
 
     @Override
