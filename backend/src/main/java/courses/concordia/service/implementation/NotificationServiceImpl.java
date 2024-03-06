@@ -35,7 +35,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void addNotification(Review review) {
+    public void addNotifications(Review review) {
         List<Subscription> subscriptions = subscriptionRepository.findByCourseId(review.getCourseId());
         List<Notification> notifications = subscriptions.stream()
                 .filter(subscription -> !subscription.getUserId().equals(review.getUserId()))

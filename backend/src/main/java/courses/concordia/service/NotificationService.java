@@ -8,7 +8,7 @@ import courses.concordia.model.Review;
 import java.util.List;
 
 public interface NotificationService {
-    void addNotification(Review review);
+    void addNotifications(Review review);
     List<NotificationDto> getNotifications(String userId);
     void updateNotifications(String creatorId, String courseId, Review review);
     void deleteNotification(String userId, String courseId);

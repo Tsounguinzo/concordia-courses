@@ -19,11 +19,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static courses.concordia.exception.EntityType.REVIEW;
-import static courses.concordia.exception.ExceptionType.ENTITY_NOT_FOUND;
 
 @RequiredArgsConstructor
 @Service
@@ -53,13 +49,8 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public void deleteReview(String reviewId) {
-        Optional<Review> review = reviewRepository.findById(reviewId);
-        if (review.isPresent()) {
-            reviewRepository.delete(review.get());
-        } else {
-            throw exception(REVIEW, ENTITY_NOT_FOUND, reviewId);
-        }
+    public void deleteReview(String courseId, String userId) {
+        reviewRepository.deleteByCourseIdAndUserId(courseId, userId);
     }
 
     @Override

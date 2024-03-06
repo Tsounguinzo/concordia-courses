@@ -16,5 +16,5 @@ import lombok.experimental.Accessors;
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ReviewPayloadDto {
-    private String reviewId;
+    private String courseId;
 }

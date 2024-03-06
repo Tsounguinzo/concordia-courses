@@ -124,10 +124,10 @@ export const repo = {
     });
   },
 
-  async deleteReview(reviewId: string): Promise<Response> {
+  async deleteReview(courseId: string): Promise<Response> {
     return client.delete('/reviews', {
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ reviewId: reviewId }),
+      body: JSON.stringify({ courseId: courseId }),
     });
   },
 

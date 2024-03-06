@@ -104,7 +104,7 @@
     };
 
     const handleDelete = async (review: Review) => {
-        const res = await repo.deleteReview(review._id);
+        const res = await repo.deleteReview(review.courseId);
 
         if (res.ok) {
             showingReviews.set($showingReviews?.filter((r) => r.userId !== review.userId));
