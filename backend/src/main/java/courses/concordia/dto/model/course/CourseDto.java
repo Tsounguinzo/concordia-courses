@@ -23,9 +23,9 @@ public class CourseDto {
     private String catalog;
     private String title;
     @ToString.Exclude @EqualsAndHashCode.Exclude
-    private float avgDifficulty = 0.0f;
+    private double avgDifficulty = 0.0f;
     @ToString.Exclude @EqualsAndHashCode.Exclude
-    private float avgRating = 0.0f;
+    private double avgRating = 0.0f;
     @ToString.Exclude @EqualsAndHashCode.Exclude
     private int reviewCount = 0;
     private List<ScheduleDto> schedules;
