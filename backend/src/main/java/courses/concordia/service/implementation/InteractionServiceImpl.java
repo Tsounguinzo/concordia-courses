@@ -6,10 +6,15 @@ import courses.concordia.exception.CCException;
 import courses.concordia.exception.EntityType;
 import courses.concordia.exception.ExceptionType;
 import courses.concordia.model.Interaction;
+import courses.concordia.model.Review;
 import courses.concordia.repository.InteractionRepository;
 import courses.concordia.service.InteractionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,15 +29,23 @@ import static courses.concordia.exception.ExceptionType.ENTITY_NOT_FOUND;
 @Service
 public class InteractionServiceImpl implements InteractionService {
     private final InteractionRepository interactionRepository;
+    private final MongoTemplate mongoTemplate;
+
     @Override
     public InteractionDto.InteractionKind getInteractionKind(String courseId, String userId, String referrer) {
-            Optional<Interaction> interaction = interactionRepository.findByCourseIdAndUserIdAndReferrer(courseId, userId, referrer);
+        Optional<Interaction> interaction = interactionRepository.findByCourseIdAndUserIdAndReferrer(courseId, userId, referrer);
 
-            if (interaction.isPresent()) {
-                return InteractionMapper.toDto(interaction.get()).getKind();
-            }
+        if (interaction.isPresent()) {
+            return InteractionMapper.toDto(interaction.get()).getKind();
+        }
 
-            throw exception(INTERACTION, ENTITY_NOT_FOUND);
+        throw exception(INTERACTION, ENTITY_NOT_FOUND);
+
+        /*
+        Query query = new Query(Criteria.where("courseId").is(courseId).and("userId").is(userId).and("referrer").is(referrer));
+        Interaction interaction = mongoTemplate.findOne(query, Interaction.class);
+        return Optional.ofNullable(interaction).map(Interaction::getKind);
+         */
     }
 
     @Override
@@ -40,6 +53,11 @@ public class InteractionServiceImpl implements InteractionService {
         return interactionRepository.findByCourseIdAndReferrer(courseId, referrer).stream()
                 .map(InteractionMapper::toDto)
                 .collect(Collectors.toList());
+
+        /*
+        Query query = new Query(Criteria.where("courseId").is(courseId).and("referrer").is(referrer));
+        return mongoTemplate.find(query, Interaction.class);
+         */
     }
 
     @Override
@@ -54,14 +72,34 @@ public class InteractionServiceImpl implements InteractionService {
     }
 
     @Override
-    public void deleteInteraction(InteractionDto interactionDto) {
-        Optional<Interaction> interaction = interactionRepository.findByCourseIdAndUserIdAndReferrer(
-                        interactionDto.getCourseId(), interactionDto.getUserId(), interactionDto.getReferrer());
-        if (interaction.isPresent()) {
-            interactionRepository.delete(interaction.get());
-        } else {
-            throw exception(INTERACTION, ENTITY_NOT_FOUND);
+    public void deleteInteraction(String courseId, String userId, String referrer) {
+        Query query = new Query(Criteria.where("courseId").is(courseId)
+                .and("userId").is(userId)
+                .and("referrer").is(referrer));
+        Interaction interaction = mongoTemplate.findAndRemove(query, Interaction.class);
+        if (interaction != null) {
+            Query reviewQuery = new Query(Criteria.where("courseId").is(courseId).and("userId").is(userId));
+            Update update = new Update();
+            if (interaction.getKind() == Interaction.InteractionKind.LIKE) {
+                update.inc("likes", -1);
+            } else {
+                update.inc("likes", 1);
+            }
+            mongoTemplate.updateFirst(reviewQuery, update, Review.class);
         }
+    }
+
+    @Override
+    public void deleteInteractions(String courseId, String userId) {
+        Query query = new Query(Criteria.where("courseId").is(courseId).and("userId").is(userId));
+        mongoTemplate.remove(query, Interaction.class);
+    }
+
+    @Override
+    public List<Interaction> interactionsForReview(String courseId, String userId) {
+        return mongoTemplate.find(
+                new Query(Criteria.where("courseId").is(courseId).and("userId").is(userId)),
+                Interaction.class);
     }
 
     private RuntimeException exception(EntityType entityType, ExceptionType exceptionType, String... args) {

@@ -42,7 +42,7 @@ public class InteractionController {
 
     @DeleteMapping
     public Response<?> deleteInteraction(@RequestBody InteractionDto interaction) {
-        interactionService.deleteInteraction(interaction);
+        interactionService.deleteInteraction(interaction.getCourseId(), interaction.getUserId(), interaction.getReferrer());
         return Response.ok().setPayload("Interaction was deleted successfully");
     }
 }
