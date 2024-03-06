@@ -4,6 +4,8 @@ import courses.concordia.dto.model.course.ReviewDto;
 import courses.concordia.dto.model.course.ReviewPayloadDto;
 import courses.concordia.dto.response.Response;
 import courses.concordia.model.Review;
+import courses.concordia.service.InteractionService;
+import courses.concordia.service.NotificationService;
 import courses.concordia.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,8 @@ import java.util.List;
 @RequestMapping("/api/v1/reviews")
 public class ReviewController {
     private final ReviewService reviewService;
+    private final InteractionService interactionService;
+    private final NotificationService notificationService;
 
     @GetMapping
     public Response<?> getReviews(@RequestParam String userId) {
