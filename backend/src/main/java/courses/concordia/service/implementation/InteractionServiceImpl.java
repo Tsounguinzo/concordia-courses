@@ -25,9 +25,8 @@ import static courses.concordia.exception.ExceptionType.ENTITY_NOT_FOUND;
 public class InteractionServiceImpl implements InteractionService {
     private final InteractionRepository interactionRepository;
     @Override
-    public InteractionDto.InteractionKind getInteractionKind(InteractionDto interactionDto) {
-            Optional<Interaction> interaction = interactionRepository.findByCourseIdAndUserIdAndReferrer(
-                    interactionDto.getCourseId(), interactionDto.getUserId(), interactionDto.getReferrer());
+    public InteractionDto.InteractionKind getInteractionKind(String courseId, String userId, String referrer) {
+            Optional<Interaction> interaction = interactionRepository.findByCourseIdAndUserIdAndReferrer(courseId, userId, referrer);
 
             if (interaction.isPresent()) {
                 return InteractionMapper.toDto(interaction.get()).getKind();

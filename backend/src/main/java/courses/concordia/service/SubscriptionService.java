@@ -1,13 +1,17 @@
 package courses.concordia.service;
 
 import courses.concordia.dto.model.course.SubscriptionDto;
+import courses.concordia.dto.model.course.SubscriptionPayloadDto;
 
 import java.util.List;
 
 public interface SubscriptionService {
-    List<SubscriptionDto> getSubscriptions(SubscriptionDto subscriptionDto);
 
-    SubscriptionDto addSubscription(SubscriptionDto subscriptionDto);
+    SubscriptionDto addSubscription(String userId, String courseId);
 
-    void deleteSubscription(SubscriptionDto subscriptionDto);
+    void deleteSubscription(String userId, String courseId);
+
+    SubscriptionDto getSubscription(String userId, String courseId);
+
+    List<SubscriptionDto> getSubscriptions(String userId);
 }

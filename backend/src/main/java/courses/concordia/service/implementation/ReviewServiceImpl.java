@@ -1,13 +1,10 @@
 package courses.concordia.service.implementation;
 
 import courses.concordia.dto.mapper.ReviewMapper;
-import courses.concordia.dto.model.course.CourseDto;
 import courses.concordia.dto.model.course.ReviewDto;
 import courses.concordia.exception.CCException;
 import courses.concordia.exception.EntityType;
 import courses.concordia.exception.ExceptionType;
-import courses.concordia.exception.ReviewNotFoundException;
-import courses.concordia.model.Course;
 import courses.concordia.model.Review;
 import courses.concordia.repository.ReviewRepository;
 import courses.concordia.service.ReviewService;
@@ -48,22 +45,13 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public void deleteReview(String id) {
-        Optional<Review> review = reviewRepository.findById(id);
+    public void deleteReview(String reviewId) {
+        Optional<Review> review = reviewRepository.findById(reviewId);
         if (review.isPresent()) {
             reviewRepository.delete(review.get());
         } else {
-            throw exception(REVIEW, ENTITY_NOT_FOUND, id);
+            throw exception(REVIEW, ENTITY_NOT_FOUND, reviewId);
         }
-    }
-
-    @Override
-    public ReviewDto getReviewById(String id) {
-        Optional<Review> review = reviewRepository.findById(id);
-        if (review.isPresent()) {
-            return modelMapper.map(review.get(), ReviewDto.class);
-        }
-        throw exception(REVIEW, ENTITY_NOT_FOUND, id);
     }
 
     @Override

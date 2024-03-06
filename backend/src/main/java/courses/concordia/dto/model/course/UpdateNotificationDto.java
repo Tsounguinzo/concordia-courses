@@ -15,6 +15,8 @@ import lombok.experimental.Accessors;
 @ToString
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class IdDto {
-    private String id;
+public class UpdateNotificationDto {
+    private String creatorId;
+    private boolean seen;
+    private String userId;
 }

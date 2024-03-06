@@ -17,8 +17,8 @@ import java.util.List;
 public class InteractionController {
     private final InteractionService interactionService;
     @GetMapping
-    public Response<?> getInteractionKind(@RequestBody InteractionDto interaction) {
-        InteractionDto.InteractionKind kind = interactionService.getInteractionKind(interaction);
+    public Response<?> getInteractionKind(@RequestParam String courseId, @RequestParam String userId, @RequestParam String referrer) {
+        InteractionDto.InteractionKind kind = interactionService.getInteractionKind(courseId, userId, referrer);
         return Response.ok().setPayload(kind.toValue());
     }
 

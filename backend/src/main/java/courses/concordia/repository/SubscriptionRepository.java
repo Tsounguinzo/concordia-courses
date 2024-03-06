@@ -10,4 +10,5 @@ public interface SubscriptionRepository extends MongoRepository<Subscription, St
     List<Subscription> findByUserId(String userId);
     Optional<Subscription> findByUserIdAndCourseId(String userId, String courseId);
     void deleteByUserIdAndCourseId(String userId, String courseId);
+    List<Subscription> findAllByCourseId(String courseId);
 }

@@ -87,7 +87,7 @@
     const refreshInteractions = async () => {
         try {
             const payload = await repo.getInteractions(courseId, userId, user?.id);
-            kind.set(payload.kind);
+            kind.set(payload);
         } catch (err: any) {
             toast.error(err.toString());
         }

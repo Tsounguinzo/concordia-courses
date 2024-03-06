@@ -2,6 +2,7 @@ package courses.concordia.service.implementation;
 
 import courses.concordia.dto.mapper.SubscriptionMapper;
 import courses.concordia.dto.model.course.SubscriptionDto;
+import courses.concordia.dto.model.course.SubscriptionPayloadDto;
 import courses.concordia.exception.CCException;
 import courses.concordia.exception.EntityType;
 import courses.concordia.exception.ExceptionType;
@@ -26,32 +27,39 @@ import static courses.concordia.exception.ExceptionType.ENTITY_NOT_FOUND;
 public class SubscriptionServiceImpl implements SubscriptionService {
     private final SubscriptionRepository subscriptionRepository;
     @Override
-    public List<SubscriptionDto> getSubscriptions(SubscriptionDto subscriptionDto) {
-        log.info("Fetching subscriptions for user ID: {}", subscriptionDto.getUserId());
-        List<Subscription> subscriptions = subscriptionRepository.findByUserId(subscriptionDto.getUserId());
+    public List<SubscriptionDto> getSubscriptions(String userId) {
+        log.info("Fetching subscriptions for user ID: {}", userId);
+        List<Subscription> subscriptions = subscriptionRepository.findByUserId(userId);
         return subscriptions.stream()
                 .map(SubscriptionMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public SubscriptionDto addSubscription(SubscriptionDto subscriptionDto) {
-        log.info("Adding subscription for user ID: {} to course {}", subscriptionDto.getUserId(), subscriptionDto.getCourseId());
+    public SubscriptionDto addSubscription(String userId, String courseId) {
+        log.info("Adding subscription for user ID: {} to course {}", userId, courseId);
         Subscription subscription = subscriptionRepository.save(new Subscription()
-                .setCourseId(subscriptionDto.getCourseId())
-                .setUserId(subscriptionDto.getUserId()));
+                .setCourseId(courseId)
+                .setUserId(userId));
         return SubscriptionMapper.toDto(subscription);
     }
 
     @Override
-    public void deleteSubscription(SubscriptionDto subscriptionDto) {
-        log.info("Deleting subscription for user ID: {} to course {}", subscriptionDto.getUserId(), subscriptionDto.getCourseId());
-        Optional<Subscription> subscription = subscriptionRepository.findByUserIdAndCourseId(subscriptionDto.getUserId(), subscriptionDto.getCourseId());
+    public void deleteSubscription(String userId, String courseId) {
+        log.info("Deleting subscription for user ID: {} to course {}", userId, courseId);
+        Optional<Subscription> subscription = subscriptionRepository.findByUserIdAndCourseId(userId, courseId);
         if (subscription.isPresent()) {
-            subscriptionRepository.deleteByUserIdAndCourseId(subscriptionDto.getUserId(), subscriptionDto.getCourseId());
+            subscriptionRepository.deleteByUserIdAndCourseId(userId, courseId);
         } else {
             throw exception(SUBSCRIPTION, ENTITY_NOT_FOUND);
         }
+    }
+
+    @Override
+    public SubscriptionDto getSubscription(String userId, String courseId) {
+        log.info("Fetching subscription for user ID: {} to course {}", userId, courseId);
+        Optional<Subscription> subscription = subscriptionRepository.findByUserIdAndCourseId(userId, courseId);
+        return subscription.map(SubscriptionMapper::toDto).orElse(null);
     }
 
     private RuntimeException exception(EntityType entityType, ExceptionType exceptionType, String... args) {

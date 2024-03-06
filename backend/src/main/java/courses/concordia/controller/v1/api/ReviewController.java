@@ -1,7 +1,7 @@
 package courses.concordia.controller.v1.api;
 
-import courses.concordia.dto.model.course.IdDto;
 import courses.concordia.dto.model.course.ReviewDto;
+import courses.concordia.dto.model.course.ReviewPayloadDto;
 import courses.concordia.dto.response.Response;
 import courses.concordia.model.Review;
 import courses.concordia.service.ReviewService;
@@ -35,8 +35,8 @@ public class ReviewController {
     }
 
     @DeleteMapping
-    public Response<?> deleteReview(@RequestBody IdDto idDto) {
-        reviewService.deleteReview(idDto.getId());
+    public Response<?> deleteReview(@RequestBody ReviewPayloadDto reviewPayloadDto) {
+        reviewService.deleteReview(reviewPayloadDto.getReviewId());
         return Response.ok().setPayload("Review was deleted successfully");
     }
 }
