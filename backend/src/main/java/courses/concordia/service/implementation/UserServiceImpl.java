@@ -37,11 +37,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public AuthenticationResponse signup(UserDto userDto) {
         User user = userRepository.findByUsername(userDto.getUsername());
-        //userRepository.deleteAll();
         if (user == null) {
             user = new User(userDto.getUsername(),
                     userDto.getEmail(),
-                    bCryptPasswordEncoder.encode(userDto.getPassword()));
+                    bCryptPasswordEncoder.encode(userDto.getPassword()),
+                    userDto.getVerified());
             var jwtToken = jwtService.generateToken(user);
             userRepository.save(user);
             return AuthenticationResponse.builder()
@@ -99,5 +99,9 @@ public class UserServiceImpl implements UserService {
 
     private RuntimeException exception(EntityType entityType, ExceptionType exceptionType, String... args) {
         return CCException.throwException(entityType, exceptionType, args);
+    }
+
+    public Boolean checkIfUserExist(String username){
+        return findUserByUsername(username) != null;
     }
 }

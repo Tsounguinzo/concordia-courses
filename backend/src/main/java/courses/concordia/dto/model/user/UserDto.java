@@ -2,7 +2,11 @@ package courses.concordia.dto.model.user;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class UserDto {
 
     @NotNull
@@ -17,35 +21,17 @@ public class UserDto {
     @NotEmpty
     private String password;
 
-    public UserDto(String username, String email, String password) {
+    @NotNull
+    @NotEmpty
+    private Boolean verified;
+
+    public UserDto(String username, String email, String password, Boolean verified) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.verified = verified;
     }
 
     public UserDto(){}
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
 }

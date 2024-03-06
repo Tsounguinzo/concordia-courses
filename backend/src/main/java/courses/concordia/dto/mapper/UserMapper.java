@@ -9,6 +9,7 @@ public class UserMapper {
     public static UserDto toDto(User user) {
         return new UserDto(user.getUsername(),
                 user.getEmail(),
-                user.getPassword());
+                user.getPassword(),
+                user.getVerified());
     }
 }

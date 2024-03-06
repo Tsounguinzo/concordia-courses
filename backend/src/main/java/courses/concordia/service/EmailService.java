@@ -1,11 +1,11 @@
 package courses.concordia.service;
 
+import courses.concordia.email.AbstractEmailContext;
 import jakarta.mail.MessagingException;
 
 import java.io.FileNotFoundException;
 
 public interface EmailService {
 
-    public void sendSimpleEmail(String toAddress, String subject, String message);
-    public void sendEmailWithAttachment(String toAddress, String subject, String message, String attachment) throws MessagingException, FileNotFoundException;
+    void sendEmail(final AbstractEmailContext email) throws MessagingException;
 }
