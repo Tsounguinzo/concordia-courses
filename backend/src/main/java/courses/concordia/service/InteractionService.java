@@ -6,7 +6,7 @@ import courses.concordia.model.Interaction;
 import java.util.List;
 
 public interface InteractionService {
-    InteractionDto.InteractionKind getInteractionKind(String courseId, String userId, String referrer);
+    String getInteractionKind(String courseId, String userId, String referrer);
 
     List<InteractionDto> getUserInteractionsForCourse(String courseId, String referrer);
 

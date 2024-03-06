@@ -15,7 +15,7 @@
 
     const {courses, instructors, coursesIndex, instructorsIndex} = getSearchIndex();
 
-    const user = null; //useAuth();
+    const user = {id: "Beaudelaire"}; //useAuth();
     $: pathName = $page.url.pathname;
     const notifications = writable<Notification[]>([]);
 
@@ -89,7 +89,7 @@
                 {/if}
             </div>
             <div class='hidden lg:ml-4 lg:flex lg:justify-end'>
-                {#if $user}
+                {#if user}
                     <ProfileDropdown/>
                 {:else}
 

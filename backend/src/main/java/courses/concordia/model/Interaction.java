@@ -29,6 +29,13 @@ public class Interaction {
         public String toValue() {
             return this.value;
         }
+        public static InteractionKind fromValue(String value) {
+            InteractionKind ret = null;
+            for (InteractionKind type : InteractionKind.values()) {
+                if (type.getValue().equals(value)) ret = type;
+            }
+            return ret;
+        }
     }
 }
 

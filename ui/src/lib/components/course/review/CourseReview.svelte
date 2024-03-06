@@ -127,7 +127,7 @@
                     </div>
                 {/if}
             </div>
-            {#if interactions}
+            {#if updateLikes}
                 <ReviewInteractions
                         {review}
                         {interactions}

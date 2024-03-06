@@ -32,7 +32,7 @@ public class InteractionServiceImpl implements InteractionService {
     private final MongoTemplate mongoTemplate;
 
     @Override
-    public InteractionDto.InteractionKind getInteractionKind(String courseId, String userId, String referrer) {
+    public String getInteractionKind(String courseId, String userId, String referrer) {
         Optional<Interaction> interaction = interactionRepository.findByCourseIdAndUserIdAndReferrer(courseId, userId, referrer);
 
         if (interaction.isPresent()) {
@@ -63,7 +63,7 @@ public class InteractionServiceImpl implements InteractionService {
     @Override
     public InteractionDto addInteraction(InteractionDto interactionDto) {
         Interaction interaction = new Interaction()
-                .setKind(Interaction.InteractionKind.valueOf(interactionDto.getKind().getValue()))
+                .setKind(Interaction.InteractionKind.fromValue(interactionDto.getKind()))
                 .setCourseId(interactionDto.getCourseId())
                 .setUserId(interactionDto.getUserId())
                 .setReferrer(interactionDto.getReferrer());

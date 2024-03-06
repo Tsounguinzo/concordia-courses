@@ -18,8 +18,8 @@ public class InteractionController {
     private final InteractionService interactionService;
     @GetMapping
     public Response<?> getInteractionKind(@RequestParam String courseId, @RequestParam String userId, @RequestParam String referrer) {
-        InteractionDto.InteractionKind kind = interactionService.getInteractionKind(courseId, userId, referrer);
-        return Response.ok().setPayload(kind.toValue());
+        String kind = interactionService.getInteractionKind(courseId, userId, referrer);
+        return Response.ok().setPayload(kind);
     }
 
     @GetMapping("/{courseId}/referrer/{referrer}")

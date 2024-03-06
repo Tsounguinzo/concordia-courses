@@ -15,7 +15,7 @@
     import {onMount} from "svelte";
     import Seo from "$lib/components/common/Seo.svelte";
 
-    const user = {};
+    const user = {id: "Beaudelaire"};
 
     const userReviews = writable<Review[]>([]);
     const userSubscriptions = writable<Subscription[]>([]);
