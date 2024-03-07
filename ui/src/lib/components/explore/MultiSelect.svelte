@@ -10,6 +10,7 @@
     export let options: string[];
     export let values: Writable<string[]>;
     export let className: string = '';
+    export let reset: boolean = false;
     export let inputClassName: string = '';
 
     const query = writable('');
@@ -23,6 +24,10 @@
         });
 
     $: values.set($combobox.selected)
+
+    $: if(reset) {
+        combobox.set({ selected: [] });
+    }
 
     const handleInputBlur = () => {
         setTimeout(() => {

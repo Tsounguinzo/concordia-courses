@@ -71,7 +71,7 @@
 
     $: filters = {
         subjects: nullable($selectedSubjects),
-        levels: nullable($selectedLevels.map((l) => l.charAt(0))),
+        levels: nullable($selectedLevels),
         terms: nullable($selectedTerms),
         query: query === '' ? null : query,
         sortBy: makeSortPayload($sortBy),
@@ -138,7 +138,7 @@
                             iconStyle='mt-2 lg:mt-0'
                             inputStyle='block rounded-lg w-full bg-slate-200 p-3 pr-5 pl-10 text-sm text-black outline-none dark:border-neutral-50 dark:bg-neutral-800 dark:text-gray-200 dark:placeholder:text-neutral-500'
                             outerInputStyle='my-2 mt-4 lg:mt-2'
-                            placeholder='Search by course identifier, title, description or instructor name'
+                            placeholder='Search by course identifier, title or description'
                             searchSelected={searchSelected}
                     />
                     {#each courses as course}

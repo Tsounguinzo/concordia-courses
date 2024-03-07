@@ -23,7 +23,6 @@
             (interaction: Interaction) => interaction.userId === review.userId
         );
 
-        console.log("kind", interaction?.kind);
         return interaction?.kind;
     };
 
@@ -31,56 +30,35 @@
         kind.set(getUserInteractionKind(interactions))
     }
 
-    const interactionToNum = (kind: InteractionKind) => {
-        return kind === 'like' ? 1 : -1;
-    };
-
-    const getLikeChange = (
-        before: InteractionKind | undefined | null,
-        after: InteractionKind
-    ) => {
-        if (!before) return interactionToNum(after);
-        if (before === after) return 0;
-        return interactionToNum(after) * 2;
-    };
-
-    const addInteraction = async (interactionKind: InteractionKind) => {
-        try {
-            await repo.addInteraction(interactionKind, courseId, userId, user?.id);
-            const change = getLikeChange($kind, interactionKind);
-            updateLikes(review.likes + change);
-
-            await refreshInteractions();
-
-            toast.success(
-                `Successfully ${interactionKind}d review for ${spliceCourseCode(
-                    courseId,
-                    ' '
-                )}.`
-            );
-        } catch (err: any) {
-            toast.error(err.toString());
+    const getLikeChange = (before: InteractionKind | undefined | null, after: InteractionKind | 'remove') => {
+        if (after === 'remove') {
+            return before === 'like' ? -1 : before === 'dislike' ? 1 : 0;
+        } else if (before === after) {
+            return 0;
+        } else {
+            return after === 'like' ? (before === 'dislike' ? 2 : 1) : (before === 'like' ? -2 : -1);
         }
     };
 
-    const removeInteraction = async () => {
+    const updateInteraction = async (interactionKind: InteractionKind | 'remove') => {
+        let change;
         try {
-            await repo.removeInteraction(courseId, userId, user?.id);
-            if (!$kind) {
-                toast.error("Can't remove interaction that doesn't exist.");
-                return;
+            if (interactionKind === 'remove') {
+                await repo.removeInteraction(courseId, userId, user?.id);
+                change = getLikeChange($kind, interactionKind);
+            } else {
+                await repo.removeInteraction(courseId, userId, user?.id);
+                await repo.addInteraction(interactionKind, courseId, userId, user?.id);
+                change = getLikeChange($kind, interactionKind);
             }
-            updateLikes(review.likes - interactionToNum($kind));
+            updateLikes(review.likes + change);
+            likes += change;
 
             await refreshInteractions();
 
-            toast.success(
-                `Successfully removed interaction for ${spliceCourseCode(
-                    courseId,
-                    ' '
-                )}.`
-            );
-        } catch (err: any) {
+            const actionWord = interactionKind === 'remove' ? 'Removed' : `Successfully ${interactionKind}d`;
+            toast.success(`${actionWord} review for ${spliceCourseCode(courseId, ' ')}.`);
+        } catch (err) {
             toast.error(err.toString());
         }
     };
@@ -102,16 +80,16 @@
     const handleLike = () => {
         user
             ? $kind === 'like'
-                ? removeInteraction()
-                : addInteraction('like')
+                ? updateInteraction('remove')
+                : updateInteraction('like')
             : displayLoginPrompt();
     };
 
     const handleDislike = () => {
         user
             ? $kind === 'dislike'
-                ? removeInteraction()
-                : addInteraction('dislike')
+                ? updateInteraction('remove')
+                : updateInteraction('dislike')
             : displayLoginPrompt();
     };
 </script>

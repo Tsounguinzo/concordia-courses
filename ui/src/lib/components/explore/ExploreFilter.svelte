@@ -45,12 +45,12 @@
     <h1 class='text-sm font-semibold text-gray-600 dark:text-gray-400'>Sort By</h1>
     <div class='py-1'/>
     <div class='relative z-20'>
-        <Autocomplete options={sortByOptions} storeValue={sortBy}/>
+        <Autocomplete reset={rotate} options={sortByOptions} storeValue={sortBy}/>
     </div>
     <div class='py-2.5'/>
     <h1 class='text-sm font-semibold text-gray-600 dark:text-gray-400'>Subject</h1>
     <div class='py-1'/>
-    <div class='relative z-10'><MultiSelect options={courseCodes} values={selectedSubjects}/>
+    <div class='relative z-10'><MultiSelect reset={rotate} options={courseCodes} values={selectedSubjects}/>
     </div>
     <div class='py-2.5'/>
     <h1 class='text-sm font-semibold text-gray-600 dark:text-gray-400'>Level</h1>

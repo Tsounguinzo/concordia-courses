@@ -65,6 +65,8 @@
     </div>
     <div use:tabs.panel>
         <Sveltik
+                validateOnBlur={false}
+                validateOnChange={false}
                 {initialValues}
                 {validate}
                 onSubmit={async (values, actions) => {
