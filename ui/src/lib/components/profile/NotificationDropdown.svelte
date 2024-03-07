@@ -59,7 +59,7 @@
 </script>
 
 {#if seen.size === 0}
-    <div class='z-20 text-right'>
+    <div class='z-50 text-right'>
         <div class='relative inline-block text-left'>
              <button use:menu.button
                         class='m-2 inline-flex justify-center text-sm font-medium text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white'>
@@ -82,12 +82,12 @@
                         leaveTo='transform opacity-0 scale-95'
                 >
                     <div use:menu.items
-                         class='autocomplete absolute -right-8 z-20 mt-2 max-h-[800px] max-w-[325px] origin-top-right divide-y divide-gray-100 overflow-auto rounded-md bg-slate-100 shadow-lg dark:bg-neutral-800 md:max-w-[800px]'>
+                         class=' absolute -right-8 z-20 mt-2 max-h-[800px] max-w-[325px] origin-top-right divide-y divide-gray-100 overflow-auto rounded-md bg-slate-100 shadow-lg dark:bg-neutral-700 md:max-w-[800px]'>
                         <div class='p-2'>
                             {#if $notifications.length !== 0}
                                 {#each $notifications as notification, i (i)}
                                     <button use:menu.item class='m-2' on:click|preventDefault>
-                                        <div class='mb-2 flex items-center'>
+                                        <div class='mb-2 flex items-center dark:bg-neutral-700'>
                                             <div class='flex items-center gap-x-1'>
                                                 <p class='font-semibold text-gray-800 dark:text-gray-200'>
                                                     <a href={`/course/${courseIdToUrlParam(notification.review.courseId)}`}

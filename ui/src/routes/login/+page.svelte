@@ -9,6 +9,7 @@
     import Seo from "$lib/components/common/Seo.svelte";
     import {repo} from "$lib/repo";
     import {toast} from "svelte-sonner";
+    import Seperator from "$lib/components/common/Seperator.svelte";
 
     const initialValues = {
         username: '',
@@ -83,13 +84,7 @@
                     <div class='mx-4 flex w-full flex-col rounded-md bg-slate-50 p-6 dark:bg-neutral-800 md:mt-10'>
                         {#if $tabs.selected === "SingUp"}
                             <LoginForm {props}/>
-                            <div class='py-1'/>
-                            <div class="flex items-center">
-                                <div class="flex-1 border-t-2 border-slate-100 dark:border-neutral-700"></div>
-                                <span class="px-3 text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400 bg-transparent">Continue</span>
-                                <div class="flex-1 border-t-2 border-slate-100 dark:border-neutral-700"></div>
-                            </div>
-                            <div class='py-1'/>
+                            <Seperator text="Continue"/>
                             <div class='flex flex-col md:m-4'>
                                 <FieldLabel For='email'>Concordia email</FieldLabel>
                                 <Field

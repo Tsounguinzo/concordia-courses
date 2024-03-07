@@ -6,9 +6,10 @@
     import MultiSelect from "$lib/components/explore/MultiSelect.svelte";
     import courseCodes from '$lib/data/courseCodes.json'
     import {sortByOptions, termsOptions} from "$lib/types";
-    import {levelsOptions, termColorMap, termToIcon} from "$lib/utils";
+    import {levelsOptions, moreLevelsOptions, termColorMap, termToIcon} from "$lib/utils";
     import type {Writable} from "svelte/store";
     import {RefreshCw} from "lucide-svelte";
+    import Seperator from "$lib/components/common/Seperator.svelte";
 
     export let selectedSubjects: Writable<string[]>;
     export let selectedLevels: Writable<string[]>;
@@ -59,6 +60,15 @@
             <FilterButton name={level}
                     isSelected={$selectedLevels.includes(level)}
                     selections={selectedLevels}
+            />
+        {/each}
+    </div>
+        <Seperator text="More"/>
+    <div class='flex flex-wrap gap-2 py-1'>
+        {#each moreLevelsOptions as level, i (i)}
+            <FilterButton name={level}
+                          isSelected={$selectedLevels.includes(level)}
+                          selections={selectedLevels}
             />
         {/each}
     </div>
