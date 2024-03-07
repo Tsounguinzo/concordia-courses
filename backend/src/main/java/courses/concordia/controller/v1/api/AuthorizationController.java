@@ -29,10 +29,6 @@ import org.springframework.web.bind.annotation.*;
 public class AuthorizationController {
     private final EmailServiceImpl emailService;
     private final UserServiceImpl userService;
-
-
-    private final EmailServiceImpl emailService;
-    private final UserServiceImpl userService;
     private final JwtServiceImpl jwtService;
 
     public String token;
