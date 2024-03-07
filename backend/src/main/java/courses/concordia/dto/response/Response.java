@@ -3,6 +3,7 @@ package courses.concordia.dto.response;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import courses.concordia.util.DateUtils;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +20,7 @@ public class Response<T> {
     private T payload;
     private Object errors;
     private Object metadata;
+    private String token;
 
     public static <T> Response<T> badRequest() {
         Response<T> response = new Response<>();
