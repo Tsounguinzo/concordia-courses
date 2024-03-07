@@ -22,9 +22,9 @@ public class Course {
     private String catalog;
     private String title;
     @ToString.Exclude @EqualsAndHashCode.Exclude
-    private float avgDifficulty = 0.0f;
+    private double avgDifficulty = 0.0;
     @ToString.Exclude @EqualsAndHashCode.Exclude
-    private float avgRating = 0.0f;
+    private double avgRating = 0.0;
     @ToString.Exclude @EqualsAndHashCode.Exclude
     private int reviewCount = 0;
     private List<Schedule> schedules;

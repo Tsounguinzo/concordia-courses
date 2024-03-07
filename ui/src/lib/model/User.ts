@@ -1,7 +1,13 @@
-export interface User {
+export interface UserId {
   id: string;
 }
 
 export type UserResponse = {
-  user: User;
+  user: UserId;
 };
+
+export type User = {
+  username: string
+  password: string
+  email?: string
+}

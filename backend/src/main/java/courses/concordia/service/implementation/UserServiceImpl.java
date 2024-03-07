@@ -28,8 +28,8 @@ import static courses.concordia.exception.ExceptionType.ENTITY_NOT_FOUND;
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
+    private final EmailServiceImpl emailService;
     private final UserRepository userRepository;
-    private final ModelMapper modelMapper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JwtServiceImpl jwtService;
     private final AuthenticationManager authenticationManager;
@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
                     .token(jwtToken)
                     .build();
         }
-        throw exception(USER, DUPLICATE_ENTITY, userDto.getUsername());
+        throw exception(USER, DUPLICATE_ENTITY, signupRequest.getUsername());
     }
 
     public AuthenticationResponse authenticate(LoginRequest LoginRequest){
@@ -67,17 +67,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto findUserByUsername(String username) {
-        Optional<User> user = Optional.ofNullable(userRepository.findByUsername(username));
-        if (user.isPresent()) {
-            return modelMapper.map(user.get(), UserDto.class);
-        }
-        throw exception(USER, ENTITY_NOT_FOUND, username);
-    }
-
-    @Override
-    public UserDto updateProfile(UserDto userDto) {
-        Optional<User> user = Optional.ofNullable(userRepository.findByUsername(userDto.getUsername()));
+    public UserDto changeUsername(UserDto userDto) {
+        Optional<User> user = userRepository.findByUsername(userDto.getUsername());
         if (user.isPresent()) {
             User userModel = user.get();
             userModel.setUsername(userDto.getUsername());
@@ -88,13 +79,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto changePassword(UserDto userDto, String newPassword) {
-        Optional<User> user = Optional.ofNullable(userRepository.findByUsername(userDto.getUsername()));
+        Optional<User> user = userRepository.findByUsername(userDto.getUsername());
         if (user.isPresent()) {
             User userModel = user.get();
             userModel.setPassword(bCryptPasswordEncoder.encode(newPassword));
             return UserMapper.toDto(userRepository.save(userModel));
         }
         throw exception(USER, ENTITY_NOT_FOUND, userDto.getUsername());
+    }
+
+    @Override
+    public UserDto getUserFromSession() {
+        return null;
     }
 
     private RuntimeException exception(EntityType entityType, ExceptionType exceptionType, String... args) {

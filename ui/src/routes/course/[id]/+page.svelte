@@ -22,7 +22,7 @@
 
     let params = $page.params.id;
 
-    const user = {}; //useAuth();
+    const user = {id: "Beaudelaire"}; //useAuth();
     const currentTerms = getCurrentTerms();
 
     let firstFetch = true;
@@ -104,7 +104,7 @@
     };
 
     const handleDelete = async (review: Review) => {
-        const res = await repo.deleteReview(review._id);
+        const res = await repo.deleteReview(review.courseId);
 
         if (res.ok) {
             showingReviews.set($showingReviews?.filter((r) => r.userId !== review.userId));
@@ -176,7 +176,7 @@
                                 editReview={editReviewOpen}
                                 review={userReview}
                                 interactions={$userInteractions}
-                                likesUpdate={updateLikes(userReview)}
+                                updateLikes={updateLikes(userReview)}
                         />
                     {/if}
                     {#if $showingReviews}
@@ -189,7 +189,7 @@
                                     editReview={editReviewOpen}
                                     review={review}
                                     interactions={$userInteractions}
-                                    likesUpdate={updateLikes(userReview)}
+                                    updateLikes={updateLikes(review)}
                             />
                         {/each}
                     {/if}
@@ -238,7 +238,7 @@
                                     editReview={editReviewOpen}
                                     review={userReview}
                                     interactions={$userInteractions}
-                                    likesUpdate={updateLikes(userReview)}
+                                    updateLikes={updateLikes(userReview)}
                             />
                         {/if}
 
@@ -254,7 +254,7 @@
                                         editReview={editReviewOpen}
                                         review={review}
                                         interactions={$userInteractions}
-                                        likesUpdate={updateLikes(userReview)}
+                                        updateLikes={updateLikes(review)}
                                 />
                             {/each}
                         {/if}

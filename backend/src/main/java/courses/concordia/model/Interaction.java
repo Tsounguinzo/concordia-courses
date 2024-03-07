@@ -21,13 +21,20 @@ public class Interaction {
 
     @Getter
     @AllArgsConstructor
-    private enum InteractionKind {
+    public enum InteractionKind {
         LIKE("like"),
         DISLIKE("dislike");
         private final String value;
         @JsonValue
         public String toValue() {
             return this.value;
+        }
+        public static InteractionKind fromValue(String value) {
+            InteractionKind ret = null;
+            for (InteractionKind type : InteractionKind.values()) {
+                if (type.getValue().equals(value)) ret = type;
+            }
+            return ret;
         }
     }
 }

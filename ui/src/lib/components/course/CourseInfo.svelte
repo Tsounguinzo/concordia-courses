@@ -12,7 +12,7 @@
     export let course: Course;
     export let reviews: Review[];
 
-    const user = null; //useAuth();
+    const user = {id: "Beaudelaire"}; //useAuth();
 
     const isSubscribed = writable(false);
 
@@ -83,17 +83,19 @@
             <div class='flex items-center gap-2'>
                 {#if user}
                     {#if $isSubscribed}
+                        <button on:click={unsubscribe}>
                         <BellOff
                                 size={20}
-                                on:click={unsubscribe}
                                 class='my-auto ml-1 cursor-pointer stroke-2 transition-colors duration-300 hover:stroke-blue-600 dark:text-gray-200'
                         />
+                        </button>
                     {:else }
+                        <button on:click={subscribe}>
                         <Bell
                                 size={20}
-                                on:click={subscribe}
                                 class='my-auto ml-1 cursor-pointer stroke-2 transition-colors duration-300 hover:stroke-blue-600 dark:text-gray-200'
                         />
+                        </button>
                     {/if}
                 {/if}
             </div>

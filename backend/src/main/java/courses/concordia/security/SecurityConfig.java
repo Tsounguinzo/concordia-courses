@@ -13,8 +13,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -30,6 +28,9 @@ public class SecurityConfig{
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/api/v1/courses/**","/api/v1/auth/signup","/api/v1/auth/signin","/api/v1/auth/authorized").permitAll() // Allow unauthenticated access
                         .requestMatchers("/api/v1/reviews/**").permitAll() // Allow unauthenticated access
+                        .requestMatchers("/api/v1/interactions/**").permitAll() // Allow unauthenticated access
+                        .requestMatchers("/api/v1/notifications/**").permitAll() // Allow unauthenticated access
+                        .requestMatchers("/api/v1/subscriptions/**").permitAll() // Allow unauthenticated access
                         .requestMatchers(HttpMethod.DELETE,"/api/v1/reviews/**").permitAll() // Allow unauthenticated access
                         .requestMatchers(HttpMethod.PUT,"/api/v1/reviews/**").permitAll() // Allow unauthenticated access
                         .anyRequest().authenticated()

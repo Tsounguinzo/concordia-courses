@@ -14,15 +14,16 @@
     export let promptLogin: Writable<boolean>;
     export let updateLikes: (likes: number) => void;
 
-    const user = null; //useAuth();
+    const user = {id: "Beaudelaire"}; //useAuth();
     const kind = writable<InteractionKind | undefined | null>(undefined);
-    const {courseId, userId, likes} = review;
+    let {courseId, userId, likes} = review;
 
     const getUserInteractionKind = (interactions: Interaction[]): InteractionKind | undefined => {
         const interaction = interactions.find(
             (interaction: Interaction) => interaction.userId === review.userId
         );
 
+        console.log("kind", interaction?.kind);
         return interaction?.kind;
     };
 
@@ -87,7 +88,7 @@
     const refreshInteractions = async () => {
         try {
             const payload = await repo.getInteractions(courseId, userId, user?.id);
-            kind.set(payload.kind);
+            kind.set(payload);
         } catch (err: any) {
             toast.error(err.toString());
         }

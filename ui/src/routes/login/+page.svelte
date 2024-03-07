@@ -7,6 +7,8 @@
     import FieldLabel from "$lib/components/common/form/FieldLabel.svelte";
     import Submit from "$lib/components/login/Submit.svelte";
     import Seo from "$lib/components/common/Seo.svelte";
+    import {repo} from "$lib/repo";
+    import {toast} from "svelte-sonner";
 
     const initialValues = {
         username: '',
@@ -25,17 +27,25 @@
             errors.username = 'Username is required';
         } else if (values.password == '') {
             errors.password = "A password is required";
-        } else if (values.email == '') {
+        } else if ($tabs.selected === "SingUp" && values.email == '') {
             errors.email = "Your concordia email is required";
         }
 
         return errors;
     };
 
+    const handleSubmit = (res: Response, type: string) => {
+        if (res.ok) {
+            toast.success(`${type} successful`);
+        } else {
+            toast.error('An error occurred.');
+        }
+    };
+
     const keys = ['SingIn', 'SingUp'];
     const tabs = createTabs({selected: 'SingIn'})
 </script>
-<Seo title="StudyHub | Login" description="Login to concordia.courses" />
+<Seo title="StudyHub | Login" description="Login to concordia.courses"/>
 <div class='mx-auto max-w-2xl'>
     <div use:tabs.list class='m-4 flex space-x-1 rounded-xl bg-slate-200 p-1 dark:bg-neutral-700/20'>
         {#each keys as value}
@@ -57,42 +67,48 @@
                 {initialValues}
                 {validate}
                 onSubmit={async (values, actions) => {
+                    let res;
+                    if ($tabs.selected === "SingUp") {
+                        res = await repo.signUp(values);
+                    } else {
+                        res = await repo.signIn(values);
+                    }
                     actions.setSubmitting(false);
+                    handleSubmit(res, $tabs.selected);
                 }}
                 let:props
         >
             <Form>
-                    <div class='flex w-full justify-center'>
-                        <div class='mx-4 flex w-full flex-col rounded-md bg-slate-50 p-6 dark:bg-neutral-800 md:mt-10'>
-                    {#if $tabs.selected === "SingUp"}
-                        <LoginForm {props}/>
-                        <div class='py-1'/>
-                        <div class="flex items-center">
-                            <div class="flex-1 border-t-2 border-slate-100 dark:border-neutral-700"></div>
-                            <span class="px-3 text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400 bg-transparent">Continue</span>
-                            <div class="flex-1 border-t-2 border-slate-100 dark:border-neutral-700"></div>
-                        </div>
-                        <div class='py-1'/>
-                        <div class='flex flex-col md:m-4'>
-                            <FieldLabel For='email'>Concordia email</FieldLabel>
-                            <Field
-                                    type="email"
-                                    on:input={(e) => props.values.email = e.target.value}
-                                    on:blur={props.handleBlur}
-                                    value={props.values.email}
-                                    id='email'
-                                    name='email'
-                                    placeholder='ends with concordia.ca'
-                                    class='resize-none rounded-md border bg-gray-50 p-3 outline-none dark:border-neutral-600 dark:bg-neutral-700 dark:text-gray-200 dark:caret-white'
-                            />
-                            <FieldError name='email'/>
-                        </div>
+                <div class='flex w-full justify-center'>
+                    <div class='mx-4 flex w-full flex-col rounded-md bg-slate-50 p-6 dark:bg-neutral-800 md:mt-10'>
+                        {#if $tabs.selected === "SingUp"}
+                            <LoginForm {props}/>
+                            <div class='py-1'/>
+                            <div class="flex items-center">
+                                <div class="flex-1 border-t-2 border-slate-100 dark:border-neutral-700"></div>
+                                <span class="px-3 text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400 bg-transparent">Continue</span>
+                                <div class="flex-1 border-t-2 border-slate-100 dark:border-neutral-700"></div>
+                            </div>
+                            <div class='py-1'/>
+                            <div class='flex flex-col md:m-4'>
+                                <FieldLabel For='email'>Concordia email</FieldLabel>
+                                <Field
+                                        type="email"
+                                        on:input={(e) => props.values.email = e.target.value}
+                                        on:blur={props.handleBlur}
+                                        value={props.values.email}
+                                        id='email'
+                                        name='email'
+                                        placeholder='ends with concordia.ca'
+                                        class='resize-none rounded-md border bg-gray-50 p-3 outline-none dark:border-neutral-600 dark:bg-neutral-700 dark:text-gray-200 dark:caret-white'
+                                />
+                                <FieldError name='email'/>
+                            </div>
+                        {:else }
+                            <LoginForm {props}/>
+                        {/if}
                         <Submit/>
-                    {:else }
-                        <LoginForm {props}/>
-                        <Submit/>
-                    {/if}
-                        </div>
+                    </div>
                 </div>
             </Form>
         </Sveltik>

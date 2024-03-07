@@ -3,4 +3,8 @@ package courses.concordia.repository;
 import courses.concordia.model.Notification;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface NotificationRepository extends MongoRepository<Notification, String> {}
+import java.util.List;
+
+public interface NotificationRepository extends MongoRepository<Notification, String> {
+    List<Notification> findAllByUserId(String userId);
+}

@@ -1,13 +1,12 @@
 import type { Course } from './model/Course';
 import type { GetCourseReviewsInteractionPayload } from './model/GetCourseReviewsInteractionsPayload';
 import type { GetCourseWithReviewsPayload } from './model/GetCourseWithReviewsPayload';
-import type { GetInteractionsPayload } from './model/GetInteractionsPayload';
 import type { InteractionKind } from './model/Interaction';
 import type { Notification } from './model/Notification';
 import type { Review } from './model/Review';
 import type { SearchResults } from './model/SearchResults';
 import type { Subscription } from './model/Subscription';
-import type { UserResponse } from './model/User';
+import type {User, UserResponse} from './model/User';
 
 const prefix = '/api/v1';
 
@@ -82,14 +81,14 @@ export const repo = {
   async addSubscription(courseId: string): Promise<Response> {
     return client.post('/subscriptions', {
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: courseId }),
+      body: JSON.stringify({ courseId: courseId }),
     });
   },
 
   async removeSubscription(courseId: string): Promise<Response> {
     return client.delete('/subscriptions', {
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: courseId }),
+      body: JSON.stringify({ courseId: courseId }),
     });
   },
 
@@ -125,10 +124,10 @@ export const repo = {
     });
   },
 
-  async deleteReview(reviewId: string): Promise<Response> {
+  async deleteReview(courseId: string): Promise<Response> {
     return client.delete('/reviews', {
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: reviewId }),
+      body: JSON.stringify({ courseId: courseId }),
     });
   },
 
@@ -136,8 +135,8 @@ export const repo = {
     courseId: string,
     userId: string,
     referrer: string | undefined
-  ): Promise<GetInteractionsPayload> {
-    return client.deserialize<GetInteractionsPayload>(
+  ): Promise<InteractionKind> {
+    return client.deserialize<InteractionKind>(
       'GET',
       `/interactions?courseId=${courseId}&userId=${userId}&referrer=${referrer}`
     );
@@ -198,7 +197,7 @@ export const repo = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         courseId: courseId,
-        creator_id: creatorId,
+        creatorId: creatorId,
         seen: seen,
       }),
     });
@@ -207,15 +206,8 @@ export const repo = {
   async deleteNotification(courseId: string): Promise<Response> {
     return client.delete('/notifications', {
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: courseId }),
+      body: JSON.stringify({ courseId: courseId }),
     });
-  },
-
-  async search(query: string): Promise<SearchResults> {
-    return client.deserialize<SearchResults>(
-      'GET',
-      `/search?query=${encodeURIComponent(query)}`
-    );
   },
 
   async getCourseWithReviews(
@@ -242,6 +234,24 @@ export const repo = {
         body: JSON.stringify(filters),
       }
     );
+  },
+
+  async signUp(user: User): Promise<Response> {
+    return client.deserialize<Response>('POST', '/auth/signup', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    });
+  },
+
+  async signIn(user: User): Promise<Response> {
+    return client.deserialize<Response>('POST', '/auth/signin', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    });
   },
 
   async getUser(): Promise<UserResponse> {
