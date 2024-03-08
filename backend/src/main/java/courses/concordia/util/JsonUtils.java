@@ -53,4 +53,8 @@ public class JsonUtils {
             log.error("Failed to write JSON to file. File: {}, Error: {}", fileName, e.getMessage(), e);
         }
     }
+
+    public static <T> String toJson(T data) {
+        return gson.toJson(data);
+    }
 }

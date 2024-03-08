@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.nio.file.Paths;
 import java.util.*;
 
-import static courses.concordia.util.seed.APICallUtil.*;
+import static courses.concordia.util.seed.ConcordiaAPICallUtil.*;
 
 @Slf4j
 public class SeedRunner {
@@ -177,7 +177,7 @@ public class SeedRunner {
             String urlStr = BASE_URL + COURSE_SCHEDULE_TERM_ENDPOINT + "*/" + termCode;
             try {
                 log.info("Fetching course with details for {} from URL: {}",TERM_CODE_MAPPING.get(termCode), urlStr);
-                String response = APICallUtil.getRequest(urlStr);
+                String response = ConcordiaAPICallUtil.getRequest(urlStr);
                 courses.addAll(Objects.requireNonNull(JsonUtils.getData(response, new TypeToken<List<CourseWithDetails>>() {})));
             } catch (Exception e) {
                 log.error("Failed to fetch course with details from URL: {}, Error: {}", urlStr, e.getMessage(), e);
@@ -192,7 +192,7 @@ public class SeedRunner {
         String urlStr = BASE_URL + COURSE_CATALOG_ENDPOINT + "*/*/*";
         try {
             log.info("Fetching course catalogues from URL: {}", urlStr);
-            String response = APICallUtil.getRequest(urlStr);
+            String response = ConcordiaAPICallUtil.getRequest(urlStr);
             List<CourseCatalogue> courses = JsonUtils.getData(response, new TypeToken<List<CourseCatalogue>>(){});
             assert courses != null;
             log.info("Successfully fetched {} course descriptions", courses.size());
