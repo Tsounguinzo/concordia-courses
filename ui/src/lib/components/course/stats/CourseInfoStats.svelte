@@ -32,50 +32,51 @@
     $: difficulties = allReviews.map((r) => r.difficulty);
     $: averageDifficulty = _.sum(difficulties) / allReviews.length;
 
-
 </script>
 
 {#if allReviews.length}
-    <div class={twMerge('flex gap-x-4 bg-transparent' ,className,
+    {#key allReviews}
+        <div class={twMerge('flex gap-x-4 bg-transparent' ,className,
         variant === 'large'
           ? 'flex-col gap-y-1 lg:flex-row lg:gap-x-2'
           : 'flex-row'
       )}
-    >
-        <div class='md:rounded-xl md:p-2'>
-            <Stat
-                    title='Rating'
-                    value={round2Decimals(averageRating)}
-                    icon='user'
-                    variant={variant}
-            />
-            <div class='py-2'/>
-            <Histogram
-                    width={180}
-                    height={lg ? 132 : 80}
-                    data={ratings}
-                    max={5}
-                    gap={10}
-                    className='mx-auto hidden sm:block'
-            />
+        >
+            <div class='md:rounded-xl md:p-2'>
+                <Stat
+                        title='Rating'
+                        value={round2Decimals(averageRating)}
+                        icon='user'
+                        variant={variant}
+                />
+                <div class='py-2'/>
+                <Histogram
+                        width={180}
+                        height={lg ? 132 : 80}
+                        data={ratings}
+                        max={5}
+                        gap={10}
+                        className='mx-auto hidden sm:block'
+                />
+            </div>
+            <div class='py-1.5'/>
+            <div class='md:rounded-xl md:p-2'>
+                <Stat
+                        title='Difficulty'
+                        value={round2Decimals(averageDifficulty)}
+                        icon='flame'
+                        variant={variant}
+                />
+                <div class='py-2'/>
+                <Histogram
+                        width={180}
+                        height={lg ? 132 : 80}
+                        data={difficulties}
+                        max={5}
+                        gap={10}
+                        className='mx-auto hidden sm:block'
+                />
+            </div>
         </div>
-        <div class='py-1.5'/>
-        <div class='md:rounded-xl md:p-2'>
-            <Stat
-                    title='Difficulty'
-                    value={round2Decimals(averageDifficulty)}
-                    icon='flame'
-                    variant={variant}
-            />
-            <div class='py-2'/>
-            <Histogram
-                    width={180}
-                    height={lg ? 132 : 80}
-                    data={difficulties}
-                    max={5}
-                    gap={10}
-                    className='mx-auto hidden sm:block'
-            />
-        </div>
-    </div>
+    {/key}
 {/if}
