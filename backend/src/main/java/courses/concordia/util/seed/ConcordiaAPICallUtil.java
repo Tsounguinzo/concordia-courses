@@ -11,7 +11,7 @@ import java.net.URL;
 import java.util.Base64;
 
 @Slf4j
-public class APICallUtil {
+public class ConcordiaAPICallUtil {
     /**
      * https://github.com/opendataConcordiaU/documentation/
      */

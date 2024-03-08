@@ -6,9 +6,10 @@
     import MultiSelect from "$lib/components/explore/MultiSelect.svelte";
     import courseCodes from '$lib/data/courseCodes.json'
     import {sortByOptions, termsOptions} from "$lib/types";
-    import {levelsOptions, termColorMap, termToIcon} from "$lib/utils";
+    import {levelsOptions, moreLevelsOptions, termColorMap, termToIcon} from "$lib/utils";
     import type {Writable} from "svelte/store";
     import {RefreshCw} from "lucide-svelte";
+    import Seperator from "$lib/components/common/Seperator.svelte";
 
     export let selectedSubjects: Writable<string[]>;
     export let selectedLevels: Writable<string[]>;
@@ -44,12 +45,12 @@
     <h1 class='text-sm font-semibold text-gray-600 dark:text-gray-400'>Sort By</h1>
     <div class='py-1'/>
     <div class='relative z-20'>
-        <Autocomplete options={sortByOptions} storeValue={sortBy}/>
+        <Autocomplete reset={rotate} options={sortByOptions} storeValue={sortBy}/>
     </div>
     <div class='py-2.5'/>
     <h1 class='text-sm font-semibold text-gray-600 dark:text-gray-400'>Subject</h1>
     <div class='py-1'/>
-    <div class='relative z-10'><MultiSelect options={courseCodes} values={selectedSubjects}/>
+    <div class='relative z-10'><MultiSelect reset={rotate} options={courseCodes} values={selectedSubjects}/>
     </div>
     <div class='py-2.5'/>
     <h1 class='text-sm font-semibold text-gray-600 dark:text-gray-400'>Level</h1>
@@ -59,6 +60,15 @@
             <FilterButton name={level}
                     isSelected={$selectedLevels.includes(level)}
                     selections={selectedLevels}
+            />
+        {/each}
+    </div>
+        <Seperator text="More"/>
+    <div class='flex flex-wrap gap-2 py-1'>
+        {#each moreLevelsOptions as level, i (i)}
+            <FilterButton name={level}
+                          isSelected={$selectedLevels.includes(level)}
+                          selections={selectedLevels}
             />
         {/each}
     </div>

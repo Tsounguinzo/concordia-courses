@@ -89,6 +89,8 @@
                             </h3>
 
                             <Sveltik
+                                    validateOnBlur={false}
+                                    validateOnChange={false}
                                     {validate}
                                     {initialValues}
                                     onSubmit={async (values, actions) => {

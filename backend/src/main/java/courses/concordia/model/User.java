@@ -1,9 +1,6 @@
 package courses.concordia.model;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
@@ -17,7 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@Builder
+@AllArgsConstructor
 @Accessors(chain = true)
 @Document(collection = "users")
 public class User implements UserDetails {
@@ -25,14 +22,7 @@ public class User implements UserDetails {
     private String username;
     private String email;
     private String password;
-    private Boolean verified;
-
-    public User(String username, String email, String password,Boolean verified) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.verified = verified;
-    }
+    private boolean verified;
 
     @Override
     public boolean isAccountNonExpired() {
@@ -57,29 +47,5 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(username));
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }

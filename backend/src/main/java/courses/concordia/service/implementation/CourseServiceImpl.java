@@ -90,9 +90,12 @@ public class CourseServiceImpl implements CourseService {
 
         // Handle 'levels' filter
         if (filter.getLevels() != null && !filter.getLevels().isEmpty()) {
-            String regexPattern = "^(" + String.join("|", filter.getLevels()) + ")";
+            List<String> levelsRegex = filter.getLevels().stream()
+                    .map(lvl -> String.format("%s\\d{%d}(?![\\d])", lvl.charAt(0), lvl.length() - 1))
+                    .toList();
+            String regexPattern = "^(" + String.join("|", levelsRegex) + ")";
             criteriaList.add(Criteria.where("catalog").regex(regexPattern));
-            log.info("Filtering by levels starting with: {}", filter.getLevels());
+            log.info("Filtering by levels with: {} with Regex {}", filter.getLevels(), levelsRegex);
         }
 
         // Handle 'subjects' filter

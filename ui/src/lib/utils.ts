@@ -120,7 +120,8 @@ export const variantToSize = (variant: 'small' | 'large') => {
   return variant === 'small' ? 20 : 18;
 };
 
-export const levelsOptions = ['1XX', '2XX', '3XX', '4XX', '5XX', '6XX', '7XX', '8XX', '9XXX'];
+export const levelsOptions = ['1XX', '2XX', '3XX', '4XX', '5XX', '6XX', '7XX', '8XX', '9XX'];
+export const moreLevelsOptions = ['1XXX', '2XXX', '4XXX', '5XXX', '6XXX', '7XXX', '8XXX', '9XXX'];
 export const termColorMap: Record<string, string> = {
         fall: 'bg-red-100 text-red-900',
         winter: 'bg-sky-100 text-sky-900',

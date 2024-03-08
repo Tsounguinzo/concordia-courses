@@ -8,6 +8,7 @@
     export let options: readonly T[];
     export let storeValue: Writable<T>;
     export let className: string = '';
+    export let reset: boolean = false;
     export let inputClassName: string = '';
 
     let query = writable('');
@@ -17,6 +18,10 @@
             return x.toLowerCase().includes($query.toLowerCase());
         })
         : options;
+
+    $: if(reset) {
+        combobox.set({ selected: options[0]});
+    }
 
     $: storeValue.set($combobox.selected)
     const combobox = createCombobox({label: 'Actions', selected: options[0]})
