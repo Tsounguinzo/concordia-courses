@@ -5,18 +5,33 @@ export const GET = async ({ url }) => {
 };
 
 export const POST = async ({ url, request }) => {
-    const requestBody = await request.json();
+    let requestBody;
+    try {
+        requestBody = await request.json();
+    }catch (err){
+        console.log("Error in POST Body")
+    }
     return await sendRequest({ url, method: 'POST', requestBody });
 };
 
 export const PUT = async ({ url, request }) => {
-    const requestBody = await request.json();
+    let requestBody;
+    try {
+        requestBody = await request.json();
+    }catch (err){
+        console.log("Error in PUT Body")
+    }
     return await sendRequest({ url, method: 'PUT', requestBody });
 };
 
 
 export const DELETE = async ({ url, request }) => {
-    const requestBody = await request.json();
+    let requestBody;
+    try {
+        requestBody = await request.json();
+    }catch (err){
+        console.log("Error in DELETE Body")
+    }
     return await sendRequest({ url, method: 'DELETE', requestBody });
 };
 
