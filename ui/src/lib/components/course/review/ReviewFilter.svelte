@@ -81,6 +81,7 @@
                         </h2>
                         <div class='relative z-10'>
                             <Autocomplete
+                                    reset={rotate}
                                     options={sortTypes}
                                     storeValue={sortBy}
                             />

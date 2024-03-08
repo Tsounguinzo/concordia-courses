@@ -76,7 +76,7 @@
                     <div class='ml-1 mr-4 mt-2 hyphens-auto text-left text-gray-800 dark:text-gray-300'>
                         {review.content.substring(0, 300) + '...'}
                     </div>
-                    <button class='ml-1 mr-auto pt-1 text-gray-700 underline transition duration-300 ease-in-out hover:text-red-500 dark:text-gray-300 dark:hover:text-red-500'
+                    <button class='ml-1 mr-auto pt-1 text-gray-700 underline transition duration-300 ease-in-out hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-500'
                             on:click={() => readMore.set(true)}>
                         Show more
                     </button>
