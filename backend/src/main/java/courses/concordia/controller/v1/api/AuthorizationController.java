@@ -5,6 +5,7 @@ import courses.concordia.controller.v1.request.SignupRequest;
 import courses.concordia.dto.model.user.UserDto;
 import courses.concordia.dto.response.AuthenticationResponse;
 import courses.concordia.dto.response.Response;
+import courses.concordia.service.implementation.EmailServiceImpl;
 import courses.concordia.service.implementation.JwtServiceImpl;
 import courses.concordia.service.implementation.UserServiceImpl;
 import jakarta.validation.Valid;

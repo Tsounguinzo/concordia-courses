@@ -68,6 +68,14 @@ public class InteractionServiceImpl implements InteractionService {
                 .setUserId(interactionDto.getUserId())
                 .setReferrer(interactionDto.getReferrer());
         interaction = interactionRepository.save(interaction);
+        Query reviewQuery = new Query(Criteria.where("courseId").is(interactionDto.getCourseId()).and("userId").is(interactionDto.getUserId()));
+        Update update = new Update();
+        if (interaction.getKind() == Interaction.InteractionKind.LIKE) {
+            update.inc("likes", 1);
+        } else {
+            update.inc("likes", -1);
+        }
+        mongoTemplate.updateFirst(reviewQuery, update, Review.class);
         return InteractionMapper.toDto(interaction);
     }
 
