@@ -1,8 +1,10 @@
 package courses.concordia.email;
 
+import courses.concordia.model.User;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 

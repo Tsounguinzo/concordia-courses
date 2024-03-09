@@ -5,6 +5,9 @@ import courses.concordia.controller.v1.request.SignupRequest;
 import courses.concordia.dto.model.user.UserDto;
 import courses.concordia.dto.response.AuthenticationResponse;
 import courses.concordia.dto.response.Response;
+import courses.concordia.model.Token;
+import courses.concordia.model.User;
+import courses.concordia.repository.TokenRepository;
 import courses.concordia.service.implementation.JwtServiceImpl;
 import courses.concordia.service.implementation.UserServiceImpl;
 import jakarta.validation.Valid;
@@ -16,9 +19,9 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
 public class AuthorizationController {
-    private final EmailServiceImpl emailService;
     private final UserServiceImpl userService;
     private final JwtServiceImpl jwtService;
+    private final TokenRepository tokenRepository;
     public String token;
 
 
@@ -41,10 +44,9 @@ public class AuthorizationController {
         UserDto userDto;
 
         if(!userService.checkIfUserExist(signupRequest.getUsername())){
-            if(!signupRequest.getEmail().endsWith("concordia.ca")){
+            /*if(!signupRequest.getEmail().endsWith("concordia.ca")){
                 return Response.badRequest().setErrors("Email must be a Concordia email address");
-            }
-
+            }*/
         }
         userDto = new UserDto(
                 signupRequest.getUsername(),
@@ -56,6 +58,19 @@ public class AuthorizationController {
         token = res.getToken();
         return Response.ok().setPayload(res);
 
+    }
+
+    @GetMapping("/authorized")
+    public Response<?> confirmUserAccount(@Valid @RequestParam("token") String token){
+        userService.verifyToken(token);
+        Token t = tokenRepository.findByToken(token);
+
+        System.out.println(t.getUser());
+        System.out.println(token);
+        return Response.ok().setPayload(
+                AuthenticationResponse.builder()
+                .token(null)
+                .build());
     }
 }
 

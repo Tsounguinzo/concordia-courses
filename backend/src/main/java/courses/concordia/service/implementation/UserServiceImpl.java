@@ -7,7 +7,9 @@ import courses.concordia.dto.response.AuthenticationResponse;
 import courses.concordia.exception.CCException;
 import courses.concordia.exception.EntityType;
 import courses.concordia.exception.ExceptionType;
+import courses.concordia.model.Token;
 import courses.concordia.model.User;
+import courses.concordia.repository.TokenRepository;
 import courses.concordia.repository.UserRepository;
 import courses.concordia.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Optional;
 
 import static courses.concordia.exception.EntityType.USER;
@@ -26,6 +29,7 @@ import static courses.concordia.exception.ExceptionType.ENTITY_NOT_FOUND;
 @Service
 public class UserServiceImpl implements UserService {
     private final EmailServiceImpl emailService;
+    private final TokenRepository tokenRepository;
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JwtServiceImpl jwtService;
@@ -35,14 +39,23 @@ public class UserServiceImpl implements UserService {
     public AuthenticationResponse signup(UserDto userDto) {
         Optional<User> existingUser = userRepository.findByUsername(userDto.getUsername());
         if (existingUser.isPresent()) {
+            //Create user
             User user = new User(userDto.getUsername(),
                     userDto.getEmail(),
                     bCryptPasswordEncoder.encode(userDto.getPassword()),
                     userDto.isVerified());
-            var jwtToken = jwtService.generateToken(user);
+
             userRepository.save(user);
+            tokenRepository.deleteAll();
+
+            //Email token
+            Token token = new Token(user);
+            tokenRepository.save(token);
+
+            emailService.sendSimpleMailMessage(user.getUsername(), user.getEmail(), token.getToken());
+
             return AuthenticationResponse.builder()
-                    .token(jwtToken)
+                    .token(null)
                     .build();
         }
         throw exception(USER, DUPLICATE_ENTITY, userDto.getUsername());
@@ -66,6 +79,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Boolean verifyToken(String token) {
+        Token tempToken = tokenRepository.findByToken(token);
+        Optional<User> user = userRepository.findByUsername(tempToken.getUser().getUsername());
+        if(user.isPresent()) {
+            user.get().setVerified(true);
+            tokenRepository.delete(tempToken);
+            return true;
+        }
+        return false;
+    }
+
+
+    @Override
     public UserDto changeUsername(UserDto userDto) {
         Optional<User> user = userRepository.findByUsername(userDto.getUsername());
         if (user.isPresent()) {
@@ -86,6 +112,7 @@ public class UserServiceImpl implements UserService {
         }
         throw exception(USER, ENTITY_NOT_FOUND, userDto.getUsername());
     }
+
 
     private RuntimeException exception(EntityType entityType, ExceptionType exceptionType, String... args) {
         return CCException.throwException(entityType, exceptionType, args);
