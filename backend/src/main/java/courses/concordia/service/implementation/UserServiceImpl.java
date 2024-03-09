@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
     private final AuthenticationManager authenticationManager;
 
     @Override
-    public AuthenticationResponse signup(UserDto userDto) {
+    public void signup(UserDto userDto) {
         Optional<User> existingUser = userRepository.findByUsername(userDto.getUsername());
         if (existingUser.isPresent()) {
             //Create user
@@ -46,17 +46,12 @@ public class UserServiceImpl implements UserService {
                     userDto.isVerified());
 
             userRepository.save(user);
-            tokenRepository.deleteAll();
 
             //Email token
             Token token = new Token(user);
             tokenRepository.save(token);
 
             emailService.sendSimpleMailMessage(user.getUsername(), user.getEmail(), token.getToken());
-
-            return AuthenticationResponse.builder()
-                    .token(null)
-                    .build();
         }
         throw exception(USER, DUPLICATE_ENTITY, userDto.getUsername());
     }
@@ -80,11 +75,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean verifyToken(String token) {
+        System.out.println(token);
         Token tempToken = tokenRepository.findByToken(token);
+
         Optional<User> user = userRepository.findByUsername(tempToken.getUser().getUsername());
         if(user.isPresent()) {
             user.get().setVerified(true);
-            tokenRepository.delete(tempToken);
             return true;
         }
         return false;

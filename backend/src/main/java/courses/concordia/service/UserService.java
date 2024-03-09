@@ -6,7 +6,7 @@ import courses.concordia.dto.response.AuthenticationResponse;
 import courses.concordia.model.User;
 
 public interface UserService {
-    AuthenticationResponse signup(UserDto userDto);
+    void signup(UserDto userDto);
     UserDto changeUsername(UserDto userDto);
     UserDto changePassword(UserDto userDto, String newPassword);
     AuthenticationResponse authenticate(LoginRequest loginRequest);

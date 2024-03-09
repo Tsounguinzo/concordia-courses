@@ -54,22 +54,23 @@ public class AuthorizationController {
                 signupRequest.getPassword(),
                 false
         );
-        res = userService.signup(userDto);
-        token = res.getToken();
-        return Response.ok().setPayload(res);
+        userService.signup(userDto);
+        return Response.ok().setPayload("successfully sign up, please verify your email address.");
 
     }
 
     @GetMapping("/authorized")
     public Response<?> confirmUserAccount(@Valid @RequestParam("token") String token){
-        userService.verifyToken(token);
-        Token t = tokenRepository.findByToken(token);
-
-        System.out.println(t.getUser());
         System.out.println(token);
+
+        userService.verifyToken(token);
+
+        Token t = tokenRepository.findByToken(token);
+        String jwtToken = jwtService.generateToken(t.getUser());
+        //System.out.println(t.getUser());
         return Response.ok().setPayload(
                 AuthenticationResponse.builder()
-                .token(null)
+                .token(jwtToken)
                 .build());
     }
 }
