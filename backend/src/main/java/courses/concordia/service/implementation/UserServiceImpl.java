@@ -81,6 +81,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> user = userRepository.findByUsername(tempToken.getUser().getUsername());
         if(user.isPresent()) {
             user.get().setVerified(true);
+            //tokenRepository.delete(tempToken);
             return true;
         }
         return false;
