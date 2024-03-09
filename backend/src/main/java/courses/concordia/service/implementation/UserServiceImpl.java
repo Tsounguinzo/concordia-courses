@@ -49,6 +49,7 @@ public class UserServiceImpl implements UserService {
 
             //Email token
             Token token = new Token(user);
+            //tokenRepository.deleteAll();
             tokenRepository.save(token);
 
             emailService.sendSimpleMailMessage(user.getUsername(), user.getEmail(), token.getToken());
@@ -75,19 +76,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean verifyToken(String token) {
-        System.out.println(token);
+        //System.out.println(token);
         Token tempToken = tokenRepository.findByToken(token);
 
         Optional<User> user = userRepository.findByUsername(tempToken.getUser().getUsername());
         if(user.isPresent()) {
             user.get().setVerified(true);
             userRepository.save(user.get());
-            //tokenRepository.delete(tempToken);
+            tokenRepository.delete(tempToken);
             return true;
         }
         return false;
     }
-
 
     @Override
     public UserDto changeUsername(UserDto userDto) {

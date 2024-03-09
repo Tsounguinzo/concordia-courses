@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
@@ -24,7 +23,6 @@ public class AuthorizationController {
     private final JwtServiceImpl jwtService;
     private final TokenRepository tokenRepository;
     public String token;
-
 
     private static final Logger LOG = LoggerFactory.getLogger(AuthorizationController.class);
 
@@ -39,7 +37,6 @@ public class AuthorizationController {
         token = res.getToken();
         return Response.ok().setPayload(res);
     }
-
 
     @PostMapping("/signup")
     public Response<?> signup(@Valid @RequestBody SignupRequest signupRequest) {
@@ -59,17 +56,20 @@ public class AuthorizationController {
         );
         userService.signup(userDto);
         return Response.ok().setPayload("successfully sign up, please verify your email address.");
-
     }
-
 
     @GetMapping("/authorized")
     public Response<?> confirmUserAccount(@Valid @RequestParam("token") String token) {
-        System.out.println(token);
+        Token t = tokenRepository.findByToken(token);
+
+        if(t.isExpired()) {
+            //if the token is expired, delete the token
+            tokenRepository.delete(t);
+            return Response.badRequest().setPayload("The link is expired.");
+        }
 
         userService.verifyToken(token);
 
-        Token t = tokenRepository.findByToken(token);
         String jwtToken = jwtService.generateToken(t.getUser());
         //System.out.println(t.getUser());
         return Response.ok().setPayload(

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.mongodb.core.aggregation.DateOperators;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
@@ -14,6 +15,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.UUID;
 
 @Getter
@@ -30,11 +32,16 @@ public class Token {
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
-    private LocalDateTime createdDate;
-
+    private LocalDateTime createTime;
+    private LocalDateTime expireTime;
     public Token(User user){
         this.user = user;
-        this.createdDate = LocalDateTime.now();
+        this.createTime = LocalDateTime.now();
+        this.expireTime = createTime.plusMinutes(5);
         this.token = UUID.randomUUID().toString();
+    }
+
+    public boolean isExpired(){
+        return LocalDateTime.now().isAfter(expireTime);
     }
 }

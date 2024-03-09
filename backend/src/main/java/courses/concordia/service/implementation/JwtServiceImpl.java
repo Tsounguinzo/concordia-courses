@@ -31,27 +31,19 @@ public class JwtServiceImpl implements JwtService {
     }
 
     public String generateToken(UserDetails userDetails){
-        return generateToken(new HashMap<>(), userDetails,"auth");
+        return generateToken(new HashMap<>(), userDetails);
     }
 
     public String generateToken(
             Map<String, Object> extraClaims,
-            UserDetails userDetails,
-            String type
+            UserDetails userDetails
     ){
-        long time = 0;
-        if(type.equals("email")){
-            time = 1000 * 60 * 5;
-        }
-        if(type.equals("auth")){
-            time = 1000 * 60 * 60 * 24;
-        }
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+ time))
+                .setExpiration(new Date(System.currentTimeMillis()+ 1000 * 60 * 60 * 24))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
