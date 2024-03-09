@@ -4,7 +4,6 @@ import type { GetCourseWithReviewsPayload } from './model/GetCourseWithReviewsPa
 import type { InteractionKind } from './model/Interaction';
 import type { Notification } from './model/Notification';
 import type { Review } from './model/Review';
-import type { SearchResults } from './model/SearchResults';
 import type { Subscription } from './model/Subscription';
 import type {User, UserResponse} from './model/User';
 
@@ -47,7 +46,6 @@ const client = {
       fn: (endpoint: string, init?: RequestInit) => Promise<Response>
     ): Promise<T> => (await (await fn(endpoint, init)).json()) as T;
 
-    console.log(await run(this.post))
     switch (method) {
       case 'GET':
         return run(this.get);

@@ -51,6 +51,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public void deleteReview(String courseId, String userId) {
         reviewRepository.deleteByCourseIdAndUserId(courseId, userId);
+        updateCourseRatings(courseId);
     }
 
     @Override
@@ -79,10 +80,12 @@ public class ReviewServiceImpl implements ReviewService {
         List<Review> reviews = reviewRepository.findAllByCourseId(courseId);
         double avgRating = reviews.stream().mapToInt(Review::getRating).average().orElse(0.0);
         double avgDifficulty = reviews.stream().mapToInt(Review::getDifficulty).average().orElse(0.0);
+        int reviewsCount = reviews.size();
         Course course = courseRepository.findById(courseId).orElse(null);
         if (course != null) {
             course.setAvgRating(avgRating);
             course.setAvgDifficulty(avgDifficulty);
+            course.setReviewCount(reviewsCount);
             courseRepository.save(course);
         }
     }

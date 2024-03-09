@@ -1,6 +1,7 @@
 package courses.concordia.util;
 
 import com.google.gson.reflect.TypeToken;
+import courses.concordia.util.seed.model.Course;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -9,6 +10,9 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.concurrent.Flow;
 
 @Slf4j
@@ -18,13 +22,21 @@ public class AIUtils {
 
     public static void main(String[] args) {
         //Before using this, download ollama from https://ollama.com/download and pull the model you want, e.g gemma:7b or gemma:2b or any other available at https://ollama.com/library
-        String prompt = "Fundamentals of electric circuits: Kirchoff’s laws, voltage and current sources, Ohm’s law, series and parallel circuits. Nodal and mesh analysis of DC circuits. Superposition theorem, Thevenin and Norton Equivalents. Use of operational amplifiers. Transient analysis of simple RC, RL and RLC circuits. Steady state analysis: Phasors and impedances, power and power factor. Single and three phase circuits. Magnetic circuits and transformers. Power generation and distribution. Lectures: three hours per week. Tutorial: two hours per week. Laboratory: 15 hours total.Prerequisite: ENGR 213 previously or concurrently; PHYS 205. Course Prerequisite: PHYS205; Course Co-requisite: ENGR213 Separate the above in a json format as below, give a value of null where applicable {“description” : string “prerequisites”:  string “corequisites”: string “Restrictions”: string}";
 
-        try {
-            generateText(prompt, true);
-        } catch (IOException | InterruptedException e) {
-            log.error("An exception occurred: {}", e.getMessage(), e);
-        }
+         String SEED_FILENAME = "2023-2024-courses-v2.json";
+         Path fileLocation = Paths.get("backend","src","main","resources","seeds", SEED_FILENAME);
+         List<Course> courses = JsonUtils.getData(fileLocation, new TypeToken<List<Course>>(){});
+
+         String task = "Into the json format below, give a value of null where applicable {“description” : string “prerequisites”:  string “corequisites”: string “Restrictions”: string}";
+         for (Course course : courses) {
+             String prompt = String.format("Convert the following:%n%s%n%s%n%s", course.getDescription(), course.getPrerequisites(), task).replace("\n","");
+             try {
+                 generateText(prompt, true);
+             } catch (IOException | InterruptedException e) {
+                 log.error("An exception occurred: {}", e.getMessage(), e);
+             }
+             System.out.println();
+         }
     }
 
     public static void generateText(String prompt, boolean stream) throws IOException, InterruptedException {
@@ -32,11 +44,11 @@ public class AIUtils {
     }
     public static void generateText(String model, String prompt, boolean stream) throws IOException, InterruptedException {
         String requestBody = String.format("""
-            {
-              "model": "%s",
-              "prompt": "%s",
-              "stream": %b
-            }""", model, prompt, stream);
+                {
+                  "model": "%s",
+                  "prompt": "%s",
+                  "stream": %b
+                }""", model, prompt, stream);
 
         HttpClient client = HttpClient.newHttpClient();
 

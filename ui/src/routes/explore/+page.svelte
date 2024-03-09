@@ -66,6 +66,7 @@
     const selectedTerms = writable<string[]>([]);
     const sortBy = writable<SortByType>('');
     let isMounted = false;
+    let previousState = '';
 
     const nullable = (arr: string[]) => (arr.length === 0 ? null : arr);
 
@@ -98,8 +99,13 @@
         isMounted = true;
     });
 
-    $: if (isMounted && (query !== '' || $selectedSubjects.length > 0 || $selectedLevels.length > 0 || $selectedTerms.length > 0 || $sortBy !== '')) {
-        fetchCourses(true);
+    $: {
+        const currentState = JSON.stringify([$selectedSubjects, $selectedLevels, $selectedTerms, $sortBy]);
+
+        if (isMounted && (query !== '' || currentState !== previousState)) {
+            fetchCourses(true);
+            previousState = currentState;
+        }
     }
 
     const fetchMore = async () => {
