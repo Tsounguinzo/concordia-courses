@@ -17,7 +17,7 @@
     export let open: Writable<boolean>;
     export let handleSubmit: (res: Response) => void;
 
-    let initialValues = {
+    $: initialValues = {
         content: review.content,
         instructor: review.instructor,
         rating: review.rating,

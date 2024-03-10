@@ -253,8 +253,6 @@ export const repo = {
   },
 
   async getUser(): Promise<UserResponse> {
-    return client.deserialize<UserResponse>('GET', '/user', {
-      credentials: 'include',
-    });
+    return client.deserialize<UserResponse>('GET', '/user');
   },
 };

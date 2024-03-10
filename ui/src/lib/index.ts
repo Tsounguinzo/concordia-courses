@@ -4,15 +4,16 @@ import { onMount } from "svelte";
 import { toast } from "svelte-sonner";
 import type {UserResponse} from "$lib/model/User";
 
-export const auth = () => {
-    const user = writable<UserResponse>();
+export const userAuth = writable<UserResponse>(null);
 
+export const auth = () => {
     onMount(() => {
-        repo
-            .getUser()
+        repo.getUser()
             .then((data) => {
-                user.set(data);
+                userAuth.set(data);
             })
-            .catch(() => toast.error('Failed to fetch user.'));
+            .catch(() => {
+                toast.error('Failed to fetch user.');
+            });
     });
 };

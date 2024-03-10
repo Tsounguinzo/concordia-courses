@@ -19,10 +19,9 @@ spring:
 
 
 app:
+  jwt-name: "accessToken"
   jwt-key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
   jwt-exp: 604800000
-  cors:
-    allowed-origins: http://localhost:8080
   init-db: false
   seed-dir: backend/src/main/resources/seeds
 
