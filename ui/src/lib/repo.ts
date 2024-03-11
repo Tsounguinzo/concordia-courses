@@ -252,7 +252,7 @@ export const repo = {
     });
   },
 
-  async getUser(): Promise<UserResponse> {
-    return client.deserialize<UserResponse>('GET', '/user');
+  async getUser(): Promise<string> {
+    return client.deserialize<string>('GET', '/auth/user');
   },
 };

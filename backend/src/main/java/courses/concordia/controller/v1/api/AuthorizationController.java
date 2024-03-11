@@ -31,7 +31,7 @@ public class AuthorizationController {
     @Value("${app.jwt-name:accessToken}")
     private String tokenName;
 
-    @PostMapping("/user")
+    @GetMapping("/user")
     public Response<?> getUser(HttpServletRequest request) {
         String token = getTokenFromCookie(request, tokenName);
         System.out.println(token);
