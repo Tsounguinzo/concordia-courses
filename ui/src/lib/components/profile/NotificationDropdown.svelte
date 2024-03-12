@@ -8,14 +8,14 @@
     import {createMenu} from "svelte-headlessui";
     import {toast} from "svelte-sonner";
     import {repo} from "$lib/repo";
-    import {onMount} from "svelte";
+    import {observeNotification} from "$lib";
     import {writable} from "svelte/store";
 
     export let notifications: Writable<Notification[]>;
 
     let seen: Set<string> = new Set();
 
-    onMount(() => {
+    $: if($menu.expanded && seen.size) {
 
         notifications.set(
             $notifications.map((n) => {
@@ -24,7 +24,7 @@
         );
 
         seen = new Set();
-    });
+    }
 
     const updateNotification = async (notification: Notification) => {
         if (notification.seen) return;
@@ -86,7 +86,7 @@
                         <div class='p-2'>
                             {#if $notifications.length !== 0}
                                 {#each $notifications as notification, i (i)}
-                                    <button use:menu.item class='m-2' on:click|preventDefault>
+                                    <button use:observeNotification={{ updateNotification, notification }} use:menu.item class='m-2' on:click|preventDefault>
                                         <div class='mb-2 flex items-center dark:bg-neutral-700'>
                                             <div class='flex items-center gap-x-1'>
                                                 <p class='font-semibold text-gray-800 dark:text-gray-200'>

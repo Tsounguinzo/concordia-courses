@@ -34,7 +34,6 @@ public class AuthorizationController {
     @GetMapping("/user")
     public Response<?> getUser(HttpServletRequest request) {
         String token = getTokenFromCookie(request, tokenName);
-        System.out.println(token);
         if (token == null) {
             return Response.unauthorized();
         }
