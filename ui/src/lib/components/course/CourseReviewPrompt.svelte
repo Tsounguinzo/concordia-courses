@@ -1,10 +1,11 @@
 <script lang="ts">
     import type {Writable} from "svelte/store";
     import Tooltip from "$lib/components/common/Tooltip.svelte";
+    import {useAuth} from "$lib/auth";
 
     export let openAddReview: Writable<boolean>;
 
-    const user = {id: "Beaudelaire"};
+    const user =  useAuth();
     let promptLogin = false;
     const displayLoginPrompt = () => {
         promptLogin = true;

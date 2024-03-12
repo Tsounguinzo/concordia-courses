@@ -8,13 +8,14 @@
     import {repo} from "$lib/repo";
     import {toast} from "svelte-sonner";
     import {spliceCourseCode} from "$lib/utils";
+    import {useAuth} from "$lib/auth";
 
     export let review: Review;
     export let interactions: Interaction[];
     export let promptLogin: Writable<boolean>;
     export let updateLikes: (likes: number) => void;
 
-    const user = {id: "Beaudelaire"}; //useAuth();
+    const user =  useAuth();
     const kind = writable<InteractionKind | undefined | null>(undefined);
     let {courseId, userId, likes} = review;
 

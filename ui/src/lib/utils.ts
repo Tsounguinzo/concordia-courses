@@ -1,33 +1,4 @@
-import type {Course} from './model/Course';
-import type {Instructor} from './model/Instructor';
 import type {Schedule} from './model/Schedule';
-
-export const uniqueTermInstructors = (course: Course) => {
-    const termInstructors = course.instructors.filter((i) =>
-        course.terms.includes(i.term)
-    );
-
-    const unique = [];
-    const filledTerms = new Set();
-
-    for (const instructor of termInstructors) {
-        if (!filledTerms.has(instructor.term)) {
-            unique.push(instructor);
-            filledTerms.add(instructor.term);
-        }
-    }
-
-    const order = ['Fall', 'Fall/Winter', 'Winter', 'Spring', 'Summer'];
-
-    for (const term of course.terms) {
-        if (!filledTerms.has(term))
-            unique.push({term, name: term});
-    }
-
-    unique.sort((a, b) => order.indexOf(a.term) - order.indexOf(b.term));
-
-    return unique;
-};
 
 export const getCurrentTerms = (): [string, string, string, string, string] => {
     const now = new Date();
@@ -49,11 +20,6 @@ export const addAcademicYear = (term: string) => {
         return [`Fall ${year}`, `Fall/Winter ${year}-${year + 1}`, `Winter ${year + 1}`, `Spring ${year + 1}` , `Summer ${year + 1}`].filter(current => current.split(" ")[0] === term)[0];
 
     return [`Fall ${year - 1}`, `Fall/Winter ${year - 1}-${year}`, `Winter ${year}`, `Spring ${year}` , `Summer ${year}`].filter(current => current.split(" ")[0] === term)[0];
-};
-
-export const filterCurrentInstructors = (instructors: Instructor[]) => {
-    const currentTerm = getCurrentTerms();
-    return instructors.filter((i) => currentTerm.includes(i.term));
 };
 
 export const sortTerms = (terms: string[]) => {

@@ -19,10 +19,11 @@
     import AddReviewForm from "$lib/components/course/review/AddReviewForm.svelte";
     import {goto} from "$app/navigation";
     import Seo from "$lib/components/common/Seo.svelte";
+    import {useAuth} from "$lib/auth";
 
     let params = $page.params.id;
 
-    const user = {id: "Beaudelaire"}; //useAuth();
+    const user = useAuth();
     const currentTerms = getCurrentTerms();
 
     let firstFetch = true;

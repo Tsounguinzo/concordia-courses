@@ -8,11 +8,12 @@
     import CourseTerms from "$lib/components/common/CourseTerms.svelte";
     import CourseInfoStats from "$lib/components/course/stats/CourseInfoStats.svelte";
     import {onMount} from "svelte";
+    import {useAuth} from "$lib/auth";
 
     export let course: Course;
     export let reviews: Review[];
 
-    const user = {id: "Beaudelaire"}; //useAuth();
+    const user = useAuth();
 
     const isSubscribed = writable(false);
 

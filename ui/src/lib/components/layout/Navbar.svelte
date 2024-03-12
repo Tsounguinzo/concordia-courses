@@ -12,10 +12,11 @@
     import {onMount} from "svelte";
     import {repo} from "$lib/repo";
     import {toast} from "svelte-sonner";
+    import {useAuth} from "$lib/auth";
 
-    const {courses, instructors, coursesIndex, instructorsIndex} = getSearchIndex();
+    const {courses, coursesIndex} = getSearchIndex();
 
-    const user = {id: "Beaudelaire"}; //useAuth();
+    const user = useAuth();
     $: pathName = $page.url.pathname;
     const notifications = writable<Notification[]>([]);
 
@@ -32,9 +33,7 @@
         updateSearchResults(
             query,
             courses,
-            instructors,
-            coursesIndex,
-            instructorsIndex,
+            coursesIndex
         );
     };
 
@@ -42,7 +41,6 @@
         searchResults.set({
             query: '',
             courses: [],
-            instructors: [],
         });
     };
 

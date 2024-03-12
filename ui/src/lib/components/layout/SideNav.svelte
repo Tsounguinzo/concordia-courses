@@ -7,8 +7,9 @@
     import {getUrl} from "$lib/utils";
     import {navigationItems} from "$lib/constants";
     import {mobileMenuOpen} from "$lib/store";
+    import {useAuth} from "$lib/auth";
 
-    const user = {id: "Beaudelaire"}; // useAuth();
+    const user = useAuth();
 
     onMount(() => {
         document.body.style.overflow = $mobileMenuOpen ? 'hidden' : 'auto';

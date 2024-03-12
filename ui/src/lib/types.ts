@@ -2,7 +2,7 @@ import type {Course} from "$lib/model/Course";
 
 export type CourseData = Pick<
   Course,
-  '_id' | 'subject' | 'title' | 'catalog' | 'instructors'
+  '_id' | 'subject' | 'title' | 'catalog'
 >;
 
 export const sortByOptions = [

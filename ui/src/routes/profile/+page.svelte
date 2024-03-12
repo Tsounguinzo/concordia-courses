@@ -14,8 +14,9 @@
     import {twMerge} from "tailwind-merge";
     import {onMount} from "svelte";
     import Seo from "$lib/components/common/Seo.svelte";
+    import {useAuth} from "$lib/auth";
 
-    const user = {id: "Beaudelaire"};
+    const user =  useAuth();
 
     const userReviews = writable<Review[]>([]);
     const userSubscriptions = writable<Subscription[]>([]);

@@ -18,7 +18,7 @@
     const selectedIndex = writable(0);
 
     const handleKeyDown = (event: KeyboardEvent) => {
-        const length = results.courses.length + results.instructors.length;
+        const length = results.courses.length
 
         if (event.key === 'ArrowUp') {
             event.preventDefault();
@@ -33,13 +33,7 @@
         }
 
         if ($selectedIndex > -1 && event.key === 'Enter') {
-            goto(
-                $selectedIndex < results.courses.length
-                    ? `/course/${courseIdToUrlParam(results.courses[$selectedIndex]._id)}`
-                    : `/instructor/${encodeURIComponent(
-                        results.instructors[$selectedIndex - results.courses.length].name
-                    )}`
-            );
+            goto(`/course/${courseIdToUrlParam(results.courses[$selectedIndex]._id)}`);
             if (onResultClick) {
                 onResultClick();
                 event.currentTarget?.blur()
@@ -71,17 +65,6 @@
                         text={`${spliceCourseCode(result._id, ' ')} - ${result.title}`}
                         type="course"
                         url={`/course/${courseIdToUrlParam(result._id)}`}
-                        on:click={onResultClick}
-                />
-            {/each}
-            {#each results.instructors as result, index (result.name + index)}
-                <SearchResult
-                        index={results.courses.length + index}
-                        query={results.query}
-                        selectedIndex={$selectedIndex}
-                        text={result.name}
-                        type="instructor"
-                        url={`/instructor/${encodeURIComponent(result.name)}`}
                         on:click={onResultClick}
                 />
             {/each}
