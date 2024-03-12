@@ -21,7 +21,7 @@
     import Seo from "$lib/components/common/Seo.svelte";
     import {useAuth} from "$lib/auth";
 
-    let params = $page.params.id;
+    $: params = $page.params.id;
 
     const user = useAuth();
     const currentTerms = getCurrentTerms();
