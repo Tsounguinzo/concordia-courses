@@ -10,6 +10,7 @@
     import {repo} from "$lib/repo";
     import {toast} from "svelte-sonner";
     import Seperator from "$lib/components/common/Seperator.svelte";
+    import {goto} from "$app/navigation";
 
     const initialValues = {
         username: '',
@@ -36,10 +37,12 @@
     };
 
     const handleSubmit = (res: Response, type: string) => {
-        if (res.ok) {
+        if (res) {
             toast.success(`${type} successful`);
+            location.reload();
+            goto("/profile")
         } else {
-            toast.error('Username or password is wrong');
+            toast.error(res);
         }
     };
 
