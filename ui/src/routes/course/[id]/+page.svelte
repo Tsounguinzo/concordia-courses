@@ -19,11 +19,10 @@
     import AddReviewForm from "$lib/components/course/review/AddReviewForm.svelte";
     import {goto} from "$app/navigation";
     import Seo from "$lib/components/common/Seo.svelte";
-    import {useAuth} from "$lib/auth";
 
     $: params = $page.params.id;
 
-    const user = useAuth();
+    const user = $page.data.user;
     const currentTerms = getCurrentTerms();
 
     let firstFetch = true;
@@ -61,7 +60,7 @@
 
                   if (user && id) {
                       const courseInteractionsPayload =
-                          await repo.getUserInteractionsForCourse(id, user?.id);
+                          await repo.getUserInteractionsForCourse(id, user);
 
                       userInteractions.set(courseInteractionsPayload.interactions);
                   }
@@ -89,8 +88,8 @@
     }
 
 
-    $: userReview = $showingReviews?.find((r) => r.userId === user?.id);
-    $: canReview = Boolean(user && !$allReviews?.find((r) => r.userId === user?.id));
+    $: userReview = $showingReviews?.find((r) => r.userId === user);
+    $: canReview = Boolean(user && !$allReviews?.find((r) => r.userId === user));
 
     const handleSubmit = (successMessage: string) => {
         return (res: Response) => {
@@ -172,7 +171,7 @@
                 <div class='w-full shadow-sm'>
                     {#if userReview}
                         <CourseReview
-                                canModify={Boolean(user && userReview.userId === user?.id)}
+                                canModify={Boolean(user && userReview.userId === user)}
                                 handleDelete={() => handleDelete(userReview)}
                                 editReview={editReviewOpen}
                                 review={userReview}
@@ -182,10 +181,10 @@
                     {/if}
                     {#if $showingReviews}
                         {#each $showingReviews
-                            .filter((review) => (user ? review.userId !== user?.id : true))
+                            .filter((review) => (user ? review.userId !== user : true))
                             .slice(0, $showAllReviews ? $showingReviews.length : 8) as review, i (i)}
                             <CourseReview
-                                    canModify={Boolean(user && review.userId === user?.id)}
+                                    canModify={Boolean(user && review.userId === user)}
                                     handleDelete={() => handleDelete(review)}
                                     editReview={editReviewOpen}
                                     review={review}
@@ -234,7 +233,7 @@
                     <div class='w-full shadow-sm'>
                         {#if userReview}
                             <CourseReview
-                                    canModify={Boolean(user && userReview.userId === user?.id)}
+                                    canModify={Boolean(user && userReview.userId === user)}
                                     handleDelete={() => handleDelete(userReview)}
                                     editReview={editReviewOpen}
                                     review={userReview}
@@ -246,11 +245,11 @@
                         {#if $showingReviews}
                             {#each $showingReviews
                                 .filter((review) =>
-                                    user ? review.userId !== user?.id : true
+                                    user ? review.userId !== user : true
                                 )
                                 .slice(0, $showAllReviews ? $showingReviews.length : 8) as review, i (i)}
                                 <CourseReview
-                                        canModify={Boolean(user && review.userId === user?.id)}
+                                        canModify={Boolean(user && review.userId === user)}
                                         handleDelete={() => handleDelete(review)}
                                         editReview={editReviewOpen}
                                         review={review}

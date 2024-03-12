@@ -14,9 +14,9 @@
     import {twMerge} from "tailwind-merge";
     import {onMount} from "svelte";
     import Seo from "$lib/components/common/Seo.svelte";
-    import {useAuth} from "$lib/auth";
+    import {page} from "$app/stores";
 
-    const user =  useAuth();
+    const user =  $page.data.user;
 
     const userReviews = writable<Review[]>([]);
     const userSubscriptions = writable<Subscription[]>([]);
@@ -24,7 +24,7 @@
     onMount(() => {
         if (user) {
             repo
-                .getReviews(user.id)
+                .getReviews(user)
                 .then((data) => userReviews.set(data))
                 .catch(() =>
                     toast.error(

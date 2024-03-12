@@ -12,11 +12,10 @@
     import {onMount} from "svelte";
     import {repo} from "$lib/repo";
     import {toast} from "svelte-sonner";
-    import {useAuth} from "$lib/auth";
 
     const {courses, coursesIndex} = getSearchIndex();
 
-    const user = useAuth();
+    const user = $page.data.user;
     $: pathName = $page.url.pathname;
     const notifications = writable<Notification[]>([]);
 

@@ -252,7 +252,10 @@ export const repo = {
     });
   },
 
-  async getUser(): Promise<string> {
-    return client.deserialize<string>('GET', '/auth/user');
+  async getUser(fetch: { (input: RequestInfo | URL, init?: RequestInit | undefined): Promise<Response>; (arg0: string): any; }): Promise<string> {
+    const backendURL = 'http://localhost:8080/api/v1/auth/user';
+    const response = await fetch(backendURL);
+    const body = await response.json()
+    return body.payload;
   },
 };

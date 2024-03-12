@@ -8,14 +8,14 @@
     import {repo} from "$lib/repo";
     import {toast} from "svelte-sonner";
     import {spliceCourseCode} from "$lib/utils";
-    import {useAuth} from "$lib/auth";
+    import {page} from "$app/stores";
 
     export let review: Review;
     export let interactions: Interaction[];
     export let promptLogin: Writable<boolean>;
     export let updateLikes: (likes: number) => void;
 
-    const user =  useAuth();
+    const user =  $page.data.user;
     const kind = writable<InteractionKind | undefined | null>(undefined);
     let {courseId, userId, likes} = review;
 
@@ -45,11 +45,11 @@
         let change;
         try {
             if (interactionKind === 'remove') {
-                await repo.removeInteraction(courseId, userId, user?.id);
+                await repo.removeInteraction(courseId, userId, user);
                 change = getLikeChange($kind, interactionKind);
             } else {
-                await repo.removeInteraction(courseId, userId, user?.id);
-                await repo.addInteraction(interactionKind, courseId, userId, user?.id);
+                await repo.removeInteraction(courseId, userId, user);
+                await repo.addInteraction(interactionKind, courseId, userId, user);
                 change = getLikeChange($kind, interactionKind);
             }
             updateLikes(review.likes + change);
@@ -66,7 +66,7 @@
 
     const refreshInteractions = async () => {
         try {
-            const payload = await repo.getInteractions(courseId, userId, user?.id);
+            const payload = await repo.getInteractions(courseId, userId, user);
             kind.set(payload);
         } catch (err: any) {
             toast.error(err.toString());
