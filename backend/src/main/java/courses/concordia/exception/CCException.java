@@ -83,7 +83,7 @@ public class CCException {
         } else if (ExceptionType.DUPLICATE_ENTITY.equals(exceptionType)) {
             return new DuplicateEntityException(format(messageTemplate, args));
         }
-        return new RuntimeException(format(messageTemplate, args));
+        return new CustomEntityException(format(messageTemplate, args));
     }
 
     private static String getMessageTemplate(EntityType entityType, ExceptionType exceptionType) {
@@ -106,6 +106,11 @@ public class CCException {
 
     public static class DuplicateEntityException extends RuntimeException {
         public DuplicateEntityException(String message) {
+            super(message);
+        }
+    }
+    public static class CustomEntityException extends RuntimeException {
+        public CustomEntityException(String message) {
             super(message);
         }
     }

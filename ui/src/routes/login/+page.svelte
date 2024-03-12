@@ -39,7 +39,7 @@
         if (res.ok) {
             toast.success(`${type} successful`);
         } else {
-            toast.error('An error occurred.');
+            toast.error('Username or password is wrong');
         }
     };
 

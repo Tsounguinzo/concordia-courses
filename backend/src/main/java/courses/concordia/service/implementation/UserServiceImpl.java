@@ -22,8 +22,7 @@ import java.util.HashMap;
 import java.util.Optional;
 
 import static courses.concordia.exception.EntityType.USER;
-import static courses.concordia.exception.ExceptionType.DUPLICATE_ENTITY;
-import static courses.concordia.exception.ExceptionType.ENTITY_NOT_FOUND;
+import static courses.concordia.exception.ExceptionType.*;
 
 @RequiredArgsConstructor
 @Service
@@ -57,21 +56,32 @@ public class UserServiceImpl implements UserService {
         throw exception(USER, DUPLICATE_ENTITY, userDto.getUsername());
     }
 
-    public AuthenticationResponse authenticate(LoginRequest loginRequest){
+    public AuthenticationResponse authenticate(LoginRequest loginRequest) {
+        Optional<User> user = userRepository.findByUsername(loginRequest.getUsername());
+
+        if (user.isEmpty()) {
+            throw exception(USER, ENTITY_NOT_FOUND, loginRequest.getUsername());
+        }
+        String actualPassword = user.get().getPassword();
+        String givenPassword = bCryptPasswordEncoder.encode(loginRequest.getPassword());
+
+        if (!actualPassword.equals(givenPassword)) {
+            throw exception(USER, ENTITY_EXCEPTION, loginRequest.getUsername());
+        }
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getUsername(),
                         loginRequest.getPassword()
                 )
         );
-        Optional<User> user = userRepository.findByUsername(loginRequest.getUsername());
-        if (user.isPresent()) {
-            var jwtToken = jwtService.generateToken(user.get());
-            return AuthenticationResponse.builder()
-                    .token(jwtToken)
-                    .build();
-        }
-        throw exception(USER, ENTITY_NOT_FOUND, loginRequest.getUsername());
+
+        var jwtToken = jwtService.generateToken(user.get());
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .build();
+
+
     }
 
     @Override
