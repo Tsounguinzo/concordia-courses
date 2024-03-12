@@ -60,7 +60,7 @@ const sendRequest = async ({ request, url, method, requestBody = null }) => {
 
         if (responseData.status !== 'OK') {
             const errorMessage = responseData.errors?.message || 'Unknown error';
-            return new Response(JSON.stringify({ error: errorMessage }), { status: 400 });
+            return new Response(JSON.stringify(errorMessage), { status: 400 });
         }
 
         console.log(`Request to ${query} was successful`);

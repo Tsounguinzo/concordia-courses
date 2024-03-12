@@ -132,7 +132,6 @@
                             <CourseReview
                                     canModify={false}
                                     handleDelete={() => null}
-                                    editReview={writable(false)}
                                     {review}
                             />
                         </div>

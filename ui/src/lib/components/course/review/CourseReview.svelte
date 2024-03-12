@@ -16,7 +16,7 @@
 
     export let canModify: boolean;
     export let handleDelete: () => void;
-    export let editReview: Writable<boolean>;
+    export let editReview: Writable<boolean> = writable(false);
     export let interactions: Interaction[];
     export let updateLikes: (likes: number) => void;
     export let review: Review;

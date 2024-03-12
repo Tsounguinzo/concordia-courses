@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void signup(UserDto userDto) {
         Optional<User> existingUser = userRepository.findByUsername(userDto.getUsername());
-        if (existingUser.isPresent()) {
+        if (existingUser.isEmpty()) {
             //Create user
             User user = new User(userDto.getUsername(),
                     userDto.getEmail(),
@@ -52,8 +52,9 @@ public class UserServiceImpl implements UserService {
             tokenRepository.save(token);
 
             emailService.sendSimpleMailMessage(user.getUsername(), user.getEmail(), token.getToken());
+        } else {
+            throw exception(USER, DUPLICATE_ENTITY, userDto.getUsername());
         }
-        throw exception(USER, DUPLICATE_ENTITY, userDto.getUsername());
     }
 
     public AuthenticationResponse authenticate(LoginRequest loginRequest) {
@@ -62,10 +63,10 @@ public class UserServiceImpl implements UserService {
         if (user.isEmpty()) {
             throw exception(USER, ENTITY_NOT_FOUND, loginRequest.getUsername());
         }
-        String actualPassword = user.get().getPassword();
-        String givenPassword = bCryptPasswordEncoder.encode(loginRequest.getPassword());
 
-        if (!actualPassword.equals(givenPassword)) {
+        String encodedPassword = user.get().getPassword();
+
+        if (!bCryptPasswordEncoder.matches(loginRequest.getPassword(), encodedPassword)) {
             throw exception(USER, ENTITY_EXCEPTION, loginRequest.getUsername());
         }
 
