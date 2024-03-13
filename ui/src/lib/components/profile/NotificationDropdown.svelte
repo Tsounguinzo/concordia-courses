@@ -19,7 +19,7 @@
 
         notifications.set(
             $notifications.map((n) => {
-                return seen.has(n.review.courseId) ? {...n, seen: true} : n;
+                return seen.has(`${n.review.userId} ${n.review.courseId}`) ? {...n, seen: true} : n;
             })
         );
 
@@ -35,7 +35,7 @@
                 notification.review.userId,
                 true
             );
-            seen.add(notification.review.courseId);
+            seen.add(`${notification.review.userId} ${notification.review.courseId}`);
         } catch (err) {
             toast.error('Failed to update notification.');
         }
@@ -46,7 +46,7 @@
             await repo.deleteNotification(courseId, creatorId);
             notifications.set(
                 $notifications.filter(
-                    (notification) => notification.review.courseId !== courseId
+                    (notification) => notification.review.courseId !== courseId && notification.review.userId !== creatorId
                 )
             );
             toast.success('Successfully deleted notification.');
@@ -91,14 +91,14 @@
                                     <div class='flex items-center gap-x-1'>
                                         <a class='font-semibold text-gray-800 dark:text-gray-200 dark:hover:text-blue-400 hover:text-blue-400'
                                            href={`/course/${courseIdToUrlParam(notification.review.courseId)}`}>
-                                            {spliceCourseCode(notification.review.courseId, ' ')}
+                                            <span>{spliceCourseCode(notification.review.courseId, ' ')}</span>
                                         </a>
                                         {#if !notification.seen}
                                             <Dot class='text-blue-400'/>
                                         {/if}
                                     </div>
                                     <button class='ml-auto text-right text-gray-700 hover:text-red-600 dark:text-gray-300 dark:hover:text-red-600'
-                                            on:click={async () =>
+                                            on:click|stopPropagation={async () =>
                                                         await deleteNotification(
                                                             notification.review.courseId,
                                                             notification.review.userId

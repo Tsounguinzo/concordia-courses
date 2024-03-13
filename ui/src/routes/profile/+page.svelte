@@ -125,7 +125,7 @@
                     {#each $userReviews.sort((a, b) => a.timestamp - b.timestamp) as review, i (i)}
                         <div class='flex'>
                             <a href={`/course/${courseIdToUrlParam(review.courseId)}`}
-                               class='text-xl font-bold text-gray-700 duration-200 hover:text-gray-500 dark:text-gray-300 dark:hover:text-gray-500'>
+                               class='text-xl font-bold text-gray-700 duration-200 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-500'>
                                 {spliceCourseCode(review.courseId, ' ')}
                             </a>
                         </div>
