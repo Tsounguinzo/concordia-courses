@@ -15,6 +15,7 @@
     import {onMount} from "svelte";
     import Seo from "$lib/components/common/Seo.svelte";
     import {page} from "$app/stores";
+    import great from "greet-by-time";
 
     const user =  $page.data.user;
 
@@ -71,7 +72,7 @@
             <div class='flex w-fit flex-col space-y-3 md:m-4'>
                 <User size={64} class={'-ml-3 text-gray-500'}/>
                 <h1 class='text-lg font-medium text-gray-700 dark:text-gray-300 md:text-xl'>
-                    Your Profile
+                    {great(user, new Date().getHours())}
                 </h1>
                 <div class='flex items-center gap-x-1'>
                     <FileText
