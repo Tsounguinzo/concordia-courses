@@ -58,7 +58,7 @@ public class NotificationController {
             return Response.unauthorized();
         }
 
-        notificationService.deleteNotification(jwtService.extractUsername(token), deleteNotificationDto.getCourseId());
+        notificationService.deleteNotification(deleteNotificationDto.getCreatorId(), jwtService.extractUsername(token), deleteNotificationDto.getCourseId());
         return Response.ok().setPayload("Notification was deleted successfully");
     }
 }

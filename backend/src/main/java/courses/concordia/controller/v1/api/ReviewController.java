@@ -73,7 +73,7 @@ public class ReviewController {
 
         reviewService.deleteReview(reviewPayloadDto.getCourseId(), jwtService.extractUsername(token));
         interactionService.deleteInteractions(reviewPayloadDto.getCourseId(), jwtService.extractUsername(token));
-        notificationService.deleteNotification(jwtService.extractUsername(token), reviewPayloadDto.getCourseId());
+        notificationService.deleteNotification(jwtService.extractUsername(token), null, reviewPayloadDto.getCourseId());
         return Response.ok().setPayload("Review was deleted successfully");
     }
 }

@@ -201,10 +201,13 @@ export const repo = {
     });
   },
 
-  async deleteNotification(courseId: string): Promise<Response> {
+  async deleteNotification(courseId: string, creatorId: string): Promise<Response> {
     return client.delete('/notifications', {
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ courseId: courseId }),
+      body: JSON.stringify({
+        courseId: courseId,
+        creatorId: creatorId
+      }),
     });
   },
 

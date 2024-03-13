@@ -51,8 +51,14 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void deleteNotification(String userId, String courseId) {
-        Query query = new Query(Criteria.where("userId").is(userId).and("review.courseId").is(courseId));
+    public void deleteNotification(String creatorId, String userId, String courseId) {
+        if(creatorId == null && userId == null) return;
+        Query query;
+        if (userId != null){
+            query = new Query(Criteria.where("userId").is(userId).and("review.courseId").is(courseId).and("review.userId").is(creatorId));
+        } else {
+            query = new Query(Criteria.where("review.userId").is(creatorId).and("review.courseId").is(courseId));
+        }
         mongoTemplate.remove(query, Notification.class);
     }
 

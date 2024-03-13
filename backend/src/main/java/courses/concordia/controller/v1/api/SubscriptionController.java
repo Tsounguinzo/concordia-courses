@@ -62,6 +62,6 @@ public class SubscriptionController {
         }
 
         subscriptionService.deleteSubscription(jwtService.extractUsername(token), subscriptionPayloadDto.getCourseId());
-        return Response.ok().setPayload("SubscriptionMapper was deleted successfully");
+        return Response.ok().setPayload("Subscription was deleted successfully");
     }
 }

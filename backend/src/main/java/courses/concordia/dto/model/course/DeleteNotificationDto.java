@@ -17,4 +17,5 @@ import lombok.experimental.Accessors;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DeleteNotificationDto {
     private String courseId;
+    private String creatorId;
 }

@@ -11,6 +11,6 @@ public interface NotificationService {
     void addNotifications(Review review);
     List<NotificationDto> getNotifications(String userId);
     void updateNotifications(String creatorId, String courseId, Review review);
-    void deleteNotification(String userId, String courseId);
+    void deleteNotification(String creatorId, String userId, String courseId);
     void updateNotification(String userId, String courseId, String creatorId, boolean seen);
 }
