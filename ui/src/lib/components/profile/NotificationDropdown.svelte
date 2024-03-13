@@ -91,7 +91,7 @@
                                     <div class='flex items-center gap-x-1'>
                                         <a class='font-semibold text-gray-800 dark:text-gray-200 dark:hover:text-blue-400 hover:text-blue-400'
                                            href={`/course/${courseIdToUrlParam(notification.review.courseId)}`}>
-                                            <span>{spliceCourseCode(notification.review.courseId, ' ')}</span>
+                                            {spliceCourseCode(notification.review.courseId, ' ')}
                                         </a>
                                         {#if !notification.seen}
                                             <Dot class='text-blue-400'/>
