@@ -169,7 +169,7 @@
                         <ReviewFilter {allReviews} {showAllReviews} course={$course} {selectedInstructor}/>
                     </div>
                 {:else }
-                    <ReviewEmptyPrompt variant='course'/>
+                    <ReviewEmptyPrompt variant='course' isLogin={user !== null}/>
                 {/if}
                 <div class='w-full shadow-sm'>
                     {#if userReview}
@@ -233,7 +233,7 @@
                             <ReviewFilter {allReviews} {showAllReviews} course={$course} {selectedInstructor}/>
                         </div>
                     {:else }
-                        <ReviewEmptyPrompt className="max-sm:p-2" variant='course'/>
+                        <ReviewEmptyPrompt className="max-sm:p-2" variant='course' isLogin={user !== null}/>
                     {/if}
 
                     <div class='w-full shadow-sm'>

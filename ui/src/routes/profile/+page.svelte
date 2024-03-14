@@ -16,8 +16,12 @@
     import Seo from "$lib/components/common/Seo.svelte";
     import {page} from "$app/stores";
     import great from "greet-by-time";
+    import CardContainer from "$lib/components/common/animation/ThreeDCardEffect/CardContainer.svelte";
+    import CardBody from "$lib/components/common/animation/ThreeDCardEffect/CardBody.svelte";
+    import CardItem from "$lib/components/common/animation/ThreeDCardEffect/CardItem.svelte";
 
-    const user =  $page.data.user;
+    const user = $page.data.user;
+    let isMouseEntered = false;
 
     const userReviews = writable<Review[]>([]);
     const userSubscriptions = writable<Subscription[]>([]);
@@ -64,41 +68,59 @@
     const keys = ['Reviews', 'Subscriptions'];
     const tabs = createTabs({selected: 'Reviews'})
 </script>
-<Seo title="StudyHub | Profile" description="Profile on concordia.courses" />
+<Seo title="StudyHub | Profile" description="Profile on concordia.courses"/>
 <div class='mx-auto max-w-2xl'>
     <JumpToTopButton/>
-    <div class='flex w-full justify-center'>
-        <div class='mx-4 flex w-full flex-row rounded-md bg-slate-50 p-6 dark:bg-neutral-800 md:mt-10'>
-            <div class='flex w-fit flex-col space-y-3 md:m-4'>
-                <User size={64} class={'-ml-3 text-gray-500'}/>
-                <h1 class='text-lg font-medium text-gray-700 dark:text-gray-300 md:text-xl'>
-                    {great(user, new Date().getHours())}
-                </h1>
-                <div class='flex items-center gap-x-1'>
-                    <FileText
-                            class='text-neutral-500 dark:text-gray-400'
-                            aria-hidden='true'
-                            size={20}
-                    />
-                    <p class='text-gray-700 dark:text-gray-300'>
-                        {$userReviews?.length}{' '}
-                        {'review' + ($userReviews?.length === 1 ? '' : 's')}
-                    </p>
-                </div>
-                <div class='flex items-center gap-x-1'>
-                    <Bell
-                            class='text-neutral-500 dark:text-gray-400'
-                            aria-hidden='true'
-                            size={20}
-                    />
-                    <p class='text-gray-700 dark:text-gray-300'>
-                        {$userSubscriptions?.length}{' '}
-                        {'subscription' + ($userSubscriptions?.length === 1 ? '' : 's')}
-                    </p>
-                </div>
+    <CardContainer bind:isMouseEntered className="flex w-full flex-row bg-slate-50 p-6 dark:bg-neutral-800 dark:hover:shadow-2xl dark:hover:shadow-blue-800/[0.1] rounded-xl">
+        <CardBody className="flex w-fit h-full flex-col space-y-3 md:m-4">
+            <CardItem
+                    {isMouseEntered}
+                    translateZ="50"
+                    className="-ml-3 text-gray-500"
+            >
+                <User size={64}/>
+            </CardItem>
+            <CardItem
+                    {isMouseEntered}
+                    translateZ="50"
+                    className="text-lg font-medium text-gray-700 dark:text-gray-300 md:text-xl"
+            >
+                {great(user, new Date().getHours())}
+            </CardItem>
+            <div class='flex items-center gap-x-1'>
+                <CardItem
+                        {isMouseEntered}
+                        translateZ="50"
+                        className="text-neutral-500 dark:text-gray-400"
+                >
+                    <FileText aria-hidden='true' size={20}/>
+                </CardItem>
+                <CardItem
+                        {isMouseEntered}
+                        translateZ="50"
+                        className="text-gray-700 dark:text-gray-300"
+                >
+                    {`${$userReviews?.length} review${$userReviews?.length === 1 ? '' : 's'}`}
+                </CardItem>
             </div>
-        </div>
-    </div>
+            <div class='flex items-center gap-x-1'>
+                <CardItem
+                        {isMouseEntered}
+                        translateZ="50"
+                        className="text-neutral-500 dark:text-gray-400"
+                >
+                    <Bell aria-hidden='true' size={20}/>
+                </CardItem>
+                <CardItem
+                        {isMouseEntered}
+                        translateZ="50"
+                        className="text-gray-700 dark:text-gray-300"
+                >
+                    {`${$userSubscriptions?.length} subscription${$userSubscriptions?.length === 1 ? '' : 's'}`}
+                </CardItem>
+            </div>
+        </CardBody>
+    </CardContainer>
     <div use:tabs.list class='m-4 flex space-x-1 rounded-xl bg-slate-200 p-1 dark:bg-neutral-700/20'>
         {#each keys as value}
             {@const selected = $tabs.selected === value}

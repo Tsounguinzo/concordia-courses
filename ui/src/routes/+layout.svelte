@@ -10,7 +10,7 @@
     onMount(() => darkModeOn.set(localStorage.getItem('theme') === 'dark'))
 </script>
 
-<Toaster closeButton/>
+<Toaster closeButton position="top-center"/>
 <div class={$darkModeOn ? 'dark' : 'light'}>
     <div class='min-h-screen overflow-auto bg-slate-100 pb-5 transition duration-300 ease-in-out dark:bg-neutral-900'>
        <Navbar />

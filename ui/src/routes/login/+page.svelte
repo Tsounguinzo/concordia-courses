@@ -12,7 +12,7 @@
     import Seperator from "$lib/components/common/Seperator.svelte";
     import {goto} from "$app/navigation";
     import MultiStepLoader from "$lib/components/common/loader/MultiStepLoader/MultiStepLoader.svelte";
-    import BackgroundBeams from "$lib/components/common/BackgroundBeams.svelte";
+    import BackgroundBeams from "$lib/components/common/animation/BackgroundBeams.svelte";
 
     let loading = false;
 
