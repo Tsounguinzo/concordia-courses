@@ -60,13 +60,17 @@
         return errors;
     };
 
-    const handleSubmit = async (res: Response) => {
+    const handleSubmit = async (res: Response, type: string) => {
         const message = await res.json();
         loading = false;
         if (res.ok) {
             toast.success(message);
-            location.reload();
-            await goto("/profile")
+            setTimeout(async () => {
+                if (type == "SignIn") {
+                    await goto("/profile")
+                }
+                location.reload();
+            }, 1000);
         } else {
             toast.error(message);
         }
@@ -108,7 +112,7 @@
                         res = await repo.signIn(values);
                     }
                     actions.setSubmitting(false);
-                    await handleSubmit(res);
+                    await handleSubmit(res, $tabs.selected);
                 }}
                 let:props
         >
