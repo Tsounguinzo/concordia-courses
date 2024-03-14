@@ -50,17 +50,12 @@ const sendRequest = async ({ request, url, method, requestBody = null }) => {
         }
 
         const response = await fetch(query, options);
+        const responseData = await response.json();
 
         if (!response.ok) {
             console.error(`Request to ${query} failed with status: ${response.status}`);
-            return new Response(JSON.stringify({ error: "Upstream request failed" }), { status: response.status});
-        }
-
-        const responseData = await response.json();
-
-        if (responseData.status !== 'OK') {
             const errorMessage = responseData.errors?.message || 'Unknown error';
-            return new Response(JSON.stringify(errorMessage), { status: 400 });
+            return new Response(JSON.stringify(errorMessage), { status: response.status});
         }
 
         console.log(`Request to ${query} was successful`);
