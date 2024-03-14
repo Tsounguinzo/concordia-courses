@@ -157,16 +157,19 @@
                         course={$course}
                         className={canReview ? 'mb-4' : ''}
                 />
+                <h2 class='text-center mt-10 text-xl font-bold leading-none text-gray-700 dark:text-gray-200'>
+                    Reviews
+                </h2>
                 {#if canReview}
                     <CourseReviewPrompt openAddReview={addReviewOpen}/>
                 {/if}
-                <div class='py-2'/>
+
                 {#if $allReviews && $allReviews?.length > 0}
-                    <div class='mb-2'>
+                    <div class='mb-2 py-2'>
                         <ReviewFilter {allReviews} {showAllReviews} course={$course} {selectedInstructor}/>
                     </div>
                 {:else }
-                    <ReviewEmptyPrompt className='my-8' variant='course'/>
+                    <ReviewEmptyPrompt variant='course'/>
                 {/if}
                 <div class='w-full shadow-sm'>
                     {#if userReview}
@@ -218,6 +221,9 @@
             <SchedulesDisplay course={$course}/>
             <div class='mt-4 flex w-full flex-row justify-between'>
                 <div class='w-full'>
+                    <h2 class='text-center mt-10 text-xl font-bold leading-none text-gray-700 dark:text-gray-200'>
+                        Reviews
+                    </h2>
                     {#if canReview}
                         <CourseReviewPrompt openAddReview={addReviewOpen}/>
                     {/if}
@@ -227,7 +233,7 @@
                             <ReviewFilter {allReviews} {showAllReviews} course={$course} {selectedInstructor}/>
                         </div>
                     {:else }
-                        <ReviewEmptyPrompt className='my-8' variant='course'/>
+                        <ReviewEmptyPrompt className="max-sm:p-2" variant='course'/>
                     {/if}
 
                     <div class='w-full shadow-sm'>

@@ -11,7 +11,7 @@
     <div class='mx-4 flex items-center gap-x-2 text-center text-sm sm:text-base'>
         <FileText class='stroke-gray-400 stroke-[1px]' size={40}/>
         <div>
-            No reviews have been left for this {variant} yet, be the first!
+            No reviews have been left for this {variant} yet, <a href="/login" class="underline text-blue-400">Login</a> to be the first!
         </div>
     </div>
 </div>

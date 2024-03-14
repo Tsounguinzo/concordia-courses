@@ -1,4 +1,10 @@
 import type {Schedule} from './model/Schedule';
+import { type ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+export function cn(...inputs: ClassValue[]) {
+    return twMerge(clsx(inputs));
+}
 
 export const getCurrentTerms = (): [string, string, string, string, string] => {
     const now = new Date();

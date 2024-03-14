@@ -26,6 +26,7 @@
 	"type": "module",
 	"dependencies": {
 		"@types/lodash": "^4.14.202",
+		"clsx": "^2.1.0",
 		"date-fns": "^3.3.1",
 		"flexsearch": "^0.7.43",
 		"greet-by-time": "^1.0.1",
@@ -33,6 +34,7 @@
 		"lucide-svelte": "^0.323.0",
 		"svelte-headlessui": "^0.0.33",
 		"svelte-local-storage-store": "^0.6.4",
+		"svelte-motion": "^0.12.2",
 		"svelte-sonner": "^0.3.17",
 		"svelte-transition": "^0.0.10",
 		"sveltik": "^0.1.16",

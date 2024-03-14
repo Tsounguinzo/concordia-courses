@@ -11,6 +11,28 @@
     import {toast} from "svelte-sonner";
     import Seperator from "$lib/components/common/Seperator.svelte";
     import {goto} from "$app/navigation";
+    import MultiStepLoader from "$lib/components/common/loader/MultiStepLoader/MultiStepLoader.svelte";
+    import BackgroundBeams from "$lib/components/common/BackgroundBeams.svelte";
+
+    let loading = false;
+
+    const loadingStates = [
+        {
+            text: 'Crafting your account'
+        },
+        {
+            text: 'We love study hub'
+        },
+        {
+            text: 'Join the coolest study groups around'
+        },
+        {
+            text: 'like or dislike a review'
+        },
+        {
+            text: 'Hang tight! Brewing some final magic'
+        }
+    ];
 
     const initialValues = {
         username: '',
@@ -40,6 +62,7 @@
 
     const handleSubmit = async (res: Response) => {
         const message = await res.json();
+        loading = false;
         if (res.ok) {
             toast.success(message);
             location.reload();
@@ -53,6 +76,7 @@
     const tabs = createTabs({selected: 'SingIn'})
 </script>
 <Seo title="StudyHub | Login" description="Login to concordia.courses"/>
+<MultiStepLoader {loadingStates} {loading} duration={1000}/>
 <div class='mx-auto max-w-2xl'>
     <div use:tabs.list class='m-4 flex space-x-1 rounded-xl bg-slate-200 p-1 dark:bg-neutral-700/20'>
         {#each keys as value}
@@ -78,6 +102,7 @@
                 onSubmit={async (values, actions) => {
                     let res;
                     if ($tabs.selected === "SingUp") {
+                        loading = true;
                         res = await repo.signUp(values);
                     } else {
                         res = await repo.signIn(values);
@@ -89,28 +114,31 @@
         >
             <Form>
                 <div class='flex w-full justify-center'>
-                    <div class='mx-4 flex w-full flex-col rounded-md bg-slate-50 p-6 dark:bg-neutral-800 md:mt-10'>
-                        {#if $tabs.selected === "SingUp"}
-                            <LoginForm {props}/>
-                            <Seperator text="Continue"/>
-                            <div class='flex flex-col md:m-4'>
-                                <FieldLabel For='email'>Concordia email</FieldLabel>
-                                <Field
-                                        type="email"
-                                        on:input={(e) => props.values.email = e.target.value}
-                                        on:blur={props.handleBlur}
-                                        value={props.values.email}
-                                        id='email'
-                                        name='email'
-                                        placeholder='ends with concordia.ca'
-                                        class='resize-none rounded-md border bg-gray-50 p-3 outline-none dark:border-neutral-600 dark:bg-neutral-700 dark:text-gray-200 dark:caret-white'
-                                />
-                                <FieldError name='email'/>
-                            </div>
-                        {:else }
-                            <LoginForm {props}/>
-                        {/if}
-                        <Submit/>
+                    <div class='mx-4 flex w-full flex-col rounded-md bg-slate-50 p-6 dark:bg-neutral-800 md:mt-10 relative'>
+                        <div class="z-10">
+                            {#if $tabs.selected === "SingUp"}
+                                <LoginForm {props}/>
+                                <Seperator text="Continue"/>
+                                <div class='flex flex-col md:m-4'>
+                                    <FieldLabel For='email'>Concordia email</FieldLabel>
+                                    <Field
+                                            type="email"
+                                            on:input={(e) => props.values.email = e.target.value}
+                                            on:blur={props.handleBlur}
+                                            value={props.values.email}
+                                            id='email'
+                                            name='email'
+                                            placeholder='ends with concordia.ca'
+                                            class='resize-none rounded-md border bg-gray-50 p-3 outline-none dark:border-neutral-600 dark:bg-neutral-700 dark:text-gray-200 dark:caret-white'
+                                    />
+                                    <FieldError name='email'/>
+                                </div>
+                            {:else }
+                                <LoginForm {props}/>
+                            {/if}
+                            <Submit/>
+                        </div>
+                        <BackgroundBeams/>
                     </div>
                 </div>
             </Form>

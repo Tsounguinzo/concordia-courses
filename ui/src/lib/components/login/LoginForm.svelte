@@ -26,22 +26,24 @@
         <div class='flex flex-col'>
             <FieldLabel For='password'>Password</FieldLabel>
             <div class="flex flex-row gap-x-1">
-            <Field
-                    type={showPassword ? "text" : "password"}
-                    on:input={(e) => props.values.password = e.target.value}
-                    on:blur={props.handleBlur}
-                    value={props.values.password}
-                    id='password'
-                    name='password'
-                    placeholder='Strong password'
-                    class='w-full rounded-md border bg-gray-50 p-3 outline-none dark:border-neutral-600 dark:bg-neutral-700 dark:text-gray-200 dark:caret-white'
-            />
-                <button class="resize-none rounded-md border bg-gray-50 p-3 outline-none dark:border-neutral-600 dark:bg-neutral-700 dark:text-gray-200 dark:caret-white" on:click={() => showPassword = !showPassword}>
+                <Field
+                        type={showPassword ? "text" : "password"}
+                        on:input={(e) => props.values.password = e.target.value}
+                        on:blur={props.handleBlur}
+                        value={props.values.password}
+                        id='password'
+                        name='password'
+                        placeholder='Strong password'
+                        class='w-full rounded-md border bg-gray-50 p-3 outline-none dark:border-neutral-600 dark:bg-neutral-700 dark:text-gray-200 dark:caret-white'
+                />
+                <button type="button"
+                        class="resize-none rounded-md border bg-gray-50 p-3 outline-none dark:border-neutral-600 dark:bg-neutral-700 dark:text-gray-200 dark:caret-white"
+                        on:click={() => showPassword = !showPassword}>
                     {#if showPassword}
-                        <EyeOff />
-                        {:else }
-                        <Eye />
-                        {/if}
+                        <EyeOff/>
+                    {:else }
+                        <Eye/>
+                    {/if}
                 </button>
             </div>
             <FieldError name='password'/>
@@ -49,7 +51,7 @@
     </div>
     <div class='flex max-sm:hidden sm:w-1/2 items-center justify-center'>
         <a href='https://concordia-groups.web.app' class='-m-1.5 p-1.5'>
-            <img class='md:h-28 w-auto' src='/studyhub.png' alt='Study Hub'/>
+            <img class='sm:h-28 w-auto' src='/studyhub.png' alt='Study Hub'/>
         </a>
     </div>
 </div>
