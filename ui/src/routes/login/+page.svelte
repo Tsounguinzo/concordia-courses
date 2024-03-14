@@ -31,18 +31,21 @@
             errors.password = "A password is required";
         } else if ($tabs.selected === "SingUp" && values.email == '') {
             errors.email = "Your concordia email is required";
+        } else if ($tabs.selected === "SingUp" && !values.email.toLowerCase().endsWith('concordia.ca')) {
+            errors.email = "Your email must be a concordia email";
         }
 
         return errors;
     };
 
-    const handleSubmit = (res: Response, type: string) => {
-        if (res) {
-            toast.success(`${type} successful`);
+    const handleSubmit = async (res: Response) => {
+        const message = await res.json();
+        if (res.ok) {
+            toast.success(message);
             location.reload();
-            goto("/profile")
+            await goto("/profile")
         } else {
-            toast.error(res);
+            toast.error(message);
         }
     };
 
@@ -80,7 +83,7 @@
                         res = await repo.signIn(values);
                     }
                     actions.setSubmitting(false);
-                    handleSubmit(res, $tabs.selected);
+                    await handleSubmit(res);
                 }}
                 let:props
         >

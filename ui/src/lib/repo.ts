@@ -238,7 +238,7 @@ export const repo = {
   },
 
   async signUp(user: User): Promise<Response> {
-    return client.deserialize<Response>('POST', '/auth/signup', {
+    return client.post( '/auth/signup', {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -247,7 +247,7 @@ export const repo = {
   },
 
   async signIn(user: User): Promise<Response> {
-    return client.deserialize<Response>('POST', '/auth/signin', {
+    return client.post('/auth/signin', {
       headers: {
         'Content-Type': 'application/json',
       },
