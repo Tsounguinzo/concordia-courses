@@ -1,5 +1,4 @@
 <script>
-    import {twMerge} from "tailwind-merge";
     import {Field, Form, Sveltik} from "sveltik/src";
     import {Check} from "lucide-svelte";
     import FieldError from "$lib/components/common/form/FieldError.svelte";
@@ -18,11 +17,8 @@
     };
 </script>
 
-<div class='m-4 flex justify-center items-center space-x-1 rounded-xl bg-slate-200 p-5 dark:bg-neutral-700/20'>
-    <div class={twMerge( 'w-full rounded-lg py-2.5 text-sm sm:text-lg font-medium leading-5 text-gray-800',
-                          'ring-white ring-opacity-60 ring-offset-2 ring-offset-gray-400 focus:outline-none',
-                          'text-gray-700 dark:text-gray-200'
-                        )}>
+<div class='m-4 flex max-sm:flex-col gap-y-2 justify-center items-center space-x-1 rounded-xl bg-slate-200 p-5 dark:bg-neutral-700/20'>
+    <div class='w-full max-sm:text-center text-md sm:text-lg font-medium text-gray-800 dark:text-gray-200'>
         Verify your account to proceed
     </div>
     <Sveltik
@@ -54,7 +50,7 @@
                         <Check/>
                     </button>
                 </div>
-                <button type="button" class="text-gray-600 hover:text-blue-200 text-sm sm:text-base underline">Resend verification code</button>
+                <button type="button" class="text-gray-600 text-sm sm:text-base underline">Resend verification code</button>
             </div>
         </Form>
     </Sveltik>
