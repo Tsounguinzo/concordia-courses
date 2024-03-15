@@ -3,6 +3,7 @@ package courses.concordia.controller.v1.api;
 import courses.concordia.controller.v1.request.LoginRequest;
 import courses.concordia.controller.v1.request.SignupRequest;
 import courses.concordia.dto.model.user.UserDto;
+import courses.concordia.dto.model.user.UserResponseDto;
 import courses.concordia.dto.response.AuthenticationResponse;
 import courses.concordia.dto.response.Response;
 import courses.concordia.model.Token;
@@ -37,7 +38,11 @@ public class AuthorizationController {
         if (token == null) {
             return Response.unauthorized();
         }
-        return Response.ok().setPayload(jwtService.extractUsername(token));
+
+        String username = jwtService.extractUsername(token);
+        boolean isVerified = userService.isUserVerified(username);
+
+        return Response.ok().setPayload(new UserResponseDto(username, isVerified));
     }
 
     @PostMapping("/signin")

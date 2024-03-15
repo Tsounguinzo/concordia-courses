@@ -71,7 +71,7 @@ public class CourseServiceImpl implements CourseService {
         log.info("Retrieving course and reviews with ID {}", id);
         CourseDto course = getCourseById(id);
 
-        Query query = new Query(Criteria.where("courseId").is(id));
+        Query query = new Query(Criteria.where("courseId").is(id)).with(Sort.by(Sort.Direction.DESC, "timestamp"));
         List<ReviewDto> reviews = mongoTemplate.find(query, Review.class)
                 .stream()
                 .map(review -> modelMapper.map(review, ReviewDto.class))

@@ -45,11 +45,11 @@
         let change;
         try {
             if (interactionKind === 'remove') {
-                await repo.removeInteraction(courseId, userId, user);
+                await repo.removeInteraction(courseId, userId, user?.id);
                 change = getLikeChange($kind, interactionKind);
             } else {
-                await repo.removeInteraction(courseId, userId, user);
-                await repo.addInteraction(interactionKind, courseId, userId, user);
+                await repo.removeInteraction(courseId, userId, user?.id);
+                await repo.addInteraction(interactionKind, courseId, userId, user?.id);
                 change = getLikeChange($kind, interactionKind);
             }
             updateLikes(review.likes + change);
@@ -66,7 +66,7 @@
 
     const refreshInteractions = async () => {
         try {
-            const payload = await repo.getInteractions(courseId, userId, user);
+            const payload = await repo.getInteractions(courseId, userId, user?.id);
             kind.set(payload);
         } catch (err: any) {
             toast.error(err.toString());

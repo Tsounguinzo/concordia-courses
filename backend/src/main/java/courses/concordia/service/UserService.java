@@ -11,4 +11,5 @@ public interface UserService {
     UserDto changePassword(UserDto userDto, String newPassword);
     AuthenticationResponse authenticate(LoginRequest loginRequest);
     Boolean verifyToken(String token);
+    boolean isUserVerified(String username);
 }

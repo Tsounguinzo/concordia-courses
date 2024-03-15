@@ -33,7 +33,6 @@
     const showAllReviews = writable(false);
     const showingReviews = writable<Review[]>([]);
     const userInteractions = writable<Interaction[] | undefined>([]);
-    const selectedInstructor = writable<string>('');
 
     $: if(params) {
         firstFetch = true;
@@ -60,7 +59,7 @@
 
                   if (user && id) {
                       const courseInteractionsPayload =
-                          await repo.getUserInteractionsForCourse(id, user);
+                          await repo.getUserInteractionsForCourse(id, user?.id);
 
                       userInteractions.set(courseInteractionsPayload.interactions);
                   }
@@ -88,8 +87,8 @@
     }
 
 
-    $: userReview = $showingReviews?.find((r) => r.userId === user);
-    $: canReview = Boolean(user && !$allReviews?.find((r) => r.userId === user));
+    $: userReview = $showingReviews?.find((r) => r.userId === user?.id);
+    $: canReview = Boolean(user && !$allReviews?.find((r) => r.userId === user?.id));
 
     const handleSubmit = (successMessage: string) => {
         return (res: Response) => {
@@ -166,7 +165,7 @@
 
                 {#if $allReviews && $allReviews?.length > 0}
                     <div class='mb-2 py-2'>
-                        <ReviewFilter {allReviews} {showAllReviews} course={$course} {selectedInstructor}/>
+                        <ReviewFilter {allReviews} {showAllReviews}/>
                     </div>
                 {:else }
                     <ReviewEmptyPrompt variant='course' isLogin={user !== null}/>
@@ -174,7 +173,7 @@
                 <div class='w-full shadow-sm'>
                     {#if userReview}
                         <CourseReview
-                                canModify={Boolean(user && userReview.userId === user)}
+                                canModify={Boolean(user && userReview.userId === user?.id)}
                                 handleDelete={() => handleDelete(userReview)}
                                 editReview={editReviewOpen}
                                 review={userReview}
@@ -184,10 +183,10 @@
                     {/if}
                     {#if $showingReviews}
                         {#each $showingReviews
-                            .filter((review) => (user ? review.userId !== user : true))
+                            .filter((review) => (user ? review.userId !== user?.id : true))
                             .slice(0, $showAllReviews ? $showingReviews.length : 8) as review, i (i)}
                             <CourseReview
-                                    canModify={Boolean(user && review.userId === user)}
+                                    canModify={Boolean(user && review.userId === user?.id)}
                                     handleDelete={() => handleDelete(review)}
                                     editReview={editReviewOpen}
                                     review={review}
@@ -230,7 +229,7 @@
 
                     {#if $allReviews.length > 0}
                         <div class='my-2'>
-                            <ReviewFilter {allReviews} {showAllReviews} course={$course} {selectedInstructor}/>
+                            <ReviewFilter {allReviews} {showAllReviews}/>
                         </div>
                     {:else }
                         <ReviewEmptyPrompt className="max-sm:p-2" variant='course' isLogin={user !== null}/>
@@ -239,7 +238,7 @@
                     <div class='w-full shadow-sm'>
                         {#if userReview}
                             <CourseReview
-                                    canModify={Boolean(user && userReview.userId === user)}
+                                    canModify={Boolean(user && userReview.userId === user?.id)}
                                     handleDelete={() => handleDelete(userReview)}
                                     editReview={editReviewOpen}
                                     review={userReview}
@@ -251,11 +250,11 @@
                         {#if $showingReviews}
                             {#each $showingReviews
                                 .filter((review) =>
-                                    user ? review.userId !== user : true
+                                    user ? review.userId !== user?.id : true
                                 )
                                 .slice(0, $showAllReviews ? $showingReviews.length : 8) as review, i (i)}
                                 <CourseReview
-                                        canModify={Boolean(user && review.userId === user)}
+                                        canModify={Boolean(user && review.userId === user?.id)}
                                         handleDelete={() => handleDelete(review)}
                                         editReview={editReviewOpen}
                                         review={review}

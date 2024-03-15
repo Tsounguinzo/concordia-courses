@@ -101,6 +101,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean isUserVerified(String username) {
+        Optional<User> user = userRepository.findByUsername(username);
+        if (user.isPresent()) {
+            return user.get().isVerified();
+        }
+        throw exception(USER, ENTITY_NOT_FOUND, username);
+    }
+
+    @Override
     public UserDto changeUsername(UserDto userDto) {
         Optional<User> user = userRepository.findByUsername(userDto.getUsername());
         if (user.isPresent()) {

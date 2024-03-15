@@ -19,6 +19,7 @@
     import CardContainer from "$lib/components/common/animation/ThreeDCardEffect/CardContainer.svelte";
     import CardBody from "$lib/components/common/animation/ThreeDCardEffect/CardBody.svelte";
     import CardItem from "$lib/components/common/animation/ThreeDCardEffect/CardItem.svelte";
+    import VerificationPrompt from "$lib/components/profile/VerificationPrompt.svelte";
 
     const user = $page.data.user;
     let isMouseEntered = false;
@@ -29,7 +30,7 @@
     onMount(() => {
         if (user) {
             repo
-                .getReviews(user)
+                .getReviews(user.id)
                 .then((data) => userReviews.set(data))
                 .catch(() =>
                     toast.error(
@@ -121,85 +122,89 @@
             </div>
         </CardBody>
     </CardContainer>
-    <div use:tabs.list class='m-4 flex space-x-1 rounded-xl bg-slate-200 p-1 dark:bg-neutral-700/20'>
-        {#each keys as value}
-            {@const selected = $tabs.selected === value}
-            <button use:tabs.tab={{ value }}
-                    class={twMerge(
+    {#if !user?.verified}
+        <VerificationPrompt/>
+    {:else }
+        <div use:tabs.list class='m-4 flex space-x-1 rounded-xl bg-slate-200 p-1 dark:bg-neutral-700/20'>
+            {#each keys as value}
+                {@const selected = $tabs.selected === value}
+                <button use:tabs.tab={{ value }}
+                        class={twMerge(
                             'w-full rounded-lg py-2.5 text-sm font-medium leading-5 text-gray-800',
                             'ring-white ring-opacity-60 ring-offset-2 ring-offset-gray-400 focus:outline-none',
                             selected
                                 ? 'bg-white shadow'
                                 : 'text-gray-700 hover:bg-white/[0.12] hover:text-gray-400 dark:text-gray-200'
                         )}>
-                {value}
-            </button>
-        {/each}
-    </div>
-    <div use:tabs.panel>
-        {#if $tabs.selected === "Reviews"}
-            {#if $userReviews === undefined}
-                <div class='mt-2 text-center'>
-                    <Spinner/>
-                </div>
+                    {value}
+                </button>
+            {/each}
+        </div>
+        <div use:tabs.panel>
+            {#if $tabs.selected === "Reviews"}
+                {#if $userReviews === undefined}
+                    <div class='mt-2 text-center'>
+                        <Spinner/>
+                    </div>
+                {:else }
+                    {#if $userReviews.length}
+                        {#each $userReviews.sort((a, b) => a.timestamp - b.timestamp) as review, i (i)}
+                            <div class='flex'>
+                                <a href={`/course/${courseIdToUrlParam(review.courseId)}`}
+                                   class='text-xl font-bold text-gray-700 duration-200 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-500'>
+                                    {spliceCourseCode(review.courseId, ' ')}
+                                </a>
+                            </div>
+                            <div class='my-2 rounded-lg border-gray-800 duration-300 ease-in-out'>
+                                <CourseReview
+                                        canModify={false}
+                                        handleDelete={() => null}
+                                        {review}
+                                />
+                            </div>
+                        {/each}
+                    {:else }
+                        <div class='flex w-full items-center justify-center gap-x-2'>
+                            <FileText class='stroke-[1.25] text-gray-400 dark:text-gray-600' size={40}/>
+                            <div class='text-center text-sm text-gray-600 dark:text-gray-500'>
+                                No reviews found, if you've taken a course in the past,
+                                don't be shy to leave a review!
+                            </div>
+                        </div>
+                    {/if}
+                {/if}
             {:else }
-                {#if $userReviews.length}
-                    {#each $userReviews.sort((a, b) => a.timestamp - b.timestamp) as review, i (i)}
-                        <div class='flex'>
-                            <a href={`/course/${courseIdToUrlParam(review.courseId)}`}
-                               class='text-xl font-bold text-gray-700 duration-200 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-500'>
-                                {spliceCourseCode(review.courseId, ' ')}
-                            </a>
-                        </div>
-                        <div class='my-2 rounded-lg border-gray-800 duration-300 ease-in-out'>
-                            <CourseReview
-                                    canModify={false}
-                                    handleDelete={() => null}
-                                    {review}
+                <div class='m-4'>
+                    {#if $userSubscriptions.length !== 0}
+                        {#each $userSubscriptions as subscription, i (i)}
+                            <div class='m-4 flex items-center rounded-lg border-gray-800 bg-white p-4 duration-300 ease-in-out dark:bg-neutral-800'>
+                                <a class='font-semibold text-gray-800 dark:text-gray-200'
+                                   href={`/course/${courseIdToUrlParam(subscription.courseId)}`}>
+                                    {subscription.courseId}
+                                </a>
+                                <DeleteButton
+                                        title='Delete Subscription'
+                                        className='ml-auto'
+                                        text={`Are you sure you want to delete your subscription for ${subscription.courseId}? `}
+                                        onConfirm={() => removeSubscription(subscription.courseId)}
+                                        size={20}
+                                />
+                            </div>
+                        {/each}
+                    {:else }
+                        <div class='flex w-full items-center justify-center gap-x-1'>
+                            <Bell class='text-gray-400 dark:text-gray-600'
+                                  aria-hidden='true'
+                                  size={32}
                             />
+                            <div class='text-center text-sm text-gray-600 dark:text-gray-500'>
+                                No subscriptions found, click the bell icon on a course to
+                                add one!
+                            </div>
                         </div>
-                    {/each}
-                {:else }
-                    <div class='flex w-full items-center justify-center gap-x-2'>
-                        <FileText class='stroke-[1.25] text-gray-400 dark:text-gray-600' size={40}/>
-                        <div class='text-center text-sm text-gray-600 dark:text-gray-500'>
-                            No reviews found, if you've taken a course in the past,
-                            don't be shy to leave a review!
-                        </div>
-                    </div>
-                {/if}
+                    {/if}
+                </div>
             {/if}
-        {:else }
-            <div class='m-4'>
-                {#if $userSubscriptions.length !== 0}
-                    {#each $userSubscriptions as subscription, i (i)}
-                        <div class='m-4 flex items-center rounded-lg border-gray-800 bg-white p-4 duration-300 ease-in-out dark:bg-neutral-800'>
-                            <a class='font-semibold text-gray-800 dark:text-gray-200'
-                               href={`/course/${courseIdToUrlParam(subscription.courseId)}`}>
-                                {subscription.courseId}
-                            </a>
-                            <DeleteButton
-                                    title='Delete Subscription'
-                                    className='ml-auto'
-                                    text={`Are you sure you want to delete your subscription for ${subscription.courseId}? `}
-                                    onConfirm={() => removeSubscription(subscription.courseId)}
-                                    size={20}
-                            />
-                        </div>
-                    {/each}
-                {:else }
-                    <div class='flex w-full items-center justify-center gap-x-1'>
-                        <Bell class='text-gray-400 dark:text-gray-600'
-                              aria-hidden='true'
-                              size={32}
-                        />
-                        <div class='text-center text-sm text-gray-600 dark:text-gray-500'>
-                            No subscriptions found, click the bell icon on a course to
-                            add one!
-                        </div>
-                    </div>
-                {/if}
-            </div>
-        {/if}
-    </div>
+        </div>
+    {/if}
 </div>

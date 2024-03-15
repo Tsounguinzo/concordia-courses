@@ -3,15 +3,13 @@
     import ResetButton from "$lib/components/common/filter/ResetButton.svelte";
     import Autocomplete from "$lib/components/common/filter/Autocomplete.svelte";
     import type {Writable} from "svelte/store";
-    import {writable} from "svelte/store";
+    import {get, writable} from "svelte/store";
     import {RefreshCw} from "lucide-svelte";
     import type {Review} from "$lib/model/Review";
-    import type {Course} from "$lib/model/Course";
+    import {onMount} from "svelte";
 
     export let allReviews: Writable<Review[]>;
-    export let course: Course | null;
     export let showAllReviews: Writable<boolean>;
-    export let selectedInstructor: Writable<string>;
 
     const sortTypes = [
         'Most Recent',
@@ -26,38 +24,42 @@
     type ReviewSortType = (typeof sortTypes)[number];
     const sortBy = writable<ReviewSortType>('Most Recent');
 
-    if (sortBy) {
-        allReviews.set(
-            $allReviews
-                .filter(
-                    (review: Review) => $selectedInstructor === '' || review.instructor === $selectedInstructor.toLowerCase())
-                .sort((a: Review, b: Review) => {
-                    switch ($sortBy) {
-                        case 'Most Recent':
-                            return b.timestamp - a.timestamp
-                        case 'Least Recent':
-                            return a.timestamp - b.timestamp
-                        case 'Highest Rating':
-                            return b.rating - a.rating;
-                        case 'Lowest Rating':
-                            return a.rating - b.rating;
-                        case 'Hardest':
-                            return b.difficulty - a.difficulty;
-                        case 'Easiest':
-                            return a.difficulty - b.difficulty;
-                        case 'Most Liked':
-                            return b.likes - a.likes;
-                        case 'Most Disliked':
-                            return a.likes - b.likes;
-                        default:
-                            return b.timestamp - a.timestamp
-                    }
-                })
-        );
+    function sortReviews() {
+        const sortedReviews = [...get(allReviews)].sort((a: Review, b: Review) => {
+            const aTime = new Date(a.timestamp).getTime();
+            const bTime = new Date(b.timestamp).getTime();
+            switch ($sortBy) {
+                case 'Most Recent':
+                    return bTime - aTime
+                case 'Least Recent':
+                    return aTime - bTime
+                case 'Highest Rating':
+                    return b.rating - a.rating;
+                case 'Lowest Rating':
+                    return a.rating - b.rating;
+                case 'Hardest':
+                    return b.difficulty - a.difficulty;
+                case 'Easiest':
+                    return a.difficulty - b.difficulty;
+                case 'Most Liked':
+                    return b.likes - a.likes;
+                case 'Most Disliked':
+                    return a.likes - b.likes;
+                default:
+                    return bTime - aTime
+            }
+        });
+        allReviews.set(sortedReviews);
         showAllReviews.set(false);
     }
 
-    let rotate = false;
+    onMount(() => {
+        sortReviews();
+    });
+
+  $: $sortBy, sortReviews();
+
+  let rotate = false;
 
     function resetFilters() {
         sortBy.set('Most Recent')
