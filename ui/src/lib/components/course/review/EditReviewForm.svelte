@@ -16,6 +16,7 @@
     export let review: Review;
     export let open: Writable<boolean>;
     export let handleSubmit: (res: Response) => void;
+    let resetButton = true;
 
     $: initialValues = {
         content: review.content,
@@ -103,7 +104,7 @@
                                     let:setFieldValue
                             >
                                 <Form storageKey="review-form">
-                                    <ReviewForm {setFieldValue} {props} {course}/>
+                                    <ReviewForm {setFieldValue} {props} {course} {resetButton}/>
                                 </Form>
                             </Sveltik>
                         </div>

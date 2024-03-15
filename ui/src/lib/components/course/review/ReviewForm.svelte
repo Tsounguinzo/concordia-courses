@@ -8,6 +8,7 @@
     export let props;
     export let course: Course;
     export let setFieldValue: (name: string, value: any) => void;
+    export let resetButton: boolean = false;
 
 </script>
 <div class='flex flex-col'>
@@ -66,7 +67,7 @@
         <button type="reset"
                 class='w-fit cursor-pointer rounded-md bg-gray-100 px-4 py-2 font-medium text-gray-700 duration-200 hover:bg-gray-200 dark:bg-neutral-700 dark:text-gray-200 dark:hover:bg-neutral-600'
         >
-            Discard
+            {resetButton ? "Reset" : "Discard"}
         </button>
         <button type='submit' class='ml-auto w-fit rounded-md bg-blue-600 px-4 py-2 font-medium text-white transition duration-300 hover:bg-blue-800'>
             Submit

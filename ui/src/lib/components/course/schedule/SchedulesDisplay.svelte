@@ -39,7 +39,7 @@
                         class={twMerge(
                     `flex-1 cursor-pointer p-2 text-center font-medium transition duration-300 ease-in-out dark:text-gray-200 border-b sm:text-base text-sm dark:border-b-neutral-600`,
                     term === $selectedTerm
-                        ? 'bg-slate-50 dark:bg-neutral-800'
+                        ? 'bg-blue-500'
                         : 'bg-slate-200 dark:bg-neutral-600 hover:bg-slate-100 dark:hover:bg-neutral-700',
                     i === 0 ? 'rounded-tl-lg' : '',
                     i === offeredTerms.length - 1 ? 'rounded-tr-lg' : ''

@@ -11,7 +11,7 @@
     <div class="py-2"/>
 {/if}
 
-<div class={twMerge('text-gray-600 pb-56 flex justify-center', className)}>
+<div class={twMerge('text-gray-500 dark:text-gray-400 pb-56 flex justify-center', className)}>
     <div class='py-1'/>
     <div class='mx-4 flex items-center gap-x-2 text-center text-sm sm:text-base'>
         <FileText class='stroke-gray-400 stroke-[1px]' size={40}/>
