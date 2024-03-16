@@ -136,6 +136,9 @@
                                             class='resize-none rounded-md border bg-gray-50 p-3 outline-none dark:border-neutral-600 dark:bg-neutral-700 dark:text-gray-200 dark:caret-white'
                                     />
                                     <FieldError name='email'/>
+                                    <div class="my-1 text-xs capitalize text-gray-500 dark:text-gray-400">
+                                        * your email is only used to verify your affiliation with concordia
+                                    </div>
                                 </div>
                             {:else }
                                 <LoginForm {props}/>
