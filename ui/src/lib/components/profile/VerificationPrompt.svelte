@@ -33,7 +33,7 @@
                     loading: 'Verifying token...',
                     success: (message) =>  message,
                     error: 'Oops! Something went wrong. Please try again.',
-
+                    finally: () => location.reload()
                 });
             }}
             let:props

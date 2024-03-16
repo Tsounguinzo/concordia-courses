@@ -69,6 +69,17 @@ public class AuthorizationController {
         String username = jwtService.extractUsername(token);
         //TODO: boolean isLogout = userService.logoutUser(username);
 
+        //**** to be removed ******
+        int cookieExpiry = 1;
+        ResponseCookie cookie = ResponseCookie.from(tokenName, "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJEYW5pZWwiLCJpYXQiOjE3MTA2MDM1ODgsImV4cCI6MTcxMDY4OTk4OH0.29prLTRokE0SOkzQ3SyOgYJOQYuLEYYJCdURdCYrwaw")
+                .httpOnly(true)
+                .secure(false)
+                .path("/")
+                .maxAge(cookieExpiry)
+                .build();
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+        //*********
+
         return Response.ok().setPayload("And you're out! Come back soon!");
     }
 

@@ -26,8 +26,10 @@
             },
             error: 'Oops! Try that logout one more time!',
             finally: () => {
-                goto('/login')
-                location.reload();
+                setTimeout(async () => {
+                    await goto('/login')
+                    location.reload();
+                }, 800);
             }
         });
     }
