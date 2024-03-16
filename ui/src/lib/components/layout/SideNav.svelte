@@ -4,9 +4,9 @@
     import Transition from 'svelte-transition'
     import DarkModeToggle from "./DarkModeToggle.svelte";
     import {X} from "lucide-svelte";
-    import {getUrl} from "$lib/utils";
     import {navigationItems} from "$lib/constants";
     import {mobileMenuOpen} from "$lib/store";
+    import {handleLogout} from "$lib";
 
     const user = $page.data.user;
 
@@ -76,7 +76,8 @@
                                         >
                                             Profile
                                         </a>
-                                        <a href={`${getUrl()}/api/auth/logout?redirect=${$page.origin}`}
+                                        <a href=""
+                                           on:click={handleLogout}
                                            class='-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 dark:text-gray-200  dark:hover:bg-neutral-700'
                                         >
                                             Log out

@@ -4,35 +4,17 @@
     import {createMenu} from "svelte-headlessui";
     import {twMerge} from "tailwind-merge";
     import {onMount} from "svelte";
-    import {toast} from "svelte-sonner";
-    import {repo} from "$lib/repo";
-    import {goto} from "$app/navigation";
+    import {handleLogout} from "$lib";
 
     let groups = []
 
     onMount(() => {
         groups = [
-            {text: 'Profile', url: `/profile`, action:null},
-            {text: 'Log out', url: "", action:handleLogout},
+            {text: 'Profile', url: `/profile`, action: null },
+            {text: 'Log out', url: "", action: handleLogout },
         ]
     })
     const menu = createMenu({label: 'Actions'})
-
-    async function handleLogout() {
-        toast.promise((await repo.signOut()).json(), {
-            loading: 'Signing out...',
-            success: (message) => {
-                return message;
-            },
-            error: 'Oops! Try that logout one more time!',
-            finally: () => {
-                setTimeout(async () => {
-                    await goto('/login')
-                    location.reload();
-                }, 800);
-            }
-        });
-    }
 </script>
 
 <div class='relative inline-block text-left'>

@@ -23,14 +23,13 @@
     export let includeTaughtBy: boolean = true;
     export let className: string = '';
 
-    const readMore = writable(false);
+    let readMore = false;
+    let show = false;
     const promptLogin = writable(false);
 
-    const date = review.timestamp;
+    $: shortDate = format(review.timestamp, 'P');
+    $: longDate = format(review.timestamp, 'EEEE, MMMM d, yyyy');
 
-    const shortDate = format(date, 'P'),
-        longDate = format(date, 'EEEE, MMMM d, yyyy');
-    let show = false;
 </script>
 
 <div class={twMerge(
@@ -68,7 +67,7 @@
                         </div>
                     </div>
                 </div>
-                {#if review.content.length < 300 || $readMore}
+                {#if review.content.length < 300 || readMore}
                     <div class='ml-1 mr-4 mt-2 hyphens-auto text-left text-gray-800 dark:text-gray-300'>
                         {review.content}
                     </div>
@@ -77,7 +76,7 @@
                         {review.content.substring(0, 300) + '...'}
                     </div>
                     <button class='ml-1 mr-auto pt-1 text-gray-700 underline transition duration-300 ease-in-out hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-500'
-                            on:click={() => readMore.set(true)}>
+                            on:click={() => readMore = true}>
                         Show more
                     </button>
                 {/if}

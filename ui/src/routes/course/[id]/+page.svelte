@@ -1,7 +1,7 @@
 <script lang="ts">
     import {page} from "$app/stores";
     import {addAcademicYear, getCurrentTerms} from "$lib/utils";
-    import {writable} from "svelte/store";
+    import {derived, writable} from "svelte/store";
     import type {Review} from "$lib/model/Review";
     import type {Course} from "$lib/model/Course";
     import {repo} from "$lib/repo";
@@ -138,6 +138,42 @@
         };
     };
 
+    let sortCriteria = writable('Most Recent');
+    function handleSortChange(event) {
+        console.log("called")
+        sortCriteria.set(event.detail);
+    }
+
+    const sortedAndFilteredReviews = derived([allReviews, sortCriteria], ([$allReviews, $sortCriteria]) => {
+        if (!$allReviews) return [];
+        return [...$allReviews].sort((a, b) => {
+            const aTime = new Date(a.timestamp).getTime()
+            const bTime = new Date(b.timestamp).getTime()
+            switch ($sortCriteria) {
+                case 'Most Recent':
+                    return bTime - aTime
+                case 'Least Recent':
+                    return aTime - bTime
+                case 'Highest Rating':
+                    return b.rating - a.rating;
+                case 'Lowest Rating':
+                    return a.rating - b.rating;
+                case 'Hardest':
+                    return b.difficulty - a.difficulty;
+                case 'Easiest':
+                    return a.difficulty - b.difficulty;
+                case 'Most Liked':
+                    return b.likes - a.likes;
+                case 'Most Disliked':
+                    return a.likes - b.likes;
+                default:
+                    return bTime - aTime
+            }
+        });
+    });
+
+    $: showingReviews.set($sortedAndFilteredReviews);
+    $: console.log($showingReviews)
 </script>
 <Seo title={params?.replace('-', ' ').toUpperCase()} description="{'Give and see reviews of ' + params?.replace('-', ' ').toUpperCase() + ' on concordia.courses'}" />
 
@@ -165,7 +201,7 @@
 
                 {#if $allReviews && $allReviews?.length > 0}
                     <div class='mb-2 py-2'>
-                        <ReviewFilter {allReviews} {showAllReviews}/>
+                        <ReviewFilter on:sortChanged={handleSortChange} {showAllReviews}/>
                     </div>
                 {:else }
                     <ReviewEmptyPrompt variant='course' isLogin={user !== null}/>
@@ -229,7 +265,7 @@
 
                     {#if $allReviews.length > 0}
                         <div class='my-2'>
-                            <ReviewFilter {allReviews} {showAllReviews}/>
+                            <ReviewFilter on:sortChanged={handleSortChange} {showAllReviews}/>
                         </div>
                     {:else }
                         <ReviewEmptyPrompt className="max-sm:p-2" variant='course' isLogin={user !== null}/>

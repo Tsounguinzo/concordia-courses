@@ -15,14 +15,14 @@
 
     const user = $page.data.user
 
-    const isSubscribed = writable(false);
+    let isSubscribed = false;
 
     $: if (course) {
         if (user) {
             repo
                 .getSubscription(course._id)
                 .then((data) => {
-                    isSubscribed.set(data !== null);
+                    isSubscribed = data !== null;
                 })
                 .catch(() =>
                     toast.error(
@@ -37,7 +37,7 @@
             repo
                 .getSubscription(course._id)
                 .then((data) => {
-                    isSubscribed.set(data !== null);
+                    isSubscribed = data !== null;
                 })
                 .catch(() =>
                     toast.error(
@@ -51,7 +51,7 @@
     const subscribe = async () => {
         try {
             await repo.addSubscription(course._id);
-            isSubscribed.set(true);
+            isSubscribed = true;
             toast.success(`Subscribed to course ${course.subject} ${course.catalog}.`);
         } catch (err) {
             toast.error(
@@ -63,7 +63,7 @@
     const unsubscribe = async () => {
         try {
             await repo.removeSubscription(course._id);
-            isSubscribed.set(false);
+            isSubscribed = false;
             toast.success(
                 `Unsubscribed from course ${course.subject} ${course.catalog}`
             );
@@ -83,7 +83,7 @@
             </h1>
             <div class='flex items-center gap-2'>
                 {#if user}
-                    {#if $isSubscribed}
+                    {#if isSubscribed}
                         <button on:click={unsubscribe}>
                         <BellOff
                                 size={20}
