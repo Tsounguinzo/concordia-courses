@@ -50,7 +50,7 @@
                         <Check/>
                     </button>
                 </div>
-                <button type="button" class="text-gray-600 text-sm sm:text-base underline">Resend verification code</button>
+                <button type="button" class="text-gray-600 dark:text-gray-400 text-sm sm:text-base underline">Resend verification code</button>
             </div>
         </Form>
     </Sveltik>
