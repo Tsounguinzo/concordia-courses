@@ -3,6 +3,7 @@
     import {Check} from "lucide-svelte";
     import FieldError from "$lib/components/common/form/FieldError.svelte";
     import {toast} from "svelte-sonner";
+    import {repo} from "$lib/repo";
 
     const validate = (values, actions) => {
         const errors = {
@@ -26,9 +27,14 @@
             validateOnChange={false}
             initialValues={{token: ''}}
             {validate}
-            onSubmit={(values, actions) => {
+            onSubmit={async (values, actions) => {
                 actions.setSubmitting(false);
-                toast.message('submitted : ' + values.token)
+                toast.promise((await repo.verifyToken(values.token)).json(), {
+                    loading: 'Verifying token...',
+                    success: (message) =>  message,
+                    error: 'Oops! Something went wrong. Please try again.',
+
+                });
             }}
             let:props
     >

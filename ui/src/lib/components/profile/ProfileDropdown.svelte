@@ -3,18 +3,34 @@
     import Transition from "svelte-transition";
     import {createMenu} from "svelte-headlessui";
     import {twMerge} from "tailwind-merge";
-    import {getUrl} from "$lib/utils";
     import {onMount} from "svelte";
+    import {toast} from "svelte-sonner";
+    import {repo} from "$lib/repo";
+    import {goto} from "$app/navigation";
 
     let groups = []
 
     onMount(() => {
         groups = [
-            {text: 'Profile', url: `/profile`},
-            {text: 'Log out', url: `${getUrl()}/api/auth/logout?redirect=${window.location.origin}`},
+            {text: 'Profile', url: `/profile`, action:null},
+            {text: 'Log out', url: "", action:handleLogout},
         ]
     })
     const menu = createMenu({label: 'Actions'})
+
+    async function handleLogout() {
+        toast.promise((await repo.signOut()).json(), {
+            loading: 'Signing out...',
+            success: (message) => {
+                return message;
+            },
+            error: 'Oops! Try that logout one more time!',
+            finally: () => {
+                goto('/login')
+                location.reload();
+            }
+        });
+    }
 </script>
 
 <div class='relative inline-block text-left'>
@@ -40,6 +56,7 @@
                     {@const active = $menu.active === option.text}
                     <button use:menu.item>
                         <a href={option.url}
+                           on:click={option.action}
                            class={twMerge(
                                 active
                                     ? 'bg-gray-100 text-gray-900 dark:bg-neutral-700 dark:text-gray-200'

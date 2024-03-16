@@ -255,6 +255,14 @@ export const repo = {
     });
   },
 
+  async signOut(): Promise<Response> {
+    return client.get('/auth/signout');
+  },
+
+  async verifyToken(token: string): Promise<Response> {
+    return client.get(`/auth/authorized?token=${token}`);
+  },
+
   async getUser(fetch: { (input: RequestInfo | URL, init?: RequestInit | undefined): Promise<Response>; (arg0: string): any; }): Promise<string> {
     const backendURL = 'http://localhost:8080/api/v1/auth/user';
     const response = await fetch(backendURL);

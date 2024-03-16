@@ -57,7 +57,19 @@ public class AuthorizationController {
                 .maxAge(cookieExpiry)
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
-        return Response.ok().setPayload("Login Successful");
+        return Response.ok().setPayload("Boom! You're in");
+    }
+
+    @GetMapping("/signout")
+    public Response<?> signOut(HttpServletRequest request, HttpServletResponse response) {
+        String token = getTokenFromCookie(request, tokenName);
+        if (token == null) {
+            return Response.unauthorized();
+        }
+        String username = jwtService.extractUsername(token);
+        //TODO: boolean isLogout = userService.logoutUser(username);
+
+        return Response.ok().setPayload("And you're out! Come back soon!");
     }
 
     @PostMapping("/signup")
@@ -75,21 +87,25 @@ public class AuthorizationController {
                 false
         );
         userService.signup(userDto);
-        return Response.ok().setPayload("successfully sign up, please verify your email address.");
+        return Response.ok().setPayload("Almost there! Just need to verify your email to make sure it's really you.");
     }
 
     @GetMapping("/authorized")
     public Response<?> confirmUserAccount(@Valid @RequestParam("token") String token) {
         Token t = tokenRepository.findByToken(token);
 
+        if(t == null) {
+            return Response.validationException().setPayload("Oops! Wrong token. Let's retry with the correct one.");
+        }
+
         if(t.isExpired()) {
             //if the token is expired, delete the token
             tokenRepository.delete(t);
-            return Response.badRequest().setPayload("The link is expired.");
+            return Response.badRequest().setPayload("Whoops! Looks like this token has expired. Time to grab a fresh one!");
         }
 
         userService.verifyToken(token);
-        return Response.ok().setPayload("Account Successfully verified, You can now login");
+        return Response.ok().setPayload("Welcome aboard! You've successfully joined the cool zone.");
     }
 }
 
