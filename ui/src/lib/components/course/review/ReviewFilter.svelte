@@ -27,7 +27,6 @@
 
     $: if(sortBy){
         showAllReviews.set(false);
-        console.log("In dispatch")
         dispatch('sortChanged', $sortBy);
     }
 

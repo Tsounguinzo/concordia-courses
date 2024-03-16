@@ -87,7 +87,7 @@
     }
 
 
-    $: userReview = $showingReviews?.find((r) => r.userId === user?.id);
+    $: userReview = $showingReviews?.find((r) => user && r.userId === user?.id);
     $: canReview = Boolean(user && !$allReviews?.find((r) => r.userId === user?.id));
 
     const handleSubmit = (successMessage: string) => {
@@ -140,7 +140,6 @@
 
     let sortCriteria = writable('Most Recent');
     function handleSortChange(event) {
-        console.log("called")
         sortCriteria.set(event.detail);
     }
 
@@ -173,7 +172,6 @@
     });
 
     $: showingReviews.set($sortedAndFilteredReviews);
-    $: console.log($showingReviews)
 </script>
 <Seo title={params?.replace('-', ' ').toUpperCase()} description="{'Give and see reviews of ' + params?.replace('-', ' ').toUpperCase() + ' on concordia.courses'}" />
 
