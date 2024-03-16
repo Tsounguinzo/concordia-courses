@@ -142,7 +142,7 @@
                     <SearchBar
                             handleInputChange={(value) => query = value}
                             iconStyle='mt-2 lg:mt-0'
-                            inputStyle='block rounded-lg w-full bg-slate-200 p-3 pr-5 pl-10 text-sm text-black outline-none dark:border-neutral-50 dark:bg-neutral-800 dark:text-gray-200 dark:placeholder:text-neutral-500'
+                            inputStyle='block rounded-lg w-full bg-slate-50 p-3 pr-5 pl-10 text-sm text-black outline-none dark:border-neutral-50 dark:bg-neutral-800 dark:text-gray-200 dark:placeholder:text-neutral-500'
                             outerInputStyle='my-2 mt-4 lg:mt-2'
                             placeholder='Search by course identifier, title or description'
                             searchSelected={searchSelected}
@@ -163,18 +163,16 @@
                     </div>
                 {/if}
 
-                {#if !hasMore}
-                    {#if courses?.length}
+                {#if !hasMore || !courses?.length}
                         <div class='mx-auto mt-4 text-center'>
                             <p class='text-gray-500 dark:text-gray-400'>
-                                No more courses to show
+                                Whoa! We've scrolled through them all. No more courses in sight!
                             </p>
                         </div>
                     {:else }
                         <div class='mt-4 text-center'>
                             <Spinner/>
                         </div>
-                    {/if}
                 {/if}
             </div>
         </div>
