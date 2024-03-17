@@ -39,6 +39,8 @@ public class SeedRunner {
     public static void main(String[] args) {
         log.info("Starting the seed runner process...");
 
+        long startTime = System.currentTimeMillis();
+
         List<CourseCatalogue> courseCatalogues = getCourseCatalogues();
         List<CourseWithDescription> courseWithDescriptions = getCourseWithDescriptions();
         List<CourseWithDetails> courseWithDetails = getCourseWithDetails();
@@ -121,7 +123,15 @@ public class SeedRunner {
 
         }
 
+        long endTime = System.currentTimeMillis();
+        long timeTaken = endTime - startTime;
+        long hours = timeTaken / 3600000;
+        long minutes = (timeTaken % 3600000) / 60000;
+        long seconds = (timeTaken % 60000) / 1000;
+        long millis = timeTaken % 1000;
+
         log.info("Finished processing {} courses with {} not being offered and {} being offered for the current academic year. Saving to JSON.", newCourses.size(), coursesNotOffered, newCourses.size() - coursesNotOffered);
+        log.info("Time taken: " + hours + " hour(s) " + minutes + " minute(s) " + seconds + " second(s) " + millis + " millisecond(s)");
         JsonUtils.toJson(newCourses, Paths.get("backend","src","main","resources","seeds", SEED_FILENAME).toString());
     }
 
@@ -131,8 +141,12 @@ public class SeedRunner {
             return new CourseDescriptionSegment();
         }
 
-        String task = "Into the json format below, give a value of null where applicable {“description” : string “prerequisites”:  string “corequisites”: string “Restrictions”: string}";
-        String prompt = String.format("Convert the following:%n%s%n%s%n%s", description, prerequisites, task).replace("\n","").replace("\r","");
+        String task = "Given the course details below, format them into JSON according to these guidelines: Use 'null' for fields without information. Ensure all field values are either strings or 'null'. prerequisites or corequisites should be summarized as a single string. Avoid formatting prerequisites or corequisites as an array or list. Structure the JSON with these keys: description, prerequisites, corequisites, and restrictions. Ensure the description, if it includes prerequisites and/or corequisites and/or restrictions, is properly separated and not confused with the explicit prerequisites provided.";
+
+        String prompt = String.format("Convert the following course details into JSON format, adhering to the instructions:%nDescription:%s%nPrerequisites:%s%nTask:%s", description, prerequisites, task)
+                .replace("\n"," ")
+                .replace("\r","");
+
         try {
             String response = generateText(prompt);
             Pattern pattern = Pattern.compile("\\{\\s*\"[\\s\\S]*?\\}", Pattern.MULTILINE);
@@ -142,11 +156,13 @@ public class SeedRunner {
             if (matcher.find()) {
                 jsonString = matcher.group();
             } else {
-                log.error("No JSON string found for course: " + courseId);
+                log.error("No JSON string found for {} details below: \n{}\n PROMPT:{} \n AI RESPONSE:{} \n {}", courseId, "*".repeat(20) ,prompt, response, "*".repeat(20));
                 return new CourseDescriptionSegment();
             }
 
-            return JsonUtils.getData(jsonString, new TypeToken<CourseDescriptionSegment>(){});
+            CourseDescriptionSegment jsonResult = JsonUtils.getData(jsonString, new TypeToken<CourseDescriptionSegment>(){});
+            System.out.println(jsonResult); //TODO: remove this line
+            return jsonResult == null ? new CourseDescriptionSegment() : jsonResult;
         } catch (IOException | InterruptedException e) {
             log.error("An exception occurred: {} when processing {}", e.getMessage(), courseId, e);
         }
@@ -226,7 +242,7 @@ public class SeedRunner {
             String response = ConcordiaAPICallUtil.getRequest(urlStr);
             List<CourseCatalogue> courses = JsonUtils.getData(response, new TypeToken<List<CourseCatalogue>>(){});
             assert courses != null;
-            log.info("Successfully fetched {} course descriptions", courses.size());
+            log.info("Successfully fetched {} course catalogues", courses.size());
             return courses;
         } catch (Exception e) {
             log.error("Failed to fetch course catalogues from URL: {}, Error: {}", urlStr, e.getMessage(), e);
