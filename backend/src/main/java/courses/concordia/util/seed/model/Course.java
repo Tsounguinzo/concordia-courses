@@ -11,9 +11,11 @@ import java.util.Set;
 public class Course {
     private String _id;
     private List<String> terms;
-    private String prerequisites;
     private String subject;
     private String description;
+    private String prerequisites;
+    private String corequisites;
+    private String restrictions;
     private String catalog;
     private String title;
     private List<Schedule> schedules;

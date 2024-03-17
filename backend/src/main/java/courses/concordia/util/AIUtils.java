@@ -2,6 +2,7 @@ package courses.concordia.util;
 
 import com.google.gson.reflect.TypeToken;
 import courses.concordia.util.seed.model.Course;
+import courses.concordia.util.seed.model.CourseDescriptionSegment;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,6 +15,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.concurrent.Flow;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Slf4j
 public class AIUtils {
@@ -29,9 +32,22 @@ public class AIUtils {
 
          String task = "Into the json format below, give a value of null where applicable {“description” : string “prerequisites”:  string “corequisites”: string “Restrictions”: string}";
          for (Course course : courses) {
-             String prompt = String.format("Convert the following:%n%s%n%s%n%s", course.getDescription(), course.getPrerequisites(), task).replace("\n","");
+             String prompt = String.format("Convert the following:%n%s%n%s%n%s", course.getDescription(), course.getPrerequisites(), task).replace("\n","").replace("\r","");
              try {
-                 generateText(prompt, true);
+                 String response = generateText(prompt);
+                 Pattern pattern = Pattern.compile("\\{\\s*\"[\\s\\S]*?\\}", Pattern.MULTILINE);
+                 Matcher matcher = pattern.matcher(response);
+
+                 String jsonString = null;
+                 if (matcher.find()) {
+                     jsonString = matcher.group();
+                     System.out.println("Extracted JSON string:");
+                     System.out.println(jsonString);
+                 } else {
+                     System.out.println("No JSON string found.");
+                     System.out.println(new CourseDescriptionSegment());
+                 }
+                 System.out.println(JsonUtils.getData(jsonString, new TypeToken<CourseDescriptionSegment>(){}));
              } catch (IOException | InterruptedException e) {
                  log.error("An exception occurred: {}", e.getMessage(), e);
              }
@@ -42,7 +58,10 @@ public class AIUtils {
     public static void generateText(String prompt, boolean stream) throws IOException, InterruptedException {
         generateText(DEFAULT_MODEL, prompt, stream);
     }
-    public static void generateText(String model, String prompt, boolean stream) throws IOException, InterruptedException {
+    public static String generateText(String prompt) throws IOException, InterruptedException {
+        return generateText(DEFAULT_MODEL, prompt, false);
+    }
+    public static String generateText(String model, String prompt, boolean stream) throws IOException, InterruptedException {
         String requestBody = String.format("""
                 {
                   "model": "%s",
@@ -58,34 +77,42 @@ public class AIUtils {
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
 
-        HttpResponse.BodyHandler<Void> streamingBodyHandler = HttpResponse.BodyHandlers.fromLineSubscriber(new Flow.Subscriber<>() {
-            private Flow.Subscription subscription;
+        if (stream) {
+            HttpResponse.BodyHandler<Void> streamingBodyHandler = HttpResponse.BodyHandlers.fromLineSubscriber(new Flow.Subscriber<>() {
+                private Flow.Subscription subscription;
 
-            @Override
-            public void onSubscribe(Flow.Subscription subscription) {
-                this.subscription = subscription;
-                subscription.request(1); // Request the first piece of data
-            }
+                @Override
+                public void onSubscribe(Flow.Subscription subscription) {
+                    this.subscription = subscription;
+                    subscription.request(1); // Request the first piece of data
+                }
 
-            @Override
-            public void onNext(String item) {
-                OllamaResponse res = JsonUtils.getData(item, new TypeToken<OllamaResponse>(){});
-                System.out.print(res.getError() != null ? res.getError() : res.getResponse());
-                subscription.request(1); // Request the next piece of data
-            }
+                @Override
+                public void onNext(String item) {
+                    OllamaResponse res = JsonUtils.getData(item, new TypeToken<OllamaResponse>() {
+                    });
+                    System.out.print(res.getError() != null ? res.getError() : res.getResponse());
+                    subscription.request(1); // Request the next piece of data
+                }
 
-            @Override
-            public void onError(Throwable throwable) {
-                log.error("Error occurred: {}", throwable.getMessage(), throwable);
-            }
+                @Override
+                public void onError(Throwable throwable) {
+                    log.error("Error occurred: {}", throwable.getMessage(), throwable);
+                }
 
-            @Override
-            public void onComplete() {
-                System.out.println("\n\nStream completed.");
-            }
-        });
+                @Override
+                public void onComplete() {
+                    System.out.println("\n\nStream completed.");
+                }
+            });
 
             client.send(request, streamingBodyHandler);
+            return null;
+        } else {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            OllamaResponse res = JsonUtils.getData(response.body(), new TypeToken<OllamaResponse>() {});
+            return res.getError() != null ? res.getError() : res.getResponse();
+        }
     }
 
 }

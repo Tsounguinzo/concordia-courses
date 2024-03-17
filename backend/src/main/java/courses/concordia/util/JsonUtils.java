@@ -30,14 +30,14 @@ public class JsonUtils {
         return null;
     }
 
-    public static <T> T getData(String jsonFile, TypeToken<T> typeToken) {
-        if (jsonFile == null) {
+    public static <T> T getData(String jsonString, TypeToken<T> typeToken) {
+        if (jsonString == null) {
             log.error("Input JSON string is null.");
             return null;
         }
         try {
             Type dataType = typeToken.getType();
-            return gson.fromJson(jsonFile, dataType);
+            return gson.fromJson(jsonString, dataType);
         } catch (JsonSyntaxException e) {
             log.error("Failed to parse JSON. Error: {}", e.getMessage(), e);
         }

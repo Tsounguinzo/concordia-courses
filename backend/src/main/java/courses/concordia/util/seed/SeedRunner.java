@@ -5,9 +5,13 @@ import courses.concordia.util.JsonUtils;
 import courses.concordia.util.seed.model.*;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import static courses.concordia.util.AIUtils.generateText;
 import static courses.concordia.util.seed.ConcordiaAPICallUtil.*;
 
 @Slf4j
@@ -15,7 +19,7 @@ public class SeedRunner {
 
     private static final Map<String, String> TERM_CODE_MAPPING = new HashMap<>();
     private static final Map<String, String> CODE_TERM_MAPPING = new HashMap<>();
-    private static final String SEED_FILENAME = "2023-2024-courses-v2.json";
+    private static final String SEED_FILENAME = "2023-2024-courses-v3.json";
 
     static {
         TERM_CODE_MAPPING.put("2231", "Summer");
@@ -57,7 +61,7 @@ public class SeedRunner {
 
             List<String> terms;
             if (Terms == null) {
-                log.warn("Terms were null for {} {}. Using empty list.", course.getSubject(), course.getCatalog());
+                //log.warn("Terms were null for {} {}. Using empty list.", course.getSubject(), course.getCatalog());
                 coursesNotOffered++;
                 terms = new ArrayList<>();
             } else {
@@ -97,20 +101,18 @@ public class SeedRunner {
                     schedules.add(schedule);
                 }
             }
-            String description;
-            if (Description == null) {
-                log.warn("Description was null for course ID {}. Using empty description.", course.getID());
-                description = "";
-            } else {
-                description = Description.getDescription();
-            }
 
+            String description = (Description == null) ? null : Description.getDescription();
+
+            CourseDescriptionSegment descriptionSegments = getSegmentedDescription(course.getSubject()+course.getCatalog(), description, course.getPrerequisites());
             var newCourse = new Course(
                     course.getSubject()+course.getCatalog(),
                     terms,
-                    course.getPrerequisites(),
                     course.getSubject(),
-                    description,
+                    descriptionSegments.getDescription(),
+                    descriptionSegments.getPrerequisites(),
+                    descriptionSegments.getCorequisites(),
+                    descriptionSegments.getRestrictions(),
                     course.getCatalog(),
                     course.getTitle(),
                     schedules
@@ -121,6 +123,35 @@ public class SeedRunner {
 
         log.info("Finished processing {} courses with {} not being offered and {} being offered for the current academic year. Saving to JSON.", newCourses.size(), coursesNotOffered, newCourses.size() - coursesNotOffered);
         JsonUtils.toJson(newCourses, Paths.get("backend","src","main","resources","seeds", SEED_FILENAME).toString());
+    }
+
+    private static CourseDescriptionSegment getSegmentedDescription(String courseId, String description, String prerequisites) {
+        if (description == null) {
+            log.warn("Description was null for course {}.", courseId);
+            return new CourseDescriptionSegment();
+        }
+
+        String task = "Into the json format below, give a value of null where applicable {“description” : string “prerequisites”:  string “corequisites”: string “Restrictions”: string}";
+        String prompt = String.format("Convert the following:%n%s%n%s%n%s", description, prerequisites, task).replace("\n","").replace("\r","");
+        try {
+            String response = generateText(prompt);
+            Pattern pattern = Pattern.compile("\\{\\s*\"[\\s\\S]*?\\}", Pattern.MULTILINE);
+            Matcher matcher = pattern.matcher(response);
+
+            String jsonString = null;
+            if (matcher.find()) {
+                jsonString = matcher.group();
+            } else {
+                log.error("No JSON string found for course: " + courseId);
+                return new CourseDescriptionSegment();
+            }
+
+            return JsonUtils.getData(jsonString, new TypeToken<CourseDescriptionSegment>(){});
+        } catch (IOException | InterruptedException e) {
+            log.error("An exception occurred: {} when processing {}", e.getMessage(), courseId, e);
+        }
+
+        return new CourseDescriptionSegment();
     }
 
     private static List<CourseWithDescription> getCourseWithDescriptions() {
