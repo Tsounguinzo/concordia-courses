@@ -141,9 +141,20 @@ public class SeedRunner {
             return new CourseDescriptionSegment();
         }
 
-        String task = "Given the course details above, format them into JSON according to these guidelines: Use 'null' for fields without information. Ensure all field values are either strings or 'null'. prerequisites or corequisites should be summarized as a single string. Avoid formatting prerequisites or corequisites as an array or list. Structure the JSON with these keys: description, prerequisites, corequisites, and restrictions.";
-
-        String prompt = String.format("%nCourse Details:%n%s%n%n%s%n%nTask:%s", prerequisites, description, task)
+        String prompt = String.format("""
+                        Task: Using the details provided about the course , create a JSON object that accurately represents this information. Follow these guidelines:
+                        - Use 'null' for fields without information. If a detail is not provided for a field, explicitly set its value to 'null'.
+                        - prerequisites and corequisites should be summarized as a single string, in distinct fields. Avoid using arrays or lists for this fields.
+                        - Format the JSON with specific keys. Structure the JSON object using the keys 'description', 'prerequisites', 'corequisites', and 'restrictions', adhering to the information provided about the course.
+                                                
+                        Course Details:
+                        - %s
+                        - %s
+                                                
+                        Guidelines:
+                        - Ensure all field values are either string representations or 'null'.
+                        - Summarize prerequisites or corequisites in a single string, avoiding list or array formats.
+                        """, prerequisites, description)
                 .replace("\n"," ")
                 .replace("\r","");
 
