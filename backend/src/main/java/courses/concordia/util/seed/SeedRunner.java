@@ -141,9 +141,9 @@ public class SeedRunner {
             return new CourseDescriptionSegment();
         }
 
-        String task = "Given the course details above, format them into JSON according to these guidelines: Use 'null' for fields without information. Ensure all field values are either strings or 'null'. prerequisites or corequisites should be summarized as a single string. Avoid formatting prerequisites or corequisites as an array or list. Structure the JSON with these keys: description, prerequisites, corequisites, and restrictions. Ensure the description, if it includes prerequisites and/or corequisites and/or restrictions, is properly separated and not confused with the explicit prerequisites provided.";
+        String task = "Given the course details above, format them into JSON according to these guidelines: Use 'null' for fields without information. Ensure all field values are either strings or 'null'. prerequisites or corequisites should be summarized as a single string. Avoid formatting prerequisites or corequisites as an array or list. Structure the JSON with these keys: description, prerequisites, corequisites, and restrictions.";
 
-        String prompt = String.format("Convert the following course details into JSON format, adhering to the instructions:%nDescription:%s%nPrerequisites:%s%nTask:%s", description, prerequisites, task)
+        String prompt = String.format("%nCourse Details:%n%s%n%n%s%n%nTask:%s", prerequisites, description, task)
                 .replace("\n"," ")
                 .replace("\r","");
 
@@ -161,7 +161,8 @@ public class SeedRunner {
             }
 
             CourseDescriptionSegment jsonResult = JsonUtils.getData(jsonString, new TypeToken<CourseDescriptionSegment>(){});
-            System.out.println(jsonResult); //TODO: remove this line
+            System.out.println(prompt); //TODO: remove this line
+            System.out.println(jsonString); //TODO: remove this line
             return jsonResult == null ? new CourseDescriptionSegment() : jsonResult;
         } catch (IOException | InterruptedException e) {
             log.error("An exception occurred: {} when processing {}", e.getMessage(), courseId, e);
