@@ -16,6 +16,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.Random;
 import java.util.UUID;
 
 @Getter
@@ -34,14 +35,25 @@ public class Token {
     @CreatedDate
     private LocalDateTime createTime;
     private LocalDateTime expireTime;
+
+
     public Token(User user){
         this.user = user;
         this.createTime = LocalDateTime.now();
         this.expireTime = createTime.plusMinutes(5);
-        this.token = UUID.randomUUID().toString();
+        this.token = tokenGenerator();
     }
 
     public boolean isExpired(){
         return LocalDateTime.now().isAfter(expireTime);
+    }
+
+    public String tokenGenerator(){
+        Random random = new Random();
+        StringBuilder str= new StringBuilder();
+        for(int i = 0; i < 6; i ++){
+            str.append(random.nextInt(11) - 1);
+        }
+        return str.toString();
     }
 }

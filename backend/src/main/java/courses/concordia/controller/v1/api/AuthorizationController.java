@@ -1,5 +1,6 @@
 package courses.concordia.controller.v1.api;
 
+import courses.concordia.controller.v1.request.AuthenticationRequest;
 import courses.concordia.controller.v1.request.LoginRequest;
 import courses.concordia.controller.v1.request.SignupRequest;
 import courses.concordia.dto.model.user.UserDto;
@@ -102,7 +103,8 @@ public class AuthorizationController {
     }
 
     @GetMapping("/authorized")
-    public Response<?> confirmUserAccount(@Valid @RequestParam("token") String token) {
+    public Response<?> confirmUserAccount(@Valid @RequestBody AuthenticationRequest authenticationRequest) {
+        String token = authenticationRequest.getToken();
         Token t = tokenRepository.findByToken(token);
 
         if(t == null) {

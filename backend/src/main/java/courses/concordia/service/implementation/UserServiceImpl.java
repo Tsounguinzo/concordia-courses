@@ -36,8 +36,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void signup(UserDto userDto) {
+        tokenRepository.deleteAll();
+        userRepository.deleteAll();
         Optional<User> existingUser = userRepository.findByUsername(userDto.getUsername());
         if (existingUser.isEmpty()) {
+
             //Create user
             User user = new User(userDto.getUsername(),
                     userDto.getEmail(),
@@ -48,11 +51,17 @@ public class UserServiceImpl implements UserService {
 
             //Email token
             Token token = new Token(user);
-            //tokenRepository.deleteAll();
             tokenRepository.save(token);
 
             emailService.sendSimpleMailMessage(user.getUsername(), user.getEmail(), token.getToken());
         } else {
+            if(!existingUser.get().isVerified()){
+                User user = existingUser.get();
+                Token token = tokenRepository.findByUser(user);
+                tokenRepository.delete(token);
+                Token newToken = new Token(user);
+                emailService.sendSimpleMailMessage(user.getUsername(), user.getEmail(), newToken.getToken());
+            }
             throw exception(USER, DUPLICATE_ENTITY, userDto.getUsername());
         }
     }
