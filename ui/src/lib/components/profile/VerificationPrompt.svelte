@@ -1,63 +1,57 @@
-<script>
-    import {Field, Form, Sveltik} from "sveltik/src";
+<script lang="ts">
     import {Check} from "lucide-svelte";
-    import FieldError from "$lib/components/common/form/FieldError.svelte";
     import {toast} from "svelte-sonner";
     import {repo} from "$lib/repo";
+    import SvelteOtp from '@k4ung/svelte-otp';
+    import {writable} from "svelte/store";
 
-    const validate = (values, actions) => {
-        const errors = {
-            token: '',
-        };
+    let value = ''
+    const error = writable<string | null>(null);
 
-        if (!values.token.match(/^\d{6}$/)) {
-            errors.token = 'Code must be 6 digits';
+    const handleClick = async () => {
+        if (!value.match(/^\d{6}$/)) {
+            error.set('Code must be 6 digits');
+            toast.message("Code must be 6 digits");
+            return;
         }
 
-        return errors;
-    };
+        error.set(null);
+
+        const promise = repo.verifyToken(value).then(response => response.json());
+
+        toast.promise(promise, {
+            success: (message) => message,
+            error: 'Oops! Something went wrong. Please try again.',
+            // finally: () => location.reload()
+        });
+
+    }
+
 </script>
 
 <div class='m-4 flex max-sm:flex-col gap-y-2 justify-center items-center space-x-1 rounded-xl bg-slate-200 p-5 dark:bg-neutral-700/20'>
     <div class='w-full max-sm:text-center text-md sm:text-lg font-medium text-gray-800 dark:text-gray-200'>
         Verify your account to proceed
     </div>
-    <Sveltik
-            validateOnBlur={false}
-            validateOnChange={false}
-            initialValues={{token: ''}}
-            {validate}
-            onSubmit={async (values, actions) => {
-                actions.setSubmitting(false);
-                toast.promise((await repo.verifyToken(values.token)).json(), {
-                    loading: 'Verifying token...',
-                    success: (message) =>  message,
-                    error: 'Oops! Something went wrong. Please try again.',
-                    finally: () => location.reload()
-                });
-            }}
-            let:props
-    >
-
-        <Form>
-            <div class='flex flex-col'>
-                <FieldError name='token'/>
-                <div class="flex flex-row gap-x-1">
-                    <Field
-                            on:input={(e) => props.values.token = e.target.value}
-                            on:blur={props.handleBlur}
-                            value={props.values.token}
-                            id='token'
-                            name='token'
-                            placeholder='code'
-                            class='w-full rounded-md border bg-gray-50 p-3 outline-none dark:border-neutral-600 dark:bg-neutral-700 dark:text-gray-200 dark:caret-white'
-                    />
-                    <button type="submit" class="resize-none rounded-md border bg-gray-50 p-3 outline-none dark:border-neutral-600 dark:bg-neutral-700 dark:text-gray-200 dark:caret-white">
-                        <Check/>
-                    </button>
-                </div>
-                <button type="button" class="text-gray-600 dark:text-gray-400 text-sm sm:text-base underline">Resend verification code</button>
+    <div class='flex flex-col'>
+        {#if $error}
+            <div class='text-sm italic text-red-400'>
+                {$error}
             </div>
-        </Form>
-    </Sveltik>
+        {/if}
+        <div class="flex flex-row gap-x-2">
+            <SvelteOtp
+                    inputClass="rounded-md border bg-gray-50 outline-none dark:border-neutral-600 dark:bg-neutral-700 dark:text-gray-200 dark:caret-white"
+                    numOfInputs={6} bind:value
+            />
+            <button type="button"
+                    on:click={handleClick}
+                    class="resize-none rounded-md border bg-gray-50 p-3 outline-none dark:border-neutral-600 dark:bg-neutral-700 dark:text-gray-200 dark:caret-white">
+                <Check/>
+            </button>
+        </div>
+        <button type="button" class="text-gray-600 dark:text-gray-400 text-sm sm:text-base underline">Resend
+            verification code
+        </button>
+    </div>
 </div>
