@@ -4,6 +4,7 @@
     import {repo} from "$lib/repo";
     import SvelteOtp from '@k4ung/svelte-otp';
     import {writable} from "svelte/store";
+    import {goto} from "$app/navigation";
 
     let value = ''
     const error = writable<string | null>(null);
@@ -22,7 +23,7 @@
         toast.promise(promise, {
             success: (message) => message,
             error: 'Oops! Something went wrong. Please try again.',
-            // finally: () => location.reload()
+            finally: () => goto("/profile")
         });
 
     }

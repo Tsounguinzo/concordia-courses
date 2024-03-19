@@ -88,9 +88,9 @@ public class AuthorizationController {
     public Response<?> signUp(@Valid @RequestBody SignupRequest signupRequest) {
 
         if (!userService.checkIfUserExist(signupRequest.getUsername())) {
-            /*if(!signupRequest.getEmail().endsWith("concordia.ca")){
+            if(!signupRequest.getEmail().endsWith("concordia.ca")){
                 return Response.badRequest().setErrors("Email must be a Concordia email address");
-            }*/
+            }
         }
         UserDto userDto = new UserDto(
                 signupRequest.getUsername(),
@@ -102,7 +102,7 @@ public class AuthorizationController {
         return Response.ok().setPayload("Almost there! Just need to verify your email to make sure it's really you.");
     }
 
-    @GetMapping("/authorized")
+    @PostMapping("/authorized")
     public Response<?> confirmUserAccount(@Valid @RequestBody AuthenticationRequest authenticationRequest) {
         String token = authenticationRequest.getToken();
         Token t = tokenRepository.findByToken(token);

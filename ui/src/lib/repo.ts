@@ -260,7 +260,12 @@ export const repo = {
   },
 
   async verifyToken(token: string): Promise<Response> {
-    return client.get(`/auth/authorized?token=${token}`);
+    return client.post('/auth/authorized', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(token),
+    });
   },
 
   async getUser(fetch: { (input: RequestInfo | URL, init?: RequestInit | undefined): Promise<Response>; (arg0: string): any; }): Promise<string> {
