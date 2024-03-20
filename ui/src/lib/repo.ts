@@ -259,6 +259,10 @@ export const repo = {
     return client.get('/auth/signout');
   },
 
+  async getNewToken(): Promise<Response> {
+    return client.get('/auth/resend_token');
+  },
+
   async verifyToken(token: string): Promise<Response> {
     return client.post('/auth/authorized', {
       headers: {

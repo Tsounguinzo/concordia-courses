@@ -4,7 +4,6 @@
     import {repo} from "$lib/repo";
     import SvelteOtp from '@k4ung/svelte-otp';
     import {writable} from "svelte/store";
-    import {goto} from "$app/navigation";
 
     let value = ''
     const error = writable<string | null>(null);
@@ -23,7 +22,16 @@
         toast.promise(promise, {
             success: (message) => message,
             error: 'Oops! Something went wrong. Please try again.',
-            finally: () => goto("/profile")
+        });
+
+    }
+
+    const handleSendNewToken = async () => {
+        const promise = repo.getNewToken().then(response => response.json());
+
+        toast.promise(promise, {
+            success: (message) => message,
+            error: 'Oops! Something went wrong. Please try again.',
         });
 
     }
@@ -51,7 +59,7 @@
                 <Check/>
             </button>
         </div>
-        <button type="button" class="text-gray-600 dark:text-gray-400 text-sm sm:text-base underline">Resend
+        <button type="button" on:click={handleSendNewToken} class="text-gray-600 dark:text-gray-400 text-sm sm:text-base underline">Resend
             verification code
         </button>
     </div>

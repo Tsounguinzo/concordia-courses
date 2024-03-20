@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.mongodb.core.aggregation.DateOperators;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
@@ -15,9 +14,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.util.Random;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -52,7 +49,7 @@ public class Token {
         Random random = new Random();
         StringBuilder str= new StringBuilder();
         for(int i = 0; i < 6; i ++){
-            str.append(random.nextInt(11) - 1);
+            str.append(random.nextInt(10));
         }
         return str.toString();
     }

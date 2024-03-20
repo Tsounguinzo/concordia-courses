@@ -18,7 +18,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.Optional;
 
 import static courses.concordia.exception.EntityType.USER;
@@ -116,6 +115,29 @@ public class UserServiceImpl implements UserService {
             return user.get().isVerified();
         }
         throw exception(USER, ENTITY_NOT_FOUND, username);
+    }
+
+    @Override
+    public void resendToken(String username) {
+        Optional<User> user = userRepository.findByUsername(username);
+        if (user.isPresent()) {
+            User user1 = user.get();
+            if(user1.isVerified()){
+                throw exception(USER, ENTITY_NOT_FOUND, username);
+            } else {
+                Token t = tokenRepository.findByUser(user1);
+                if(t == null) {
+                    throw exception(USER, ENTITY_NOT_FOUND, username);
+                }
+                tokenRepository.delete(t);
+                Token token = new Token(user1);
+                tokenRepository.save(token);
+
+                emailService.sendNewTokenMailMessage(user1.getUsername(), user1.getEmail(), token.getToken());
+            }
+        } else {
+            throw exception(USER, ENTITY_NOT_FOUND, username);
+        }
     }
 
     @Override

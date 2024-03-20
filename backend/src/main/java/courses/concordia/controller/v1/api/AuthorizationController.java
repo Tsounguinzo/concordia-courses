@@ -120,5 +120,18 @@ public class AuthorizationController {
         userService.verifyToken(token);
         return Response.ok().setPayload("Welcome aboard! You've successfully joined the cool zone.");
     }
+
+    @GetMapping("/resend_token")
+    public Response<?> resendVerificationToken(HttpServletRequest request) {
+        String token = getTokenFromCookie(request, tokenName);
+        if (token == null) {
+            return Response.unauthorized();
+        }
+
+        String username = jwtService.extractUsername(token);
+
+        userService.resendToken(username);
+        return Response.ok().setPayload("Your new code is in your inbox!");
+    }
 }
 

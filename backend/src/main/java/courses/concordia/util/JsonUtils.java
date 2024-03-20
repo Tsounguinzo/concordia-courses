@@ -39,7 +39,9 @@ public class JsonUtils {
             Type dataType = typeToken.getType();
             return gson.fromJson(jsonString, dataType);
         } catch (JsonSyntaxException e) {
-            log.error("Failed to parse JSON. Error: {}", e.getMessage(), e);
+            log.error("Failed to parse JSON from {}: {}", jsonString, e.getMessage());
+        } catch (Exception e) {
+            log.error("Unexpected error reading JSON from {}: {}", jsonString, e.getMessage());
         }
         return null;
     }
