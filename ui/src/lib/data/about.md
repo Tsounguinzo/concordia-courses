@@ -4,8 +4,8 @@
 
 ### 📚 **Why Concordia.Courses?**
 
-- **Open-Source & Student-Driven:** Straight from the student's desk—get the real deal on courses.
-- **Simple & Fun:** Getting courses reviews shouldn't be a maze. We make it a breeze!
+1. **Open-Source & Student-Driven:** Straight from the student's desk—get the real deal on courses.
+2. **Simple & Fun:** Getting courses reviews shouldn't be a maze. We make it a breeze!
 
 ### 🚀 **Dream Team**
 
