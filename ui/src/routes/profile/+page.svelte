@@ -173,8 +173,7 @@
                         <div class='flex w-full items-center justify-center gap-x-2'>
                             <FileText class='stroke-[1.25] text-gray-400 dark:text-gray-600' size={40}/>
                             <div class='text-center text-sm text-gray-600 dark:text-gray-500'>
-                                No reviews found, if you've taken a course in the past,
-                                don't be shy to leave a review!
+                                No reviews in sight! <a href="/explore" class="underline text-blue-400 font-semibold">Find a course</a> and leave your feedback.
                             </div>
                         </div>
                     {/if}
