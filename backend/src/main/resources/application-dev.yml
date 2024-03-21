@@ -7,3 +7,4 @@ app:
   jwt-name: "accessToken"
   init-db: true
   seed-dir: backend/src/main/resources/seeds
+
