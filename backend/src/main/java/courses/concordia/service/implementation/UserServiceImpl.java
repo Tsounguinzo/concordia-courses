@@ -13,6 +13,7 @@ import courses.concordia.repository.TokenRepository;
 import courses.concordia.repository.UserRepository;
 import courses.concordia.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import static courses.concordia.exception.EntityType.USER;
 import static courses.concordia.exception.ExceptionType.*;
@@ -34,10 +36,11 @@ public class UserServiceImpl implements UserService {
     private final JwtServiceImpl jwtService;
     private final AuthenticationManager authenticationManager;
 
+
     @Override
     public void signup(UserDto userDto) {
-        tokenRepository.deleteAll();
-        userRepository.deleteAll();
+        /*tokenRepository.deleteAll();
+        userRepository.deleteAll();*/
         Optional<User> existingUser = userRepository.findByUsername(userDto.getUsername());
         if (existingUser.isEmpty()) {
 
@@ -139,6 +142,11 @@ public class UserServiceImpl implements UserService {
         }
         throw exception(USER, ENTITY_NOT_FOUND, userDto.getUsername());
     }
+
+    // TODO: implement this method
+    /*public Boolean logoutUser(String username){
+
+    }*/
 
 
     private RuntimeException exception(EntityType entityType, ExceptionType exceptionType, String... args) {

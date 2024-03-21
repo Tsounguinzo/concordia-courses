@@ -18,7 +18,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 import static courses.concordia.util.Misc.getTokenFromCookie;
 
@@ -64,13 +67,16 @@ public class AuthorizationController {
     @GetMapping("/signout")
     public Response<?> signOut(HttpServletRequest request, HttpServletResponse response) {
         String token = getTokenFromCookie(request, tokenName);
+
         if (token == null) {
             return Response.unauthorized();
         }
         String username = jwtService.extractUsername(token);
         //TODO: boolean isLogout = userService.logoutUser(username);
 
-        //**** to be removed ******
+        jwtService.invalidateJWToken(token);
+
+        /*//**** to be removed ******
         int cookieExpiry = 1;
         ResponseCookie cookie = ResponseCookie.from(tokenName, "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJEYW5pZWwiLCJpYXQiOjE3MTA2MDM1ODgsImV4cCI6MTcxMDY4OTk4OH0.29prLTRokE0SOkzQ3SyOgYJOQYuLEYYJCdURdCYrwaw")
                 .httpOnly(true)
@@ -79,7 +85,8 @@ public class AuthorizationController {
                 .maxAge(cookieExpiry)
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
-        //*********
+        //**********/
+
 
         return Response.ok().setPayload("And you're out! Come back soon!");
     }

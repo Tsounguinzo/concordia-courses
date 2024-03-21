@@ -52,7 +52,7 @@ public class Token {
         Random random = new Random();
         StringBuilder str= new StringBuilder();
         for(int i = 0; i < 6; i ++){
-            str.append(random.nextInt(11) - 1);
+            str.append(random.nextInt(10));
         }
         return str.toString();
     }

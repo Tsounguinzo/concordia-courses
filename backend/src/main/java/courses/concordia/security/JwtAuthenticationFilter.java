@@ -1,6 +1,7 @@
 package courses.concordia.security;
 
 import courses.concordia.service.implementation.JwtServiceImpl;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,10 +24,7 @@ import static courses.concordia.util.Misc.getTokenFromCookie;
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-
-
     private final JwtServiceImpl jwtService;
-
     private final UserDetailsService userDetailsService;
 
     @Value("${app.jwt-name:accessToken}")
@@ -38,7 +36,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
         final String jwtCookieValue = getTokenFromCookie(request, tokenName);
         final String username;
-        if (jwtCookieValue == null) {
+        /*System.out.println(jwtService.isTokenInvalidated(jwtCookieValue));
+        System.out.println(jwtCookieValue);*/
+        if (jwtCookieValue == null || jwtService.isTokenInvalidated(jwtCookieValue)) {
             filterChain.doFilter(request, response);
             return;
         }
