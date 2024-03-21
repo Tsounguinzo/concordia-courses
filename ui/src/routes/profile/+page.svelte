@@ -2,7 +2,7 @@
     import DeleteButton from "$lib/components/course/review/DeleteButton.svelte";
     import CourseReview from "$lib/components/course/review/CourseReview.svelte";
     import JumpToTopButton from "$lib/components/common/JumpToTopButton.svelte";
-    import {Bell, FileText, User} from "lucide-svelte";
+    import {Bell, FileText, Info, User} from "lucide-svelte";
     import {writable} from "svelte/store";
     import type {Review} from "$lib/model/Review";
     import type {Subscription} from "$lib/model/Subscription";
@@ -123,6 +123,12 @@
         </CardBody>
     </CardContainer>
     {#if !user?.verified}
+        <div class="flex items-center justify-center text-md font-medium text-gray-800 dark:text-gray-200">
+            <div class="dark:bg-blue-900 bg-blue-400 rounded-md p-3 flex gap-x-4 items-center justify-center">
+                <Info class="min-w-6 min-h-6"/>
+                Check your Concordia email for your code.
+            </div>
+        </div>
         <VerificationPrompt/>
     {:else }
         <div use:tabs.list class='m-4 flex space-x-1 rounded-xl bg-slate-200 p-1 dark:bg-neutral-700/20'>
@@ -149,7 +155,7 @@
                 {:else }
                     {#if $userReviews.length}
                         {#each $userReviews.sort((a, b) => a.timestamp - b.timestamp) as review, i (i)}
-                            <div class='flex'>
+                            <div class='flex mt-10'>
                                 <a href={`/course/${courseIdToUrlParam(review.courseId)}`}
                                    class='text-xl font-bold text-gray-700 duration-200 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-500'>
                                     {spliceCourseCode(review.courseId, ' ')}
@@ -167,8 +173,7 @@
                         <div class='flex w-full items-center justify-center gap-x-2'>
                             <FileText class='stroke-[1.25] text-gray-400 dark:text-gray-600' size={40}/>
                             <div class='text-center text-sm text-gray-600 dark:text-gray-500'>
-                                No reviews found, if you've taken a course in the past,
-                                don't be shy to leave a review!
+                                No reviews in sight! <a href="/explore" class="underline text-blue-400 font-semibold">Find a course</a> and leave your feedback.
                             </div>
                         </div>
                     {/if}

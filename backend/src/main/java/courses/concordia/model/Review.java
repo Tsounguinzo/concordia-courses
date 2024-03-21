@@ -21,7 +21,7 @@ public class Review {
     private String content;
     private String courseId;
     private String instructor;
-    private int rating; // 0-5
+    private int experience; // 0-5
     private int difficulty;// 0-5
     private Date timestamp;
     private String userId;

@@ -59,15 +59,15 @@
 </script>
 
 <div class='z-50 text-right'>
-    <div class='relative inline-block text-left'>
+    <div class='relative inline-block text-left rounded-2xl hover:bg-gray-50 dark:hover:bg-neutral-700'>
         <button use:menu.button
                 class='m-2 inline-flex justify-center text-sm font-medium text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white'>
             <div class='relative'>
-                <Bell class='-mr-1 ml-2 h-5 w-5 text-neutral-500 dark:text-gray-400'
+                <Bell class='h-5 w-5 text-neutral-500 dark:text-gray-400'
                       aria-hidden='true'
                 />
                 {#if $notifications.filter((notification) => !notification.seen).length !== 0}
-                    <div class='absolute right-[-3px] top-[1px] h-2 w-2 rounded-full bg-red-600'/>
+                    <div class='absolute right-[3px] top-[1px] h-2 w-2 rounded-full bg-red-600'/>
                 {/if}
             </div>
         </button>

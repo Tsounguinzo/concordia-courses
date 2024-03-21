@@ -82,8 +82,9 @@ public class CCException {
             return new EntityNotFoundException(format(messageTemplate, args));
         } else if (ExceptionType.DUPLICATE_ENTITY.equals(exceptionType)) {
             return new DuplicateEntityException(format(messageTemplate, args));
+        } else {
+            return new CustomEntityException(format(messageTemplate, args));
         }
-        return new CustomEntityException(format(messageTemplate, args));
     }
 
     private static String getMessageTemplate(EntityType entityType, ExceptionType exceptionType) {

@@ -13,8 +13,8 @@
     const sortTypes = [
         'Most Recent',
         'Least Recent',
-        'Highest Rating',
-        'Lowest Rating',
+        'Best Experience',
+        'Worst Experience',
         'Hardest',
         'Easiest',
         'Most Liked',

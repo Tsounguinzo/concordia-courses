@@ -37,7 +37,7 @@ public class ReviewServiceImpl implements ReviewService {
         Review updatedReview = review;
         if (existingReviews.isEmpty()) {
             updatedReview = reviewRepository.save(review);
-            updateCourseRatings(review.getCourseId());
+            updateCourseExperience(review.getCourseId());
         }
         return ReviewMapper.toDto(updatedReview);
     }
@@ -45,14 +45,14 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public ReviewDto updateReview(Review review) {
         Review updatedReview = reviewRepository.save(review);
-        updateCourseRatings(review.getCourseId());
+        updateCourseExperience(review.getCourseId());
         return ReviewMapper.toDto(updatedReview);
     }
 
     @Override
     public void deleteReview(String courseId, String userId) {
         reviewRepository.deleteByCourseIdAndUserId(courseId, userId);
-        updateCourseRatings(courseId);
+        updateCourseExperience(courseId);
     }
 
     @Override
@@ -77,14 +77,14 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewRepository.findAllByInstructor(instructorName);
     }
 
-    private void updateCourseRatings(String courseId) {
+    private void updateCourseExperience(String courseId) {
         List<Review> reviews = reviewRepository.findAllByCourseId(courseId);
-        double avgRating = reviews.stream().mapToInt(Review::getRating).average().orElse(0.0);
+        double avgExperience = reviews.stream().mapToInt(Review::getExperience).average().orElse(0.0);
         double avgDifficulty = reviews.stream().mapToInt(Review::getDifficulty).average().orElse(0.0);
         int reviewsCount = reviews.size();
         Course course = courseRepository.findById(courseId).orElse(null);
         if (course != null) {
-            course.setAvgRating(avgRating);
+            course.setAvgExperience(avgExperience);
             course.setAvgDifficulty(avgDifficulty);
             course.setReviewCount(reviewsCount);
             courseRepository.save(course);

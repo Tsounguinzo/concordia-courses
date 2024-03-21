@@ -18,16 +18,13 @@
 
     const loadingStates = [
         {
-            text: 'Crafting your account'
+            text: 'Give reviews for that f***** course'
         },
         {
-            text: 'We love study hub'
+            text: 'Subscribe to courses to get notified'
         },
         {
-            text: 'Join the coolest study groups around'
-        },
-        {
-            text: 'like or dislike a review'
+            text: 'Get notified when new reviews are added'
         },
         {
             text: 'Hang tight! Brewing some final magic'
@@ -76,8 +73,8 @@
         }
     };
 
-    const keys = ['SingIn', 'SingUp'];
-    const tabs = createTabs({selected: 'SingIn'})
+    const keys = ['SingUp', 'SingIn'];
+    const tabs = createTabs({selected: 'SingUp'})
 </script>
 <Seo title="StudyHub | Login" description="Login to concordia.courses"/>
 <MultiStepLoader {loadingStates} {loading} duration={1000}/>

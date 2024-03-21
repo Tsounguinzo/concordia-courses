@@ -153,10 +153,10 @@
                     return bTime - aTime
                 case 'Least Recent':
                     return aTime - bTime
-                case 'Highest Rating':
-                    return b.rating - a.rating;
-                case 'Lowest Rating':
-                    return a.rating - b.rating;
+                case 'Best Experience':
+                    return b.experience - a.experience;
+                case 'Worst Experience':
+                    return a.experience - b.experience;
                 case 'Hardest':
                     return b.difficulty - a.difficulty;
                 case 'Easiest':
@@ -186,6 +186,9 @@
         <div class='py-2.5'/>
         <div class='hidden gap-x-6 lg:grid lg:grid-cols-5'>
             <div class='col-span-3'>
+                <h2 class='text-center mb-2 text-xl font-bold leading-none text-gray-700 dark:text-gray-200'>
+                    Course Schedule
+                </h2>
                 <SchedulesDisplay
                         course={$course}
                         className={canReview ? 'mb-4' : ''}
@@ -251,6 +254,9 @@
             <div class='mb-4 flex'>
                 <CourseRequirements {course}/>
             </div>
+            <h2 class='text-center mb-2 text-xl font-bold leading-none text-gray-700 dark:text-gray-200'>
+                Course Schedule
+            </h2>
             <SchedulesDisplay course={$course}/>
             <div class='mt-4 flex w-full flex-row justify-between'>
                 <div class='w-full'>

@@ -138,8 +138,8 @@ public class CourseServiceImpl implements CourseService {
                 case Difficulty:
                     query.with(Sort.by(sort.isReverse() ? Sort.Direction.DESC : Sort.Direction.ASC, "avgDifficulty"));
                     break;
-                case Rating:
-                    query.with(Sort.by(sort.isReverse() ? Sort.Direction.DESC : Sort.Direction.ASC, "avgRating"));
+                case Experience:
+                    query.with(Sort.by(sort.isReverse() ? Sort.Direction.DESC : Sort.Direction.ASC, "avgExperience"));
                     break;
                 case ReviewCount:
                     query.with(Sort.by(sort.isReverse() ? Sort.Direction.DESC : Sort.Direction.ASC, "reviewCount"));

@@ -1,6 +1,6 @@
 <script lang="ts">
-    import {Flame, UserRound} from "lucide-svelte";
-    export let icon: 'flame' | 'user';
+    import {Flame, Star} from "lucide-svelte";
+    export let icon: 'flame' | 'star';
     export let name: string;
     export let rating: number;
     export let setFieldValue: (name: string, value: any) => void;
@@ -18,7 +18,7 @@
         {#if icon === 'flame' }
             <Flame class="transition-colors duration-75 {i <= hoveredIndex || i < rating ? 'fill-blue-600' : 'fill-gray-200'}" size={22} strokeWidth={0} id={`${name}-star-${i}`}/>
         {:else }
-            <UserRound class="transition-colors duration-75 {i <= hoveredIndex || i < rating ? 'fill-blue-600' : 'fill-gray-200'}" size={22} strokeWidth={0} id={`${name}-star-${i}`}/>
+            <Star class="transition-colors duration-75 {i <= hoveredIndex || i < rating ? 'fill-blue-600' : 'fill-gray-200'}" size={22} strokeWidth={0} id={`${name}-star-${i}`}/>
         {/if}
             </button>
     {/each}

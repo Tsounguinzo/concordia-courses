@@ -28,8 +28,8 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
     }
     @ExceptionHandler(CCException.CustomEntityException.class)
     public final ResponseEntity handleNotFountExceptions2(Exception ex, WebRequest request) {
-        Response response = Response.unauthorized();
+        Response response = Response.exception();
         response.addErrorMsgToResponse(ex.getMessage(), ex);
-        return new ResponseEntity(response, HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity(response, HttpStatus.NOT_ACCEPTABLE);
     }
 }

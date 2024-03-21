@@ -25,7 +25,7 @@ public class CourseDto {
     @ToString.Exclude @EqualsAndHashCode.Exclude
     private double avgDifficulty = 0.0f;
     @ToString.Exclude @EqualsAndHashCode.Exclude
-    private double avgRating = 0.0f;
+    private double avgExperience = 0.0f;
     @ToString.Exclude @EqualsAndHashCode.Exclude
     private int reviewCount = 0;
     private List<ScheduleDto> schedules;

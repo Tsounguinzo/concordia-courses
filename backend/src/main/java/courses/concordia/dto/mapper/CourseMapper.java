@@ -19,7 +19,7 @@ public class CourseMapper {
         dto.setCatalog(course.getCatalog());
         dto.setTitle(course.getTitle());
         dto.setAvgDifficulty(course.getAvgDifficulty());
-        dto.setAvgRating(course.getAvgRating());
+        dto.setAvgExperience(course.getAvgExperience());
         dto.setReviewCount(course.getReviewCount());
         dto.setSchedules(course.getSchedules().stream().map(CourseMapper::toScheduleDto).collect(Collectors.toList()));
         return dto;

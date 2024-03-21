@@ -4,8 +4,9 @@ import courses.concordia.model.Token;
 import courses.concordia.model.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface TokenRepository extends MongoRepository<Token, Long> {
-    Token findByToken(String token);
+import java.util.Optional;
 
-    Token findByUser(User user);
+public interface TokenRepository extends MongoRepository<Token, Long> {
+    Optional<Token> findByToken(String token);
+    Optional<Token> findByUser(User user);
 }

@@ -22,14 +22,14 @@
         switch (sort) {
             case '':
                 return null;
-            case 'Highest Rating':
+            case 'Best Experience':
                 return {
-                    sortType: 'rating',
+                    sortType: 'experience',
                     reverse: true,
                 };
-            case 'Lowest Rating':
+            case 'Worst Experience':
                 return {
-                    sortType: 'rating',
+                    sortType: 'experience',
                     reverse: false,
                 };
             case 'Hardest':

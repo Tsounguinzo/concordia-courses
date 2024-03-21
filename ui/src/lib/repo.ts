@@ -113,7 +113,7 @@ export const repo = {
           content: values.content,
           courseId: review.courseId,
           instructor: values.instructor,
-          rating: values.rating,
+        experience: values.experience,
           difficulty: values.difficulty,
           timestamp: new Date(),
           userId: review.userId,
@@ -257,6 +257,10 @@ export const repo = {
 
   async signOut(): Promise<Response> {
     return client.get('/auth/signout');
+  },
+
+  async getNewToken(): Promise<Response> {
+    return client.get('/auth/resend_token');
   },
 
   async verifyToken(token: string): Promise<Response> {

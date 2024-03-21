@@ -27,8 +27,8 @@
 
     const lg = useMediaQuery('(min-width: 1024px)');
 
-    $: ratings = allReviews.map((r) => r.rating);
-    $: averageRating = _.sum(ratings) / allReviews.length;
+    $: experience = allReviews.map((r) => r.experience);
+    $: averageExperience = _.sum(experience) / allReviews.length;
     $: difficulties = allReviews.map((r) => r.difficulty);
     $: averageDifficulty = _.sum(difficulties) / allReviews.length;
 
@@ -44,16 +44,16 @@
         >
             <div class='md:rounded-xl md:p-2'>
                 <Stat
-                        title='Rating'
-                        value={round2Decimals(averageRating)}
-                        icon='user'
+                        title='Experience'
+                        value={round2Decimals(averageExperience)}
+                        icon='star'
                         variant={variant}
                 />
                 <div class='py-2'/>
                 <Histogram
                         width={180}
                         height={lg ? 132 : 80}
-                        data={ratings}
+                        data={experience}
                         max={5}
                         gap={10}
                         className='mx-auto hidden sm:block'
