@@ -7,8 +7,8 @@ export type CourseData = Pick<
 
 export const sortByOptions = [
         '',
-        'Highest Rating',
-        'Lowest Rating',
+        'Best Experience',
+        'Worst Experience',
         'Easiest',
         'Hardest',
         'Most Reviews',

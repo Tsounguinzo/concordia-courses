@@ -153,10 +153,10 @@
                     return bTime - aTime
                 case 'Least Recent':
                     return aTime - bTime
-                case 'Highest Rating':
-                    return b.rating - a.rating;
-                case 'Lowest Rating':
-                    return a.rating - b.rating;
+                case 'Best Experience':
+                    return b.experience - a.experience;
+                case 'Worst Experience':
+                    return a.experience - b.experience;
                 case 'Hardest':
                     return b.difficulty - a.difficulty;
                 case 'Easiest':

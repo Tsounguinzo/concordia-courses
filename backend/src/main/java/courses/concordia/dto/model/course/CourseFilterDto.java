@@ -33,7 +33,7 @@ public class CourseFilterDto {
     @AllArgsConstructor
     public enum CourseSortType {
         Difficulty("difficulty"),
-        Rating("rating"),
+        Experience("experience"),
         ReviewCount("reviewCount");
         private final String value;
         @JsonValue

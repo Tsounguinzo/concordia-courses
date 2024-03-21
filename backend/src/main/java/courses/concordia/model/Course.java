@@ -24,7 +24,7 @@ public class Course {
     @ToString.Exclude @EqualsAndHashCode.Exclude
     private double avgDifficulty = 0.0;
     @ToString.Exclude @EqualsAndHashCode.Exclude
-    private double avgRating = 0.0;
+    private double avgExperience = 0.0;
     @ToString.Exclude @EqualsAndHashCode.Exclude
     private int reviewCount = 0;
     private List<Schedule> schedules;

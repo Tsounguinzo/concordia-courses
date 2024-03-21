@@ -26,15 +26,15 @@
 </div>
 <div class='flex gap-x-10'>
     <div class='flex flex-col gap-y-1'>
-        <FieldLabel For='rating'>Rating</FieldLabel>
+        <FieldLabel For='experience'>Experience</FieldLabel>
         <IconRatingInput
                 {setFieldValue}
                 on:blur={props.handleBlur}
-                rating={props.values.rating}
-                name='rating'
-                icon='user'
+                rating={props.values.experience}
+                name='experience'
+                icon='star'
         />
-        <FieldError name='rating'/>
+        <FieldError name='experience'/>
     </div>
     <div class='flex flex-col gap-y-0.5'>
         <FieldLabel For='difficulty'>Difficulty</FieldLabel>

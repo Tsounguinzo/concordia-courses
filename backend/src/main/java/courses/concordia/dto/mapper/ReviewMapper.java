@@ -9,7 +9,7 @@ public class ReviewMapper {
         dto.set_id(review.get_id());
         dto.setContent(review.getContent());
         dto.setDifficulty(review.getDifficulty());
-        dto.setRating(review.getRating());
+        dto.setExperience(review.getExperience());
         dto.setLikes(review.getLikes());
         dto.setInstructor(review.getInstructor());
         dto.setTimestamp(review.getTimestamp());

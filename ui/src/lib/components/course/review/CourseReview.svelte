@@ -55,9 +55,9 @@
                     <div class='flex w-64 flex-col items-end rounded-lg p-2'>
                         <div class='flex items-center gap-x-2'>
                             <div class='text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
-                                Rating
+                                Experience
                             </div>
-                            <IconRating rating={review.rating} icon="user"/>
+                            <IconRating rating={review.experience} icon="star"/>
                         </div>
                         <div class='flex items-center gap-x-2'>
                             <div class='text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>

@@ -113,7 +113,7 @@ export const repo = {
           content: values.content,
           courseId: review.courseId,
           instructor: values.instructor,
-          rating: values.rating,
+        experience: values.experience,
           difficulty: values.difficulty,
           timestamp: new Date(),
           userId: review.userId,
