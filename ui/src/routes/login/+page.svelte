@@ -73,8 +73,8 @@
         }
     };
 
-    const keys = ['SingIn', 'SingUp'];
-    const tabs = createTabs({selected: 'SingIn'})
+    const keys = ['SingUp', 'SingIn'];
+    const tabs = createTabs({selected: 'SingUp'})
 </script>
 <Seo title="StudyHub | Login" description="Login to concordia.courses"/>
 <MultiStepLoader {loadingStates} {loading} duration={1000}/>

@@ -59,7 +59,7 @@
                 <Check/>
             </button>
         </div>
-        <button type="button" on:click={handleSendNewToken} class="text-gray-600 dark:text-gray-400 text-sm sm:text-base underline">Resend
+        <button type="button" on:click={handleSendNewToken} class="text-gray-600 dark:text-gray-400 text-sm sm:text-base underline dark:hover:text-blue-400 hover:text-blue-600">Resend
             verification code
         </button>
     </div>
