@@ -6,5 +6,6 @@ public enum EntityType {
     INTERACTION,
     NOTIFICATION,
     REVIEW,
-    SUBSCRIPTION
+    SUBSCRIPTION,
+    TOKEN
 }

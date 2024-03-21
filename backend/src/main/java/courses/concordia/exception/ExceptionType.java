@@ -3,7 +3,7 @@ package courses.concordia.exception;
 public enum ExceptionType {
     ENTITY_NOT_FOUND("not.found"),
     DUPLICATE_ENTITY("duplicate"),
-    ENTITY_EXCEPTION("exception");
+    CUSTOM_EXCEPTION("custom");
 
     String value;
 

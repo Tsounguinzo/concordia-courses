@@ -85,7 +85,7 @@ public class AuthorizationController {
     }
 
     @PostMapping("/signup")
-    public Response<?> signUp(@Valid @RequestBody SignupRequest signupRequest) {
+    public Response<?> signUp(@Valid @RequestBody SignupRequest signupRequest, HttpServletResponse response) {
 
         if (!userService.checkIfUserExist(signupRequest.getUsername())) {
             if(!signupRequest.getEmail().endsWith("concordia.ca")){
@@ -98,14 +98,23 @@ public class AuthorizationController {
                 signupRequest.getPassword(),
                 false
         );
-        userService.signup(userDto);
+        AuthenticationResponse res = userService.signup(userDto);
+
+        int cookieExpiry = 1800;
+        ResponseCookie cookie = ResponseCookie.from(tokenName, res.getToken())
+                .httpOnly(true)
+                .secure(false)
+                .path("/")
+                .maxAge(cookieExpiry)
+                .build();
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
         return Response.ok().setPayload("Almost there! Just need to verify your email to make sure it's really you.");
     }
 
     @PostMapping("/authorized")
     public Response<?> confirmUserAccount(@Valid @RequestBody AuthenticationRequest authenticationRequest) {
         String token = authenticationRequest.getToken();
-        Token t = tokenRepository.findByToken(token);
+        Token t = tokenRepository.findByToken(token).orElse(null);
 
         if(t == null) {
             return Response.validationException().setPayload("Oops! Wrong token. Let's retry with the correct one.");
