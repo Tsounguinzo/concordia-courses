@@ -2,12 +2,14 @@ package courses.concordia.security;
 
 import courses.concordia.config.JwtConfigProperties;
 import courses.concordia.service.JwtService;
+import courses.concordia.service.TokenBlacklistService;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,8 +25,10 @@ import static courses.concordia.util.Misc.getTokenFromCookie;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
+    private final TokenBlacklistService tokenBlacklistService;
     private final UserDetailsService userDetailsService;
     private final JwtConfigProperties jwtConfigProperties;
 
@@ -35,7 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             final String jwtToken = getTokenFromCookie(request, jwtConfigProperties.getTokenName());
 
-            if (jwtToken != null && !jwtService.isTokenInvalidated(jwtToken)) {
+            if (jwtToken != null && !tokenBlacklistService.isTokenBlacklisted(jwtToken)) {
                 String username = jwtService.extractUsername(jwtToken);
 
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -49,8 +53,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     }
                 }
             }
+        } catch (ExpiredJwtException eje) {
+            log.warn("Expired JWT token: " + eje.getMessage());
+            return;
         } catch (Exception ex) {
-            System.out.println("ERROR" + ex);
+            log.error("JWT processing error: " + ex.getMessage());
         }
 
         filterChain.doFilter(request, response);

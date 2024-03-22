@@ -14,22 +14,22 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(CCException.EntityNotFoundException.class)
-    public final ResponseEntity handleNotFountExceptions(Exception ex, WebRequest request) {
-        Response response = Response.notFound();
+    public final ResponseEntity<?> handleNotFountExceptions(Exception ex, WebRequest request) {
+        Response<?> response = Response.notFound();
         response.addErrorMsgToResponse(ex.getMessage(), ex);
-        return new ResponseEntity(response, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(CCException.DuplicateEntityException.class)
-    public final ResponseEntity handleNotFountExceptions1(Exception ex, WebRequest request) {
-        Response response = Response.duplicateEntity();
+    public final ResponseEntity<?> handleNotFountExceptions1(Exception ex, WebRequest request) {
+        Response<?> response = Response.duplicateEntity();
         response.addErrorMsgToResponse(ex.getMessage(), ex);
-        return new ResponseEntity(response, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
     @ExceptionHandler(CCException.CustomEntityException.class)
-    public final ResponseEntity handleNotFountExceptions2(Exception ex, WebRequest request) {
-        Response response = Response.exception();
+    public final ResponseEntity<?> handleNotFountExceptions2(Exception ex, WebRequest request) {
+        Response<?> response = Response.exception();
         response.addErrorMsgToResponse(ex.getMessage(), ex);
-        return new ResponseEntity(response, HttpStatus.NOT_ACCEPTABLE);
+        return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
     }
 }

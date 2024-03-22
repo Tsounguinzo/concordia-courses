@@ -154,12 +154,6 @@ public class UserServiceImpl implements UserService {
         return UserMapper.toDto(user);
     }
 
-    // TODO: implement this method
-    /*public Boolean logoutUser(String username){
-
-    }*/
-
-
     private RuntimeException exception(EntityType entityType, ExceptionType exceptionType, String... args) {
         return CCException.throwException(entityType, exceptionType, args);
     }

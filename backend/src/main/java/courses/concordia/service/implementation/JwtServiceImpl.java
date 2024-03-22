@@ -1,15 +1,14 @@
 package courses.concordia.service.implementation;
 
 import courses.concordia.config.JwtConfigProperties;
+import courses.concordia.exception.CCException;
+import courses.concordia.exception.EntityType;
+import courses.concordia.exception.ExceptionType;
 import courses.concordia.service.JwtService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.RedisTemplate;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -17,18 +16,25 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
+import static courses.concordia.exception.EntityType.TOKEN;
+import static courses.concordia.exception.ExceptionType.CUSTOM_EXCEPTION;
+
 @Service
-@RequiredArgsConstructor
+@Slf4j
 public class JwtServiceImpl implements JwtService {
-    private final RedisTemplate<String, String> redisTemplate;
     private final JwtConfigProperties jwtConfigProperties;
+    private final Key signInKey;
+
+    public JwtServiceImpl(JwtConfigProperties jwtConfigProperties) {
+        this.jwtConfigProperties = jwtConfigProperties;
+        this.signInKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtConfigProperties.getSecret()));
+    }
 
     @Override
-    public String extractUsername(String jwtoken) {
-        return extractClaim(jwtoken, Claims::getSubject);
+    public String extractUsername(String token) {
+        return extractClaim(token, Claims::getSubject);
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
@@ -41,16 +47,19 @@ public class JwtServiceImpl implements JwtService {
     }
 
     public String generateToken(
-            Map<String, Object> extraClaims,
+            Map<String, Object> claims,
             UserDetails userDetails
     ) {
-        return Jwts
-                .builder()
-                .setClaims(extraClaims)
+        long expirationTimeLong = jwtConfigProperties.getExp() * 1000; // Convert seconds to milliseconds
+        final Date createdDate = new Date();
+        final Date expirationDate = new Date(createdDate.getTime() + expirationTimeLong);
+
+        return Jwts.builder()
+                .setClaims(claims)
                 .setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + jwtConfigProperties.getExp()))
-                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .setIssuedAt(createdDate)
+                .setExpiration(expirationDate)
+                .signWith(signInKey, SignatureAlgorithm.HS256)
                 .compact();
     }
 
@@ -60,37 +69,30 @@ public class JwtServiceImpl implements JwtService {
                 !isTokenExpired(token);
     }
 
+    public Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
+    }
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
-    private Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
+    private Claims extractAllClaims(String token) throws JwtException{
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(signInKey)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (ExpiredJwtException e) {
+            log.info("Token expired: {}", e.getMessage());
+            throw exception(TOKEN, CUSTOM_EXCEPTION, "Token expired");
+        } catch (JwtException e) {
+            log.error("Could not parse token: {}", e.getMessage());
+            throw exception(TOKEN, CUSTOM_EXCEPTION, "Token expired");
+        }
     }
 
-    private Claims extractAllClaims(String token) {
-        return Jwts
-                .parserBuilder()
-                .setSigningKey(getSignInKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-    }
-
-    private Key getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(jwtConfigProperties.getSecret());
-        return Keys.hmacShaKeyFor(keyBytes);
-    }
-
-
-    public void invalidateJWToken(String token) {
-        String key = "invalid_token:" + token;
-        redisTemplate.opsForValue().set(key, "invalid", jwtConfigProperties.getExp(), TimeUnit.SECONDS);
-    }
-
-    public boolean isTokenInvalidated(String token) {
-        if (token == null) return false;
-        Boolean exists = redisTemplate.hasKey("invalid_token:" + token);
-        return Boolean.TRUE.equals(exists);
+    private RuntimeException exception(EntityType entityType, ExceptionType exceptionType, String... args) {
+        return CCException.throwException(entityType, exceptionType, args);
     }
 }

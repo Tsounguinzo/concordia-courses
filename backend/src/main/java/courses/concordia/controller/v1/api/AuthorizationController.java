@@ -10,6 +10,9 @@ import courses.concordia.dto.response.AuthenticationResponse;
 import courses.concordia.dto.response.Response;
 import courses.concordia.model.Token;
 import courses.concordia.repository.TokenRepository;
+import courses.concordia.service.JwtService;
+import courses.concordia.service.TokenBlacklistService;
+import courses.concordia.service.UserService;
 import courses.concordia.service.implementation.JwtServiceImpl;
 import courses.concordia.service.implementation.UserServiceImpl;
 import jakarta.servlet.http.Cookie;
@@ -21,22 +24,25 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 import static courses.concordia.util.Misc.getTokenFromCookie;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
 public class AuthorizationController {
-    private final UserServiceImpl userService;
-    private final JwtServiceImpl jwtService;
+    private final UserService userService;
+    private final JwtService jwtService;
     private final TokenRepository tokenRepository;
+    private final TokenBlacklistService tokenBlacklistService;
     private final JwtConfigProperties jwtConfigProperties;
 
     @GetMapping("/user")
     public Response<?> getUser(HttpServletRequest request) {
         String token = getTokenFromCookie(request, jwtConfigProperties.getTokenName());
         if (token == null) {
-            return Response.unauthorized();
+            return Response.unauthorized().setPayload("Authentication required");
         }
 
         String username = jwtService.extractUsername(token);
@@ -48,13 +54,11 @@ public class AuthorizationController {
     @PostMapping("/signin")
     public Response<?> signIn(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
         AuthenticationResponse res = userService.authenticate(loginRequest);
-        // set accessToken to cookie header
-        int cookieExpiry = 1800;
         ResponseCookie cookie = ResponseCookie.from(jwtConfigProperties.getTokenName(), res.getToken())
                 .httpOnly(true)
                 .secure(false)
                 .path("/")
-                .maxAge(cookieExpiry)
+                .maxAge(jwtConfigProperties.getExp())
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
         return Response.ok().setPayload("Boom! You're in");
@@ -68,7 +72,11 @@ public class AuthorizationController {
             return Response.unauthorized().setPayload("No token found.");
         }
 
-        jwtService.invalidateJWToken(token);
+        Date expiration = jwtService.extractExpiration(token);
+        long durationInSeconds = (expiration.getTime() - System.currentTimeMillis()) / 1000;
+        if (durationInSeconds > 0) {
+            tokenBlacklistService.blacklistToken(token, durationInSeconds);
+        }
         clearTokenCookie(response);
 
         return Response.ok().setPayload("And you're out! Come back soon!");
@@ -90,12 +98,11 @@ public class AuthorizationController {
         );
         AuthenticationResponse res = userService.signup(userDto);
 
-        int cookieExpiry = 1800;
         ResponseCookie cookie = ResponseCookie.from(jwtConfigProperties.getTokenName(), res.getToken())
                 .httpOnly(true)
                 .secure(false)
                 .path("/")
-                .maxAge(cookieExpiry)
+                .maxAge(jwtConfigProperties.getExp())
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
         return Response.ok().setPayload("Almost there! Just need to verify your email to make sure it's really you.");

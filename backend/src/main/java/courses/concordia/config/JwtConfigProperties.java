@@ -12,5 +12,5 @@ import org.springframework.stereotype.Component;
 public class JwtConfigProperties {
     private String tokenName;
     private String secret;
-    private int exp;
+    private long exp;
 }
