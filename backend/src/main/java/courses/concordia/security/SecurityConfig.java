@@ -26,8 +26,8 @@ public class SecurityConfig{
         return http
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/api/v1/courses/**").permitAll() // Allow unauthenticated access
-                        .requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
+                        .requestMatchers("/api/v1/auth/user").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/auth/signin", "/api/v1/auth/signup").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

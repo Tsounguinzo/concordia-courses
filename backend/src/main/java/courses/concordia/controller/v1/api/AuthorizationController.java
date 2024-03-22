@@ -13,8 +13,6 @@ import courses.concordia.repository.TokenRepository;
 import courses.concordia.service.JwtService;
 import courses.concordia.service.TokenBlacklistService;
 import courses.concordia.service.UserService;
-import courses.concordia.service.implementation.JwtServiceImpl;
-import courses.concordia.service.implementation.UserServiceImpl;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -41,8 +39,8 @@ public class AuthorizationController {
     @GetMapping("/user")
     public Response<?> getUser(HttpServletRequest request) {
         String token = getTokenFromCookie(request, jwtConfigProperties.getTokenName());
-        if (token == null) {
-            return Response.unauthorized().setPayload("Authentication required");
+        if (token == null || tokenBlacklistService.isTokenBlacklisted(token)) {
+            return Response.unauthorized();
         }
 
         String username = jwtService.extractUsername(token);
@@ -54,13 +52,7 @@ public class AuthorizationController {
     @PostMapping("/signin")
     public Response<?> signIn(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
         AuthenticationResponse res = userService.authenticate(loginRequest);
-        ResponseCookie cookie = ResponseCookie.from(jwtConfigProperties.getTokenName(), res.getToken())
-                .httpOnly(true)
-                .secure(false)
-                .path("/")
-                .maxAge(jwtConfigProperties.getExp())
-                .build();
-        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+        addTokenCookie(response, res.getToken());
         return Response.ok().setPayload("Boom! You're in");
     }
 
@@ -68,8 +60,8 @@ public class AuthorizationController {
     public Response<?> signOut(HttpServletRequest request, HttpServletResponse response) {
         String token = getTokenFromCookie(request, jwtConfigProperties.getTokenName());
 
-        if (token == null) {
-            return Response.unauthorized().setPayload("No token found.");
+        if (token == null || tokenBlacklistService.isTokenBlacklisted(token)) {
+            return Response.unauthorized();
         }
 
         Date expiration = jwtService.extractExpiration(token);
@@ -98,13 +90,8 @@ public class AuthorizationController {
         );
         AuthenticationResponse res = userService.signup(userDto);
 
-        ResponseCookie cookie = ResponseCookie.from(jwtConfigProperties.getTokenName(), res.getToken())
-                .httpOnly(true)
-                .secure(false)
-                .path("/")
-                .maxAge(jwtConfigProperties.getExp())
-                .build();
-        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+        addTokenCookie(response, res.getToken());
+
         return Response.ok().setPayload("Almost there! Just need to verify your email to make sure it's really you.");
     }
 
@@ -146,6 +133,16 @@ public class AuthorizationController {
         cookie.setHttpOnly(true);
         cookie.setMaxAge(0); // Expire the cookie immediately
         response.addCookie(cookie);
+    }
+
+    private void addTokenCookie(HttpServletResponse response, String token) {
+        ResponseCookie cookie = ResponseCookie.from(jwtConfigProperties.getTokenName(), token)
+                .httpOnly(true)
+                .secure(false)
+                .path("/")
+                .maxAge(jwtConfigProperties.getExp())
+                .build();
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
     }
 }
 

@@ -1,9 +1,6 @@
 package courses.concordia.service.implementation;
 
 import courses.concordia.config.JwtConfigProperties;
-import courses.concordia.exception.CCException;
-import courses.concordia.exception.EntityType;
-import courses.concordia.exception.ExceptionType;
 import courses.concordia.service.JwtService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -17,9 +14,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
-
-import static courses.concordia.exception.EntityType.TOKEN;
-import static courses.concordia.exception.ExceptionType.CUSTOM_EXCEPTION;
 
 @Service
 @Slf4j
@@ -85,14 +79,10 @@ public class JwtServiceImpl implements JwtService {
                     .getBody();
         } catch (ExpiredJwtException e) {
             log.info("Token expired: {}", e.getMessage());
-            throw exception(TOKEN, CUSTOM_EXCEPTION, "Token expired");
+            throw e;
         } catch (JwtException e) {
             log.error("Could not parse token: {}", e.getMessage());
-            throw exception(TOKEN, CUSTOM_EXCEPTION, "Token expired");
+            throw e;
         }
-    }
-
-    private RuntimeException exception(EntityType entityType, ExceptionType exceptionType, String... args) {
-        return CCException.throwException(entityType, exceptionType, args);
     }
 }
