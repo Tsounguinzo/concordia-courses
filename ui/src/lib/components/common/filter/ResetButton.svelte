@@ -5,7 +5,7 @@
 </script>
 
 <div class={twMerge(
-        'flex h-8 w-8 items-center justify-center rounded-full transition duration-200 hover:bg-gray-100 dark:hover:bg-neutral-700',
+        'flex h-8 w-8 items-center justify-center rounded-full bg-slate-200 dark:bg-neutral-700',
         className ?? ''
       )}
 >

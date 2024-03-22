@@ -13,7 +13,7 @@
 
     const selectedColor = selectedClass ?? 'bg-blue-200 text-blue-900';
 
-    const unselectedColor = 'bg-gray-100 dark:bg-neutral-700 text-gray-600 dark:text-gray-300';
+    const unselectedColor = 'bg-gray-200 dark:bg-neutral-700 text-gray-600 dark:text-gray-300';
 </script>
 
 <button class={twMerge(
