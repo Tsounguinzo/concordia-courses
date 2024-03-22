@@ -76,7 +76,7 @@
     const keys = ['SingUp', 'SingIn'];
     const tabs = createTabs({selected: 'SingUp'})
 </script>
-<Seo title="StudyHub | Login" description="Login to concordia.courses"/>
+<Seo title="Login" description="Login to concordia.courses"/>
 <MultiStepLoader {loadingStates} {loading} duration={1000}/>
 <div class='mx-auto max-w-2xl'>
     <div use:tabs.list class='m-4 flex space-x-1 rounded-xl bg-slate-200 p-1 dark:bg-neutral-700/20'>

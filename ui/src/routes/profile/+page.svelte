@@ -69,7 +69,7 @@
     const keys = ['Reviews', 'Subscriptions'];
     const tabs = createTabs({selected: 'Reviews'})
 </script>
-<Seo title="StudyHub | Profile" description="Profile on concordia.courses"/>
+<Seo title="Profile" description="Profile on concordia.courses"/>
 <div class='mx-auto max-w-2xl'>
     <JumpToTopButton/>
     <CardContainer bind:isMouseEntered className="flex w-full flex-row bg-slate-50 p-6 dark:bg-neutral-800 dark:hover:shadow-2xl dark:hover:shadow-blue-800/[0.1] rounded-xl">

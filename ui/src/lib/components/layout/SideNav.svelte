@@ -38,8 +38,8 @@
                             <a href='/'>
                                 <img
                                         class='h-8 w-auto'
-                                        src="/studyhub.png"
-                                        alt='concordia logo'
+                                        src="/logo.png"
+                                        alt='Concordia courses logo'
                                         on:click|preventDefault={() => mobileMenuOpen.set(false)}
                                 />
                             </a>

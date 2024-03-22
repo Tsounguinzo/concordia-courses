@@ -20,7 +20,10 @@
         const promise = repo.verifyToken(value).then(response => response.json());
 
         toast.promise(promise, {
-            success: (message) => message,
+            success: (message) => {
+                location.reload()
+                return message
+            },
             error: 'Oops! Something went wrong. Please try again.',
         });
 
@@ -36,7 +39,14 @@
 
     }
 
+    function handleKeyPress(event) {
+        if (event.key === 'Enter') {
+            handleClick();
+        }
+    }
 </script>
+
+<svelte:window on:keypress={handleKeyPress} />
 
 <div class='m-4 flex max-sm:flex-col gap-y-2 justify-center items-center space-x-1 rounded-xl bg-slate-200 p-5 dark:bg-neutral-700/20'>
     <div class='w-full max-sm:text-center text-md sm:text-lg font-medium text-gray-800 dark:text-gray-200'>
