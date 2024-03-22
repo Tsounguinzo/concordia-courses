@@ -1,5 +1,6 @@
 package courses.concordia.controller.v1.api;
 
+import courses.concordia.config.JwtConfigProperties;
 import courses.concordia.dto.model.course.SubscriptionDto;
 import courses.concordia.dto.model.course.SubscriptionPayloadDto;
 import courses.concordia.dto.response.Response;
@@ -20,14 +21,12 @@ import static courses.concordia.util.Misc.getTokenFromCookie;
 public class SubscriptionController {
     private final SubscriptionService subscriptionService;
     private final JwtServiceImpl jwtService;
-
-    @Value("${app.jwt-name:accessToken}")
-    private String tokenName;
+    private final JwtConfigProperties jwtConfigProperties;
 
     @GetMapping
     public Response<?> getSubscriptions(@RequestParam(name = "courseId", defaultValue = "") String courseId, HttpServletRequest request) {
 
-        String token = getTokenFromCookie(request, tokenName);
+        String token = getTokenFromCookie(request, jwtConfigProperties.getTokenName());
         if (token == null) {
             return Response.unauthorized();
         }
@@ -44,7 +43,7 @@ public class SubscriptionController {
     @PostMapping
     public Response<?> addSubscription(@RequestBody SubscriptionPayloadDto subscriptionPayloadDto, HttpServletRequest request) {
 
-        String token = getTokenFromCookie(request, tokenName);
+        String token = getTokenFromCookie(request, jwtConfigProperties.getTokenName());
         if (token == null) {
             return Response.unauthorized();
         }
@@ -56,7 +55,7 @@ public class SubscriptionController {
     @DeleteMapping
     public Response<?> deleteSubscription(@RequestBody SubscriptionPayloadDto subscriptionPayloadDto, HttpServletRequest request) {
 
-        String token = getTokenFromCookie(request, tokenName);
+        String token = getTokenFromCookie(request, jwtConfigProperties.getTokenName());
         if (token == null) {
             return Response.unauthorized();
         }

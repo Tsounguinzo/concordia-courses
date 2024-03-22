@@ -12,4 +12,6 @@ public interface JwtService {
     String generateToken(UserDetails userDetails);
     String generateToken(Map<String, Object> extraClaims, UserDetails userDetails);
     boolean isTokenValid(String token, UserDetails userDetails);
+    void invalidateJWToken(String token);
+    boolean isTokenInvalidated(String token);
 }

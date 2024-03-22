@@ -1,5 +1,6 @@
 package courses.concordia.controller.v1.api;
 
+import courses.concordia.config.JwtConfigProperties;
 import courses.concordia.dto.model.course.DeleteNotificationDto;
 import courses.concordia.dto.model.course.NotificationDto;
 import courses.concordia.dto.model.course.UpdateNotificationDto;
@@ -21,13 +22,11 @@ import static courses.concordia.util.Misc.getTokenFromCookie;
 public class NotificationController {
     private final NotificationService notificationService;
     private final JwtServiceImpl jwtService;
-
-    @Value("${app.jwt-name:accessToken}")
-    private String tokenName;
+    private final JwtConfigProperties jwtConfigProperties;
     @GetMapping
     public Response<?> getNotifications(HttpServletRequest request) {
 
-        String token = getTokenFromCookie(request, tokenName);
+        String token = getTokenFromCookie(request, jwtConfigProperties.getTokenName());
         if (token == null) {
             return Response.unauthorized();
         }
@@ -41,7 +40,7 @@ public class NotificationController {
     @PutMapping
     public Response<?> updateNotification(@RequestBody UpdateNotificationDto updateNotificationDto, HttpServletRequest request) {
 
-        String token = getTokenFromCookie(request, tokenName);
+        String token = getTokenFromCookie(request, jwtConfigProperties.getTokenName());
         if (token == null) {
             return Response.unauthorized();
         }
@@ -53,7 +52,7 @@ public class NotificationController {
     @DeleteMapping
     public Response<?> deleteNotification(@RequestBody DeleteNotificationDto deleteNotificationDto, HttpServletRequest request) {
 
-        String token = getTokenFromCookie(request, tokenName);
+        String token = getTokenFromCookie(request, jwtConfigProperties.getTokenName());
         if (token == null) {
             return Response.unauthorized();
         }

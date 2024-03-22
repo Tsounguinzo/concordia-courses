@@ -1,5 +1,6 @@
 package courses.concordia.controller.v1.api;
 
+import courses.concordia.config.JwtConfigProperties;
 import courses.concordia.dto.model.course.ReviewDto;
 import courses.concordia.dto.model.course.ReviewPayloadDto;
 import courses.concordia.dto.response.Response;
@@ -25,9 +26,7 @@ public class ReviewController {
     private final InteractionService interactionService;
     private final NotificationService notificationService;
     private final JwtServiceImpl jwtService;
-
-    @Value("${app.jwt-name:accessToken}")
-    private String tokenName;
+    private final JwtConfigProperties jwtConfigProperties;
 
     @GetMapping
     public Response<?> getReviews(@RequestParam String userId) {
@@ -38,7 +37,7 @@ public class ReviewController {
     @PostMapping
     public Response<?> addReview(@RequestBody Review review, HttpServletRequest request) {
 
-        String token = getTokenFromCookie(request, tokenName);
+        String token = getTokenFromCookie(request, jwtConfigProperties.getTokenName());
         if (token == null) {
             return Response.unauthorized();
         }
@@ -52,7 +51,7 @@ public class ReviewController {
     @PutMapping
     public Response<?> updateReview(@RequestBody Review review, HttpServletRequest request) {
 
-        String token = getTokenFromCookie(request, tokenName);
+        String token = getTokenFromCookie(request, jwtConfigProperties.getTokenName());
         if (token == null) {
             return Response.unauthorized();
         }
@@ -66,7 +65,7 @@ public class ReviewController {
     @DeleteMapping
     public Response<?> deleteReview(@RequestBody ReviewPayloadDto reviewPayloadDto, HttpServletRequest request) {
 
-        String token = getTokenFromCookie(request, tokenName);
+        String token = getTokenFromCookie(request, jwtConfigProperties.getTokenName());
         if (token == null) {
             return Response.unauthorized();
         }

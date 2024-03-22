@@ -1,13 +1,14 @@
 package courses.concordia.service.implementation;
 
+import courses.concordia.config.JwtConfigProperties;
 import courses.concordia.service.JwtService;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -16,16 +17,14 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 @Service
+@RequiredArgsConstructor
 public class JwtServiceImpl implements JwtService {
-    @Autowired
-    private RedisTemplate<String, String> redisTemplate;
-
-    private static final String SECRET_KEY = "5CE74751FAF5ED2877C51A93021368E0FD3C954444CF1F7136720388EE100998";
+    private final RedisTemplate<String, String> redisTemplate;
+    private final JwtConfigProperties jwtConfigProperties;
 
     @Override
     public String extractUsername(String jwtoken) {
@@ -50,7 +49,7 @@ public class JwtServiceImpl implements JwtService {
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtConfigProperties.getExp()))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -79,14 +78,14 @@ public class JwtServiceImpl implements JwtService {
     }
 
     private Key getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        byte[] keyBytes = Decoders.BASE64.decode(jwtConfigProperties.getSecret());
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
 
     public void invalidateJWToken(String token) {
         String key = "invalid_token:" + token;
-        redisTemplate.opsForValue().set(key, "invalid", 1, TimeUnit.DAYS);
+        redisTemplate.opsForValue().set(key, "invalid", jwtConfigProperties.getExp(), TimeUnit.SECONDS);
     }
 
     public boolean isTokenInvalidated(String token) {

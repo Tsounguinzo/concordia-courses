@@ -1,5 +1,6 @@
 package courses.concordia.controller.v1.api;
 
+import courses.concordia.config.JwtConfigProperties;
 import courses.concordia.controller.v1.request.AuthenticationRequest;
 import courses.concordia.controller.v1.request.LoginRequest;
 import courses.concordia.controller.v1.request.SignupRequest;
@@ -11,17 +12,14 @@ import courses.concordia.model.Token;
 import courses.concordia.repository.TokenRepository;
 import courses.concordia.service.implementation.JwtServiceImpl;
 import courses.concordia.service.implementation.UserServiceImpl;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
 
 import static courses.concordia.util.Misc.getTokenFromCookie;
 
@@ -32,13 +30,11 @@ public class AuthorizationController {
     private final UserServiceImpl userService;
     private final JwtServiceImpl jwtService;
     private final TokenRepository tokenRepository;
-
-    @Value("${app.jwt-name:accessToken}")
-    private String tokenName;
+    private final JwtConfigProperties jwtConfigProperties;
 
     @GetMapping("/user")
     public Response<?> getUser(HttpServletRequest request) {
-        String token = getTokenFromCookie(request, tokenName);
+        String token = getTokenFromCookie(request, jwtConfigProperties.getTokenName());
         if (token == null) {
             return Response.unauthorized();
         }
@@ -54,7 +50,7 @@ public class AuthorizationController {
         AuthenticationResponse res = userService.authenticate(loginRequest);
         // set accessToken to cookie header
         int cookieExpiry = 1800;
-        ResponseCookie cookie = ResponseCookie.from(tokenName, res.getToken())
+        ResponseCookie cookie = ResponseCookie.from(jwtConfigProperties.getTokenName(), res.getToken())
                 .httpOnly(true)
                 .secure(false)
                 .path("/")
@@ -66,27 +62,14 @@ public class AuthorizationController {
 
     @GetMapping("/signout")
     public Response<?> signOut(HttpServletRequest request, HttpServletResponse response) {
-        String token = getTokenFromCookie(request, tokenName);
+        String token = getTokenFromCookie(request, jwtConfigProperties.getTokenName());
 
         if (token == null) {
-            return Response.unauthorized();
+            return Response.unauthorized().setPayload("No token found.");
         }
-        String username = jwtService.extractUsername(token);
-        //TODO: boolean isLogout = userService.logoutUser(username);
 
         jwtService.invalidateJWToken(token);
-
-        /*//**** to be removed ******
-        int cookieExpiry = 1;
-        ResponseCookie cookie = ResponseCookie.from(tokenName, "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJEYW5pZWwiLCJpYXQiOjE3MTA2MDM1ODgsImV4cCI6MTcxMDY4OTk4OH0.29prLTRokE0SOkzQ3SyOgYJOQYuLEYYJCdURdCYrwaw")
-                .httpOnly(true)
-                .secure(false)
-                .path("/")
-                .maxAge(cookieExpiry)
-                .build();
-        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
-        //**********/
-
+        clearTokenCookie(response);
 
         return Response.ok().setPayload("And you're out! Come back soon!");
     }
@@ -108,7 +91,7 @@ public class AuthorizationController {
         AuthenticationResponse res = userService.signup(userDto);
 
         int cookieExpiry = 1800;
-        ResponseCookie cookie = ResponseCookie.from(tokenName, res.getToken())
+        ResponseCookie cookie = ResponseCookie.from(jwtConfigProperties.getTokenName(), res.getToken())
                 .httpOnly(true)
                 .secure(false)
                 .path("/")
@@ -139,7 +122,7 @@ public class AuthorizationController {
 
     @GetMapping("/resend_token")
     public Response<?> resendVerificationToken(HttpServletRequest request) {
-        String token = getTokenFromCookie(request, tokenName);
+        String token = getTokenFromCookie(request, jwtConfigProperties.getTokenName());
         if (token == null) {
             return Response.unauthorized();
         }
@@ -148,6 +131,14 @@ public class AuthorizationController {
 
         userService.resendToken(username);
         return Response.ok().setPayload("Your new code is in your inbox!");
+    }
+
+    private void clearTokenCookie(HttpServletResponse response) {
+        Cookie cookie = new Cookie(jwtConfigProperties.getTokenName(), null);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(0); // Expire the cookie immediately
+        response.addCookie(cookie);
     }
 }
 
