@@ -50,12 +50,13 @@ public class UserServiceImpl implements UserService {
             throw exception(USER, DUPLICATE_ENTITY, userDto.getUsername());
         });
 
-        User user = new User(userDto.getUsername(),
-                userDto.getEmail(),
-                bCryptPasswordEncoder.encode(userDto.getPassword()),
-                userDto.isVerified());
+        User user = new User()
+                .setUsername(userDto.getUsername())
+                .setEmail(userDto.getEmail())
+                .setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()))
+                .setVerified(userDto.isVerified());
 
-        userRepository.save(user);
+        user = userRepository.save(user);
 
         Token token = createAndSaveNewToken(user);
 
@@ -120,7 +121,7 @@ public class UserServiceImpl implements UserService {
             throw exception(USER, CUSTOM_EXCEPTION, username + " is already verified.");
         }
 
-        Token token = tokenRepository.findByUser(user)
+        Token token = tokenRepository.findByUserId(user.get_id())
                 .filter(t -> !t.isExpired())
                 .orElseGet(() -> createAndSaveNewToken(user));
 
@@ -172,7 +173,9 @@ public class UserServiceImpl implements UserService {
     }
 
     private boolean verifyAndActivateUser(Token token) {
-        User user = token.getUser();
+        String userId = token.getUserId();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> exception(USER, ENTITY_NOT_FOUND));
         if (!user.isVerified()) {
             user.setVerified(true);
             userRepository.save(user);

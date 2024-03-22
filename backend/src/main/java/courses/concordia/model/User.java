@@ -19,6 +19,7 @@ import java.util.List;
 @Document(collection = "users")
 public class User implements UserDetails {
     @MongoId
+    private String _id;
     private String username;
     private String email;
     private String password;

@@ -1,7 +1,8 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost:27017/db
+      uri: ${MONGODB_URI:mongodb://localhost:27017/db}
+      database: db
   profiles:
     active: default
 
@@ -19,7 +20,7 @@ spring:
 
 jwt:
   tokenName: "accessToken"
-  secret: "5CE74751FAF5ED2877C51A93021368E0FD3C954444CF1F7136720388EE100998"
+  secret: ${JWT_SECRET:5CE74751FAF5ED2877C51A93021368E0FD3C954444CF1F7136720388EE100998}
   exp: 86400 # 24 hours
 
 app:

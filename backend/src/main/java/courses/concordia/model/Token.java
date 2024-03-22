@@ -24,18 +24,16 @@ import java.util.Random;
 @Document(collection = "tokens")
 public class Token {
     @MongoId
-    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
-    private User user;
+    private String _id;
+    private String userId;
     private String token;
-
-    @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     private LocalDateTime createTime;
     private LocalDateTime expireTime;
 
 
     public Token(User user){
-        this.user = user;
+        this.userId = user.get_id();
         this.createTime = LocalDateTime.now();
         this.expireTime = createTime.plusMinutes(5);
         this.token = tokenGenerator();
