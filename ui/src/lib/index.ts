@@ -1,7 +1,7 @@
 import {toast} from "svelte-sonner";
 import {repo} from "$lib/repo";
 
-export function observeNotification(node, { updateNotification, notification }) {
+export function observeNotification(node: Element, {updateNotification, notification}: any) {
     const observer = new IntersectionObserver(([entry]) => {
         if (entry.isIntersecting) {
             updateNotification(notification);

@@ -5,7 +5,6 @@
     import type {Writable} from "svelte/store";
     import {writable} from "svelte/store";
     import {createCombobox} from "svelte-headlessui";
-    import _ from "lodash";
 
     export let options: string[];
     export let values: Writable<string[]>;

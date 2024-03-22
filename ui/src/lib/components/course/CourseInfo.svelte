@@ -1,7 +1,6 @@
 <script lang="ts">
     import type {Review} from "$lib/model/Review";
     import type {Course} from "$lib/model/Course";
-    import {writable} from "svelte/store";
     import {repo} from "$lib/repo";
     import {toast} from "svelte-sonner";
     import {Bell, BellOff} from "lucide-svelte";

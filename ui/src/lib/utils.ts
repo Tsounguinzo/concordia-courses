@@ -51,8 +51,6 @@ export const sortSchedulesByBlocks = (schedules: Schedule[]) => {
     });
 };
 
-export const getUrl = (): string => import.meta.env.VITE_API_URL ?? '';
-
 export const courseIdToUrlParam = (courseId: string) =>
     `${courseId.slice(0, 4)}-${courseId.slice(4)}`.toLowerCase();
 
@@ -76,9 +74,11 @@ export function multiplySvgPoints(pointsString: string, iconSize: number, width:
   const iconMaxSize = Math.min(width, height) * 0.5;
   const scale = iconMaxSize / iconSize;
   // eslint-disable-next-line
-  return pointsString.replace(/([0-9,\.]{1,})/g, (coords) => {
+  return pointsString.replace(/([0-9,.]+)/g, (coords: string | number[]) => {
     // eslint-disable-next-line
-    coords = coords.split(',').map((p) => parseFloat(p));
+      if (typeof coords === "string") {
+          coords = coords.split(',').map((p) => parseFloat(p));
+      }
     const x = coords[0] * scale + width / 2 - (iconSize * scale) / 2;
     const y = coords[1] * scale + height / 2 - (iconSize * scale) / 2;
     if (iconMaxSize >= 100) {

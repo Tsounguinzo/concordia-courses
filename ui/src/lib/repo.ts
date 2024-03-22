@@ -5,7 +5,7 @@ import type { InteractionKind } from './model/Interaction';
 import type { Notification } from './model/Notification';
 import type { Review } from './model/Review';
 import type { Subscription } from './model/Subscription';
-import type {User, UserResponse} from './model/User';
+import type {User} from './model/User';
 
 const prefix = '/api/v1';
 

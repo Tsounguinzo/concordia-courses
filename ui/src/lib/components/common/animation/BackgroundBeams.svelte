@@ -1,6 +1,6 @@
 <script lang="ts">
     import { cn } from '$lib/utils';
-    import { M, Motion } from 'svelte-motion';
+    import { Motion } from 'svelte-motion';
     import {darkModeOn} from "$lib/darkmode";
 
     export let className: string | undefined = undefined;
