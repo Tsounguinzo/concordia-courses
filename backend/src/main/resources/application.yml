@@ -5,6 +5,8 @@ spring:
       database: db
   profiles:
     active: default
+  cache:
+    type: redis
 
   mail:
     host: smtp.gmail.com

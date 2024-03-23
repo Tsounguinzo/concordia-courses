@@ -15,6 +15,7 @@ import java.util.List;
 @ToString
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
+@EqualsAndHashCode
 public class CourseFilterDto {
     private List<String> levels;
     private String query;

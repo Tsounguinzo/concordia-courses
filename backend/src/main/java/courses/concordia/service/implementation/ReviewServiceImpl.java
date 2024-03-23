@@ -13,6 +13,7 @@ import courses.concordia.model.Course;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -31,6 +32,7 @@ public class ReviewServiceImpl implements ReviewService {
     private final MongoTemplate mongoTemplate;
     private final ModelMapper modelMapper;
 
+    @CacheEvict(value = "courseReviewsCache", key = "#review.courseId")
     @Override
     public ReviewDto addReview(Review review) {
         List<Review> existingReviews = reviewRepository.findAllByCourseIdAndUserId(review.getCourseId(), review.getUserId());
@@ -42,6 +44,7 @@ public class ReviewServiceImpl implements ReviewService {
         return ReviewMapper.toDto(updatedReview);
     }
 
+    @CacheEvict(value = "courseReviewsCache", key = "#review.courseId")
     @Override
     public ReviewDto updateReview(Review review) {
         Review updatedReview = reviewRepository.save(review);
@@ -49,6 +52,7 @@ public class ReviewServiceImpl implements ReviewService {
         return ReviewMapper.toDto(updatedReview);
     }
 
+    @CacheEvict(value = "courseReviewsCache", key = "#courseId")
     @Override
     public void deleteReview(String courseId, String userId) {
         reviewRepository.deleteByCourseIdAndUserId(courseId, userId);

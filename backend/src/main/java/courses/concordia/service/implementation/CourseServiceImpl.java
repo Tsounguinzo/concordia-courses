@@ -14,6 +14,7 @@ import courses.concordia.service.CourseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.*;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -36,6 +37,7 @@ public class CourseServiceImpl implements CourseService {
     private final MongoTemplate mongoTemplate;
     private final ModelMapper modelMapper;
 
+    @Cacheable(value = "coursesCache")
     @Override
     public List<CourseDto> getCourses() {
         log.info("Retrieving all courses");
@@ -45,6 +47,7 @@ public class CourseServiceImpl implements CourseService {
                 .collect(Collectors.toList());
     }
 
+    @Cacheable(value = "coursesCache", key = "{#limit, #offset, #filters.hashCode()}")
     @Override
     public List<CourseDto> getCoursesWithFilter(int limit, int offset, CourseFilterDto filters) {
         log.info("Retrieving courses with limit {}, offset {}, and filters {}", limit, offset, filters);
@@ -56,6 +59,7 @@ public class CourseServiceImpl implements CourseService {
                 .collect(Collectors.toList());
     }
 
+    @Cacheable(value = "coursesCache", key = "#id")
     @Override
     public CourseDto getCourseById(String id) {
         log.info("Retrieving course with ID {}", id);
@@ -66,6 +70,7 @@ public class CourseServiceImpl implements CourseService {
         throw exception(COURSE, ENTITY_NOT_FOUND, id);
     }
 
+    @Cacheable(value = "courseReviewsCache", key = "#id")
     @Override
     public CourseReviewsDto getCourseAndReviewsById(String id) {
         log.info("Retrieving course and reviews with ID {}", id);
