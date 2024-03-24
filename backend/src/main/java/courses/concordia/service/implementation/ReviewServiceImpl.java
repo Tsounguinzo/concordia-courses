@@ -94,8 +94,4 @@ public class ReviewServiceImpl implements ReviewService {
             courseRepository.save(course);
         }
     }
-
-    private RuntimeException exception(EntityType entityType, ExceptionType exceptionType, String... args) {
-        return CCException.throwException(entityType, exceptionType, args);
-    }
 }

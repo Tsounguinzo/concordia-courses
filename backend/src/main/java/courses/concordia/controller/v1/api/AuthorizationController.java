@@ -45,8 +45,9 @@ public class AuthorizationController {
 
         String username = jwtService.extractUsername(token);
         boolean isVerified = userService.isUserVerified(username);
+        String userId = userService.getUserIdFromUsername(username);
 
-        return Response.ok().setPayload(new UserResponseDto(username, isVerified));
+        return Response.ok().setPayload(new UserResponseDto(userId, username, isVerified));
     }
 
     @PostMapping("/signin")

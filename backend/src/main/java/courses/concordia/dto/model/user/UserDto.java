@@ -20,7 +20,6 @@ public class UserDto {
     private String email;
     private String password;
 
-    @NotNull
     @NotEmpty
     private boolean verified;
 }

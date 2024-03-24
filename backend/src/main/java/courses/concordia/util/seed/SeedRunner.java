@@ -104,17 +104,20 @@ public class SeedRunner {
                 }
             }
 
-            String description = (Description == null) ? null : Description.getDescription();
+            String description;
+            if (Description == null) {
+                log.warn("Description was null for {} {}. Using empty text.", course.getSubject(), course.getCatalog());
+                description = "";
+            } else {
+                description = Description.getDescription();
+            }
 
-            CourseDescriptionSegment descriptionSegments = getSegmentedDescription(course.getSubject()+course.getCatalog(), description, course.getPrerequisites());
             var newCourse = new Course(
-                    course.getSubject()+course.getCatalog(),
+                    course.getSubject() + course.getCatalog(),
                     terms,
                     course.getSubject(),
-                    descriptionSegments.getDescription(),
-                    descriptionSegments.getPrerequisites(),
-                    descriptionSegments.getCorequisites(),
-                    descriptionSegments.getRestrictions(),
+                    description,
+                    course.getPrerequisites(),
                     course.getCatalog(),
                     course.getTitle(),
                     schedules
@@ -132,54 +135,7 @@ public class SeedRunner {
 
         log.info("Finished processing {} courses with {} not being offered and {} being offered for the current academic year. Saving to JSON.", newCourses.size(), coursesNotOffered, newCourses.size() - coursesNotOffered);
         log.info("Time taken: " + hours + " hour(s) " + minutes + " minute(s) " + seconds + " second(s) " + millis + " millisecond(s)");
-        JsonUtils.toJson(newCourses, Paths.get("backend","src","main","resources","seeds", SEED_FILENAME).toString());
-    }
-
-    private static CourseDescriptionSegment getSegmentedDescription(String courseId, String description, String prerequisites) {
-        if (description == null) {
-            log.warn("Description was null for course {}.", courseId);
-            return new CourseDescriptionSegment();
-        }
-
-        String prompt = String.format("""
-                        Task: Using the details provided about the course , create a JSON object that accurately represents this information. Follow these guidelines:
-                        - Use 'null' for fields without information. If a detail is not provided for a field, explicitly set its value to 'null'.
-                        - prerequisites and corequisites should be summarized as a single string, in distinct fields. Avoid using arrays or lists for this fields.
-                        - Format the JSON with specific keys. Structure the JSON object using the keys 'description', 'prerequisites', 'corequisites', and 'restrictions', adhering to the information provided about the course.
-                                                
-                        Course Details:
-                        - %s
-                        - %s
-                                                
-                        Guidelines:
-                        - Ensure all field values are either string representations or 'null'.
-                        - Summarize prerequisites or corequisites in a single string, avoiding list or array formats.
-                        """, prerequisites, description)
-                .replace("\n"," ")
-                .replace("\r","");
-
-        try {
-            String response = generateText(prompt);
-            Pattern pattern = Pattern.compile("\\{\\s*\"[\\s\\S]*?\\}", Pattern.MULTILINE);
-            Matcher matcher = pattern.matcher(response);
-
-            String jsonString = null;
-            if (matcher.find()) {
-                jsonString = matcher.group();
-            } else {
-                log.error("No JSON string found for {} details below: \n{}\n PROMPT:{} \n AI RESPONSE:{} \n {}", courseId, "*".repeat(20) ,prompt, response, "*".repeat(20));
-                return new CourseDescriptionSegment();
-            }
-
-            CourseDescriptionSegment jsonResult = JsonUtils.getData(jsonString, new TypeToken<CourseDescriptionSegment>(){});
-            System.out.println(prompt); //TODO: remove this line
-            System.out.println(jsonString); //TODO: remove this line
-            return jsonResult == null ? new CourseDescriptionSegment() : jsonResult;
-        } catch (IOException | InterruptedException e) {
-            log.error("An exception occurred: {} when processing {}", e.getMessage(), courseId, e);
-        }
-
-        return new CourseDescriptionSegment();
+        JsonUtils.toJson(newCourses, Paths.get("backend", "src", "main", "resources", "seeds", SEED_FILENAME).toString());
     }
 
     private static List<CourseWithDescription> getCourseWithDescriptions() {
@@ -187,7 +143,8 @@ public class SeedRunner {
         try {
             log.info("Fetching course descriptions from URL: {}", urlStr);
             String response = getRequest(urlStr);
-            List<CourseWithDescription> courses = JsonUtils.getData(response, new TypeToken<List<CourseWithDescription>>(){});
+            List<CourseWithDescription> courses = JsonUtils.getData(response, new TypeToken<List<CourseWithDescription>>() {
+            });
             assert courses != null;
             log.info("Successfully fetched {} course descriptions", courses.size());
             return courses;
@@ -200,7 +157,7 @@ public class SeedRunner {
     private static List<CourseWithTermsAndInstructors> getCourseWithTermsAndInstructors(List<CourseWithDetails> courseWithDetails) {
         log.info("Composing courses with terms and instructors");
         HashMap<String, List<String>> courseTerms = new HashMap<>();
-        for (CourseWithDetails course: courseWithDetails){
+        for (CourseWithDetails course : courseWithDetails) {
             String key = course.getSubject() + " " + course.getCatalog();
             String term = TERM_CODE_MAPPING.get(course.getTermCode());
             courseTerms.computeIfAbsent(key, k -> new ArrayList<>()).add(term);
@@ -211,7 +168,7 @@ public class SeedRunner {
             String key = entry.getKey();
             List<String> terms = entry.getValue();
 
-            String[] subjectAndCatalog = key.split(" ",2);
+            String[] subjectAndCatalog = key.split(" ", 2);
             String subject = subjectAndCatalog[0];
             String catalog = subjectAndCatalog[1];
 
@@ -235,9 +192,10 @@ public class SeedRunner {
         for (String termCode : termCodes) {
             String urlStr = BASE_URL + COURSE_SCHEDULE_TERM_ENDPOINT + "*/" + termCode;
             try {
-                log.info("Fetching course with details for {} from URL: {}",TERM_CODE_MAPPING.get(termCode), urlStr);
+                log.info("Fetching course with details for {} from URL: {}", TERM_CODE_MAPPING.get(termCode), urlStr);
                 String response = ConcordiaAPICallUtil.getRequest(urlStr);
-                courses.addAll(Objects.requireNonNull(JsonUtils.getData(response, new TypeToken<List<CourseWithDetails>>() {})));
+                courses.addAll(Objects.requireNonNull(JsonUtils.getData(response, new TypeToken<List<CourseWithDetails>>() {
+                })));
             } catch (Exception e) {
                 log.error("Failed to fetch course with details from URL: {}, Error: {}", urlStr, e.getMessage(), e);
             }
@@ -252,7 +210,8 @@ public class SeedRunner {
         try {
             log.info("Fetching course catalogues from URL: {}", urlStr);
             String response = ConcordiaAPICallUtil.getRequest(urlStr);
-            List<CourseCatalogue> courses = JsonUtils.getData(response, new TypeToken<List<CourseCatalogue>>(){});
+            List<CourseCatalogue> courses = JsonUtils.getData(response, new TypeToken<List<CourseCatalogue>>() {
+            });
             assert courses != null;
             log.info("Successfully fetched {} course catalogues", courses.size());
             return courses;

@@ -15,5 +15,6 @@ import lombok.experimental.Accessors;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserResponseDto {
     private String id;
+    private String username;
     private boolean verified;
 }

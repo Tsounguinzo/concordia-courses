@@ -24,7 +24,7 @@ public abstract class AbstractEmailContext {
     private Map<String, Object> context;
 
 
-    public AbstractEmailContext() {
+    protected AbstractEmailContext() {
         this.context = new HashMap<>();
     }
 

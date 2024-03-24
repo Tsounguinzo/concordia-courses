@@ -86,7 +86,7 @@
                     translateZ="50"
                     className="text-lg font-medium text-gray-700 dark:text-gray-300 md:text-xl"
             >
-                {great(user?.id, new Date().getHours())}
+                {great(user?.username, new Date().getHours())}
             </CardItem>
             <div class='flex items-center gap-x-1'>
                 <CardItem

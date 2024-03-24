@@ -1,6 +1,5 @@
 package courses.concordia.service.implementation;
 
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import courses.concordia.model.Course;
 import courses.concordia.service.SeedService;
@@ -16,8 +15,6 @@ import java.util.List;
 @Service
 @Slf4j
 public class SeedServiceCourse implements SeedService<Course> {
-    private final Gson gson = new Gson();
-
     @Override
     public List<Course> readSeedFromFile(Path path) {
 

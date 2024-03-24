@@ -155,6 +155,13 @@ public class UserServiceImpl implements UserService {
         return UserMapper.toDto(user);
     }
 
+    @Override
+    public String getUserIdFromUsername(String username) {
+        return userRepository.findByUsername(username)
+                .map(User::get_id)
+                .orElseThrow(() -> exception(USER, ENTITY_NOT_FOUND));
+    }
+
     private RuntimeException exception(EntityType entityType, ExceptionType exceptionType, String... args) {
         return CCException.throwException(entityType, exceptionType, args);
     }
