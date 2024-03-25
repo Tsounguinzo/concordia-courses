@@ -11,6 +11,7 @@ import courses.concordia.repository.InteractionRepository;
 import courses.concordia.service.InteractionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -40,12 +41,6 @@ public class InteractionServiceImpl implements InteractionService {
         }
 
         throw exception(INTERACTION, ENTITY_NOT_FOUND);
-
-        /*
-        Query query = new Query(Criteria.where("courseId").is(courseId).and("userId").is(userId).and("referrer").is(referrer));
-        Interaction interaction = mongoTemplate.findOne(query, Interaction.class);
-        return Optional.ofNullable(interaction).map(Interaction::getKind);
-         */
     }
 
     @Override
@@ -53,13 +48,9 @@ public class InteractionServiceImpl implements InteractionService {
         return interactionRepository.findByCourseIdAndReferrer(courseId, referrer).stream()
                 .map(InteractionMapper::toDto)
                 .collect(Collectors.toList());
-
-        /*
-        Query query = new Query(Criteria.where("courseId").is(courseId).and("referrer").is(referrer));
-        return mongoTemplate.find(query, Interaction.class);
-         */
     }
 
+    @CacheEvict(value = "courseReviewsCache", key = "#interactionDto.courseId")
     @Override
     public InteractionDto addInteraction(InteractionDto interactionDto) {
         Interaction interaction = new Interaction()
@@ -79,6 +70,7 @@ public class InteractionServiceImpl implements InteractionService {
         return InteractionMapper.toDto(interaction);
     }
 
+    @CacheEvict(value = "courseReviewsCache", key = "#courseId")
     @Override
     public void deleteInteraction(String courseId, String userId, String referrer) {
         Query query = new Query(Criteria.where("courseId").is(courseId)
@@ -97,6 +89,7 @@ public class InteractionServiceImpl implements InteractionService {
         }
     }
 
+    @CacheEvict(value = "courseReviewsCache", key = "#courseId")
     @Override
     public void deleteInteractions(String courseId, String userId) {
         Query query = new Query(Criteria.where("courseId").is(courseId).and("userId").is(userId));
