@@ -11,7 +11,7 @@ public interface UserService {
     AuthenticationResponse authenticate(LoginRequest loginRequest);
     boolean verifyToken(String token);
     boolean isUserVerified(String username);
-    void resendToken(String token);
+    void resendToken(String username);
     boolean checkIfUserExist(String username);
     String getUserIdFromUsername(String username);
 }

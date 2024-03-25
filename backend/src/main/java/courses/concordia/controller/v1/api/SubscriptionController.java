@@ -5,10 +5,10 @@ import courses.concordia.dto.model.course.SubscriptionDto;
 import courses.concordia.dto.model.course.SubscriptionPayloadDto;
 import courses.concordia.dto.response.Response;
 import courses.concordia.service.SubscriptionService;
+import courses.concordia.service.UserService;
 import courses.concordia.service.implementation.JwtServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,22 +20,22 @@ import static courses.concordia.util.Misc.getTokenFromCookie;
 @RequestMapping("/api/v1/subscriptions")
 public class SubscriptionController {
     private final SubscriptionService subscriptionService;
+    private final UserService userService;
     private final JwtServiceImpl jwtService;
     private final JwtConfigProperties jwtConfigProperties;
 
     @GetMapping
     public Response<?> getSubscriptions(@RequestParam(name = "courseId", defaultValue = "") String courseId, HttpServletRequest request) {
 
-        String token = getTokenFromCookie(request, jwtConfigProperties.getTokenName());
-        if (token == null) {
+        String userId = getUserIdFromToken(request);
+        if (userId == null) {
             return Response.unauthorized();
         }
-
         if(courseId.isEmpty()) {
-            List<SubscriptionDto> subscriptions = subscriptionService.getSubscriptions(jwtService.extractUsername(token));
+            List<SubscriptionDto> subscriptions = subscriptionService.getSubscriptions(userId);
             return Response.ok().setPayload(subscriptions);
         } else {
-            SubscriptionDto subscription = subscriptionService.getSubscription(jwtService.extractUsername(token), courseId);
+            SubscriptionDto subscription = subscriptionService.getSubscription(userId, courseId);
             return Response.ok().setPayload(subscription);
         }
     }
@@ -43,24 +43,31 @@ public class SubscriptionController {
     @PostMapping
     public Response<?> addSubscription(@RequestBody SubscriptionPayloadDto subscriptionPayloadDto, HttpServletRequest request) {
 
-        String token = getTokenFromCookie(request, jwtConfigProperties.getTokenName());
-        if (token == null) {
+        String userId = getUserIdFromToken(request);
+        if (userId == null) {
             return Response.unauthorized();
         }
-
-        SubscriptionDto subscription = subscriptionService.addSubscription(jwtService.extractUsername(token), subscriptionPayloadDto.getCourseId());
+        SubscriptionDto subscription = subscriptionService.addSubscription(userId, subscriptionPayloadDto.getCourseId());
         return Response.ok().setPayload(subscription);
     }
 
     @DeleteMapping
     public Response<?> deleteSubscription(@RequestBody SubscriptionPayloadDto subscriptionPayloadDto, HttpServletRequest request) {
 
-        String token = getTokenFromCookie(request, jwtConfigProperties.getTokenName());
-        if (token == null) {
+        String userId = getUserIdFromToken(request);
+        if (userId == null) {
             return Response.unauthorized();
         }
-
-        subscriptionService.deleteSubscription(jwtService.extractUsername(token), subscriptionPayloadDto.getCourseId());
+        subscriptionService.deleteSubscription(userId, subscriptionPayloadDto.getCourseId());
         return Response.ok().setPayload("Subscription was deleted successfully");
+    }
+
+    private String getUserIdFromToken(HttpServletRequest request) {
+        String token = getTokenFromCookie(request, jwtConfigProperties.getTokenName());
+        if (token == null) {
+            return null;
+        }
+        String username = jwtService.extractUsername(token);
+        return userService.getUserIdFromUsername(username);
     }
 }
