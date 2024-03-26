@@ -15,7 +15,6 @@ import courses.concordia.service.CookieService;
 import courses.concordia.service.JwtService;
 import courses.concordia.service.TokenBlacklistService;
 import courses.concordia.service.UserService;
-import courses.concordia.service.implementation.CookieServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -131,5 +130,28 @@ public class AuthorizationController {
         userService.resendToken(username);
         return Response.ok().setPayload("Your new code is in your inbox!");
     }
+
+    @GetMapping("/forgot_password")
+    public Response<?> forgotPassword(@RequestParam String username) {
+        userService.forgotPassword(username);
+        return Response.ok().setPayload("Your reset password link is in your inbox!");
+    }
+    @GetMapping("/reset_password")
+    public Response<?> resetPassword(@RequestParam String token) {
+        Token t = tokenRepository.findByToken(token).orElse(null);
+
+        if(t == null) {
+            return Response.validationException();
+        }
+
+        if(t.isExpired()) {
+            tokenRepository.delete(t);
+            return Response.badRequest().setErrors("Whoops! Looks like this link has expired.");
+        }
+
+        String username = userService.verifyPasswordResetToken(token);
+        return Response.ok().setPayload(username);
+    }
+
 }
 

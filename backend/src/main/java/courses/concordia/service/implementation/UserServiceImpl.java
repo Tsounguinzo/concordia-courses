@@ -14,7 +14,10 @@ import courses.concordia.repository.TokenRepository;
 import courses.concordia.repository.UserRepository;
 import courses.concordia.service.EmailService;
 import courses.concordia.service.JwtService;
+import courses.concordia.service.TokenGenerator;
 import courses.concordia.service.UserService;
+import courses.concordia.service.implementation.token.AlphanumericTokenGenerator;
+import courses.concordia.service.implementation.token.UUIDTokenGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -166,6 +169,28 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> exception(USER, ENTITY_NOT_FOUND));
     }
 
+    @Override
+    public String verifyPasswordResetToken(String token) {
+        log.info("Verifying reset password token: {}", token);
+        Token foundToken = tokenRepository.findByToken(token)
+                .orElseThrow(() -> exception(TOKEN, CUSTOM_EXCEPTION, "Invalid or expired token."));
+
+        User user = userRepository.findById(foundToken.getUserId())
+                .orElseThrow(() -> exception(USER, ENTITY_NOT_FOUND));
+
+        return user.getUsername();
+    }
+
+    @Override
+    public void forgotPassword(String username) {
+        log.info("Forgot password request for user: {}", username);
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> exception(USER, ENTITY_NOT_FOUND));
+
+        Token token = createAndSaveNewToken(user, new UUIDTokenGenerator());
+        emailService.sendResetPasswordMailMessage(user.getUsername(), user.getEmail(), token.getToken());
+    }
+
     private RuntimeException exception(EntityType entityType, ExceptionType exceptionType, String... args) {
         return CCException.throwException(entityType, exceptionType, args);
     }
@@ -200,6 +225,12 @@ public class UserServiceImpl implements UserService {
 
     private Token createAndSaveNewToken(User user) {
         Token newToken = new Token(user);
+        tokenRepository.save(newToken);
+        return newToken;
+    }
+
+    private Token createAndSaveNewToken(User user, TokenGenerator tokenGenerator) {
+        Token newToken = new Token(user, tokenGenerator);
         tokenRepository.save(newToken);
         return newToken;
     }

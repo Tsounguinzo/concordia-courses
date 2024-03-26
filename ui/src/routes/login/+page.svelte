@@ -142,8 +142,8 @@
                             {/if}
                             <Submit/>
                         </div>
-                        {#if false}
-                            <button class="z-10 text-left text-sm capitalize underline text-blue-500 hover:text-blue-300">
+                        {#if $tabs.selected === "SignIn"}
+                            <button type="button" class="z-10 text-sm capitalize underline text-blue-500 hover:text-blue-300 w-fit">
                                 forgot password
                             </button>
                         {/if}

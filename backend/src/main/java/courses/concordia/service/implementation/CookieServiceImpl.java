@@ -6,20 +6,16 @@ import courses.concordia.config.TokenType;
 import courses.concordia.service.CookieService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class CookieServiceImpl implements CookieService {
     private final JwtConfigProperties jwtConfigProperties;
     private final RtConfigProperties rtConfigProperties;
-
-    public CookieServiceImpl(JwtConfigProperties jwtConfigProperties, RtConfigProperties rtConfigProperties) {
-        this.jwtConfigProperties = jwtConfigProperties;
-
-        this.rtConfigProperties = rtConfigProperties;
-    }
 
     @Override
     public void clearTokenCookie(HttpServletResponse response) {
@@ -32,14 +28,17 @@ public class CookieServiceImpl implements CookieService {
 
     @Override
     public void addTokenCookie(HttpServletResponse response, String token, TokenType tokenType) {
-        ResponseCookie cookie = ResponseCookie.from(
-                        tokenType == TokenType.accessToken ?
-                                jwtConfigProperties.getTokenName() : rtConfigProperties.getTokenName(), token)
+
+        long maxAge = tokenType == TokenType.accessToken ?
+                jwtConfigProperties.getExp() : rtConfigProperties.getExp();
+        String cookieName = tokenType == TokenType.accessToken ?
+                jwtConfigProperties.getTokenName() : rtConfigProperties.getTokenName();
+
+        ResponseCookie cookie = ResponseCookie.from(cookieName, token)
                 .httpOnly(true)
                 .secure(false)
                 .path("/")
-                .maxAge(tokenType == TokenType.accessToken ?
-                        jwtConfigProperties.getExp() : rtConfigProperties.getExp())
+                .maxAge(maxAge)
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
     }

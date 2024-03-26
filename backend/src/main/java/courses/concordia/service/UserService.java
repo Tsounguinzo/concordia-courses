@@ -14,4 +14,6 @@ public interface UserService {
     void resendToken(String username);
     boolean checkIfUserExist(String username);
     String getUserIdFromUsername(String username);
+    String verifyPasswordResetToken(String token);
+    void forgotPassword(String username);
 }

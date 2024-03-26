@@ -281,4 +281,15 @@ export const repo = {
         const body = await response.json()
         return body.payload;
     },
+
+    async resetPassword(token: string): Promise<{ username: string, error: string }> {
+        const backendURL = `http://localhost:8080/api/v1/auth/reset_password?token=${token}`;
+        const response = await fetch(backendURL);
+        const body = await response.json()
+        console.log(body)
+        return {
+            username: body.payload,
+            error: body.errors
+        };
+    },
 };

@@ -1,5 +1,7 @@
 package courses.concordia.model;
 
+import courses.concordia.service.TokenGenerator;
+import courses.concordia.service.implementation.token.NumericTokenGenerator;
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.data.annotation.CreatedDate;
@@ -7,7 +9,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.time.LocalDateTime;
-import java.util.Random;
 
 @Getter
 @Setter
@@ -27,22 +28,21 @@ public class Token {
 
 
     public Token(User user){
+        this(user, new NumericTokenGenerator());
+    }
+
+    public Token(User user, TokenGenerator tokenGenerator) {
+        this(user, tokenGenerator, 5);
+    }
+
+    public Token(User user, TokenGenerator tokenGenerator, int tokenExpirationTimeInMinutes) {
         this.userId = user.get_id();
         this.createTime = LocalDateTime.now();
-        this.expireTime = createTime.plusMinutes(5);
-        this.token = tokenGenerator();
+        this.expireTime = createTime.plusMinutes(tokenExpirationTimeInMinutes);
+        this.token = tokenGenerator.generateToken();
     }
 
     public boolean isExpired(){
         return LocalDateTime.now().isAfter(expireTime);
-    }
-
-    public String tokenGenerator(){
-        Random random = new Random();
-        StringBuilder str= new StringBuilder();
-        for(int i = 0; i < 6; i ++){
-            str.append(random.nextInt(10));
-        }
-        return str.toString();
     }
 }
