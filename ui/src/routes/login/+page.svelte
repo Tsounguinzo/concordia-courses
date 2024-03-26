@@ -13,6 +13,7 @@
     import {goto} from "$app/navigation";
     import MultiStepLoader from "$lib/components/common/loader/MultiStepLoader/MultiStepLoader.svelte";
     import BackgroundBeams from "$lib/components/common/animation/BackgroundBeams.svelte";
+    import ForgotPassword from "$lib/components/login/ForgotPassword.svelte";
 
     let loading = false;
 
@@ -143,9 +144,9 @@
                             <Submit/>
                         </div>
                         {#if $tabs.selected === "SignIn"}
-                            <button type="button" class="z-10 text-sm capitalize underline text-blue-500 hover:text-blue-300 w-fit">
-                                forgot password
-                            </button>
+                            <ForgotPassword size={25} title="Forgot password ?"
+                                            text="Enter your username to get a reset link in your Concordia email."
+                                            className="z-10 w-fit"/>
                         {/if}
                         <BackgroundBeams/>
                     </div>

@@ -275,21 +275,27 @@ export const repo = {
     async getUser(fetch: {
         (input: RequestInfo | URL, init?: RequestInit | undefined): Promise<Response>;
         (arg0: string): any;
-    }): Promise<string> {
+    }): Promise<string|null> {
         const backendURL = 'http://localhost:8080/api/v1/auth/user';
         const response = await fetch(backendURL);
-        const body = await response.json()
-        return body.payload;
+        if(response.ok){
+            const body = await response.json();
+            return body.payload;
+        }
+        return null;
     },
 
     async resetPassword(token: string): Promise<{ username: string, error: string }> {
         const backendURL = `http://localhost:8080/api/v1/auth/reset_password?token=${token}`;
         const response = await fetch(backendURL);
         const body = await response.json()
-        console.log(body)
         return {
             username: body.payload,
             error: body.errors
         };
+    },
+
+    async forgotPassword(username: string): Promise<Response> {
+        return client.get(`/auth/forgot_password?username=${username}`);
     },
 };
