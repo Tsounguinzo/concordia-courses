@@ -34,12 +34,12 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
+    public String extractUsername(String token, TokenType tokenType) {
+        return extractClaim(token, Claims::getSubject, tokenType);
     }
 
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver, TokenType tokenType) {
+        final Claims claims = extractAllClaims(token, tokenType);
         return claimsResolver.apply(claims);
     }
 
@@ -71,23 +71,23 @@ public class JwtServiceImpl implements JwtService {
                 .compact();
     }
 
-    public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
+    public boolean isTokenValid(String token, UserDetails userDetails, TokenType tokenType) {
+        final String username = extractUsername(token,tokenType);
         return (username.equals(userDetails.getUsername())) &&
                 !isTokenExpired(token);
     }
 
-    public Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
+    public Date extractExpiration(String token, TokenType tokenType) {
+        return extractClaim(token, Claims::getExpiration, tokenType);
     }
-    private boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
+    public boolean isTokenExpired(String token) {
+        return extractExpiration(token,TokenType.accessToken).before(new Date());
     }
 
-    private Claims extractAllClaims(String token) throws JwtException{
+    private Claims extractAllClaims(String token, TokenType tokenType) throws JwtException{
         try {
             return Jwts.parserBuilder()
-                    .setSigningKey(signInKey)
+                    .setSigningKey(tokenType == TokenType.accessToken ? signInKey : refreshKey)
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
@@ -98,5 +98,9 @@ public class JwtServiceImpl implements JwtService {
             log.error("Could not parse token: {}", e.getMessage());
             throw e;
         }
+    }
+
+    public String verifyRefreshToken(UserDetails userDetails, String refreshToken){
+        return generateToken(userDetails,TokenType.accessToken);
     }
 }

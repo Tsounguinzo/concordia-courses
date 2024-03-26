@@ -2,6 +2,8 @@ package courses.concordia.security;
 
 import courses.concordia.config.JwtConfigProperties;
 import courses.concordia.config.RtConfigProperties;
+import courses.concordia.config.TokenType;
+import courses.concordia.service.CookieService;
 import courses.concordia.service.JwtService;
 import courses.concordia.service.TokenBlacklistService;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -29,6 +31,7 @@ import static courses.concordia.util.Misc.getTokenFromCookie;
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
+    private final CookieService cookieService;
     private final TokenBlacklistService tokenBlacklistService;
     private final UserDetailsService userDetailsService;
     private final JwtConfigProperties jwtConfigProperties;
@@ -39,18 +42,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
         try {
-            final String jwtToken = getTokenFromCookie(request, jwtConfigProperties.getTokenName());
+            String jwtToken = getTokenFromCookie(request, jwtConfigProperties.getTokenName());
             final String refreshToken = getTokenFromCookie(request, rtConfigProperties.getTokenName());
-            /*System.out.println(jwtToken);
-            System.out.println(refreshToken);*/
+            if(jwtToken == null && refreshToken != null){
+                UserDetails userDetails = userDetailsService.loadUserByUsername(jwtService.extractUsername(refreshToken,TokenType.refreshToken));
+                jwtToken = jwtService.verifyRefreshToken(userDetails, refreshToken);
+                cookieService.addTokenCookie(response, jwtToken,TokenType.accessToken);
+
+            }
 
             if (jwtToken != null && !tokenBlacklistService.isTokenBlacklisted(jwtToken)) {
-                String username = jwtService.extractUsername(jwtToken);
+                String username = jwtService.extractUsername(jwtToken, TokenType.accessToken);
 
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
-                    if (jwtService.isTokenValid(jwtToken, userDetails)) {
+                    if (jwtService.isTokenValid(jwtToken, userDetails,TokenType.accessToken)) {
                         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                                 userDetails, null, userDetails.getAuthorities());
                         authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

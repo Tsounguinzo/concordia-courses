@@ -1,7 +1,6 @@
 package courses.concordia.controller.v1.api;
 
 import courses.concordia.config.JwtConfigProperties;
-import courses.concordia.config.RtConfigProperties;
 import courses.concordia.config.TokenType;
 import courses.concordia.controller.v1.request.AuthenticationRequest;
 import courses.concordia.controller.v1.request.LoginRequest;
@@ -12,16 +11,15 @@ import courses.concordia.dto.response.AuthenticationResponse;
 import courses.concordia.dto.response.Response;
 import courses.concordia.model.Token;
 import courses.concordia.repository.TokenRepository;
+import courses.concordia.service.CookieService;
 import courses.concordia.service.JwtService;
 import courses.concordia.service.TokenBlacklistService;
 import courses.concordia.service.UserService;
-import jakarta.servlet.http.Cookie;
+import courses.concordia.service.implementation.CookieServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseCookie;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -34,10 +32,11 @@ import static courses.concordia.util.Misc.getTokenFromCookie;
 public class AuthorizationController {
     private final UserService userService;
     private final JwtService jwtService;
+    private final CookieService cookieService;
     private final TokenRepository tokenRepository;
     private final TokenBlacklistService tokenBlacklistService;
     private final JwtConfigProperties jwtConfigProperties;
-    private final RtConfigProperties rtConfigProperties;
+
 
     @GetMapping("/user")
     public Response<?> getUser(HttpServletRequest request) {
@@ -46,7 +45,7 @@ public class AuthorizationController {
             return Response.unauthorized();
         }
 
-        String username = jwtService.extractUsername(token);
+        String username = jwtService.extractUsername(token, TokenType.accessToken);
         boolean isVerified = userService.isUserVerified(username);
         String userId = userService.getUserIdFromUsername(username);
 
@@ -56,8 +55,8 @@ public class AuthorizationController {
     @PostMapping("/signin")
     public Response<?> signIn(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
         AuthenticationResponse res = userService.authenticate(loginRequest);
-        addTokenCookie(response, res.getToken(),TokenType.accessToken);
-        addTokenCookie(response, res.getRefreshToken(),TokenType.refreshToken);
+        cookieService.addTokenCookie(response, res.getToken(),TokenType.accessToken);
+        cookieService.addTokenCookie(response, res.getRefreshToken(),TokenType.refreshToken);
         return Response.ok().setPayload("Boom! You're in");
     }
 
@@ -69,12 +68,12 @@ public class AuthorizationController {
             return Response.unauthorized();
         }
 
-        Date expiration = jwtService.extractExpiration(token);
+        Date expiration = jwtService.extractExpiration(token,TokenType.accessToken);
         long durationInSeconds = (expiration.getTime() - System.currentTimeMillis()) / 1000;
         if (durationInSeconds > 0) {
             tokenBlacklistService.blacklistToken(token, durationInSeconds);
         }
-        clearTokenCookie(response);
+        cookieService.clearTokenCookie(response);
 
         return Response.ok().setPayload("And you're out! Come back soon!");
     }
@@ -95,9 +94,9 @@ public class AuthorizationController {
         );
         AuthenticationResponse res = userService.signup(userDto);
 
-        addTokenCookie(response, res.getToken(),TokenType.accessToken);
-        addTokenCookie(response, res.getRefreshToken(),TokenType.refreshToken);
-        
+        cookieService.addTokenCookie(response, res.getToken(),TokenType.accessToken);
+        cookieService.addTokenCookie(response, res.getRefreshToken(),TokenType.refreshToken);
+
         return Response.ok().setPayload("Almost there! Just need to verify your email to make sure it's really you.");
     }
 
@@ -127,31 +126,10 @@ public class AuthorizationController {
             return Response.unauthorized();
         }
 
-        String username = jwtService.extractUsername(token);
+        String username = jwtService.extractUsername(token,TokenType.accessToken);
 
         userService.resendToken(username);
         return Response.ok().setPayload("Your new code is in your inbox!");
-    }
-
-    private void clearTokenCookie(HttpServletResponse response) {
-        Cookie cookie = new Cookie(jwtConfigProperties.getTokenName(), null);
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-        cookie.setMaxAge(0); // Expire the cookie immediately
-        response.addCookie(cookie);
-    }
-
-    private void addTokenCookie(HttpServletResponse response, String token, TokenType tokenType) {
-        ResponseCookie cookie = ResponseCookie.from(
-                tokenType == TokenType.accessToken ?
-                        jwtConfigProperties.getTokenName() : rtConfigProperties.getTokenName(), token)
-                .httpOnly(true)
-                .secure(false)
-                .path("/")
-                .maxAge(tokenType == TokenType.accessToken ?
-                        jwtConfigProperties.getExp() : rtConfigProperties.getExp())
-                .build();
-        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
     }
 }
 

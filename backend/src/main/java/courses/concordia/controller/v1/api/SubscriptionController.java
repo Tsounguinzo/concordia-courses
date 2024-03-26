@@ -1,6 +1,7 @@
 package courses.concordia.controller.v1.api;
 
 import courses.concordia.config.JwtConfigProperties;
+import courses.concordia.config.TokenType;
 import courses.concordia.dto.model.course.SubscriptionDto;
 import courses.concordia.dto.model.course.SubscriptionPayloadDto;
 import courses.concordia.dto.response.Response;
@@ -67,7 +68,7 @@ public class SubscriptionController {
         if (token == null) {
             return null;
         }
-        String username = jwtService.extractUsername(token);
+        String username = jwtService.extractUsername(token, TokenType.accessToken);
         return userService.getUserIdFromUsername(username);
     }
 }
