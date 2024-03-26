@@ -96,7 +96,8 @@ public class AuthorizationController {
         AuthenticationResponse res = userService.signup(userDto);
 
         addTokenCookie(response, res.getToken(),TokenType.accessToken);
-
+        addTokenCookie(response, res.getRefreshToken(),TokenType.refreshToken);
+        
         return Response.ok().setPayload("Almost there! Just need to verify your email to make sure it's really you.");
     }
 
