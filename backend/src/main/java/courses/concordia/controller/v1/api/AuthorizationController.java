@@ -72,7 +72,8 @@ public class AuthorizationController {
         if (durationInSeconds > 0) {
             tokenBlacklistService.blacklistToken(token, durationInSeconds);
         }
-        cookieService.clearTokenCookie(response);
+        cookieService.clearTokenCookie(response, TokenType.accessToken);
+        cookieService.clearTokenCookie(response, TokenType.refreshToken);
 
         return Response.ok().setPayload("And you're out! Come back soon!");
     }

@@ -44,6 +44,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             String jwtToken = getTokenFromCookie(request, jwtConfigProperties.getTokenName());
             final String refreshToken = getTokenFromCookie(request, rtConfigProperties.getTokenName());
+
+            //TODO : check token validation
+            // check token validation
+            if( jwtToken != null && jwtService.isTokenExpired(jwtToken, TokenType.accessToken) ){
+                cookieService.clearTokenCookie(response, TokenType.accessToken);
+            }
+
+            // if jwt has expired but refresh token is valid, grant user a new jwt
             if(jwtToken == null && refreshToken != null){
                 UserDetails userDetails = userDetailsService.loadUserByUsername(jwtService.extractUsername(refreshToken,TokenType.refreshToken));
                 jwtToken = jwtService.verifyRefreshToken(userDetails, refreshToken);
@@ -51,6 +59,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             }
 
+            // check jwt validation
+            // check if jwt has been blacklisted or null
             if (jwtToken != null && !tokenBlacklistService.isTokenBlacklisted(jwtToken)) {
                 String username = jwtService.extractUsername(jwtToken, TokenType.accessToken);
 

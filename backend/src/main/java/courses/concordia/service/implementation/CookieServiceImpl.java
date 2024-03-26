@@ -18,8 +18,10 @@ public class CookieServiceImpl implements CookieService {
     private final RtConfigProperties rtConfigProperties;
 
     @Override
-    public void clearTokenCookie(HttpServletResponse response) {
-        Cookie cookie = new Cookie(jwtConfigProperties.getTokenName(), null);
+    public void clearTokenCookie(HttpServletResponse response, TokenType tokenType) {
+        // clear jwt cookie
+        Cookie cookie = new Cookie(tokenType == TokenType.accessToken ?
+                jwtConfigProperties.getTokenName() : rtConfigProperties.getTokenName(), null);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
         cookie.setMaxAge(0); // Expire the cookie immediately

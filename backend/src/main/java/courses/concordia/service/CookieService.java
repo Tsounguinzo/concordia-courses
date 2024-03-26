@@ -7,6 +7,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 
 public interface CookieService {
-    void clearTokenCookie(HttpServletResponse response);
+    void clearTokenCookie(HttpServletResponse response, TokenType tokenType);
     void addTokenCookie(HttpServletResponse response, String token, TokenType tokenType);
 }

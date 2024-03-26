@@ -1,6 +1,7 @@
 package courses.concordia.controller.v1.api;
 
 import courses.concordia.config.JwtConfigProperties;
+import courses.concordia.config.TokenType;
 import courses.concordia.dto.model.course.DeleteNotificationDto;
 import courses.concordia.dto.model.course.NotificationDto;
 import courses.concordia.dto.model.course.UpdateNotificationDto;
@@ -64,7 +65,7 @@ public class NotificationController {
         if (token == null) {
             return null;
         }
-        String username = jwtService.extractUsername(token);
+        String username = jwtService.extractUsername(token, TokenType.accessToken);
         return userService.getUserIdFromUsername(username);
     }
 }

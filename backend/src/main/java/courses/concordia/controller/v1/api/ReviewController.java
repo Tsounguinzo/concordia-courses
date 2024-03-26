@@ -1,6 +1,7 @@
 package courses.concordia.controller.v1.api;
 
 import courses.concordia.config.JwtConfigProperties;
+import courses.concordia.config.TokenType;
 import courses.concordia.dto.model.course.ReviewDto;
 import courses.concordia.dto.model.course.ReviewPayloadDto;
 import courses.concordia.dto.response.Response;
@@ -79,7 +80,7 @@ public class ReviewController {
         if (token == null) {
             return null;
         }
-        String username = jwtService.extractUsername(token);
+        String username = jwtService.extractUsername(token, TokenType.accessToken);
         return userService.getUserIdFromUsername(username);
     }
 }
