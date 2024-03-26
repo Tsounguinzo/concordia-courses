@@ -41,8 +41,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             final String jwtToken = getTokenFromCookie(request, jwtConfigProperties.getTokenName());
             final String refreshToken = getTokenFromCookie(request, rtConfigProperties.getTokenName());
-            System.out.println(jwtToken);
-            System.out.println(refreshToken);
+            /*System.out.println(jwtToken);
+            System.out.println(refreshToken);*/
 
             if (jwtToken != null && !tokenBlacklistService.isTokenBlacklisted(jwtToken)) {
                 String username = jwtService.extractUsername(jwtToken);
