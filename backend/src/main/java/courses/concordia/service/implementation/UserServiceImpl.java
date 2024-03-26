@@ -1,5 +1,6 @@
 package courses.concordia.service.implementation;
 
+import courses.concordia.config.TokenType;
 import courses.concordia.controller.v1.request.LoginRequest;
 import courses.concordia.dto.mapper.UserMapper;
 import courses.concordia.dto.model.user.UserDto;
@@ -62,8 +63,9 @@ public class UserServiceImpl implements UserService {
 
         emailService.sendSimpleMailMessage(user.getUsername(), user.getEmail(), token.getToken());
         authenticate(userDto.getUsername(), userDto.getPassword());
-        var jwtToken = jwtService.generateToken(user);
-        return new AuthenticationResponse(jwtToken);
+        var jwtToken = jwtService.generateToken(user, TokenType.accessToken);
+        var refreshToken = jwtService.generateToken(user, TokenType.refreshToken);
+        return new AuthenticationResponse(jwtToken, refreshToken);
     }
 
     public AuthenticationResponse authenticate(LoginRequest loginRequest) {
@@ -77,11 +79,13 @@ public class UserServiceImpl implements UserService {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             User user = (User) authentication.getPrincipal();
-            String jwtToken = jwtService.generateToken(user);
+            String jwtToken = jwtService.generateToken(user, TokenType.accessToken);
+            String refreshToken = jwtService.generateToken(user, TokenType.refreshToken);
+
 
             log.info("Authentication successful for user: {}", loginRequest.getUsername());
 
-            return new AuthenticationResponse(jwtToken);
+            return new AuthenticationResponse(jwtToken, refreshToken);
         } catch (BadCredentialsException e) {
             log.error("Authentication failed for user: {}", loginRequest.getUsername(), e);
             throw exception(USER, CUSTOM_EXCEPTION, "wrong username or password.");

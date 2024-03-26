@@ -1,6 +1,7 @@
 package courses.concordia.security;
 
 import courses.concordia.config.JwtConfigProperties;
+import courses.concordia.config.RtConfigProperties;
 import courses.concordia.service.JwtService;
 import courses.concordia.service.TokenBlacklistService;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -31,6 +32,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final TokenBlacklistService tokenBlacklistService;
     private final UserDetailsService userDetailsService;
     private final JwtConfigProperties jwtConfigProperties;
+    private final RtConfigProperties rtConfigProperties;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
@@ -38,6 +40,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
         try {
             final String jwtToken = getTokenFromCookie(request, jwtConfigProperties.getTokenName());
+            final String refreshToken = getTokenFromCookie(request, rtConfigProperties.getTokenName());
+            System.out.println(jwtToken);
+            System.out.println(refreshToken);
 
             if (jwtToken != null && !tokenBlacklistService.isTokenBlacklisted(jwtToken)) {
                 String username = jwtService.extractUsername(jwtToken);

@@ -25,6 +25,11 @@ jwt:
   secret: ${JWT_SECRET:5CE74751FAF5ED2877C51A93021368E0FD3C954444CF1F7136720388EE100998}
   exp: 86400 # 24 hours
 
+rt:
+  tokenName: "refreshToken"
+  secret: ${REFRESH_SECRET:FFB8EA10274A8B65C913736BD9A4CD56200079ADBBD66865C72EF3D17C7E80B6}
+  exp: 2592000 # 30 days
+
 app:
   init-db: false
   seed-dir: backend/src/main/resources/seeds

@@ -1,6 +1,8 @@
 package courses.concordia.service.implementation;
 
 import courses.concordia.config.JwtConfigProperties;
+import courses.concordia.config.RtConfigProperties;
+import courses.concordia.config.TokenType;
 import courses.concordia.service.JwtService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -19,11 +21,16 @@ import java.util.function.Function;
 @Slf4j
 public class JwtServiceImpl implements JwtService {
     private final JwtConfigProperties jwtConfigProperties;
+    private final RtConfigProperties rtConfigProperties;
     private final Key signInKey;
+    private final Key refreshKey;
 
-    public JwtServiceImpl(JwtConfigProperties jwtConfigProperties) {
+
+    public JwtServiceImpl(JwtConfigProperties jwtConfigProperties, RtConfigProperties rtConfigProperties) {
         this.jwtConfigProperties = jwtConfigProperties;
         this.signInKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtConfigProperties.getSecret()));
+        this.rtConfigProperties = rtConfigProperties;
+        this.refreshKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(rtConfigProperties.getSecret()));
     }
 
     @Override
@@ -36,15 +43,21 @@ public class JwtServiceImpl implements JwtService {
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+    public String generateToken(UserDetails userDetails, TokenType tokenType) {
+        return generateToken(new HashMap<>(), userDetails, tokenType);
     }
 
     public String generateToken(
             Map<String, Object> claims,
-            UserDetails userDetails
+            UserDetails userDetails,
+            TokenType tokenType
     ) {
-        long expirationTimeLong = jwtConfigProperties.getExp() * 1000; // Convert seconds to milliseconds
+        long expirationTimeLong = 0;
+        if(tokenType == TokenType.accessToken) {
+            expirationTimeLong = jwtConfigProperties.getExp() * 1000; // Convert seconds to milliseconds
+        }if(tokenType == TokenType.refreshToken){
+            expirationTimeLong = rtConfigProperties.getExp() * 1000;
+        }
         final Date createdDate = new Date();
         final Date expirationDate = new Date(createdDate.getTime() + expirationTimeLong);
 
@@ -53,7 +66,8 @@ public class JwtServiceImpl implements JwtService {
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(createdDate)
                 .setExpiration(expirationDate)
-                .signWith(signInKey, SignatureAlgorithm.HS256)
+                .signWith(tokenType == TokenType.accessToken ? signInKey : refreshKey,
+                        SignatureAlgorithm.HS256)
                 .compact();
     }
 

@@ -1,6 +1,8 @@
 package courses.concordia.controller.v1.api;
 
 import courses.concordia.config.JwtConfigProperties;
+import courses.concordia.config.RtConfigProperties;
+import courses.concordia.config.TokenType;
 import courses.concordia.controller.v1.request.AuthenticationRequest;
 import courses.concordia.controller.v1.request.LoginRequest;
 import courses.concordia.controller.v1.request.SignupRequest;
@@ -35,6 +37,7 @@ public class AuthorizationController {
     private final TokenRepository tokenRepository;
     private final TokenBlacklistService tokenBlacklistService;
     private final JwtConfigProperties jwtConfigProperties;
+    private final RtConfigProperties rtConfigProperties;
 
     @GetMapping("/user")
     public Response<?> getUser(HttpServletRequest request) {
@@ -53,7 +56,8 @@ public class AuthorizationController {
     @PostMapping("/signin")
     public Response<?> signIn(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
         AuthenticationResponse res = userService.authenticate(loginRequest);
-        addTokenCookie(response, res.getToken());
+        addTokenCookie(response, res.getToken(),TokenType.accessToken);
+        addTokenCookie(response, res.getRefreshToken(),TokenType.refreshToken);
         return Response.ok().setPayload("Boom! You're in");
     }
 
@@ -91,7 +95,7 @@ public class AuthorizationController {
         );
         AuthenticationResponse res = userService.signup(userDto);
 
-        addTokenCookie(response, res.getToken());
+        addTokenCookie(response, res.getToken(),TokenType.accessToken);
 
         return Response.ok().setPayload("Almost there! Just need to verify your email to make sure it's really you.");
     }
@@ -136,12 +140,15 @@ public class AuthorizationController {
         response.addCookie(cookie);
     }
 
-    private void addTokenCookie(HttpServletResponse response, String token) {
-        ResponseCookie cookie = ResponseCookie.from(jwtConfigProperties.getTokenName(), token)
+    private void addTokenCookie(HttpServletResponse response, String token, TokenType tokenType) {
+        ResponseCookie cookie = ResponseCookie.from(
+                tokenType == TokenType.accessToken ?
+                        jwtConfigProperties.getTokenName() : rtConfigProperties.getTokenName(), token)
                 .httpOnly(true)
                 .secure(false)
                 .path("/")
-                .maxAge(jwtConfigProperties.getExp())
+                .maxAge(tokenType == TokenType.accessToken ?
+                        jwtConfigProperties.getExp() : rtConfigProperties.getExp())
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
     }
