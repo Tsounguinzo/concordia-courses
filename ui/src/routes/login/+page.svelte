@@ -48,9 +48,9 @@
             errors.username = 'Username is required';
         } else if (values.password == '') {
             errors.password = "A password is required";
-        } else if ($tabs.selected === "SingUp" && values.email == '') {
+        } else if ($tabs.selected === "SignUp" && values.email == '') {
             errors.email = "Your concordia email is required";
-        } else if ($tabs.selected === "SingUp" && !values.email.toLowerCase().endsWith('concordia.ca')) {
+        } else if ($tabs.selected === "SignUp" && !values.email.toLowerCase().endsWith('concordia.ca')) {
             errors.email = "Your email must be a concordia email";
         }
 
@@ -73,8 +73,8 @@
         }
     };
 
-    const keys = ['SingUp', 'SingIn'];
-    const tabs = createTabs({selected: 'SingUp'})
+    const keys = ['SignUp', 'SignIn'];
+    const tabs = createTabs({selected: 'SignUp'})
 </script>
 <Seo title="Login" description="Login to concordia.courses"/>
 <MultiStepLoader {loadingStates} {loading} duration={1000}/>
@@ -102,7 +102,7 @@
                 {validate}
                 onSubmit={async (values, actions) => {
                     let res;
-                    if ($tabs.selected === "SingUp") {
+                    if ($tabs.selected === "SignUp") {
                         loading = true;
                         res = await repo.signUp(values);
                     } else {
@@ -117,7 +117,7 @@
                 <div class='flex w-full justify-center'>
                     <div class='mx-4 flex w-full flex-col rounded-md bg-slate-50 p-6 dark:bg-neutral-800 md:mt-10 relative'>
                         <div class="z-10">
-                            {#if $tabs.selected === "SingUp"}
+                            {#if $tabs.selected === "SignUp"}
                                 <LoginForm {props}/>
                                 <Seperator text="Continue"/>
                                 <div class='flex flex-col md:m-4'>
@@ -142,6 +142,11 @@
                             {/if}
                             <Submit/>
                         </div>
+                        {#if false}
+                            <button class="z-10 text-left text-sm capitalize underline text-blue-500 hover:text-blue-300">
+                                forgot password
+                            </button>
+                        {/if}
                         <BackgroundBeams/>
                     </div>
                 </div>
