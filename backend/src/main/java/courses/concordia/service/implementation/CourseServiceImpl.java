@@ -47,7 +47,7 @@ public class CourseServiceImpl implements CourseService {
                 .collect(Collectors.toList());
     }
 
-    @Cacheable(value = "coursesCache", key = "{#limit, #offset, #filters.hashCode()}")
+    @Cacheable(value = "coursesCacheWithFilters", key = "{#limit, #offset, #filters.hashCode()}")
     @Override
     public List<CourseDto> getCoursesWithFilter(int limit, int offset, CourseFilterDto filters) {
         log.info("Retrieving courses with limit {}, offset {}, and filters {}", limit, offset, filters);

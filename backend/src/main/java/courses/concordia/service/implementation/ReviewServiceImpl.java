@@ -2,9 +2,6 @@ package courses.concordia.service.implementation;
 
 import courses.concordia.dto.mapper.ReviewMapper;
 import courses.concordia.dto.model.course.ReviewDto;
-import courses.concordia.exception.CCException;
-import courses.concordia.exception.EntityType;
-import courses.concordia.exception.ExceptionType;
 import courses.concordia.model.Review;
 import courses.concordia.repository.CourseRepository;
 import courses.concordia.repository.ReviewRepository;
@@ -14,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -32,7 +30,10 @@ public class ReviewServiceImpl implements ReviewService {
     private final MongoTemplate mongoTemplate;
     private final ModelMapper modelMapper;
 
-    @CacheEvict(value = "courseReviewsCache", key = "#review.courseId")
+    @Caching(evict = {
+            @CacheEvict(value = "courseReviewsCache", key = "#review.courseId"),
+            @CacheEvict(value = "coursesCacheWithFilters", allEntries = true)
+    })
     @Override
     public ReviewDto addReview(Review review) {
         List<Review> existingReviews = reviewRepository.findAllByCourseIdAndUserId(review.getCourseId(), review.getUserId());
@@ -44,7 +45,10 @@ public class ReviewServiceImpl implements ReviewService {
         return ReviewMapper.toDto(updatedReview);
     }
 
-    @CacheEvict(value = "courseReviewsCache", key = "#review.courseId")
+    @Caching(evict = {
+            @CacheEvict(value = "courseReviewsCache", key = "#review.courseId"),
+            @CacheEvict(value = "coursesCacheWithFilters", allEntries = true)
+    })
     @Override
     public ReviewDto updateReview(Review review) {
         Review updatedReview = reviewRepository.save(review);
@@ -52,7 +56,10 @@ public class ReviewServiceImpl implements ReviewService {
         return ReviewMapper.toDto(updatedReview);
     }
 
-    @CacheEvict(value = "courseReviewsCache", key = "#courseId")
+    @Caching(evict = {
+            @CacheEvict(value = "courseReviewsCache", key = "#courseId"),
+            @CacheEvict(value = "coursesCacheWithFilters", allEntries = true)
+    })
     @Override
     public void deleteReview(String courseId, String userId) {
         reviewRepository.deleteByCourseIdAndUserId(courseId, userId);

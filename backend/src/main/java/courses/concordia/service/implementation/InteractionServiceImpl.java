@@ -12,6 +12,7 @@ import courses.concordia.service.InteractionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -50,7 +51,10 @@ public class InteractionServiceImpl implements InteractionService {
                 .collect(Collectors.toList());
     }
 
-    @CacheEvict(value = "courseReviewsCache", key = "#interactionDto.courseId")
+    @Caching(evict = {
+            @CacheEvict(value = "courseReviewsCache", key = "#interactionDto.courseId"),
+            @CacheEvict(value = "coursesCacheWithFilters", allEntries = true)
+    })
     @Override
     public InteractionDto addInteraction(InteractionDto interactionDto) {
         Interaction interaction = new Interaction()
@@ -70,7 +74,10 @@ public class InteractionServiceImpl implements InteractionService {
         return InteractionMapper.toDto(interaction);
     }
 
-    @CacheEvict(value = "courseReviewsCache", key = "#courseId")
+    @Caching(evict = {
+            @CacheEvict(value = "courseReviewsCache", key = "#courseId"),
+            @CacheEvict(value = "coursesCacheWithFilters", allEntries = true)
+    })
     @Override
     public void deleteInteraction(String courseId, String userId, String referrer) {
         Query query = new Query(Criteria.where("courseId").is(courseId)
@@ -89,7 +96,10 @@ public class InteractionServiceImpl implements InteractionService {
         }
     }
 
-    @CacheEvict(value = "courseReviewsCache", key = "#courseId")
+    @Caching(evict = {
+            @CacheEvict(value = "courseReviewsCache", key = "#courseId"),
+            @CacheEvict(value = "coursesCacheWithFilters", allEntries = true)
+    })
     @Override
     public void deleteInteractions(String courseId, String userId) {
         Query query = new Query(Criteria.where("courseId").is(courseId).and("userId").is(userId));
