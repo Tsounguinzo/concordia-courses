@@ -1,23 +1,15 @@
 package courses.concordia.controller.v1.api;
 
-import courses.concordia.config.JwtConfigProperties;
-import courses.concordia.config.TokenType;
 import courses.concordia.dto.model.course.ReviewDto;
 import courses.concordia.dto.model.course.ReviewPayloadDto;
 import courses.concordia.dto.response.Response;
 import courses.concordia.model.Review;
-import courses.concordia.service.InteractionService;
-import courses.concordia.service.NotificationService;
-import courses.concordia.service.ReviewService;
-import courses.concordia.service.UserService;
-import courses.concordia.service.implementation.JwtServiceImpl;
-import jakarta.servlet.http.HttpServletRequest;
+import courses.concordia.model.User;
+import courses.concordia.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import static courses.concordia.util.Misc.getTokenFromCookie;
 
 @RequiredArgsConstructor
 @RestController
@@ -27,8 +19,6 @@ public class ReviewController {
     private final UserService userService;
     private final InteractionService interactionService;
     private final NotificationService notificationService;
-    private final JwtServiceImpl jwtService;
-    private final JwtConfigProperties jwtConfigProperties;
 
     @GetMapping
     public Response<?> getReviews(@RequestParam String userId) {
@@ -37,50 +27,41 @@ public class ReviewController {
     }
 
     @PostMapping
-    public Response<?> addReview(@RequestBody Review review, HttpServletRequest request) {
+    public Response<?> addReview(@RequestBody Review review) {
 
-        String userId = getUserIdFromToken(request);
-        if (userId == null) {
+        User user = userService.getAuthenticatedUser();
+        if(user == null) {
             return Response.unauthorized();
         }
-        review = review.setUserId(userId);
+        review = review.setUserId(user.get_id());
         ReviewDto addedReview = reviewService.addReview(review);
         notificationService.addNotifications(review);
         return Response.ok().setPayload(addedReview);
     }
 
     @PutMapping
-    public Response<?> updateReview(@RequestBody Review review, HttpServletRequest request) {
+    public Response<?> updateReview(@RequestBody Review review) {
 
-        String userId = getUserIdFromToken(request);
-        if (userId == null) {
+        User user = userService.getAuthenticatedUser();
+        if(user == null) {
             return Response.unauthorized();
         }
-        review = review.setUserId(userId);
+        review = review.setUserId(user.get_id());
         ReviewDto addedReview = reviewService.updateReview(review);
-        notificationService.updateNotifications(userId, review.getCourseId(), review);
+        notificationService.updateNotifications(user.get_id(), review.getCourseId(), review);
         return Response.ok().setPayload(addedReview);
     }
 
     @DeleteMapping
-    public Response<?> deleteReview(@RequestBody ReviewPayloadDto reviewPayloadDto, HttpServletRequest request) {
+    public Response<?> deleteReview(@RequestBody ReviewPayloadDto reviewPayloadDto) {
 
-        String userId = getUserIdFromToken(request);
-        if (userId == null) {
+        User user = userService.getAuthenticatedUser();
+        if(user == null) {
             return Response.unauthorized();
         }
-        reviewService.deleteReview(reviewPayloadDto.getCourseId(), userId);
-        interactionService.deleteInteractions(reviewPayloadDto.getCourseId(), userId);
-        notificationService.deleteNotification(userId, null, reviewPayloadDto.getCourseId());
+        reviewService.deleteReview(reviewPayloadDto.getCourseId(), user.get_id());
+        interactionService.deleteInteractions(reviewPayloadDto.getCourseId(), user.get_id());
+        notificationService.deleteNotification(user.get_id(), null, reviewPayloadDto.getCourseId());
         return Response.ok().setPayload("Review was deleted successfully");
-    }
-
-    private String getUserIdFromToken(HttpServletRequest request) {
-        String token = getTokenFromCookie(request, jwtConfigProperties.getTokenName());
-        if (token == null) {
-            return null;
-        }
-        String username = jwtService.extractUsername(token, TokenType.accessToken);
-        return userService.getUserIdFromUsername(username);
     }
 }

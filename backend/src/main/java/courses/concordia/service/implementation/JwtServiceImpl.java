@@ -35,7 +35,7 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public String extractUsername(String token) {
-        return extractUsername(token, TokenType.accessToken);
+        return extractUsername(token, TokenType.ACCESS_TOKEN);
     }
     @Override
     public String extractUsername(String token, TokenType tokenType) {
@@ -57,9 +57,9 @@ public class JwtServiceImpl implements JwtService {
             TokenType tokenType
     ) {
         long expirationTimeLong = 0;
-        if(tokenType == TokenType.accessToken) {
+        if(tokenType == TokenType.ACCESS_TOKEN) {
             expirationTimeLong = jwtConfigProperties.getExp() * 1000; // Convert seconds to milliseconds
-        }if(tokenType == TokenType.refreshToken){
+        }if(tokenType == TokenType.REFRESH_TOKEN){
             expirationTimeLong = rtConfigProperties.getExp() * 1000;
         }
         final Date createdDate = new Date();
@@ -70,7 +70,7 @@ public class JwtServiceImpl implements JwtService {
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(createdDate)
                 .setExpiration(expirationDate)
-                .signWith(tokenType == TokenType.accessToken ? signInKey : refreshKey,
+                .signWith(tokenType == TokenType.ACCESS_TOKEN ? signInKey : refreshKey,
                         SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -85,14 +85,13 @@ public class JwtServiceImpl implements JwtService {
         return extractClaim(token, Claims::getExpiration, tokenType);
     }
     public boolean isTokenExpired(String token, TokenType tokenType) {
-
-        return extractExpiration(token, tokenType).before(new Date());
+        return extractExpiration(token,tokenType).before(new Date());
     }
 
     private Claims extractAllClaims(String token, TokenType tokenType) throws JwtException{
         try {
             return Jwts.parserBuilder()
-                    .setSigningKey(tokenType == TokenType.accessToken ? signInKey : refreshKey)
+                    .setSigningKey(tokenType == TokenType.ACCESS_TOKEN ? signInKey : refreshKey)
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
@@ -103,9 +102,5 @@ public class JwtServiceImpl implements JwtService {
             log.error("Could not parse token: {}", e.getMessage());
             throw e;
         }
-    }
-
-    public String verifyRefreshToken(UserDetails userDetails, String refreshToken){
-        return generateToken(userDetails,TokenType.accessToken);
     }
 }

@@ -10,6 +10,7 @@ import courses.concordia.dto.model.user.UserResponseDto;
 import courses.concordia.dto.response.AuthenticationResponse;
 import courses.concordia.dto.response.Response;
 import courses.concordia.model.Token;
+import courses.concordia.model.User;
 import courses.concordia.repository.TokenRepository;
 import courses.concordia.service.CookieService;
 import courses.concordia.service.JwtService;
@@ -22,8 +23,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
-
-import static courses.concordia.util.Misc.getTokenFromCookie;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,42 +37,46 @@ public class AuthorizationController {
 
 
     @GetMapping("/user")
-    public Response<?> getUser(HttpServletRequest request) {
-        String token = getTokenFromCookie(request, jwtConfigProperties.getTokenName());
-        if (token == null || tokenBlacklistService.isTokenBlacklisted(token)) {
+    public Response<?> getUser() {
+        User user = userService.getAuthenticatedUser();
+        if(user == null) {
             return Response.unauthorized();
         }
-
-        String username = jwtService.extractUsername(token, TokenType.accessToken);
-        boolean isVerified = userService.isUserVerified(username);
-        String userId = userService.getUserIdFromUsername(username);
-
-        return Response.ok().setPayload(new UserResponseDto(userId, username, isVerified));
+        return Response.ok().setPayload(UserResponseDto.fromEntity(user));
     }
 
     @PostMapping("/signin")
     public Response<?> signIn(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
         AuthenticationResponse res = userService.authenticate(loginRequest);
-        cookieService.addTokenCookie(response, res.getToken(),TokenType.accessToken);
-        cookieService.addTokenCookie(response, res.getRefreshToken(),TokenType.refreshToken);
+        cookieService.addTokenCookie(response, res.getToken(),TokenType.ACCESS_TOKEN);
+        cookieService.addTokenCookie(response, res.getRefreshToken(),TokenType.REFRESH_TOKEN);
         return Response.ok().setPayload("Boom! You're in");
     }
 
     @GetMapping("/signout")
     public Response<?> signOut(HttpServletRequest request, HttpServletResponse response) {
-        String token = getTokenFromCookie(request, jwtConfigProperties.getTokenName());
+        String accessToken = cookieService.getTokenFromCookie(request, jwtConfigProperties.getTokenName());
+        String refreshToken = cookieService.getTokenFromCookie(request, jwtConfigProperties.getTokenName());
 
-        if (token == null || tokenBlacklistService.isTokenBlacklisted(token)) {
-            return Response.unauthorized();
+        if (accessToken == null && refreshToken == null) {
+            // If both tokens are missing, there's nothing to do. User might already be signed out.
+            return Response.ok().setPayload("No active session found or already signed out.");
         }
 
-        Date expiration = jwtService.extractExpiration(token,TokenType.accessToken);
-        long durationInSeconds = (expiration.getTime() - System.currentTimeMillis()) / 1000;
-        if (durationInSeconds > 0) {
-            tokenBlacklistService.blacklistToken(token, durationInSeconds);
+        if (accessToken != null && !tokenBlacklistService.isTokenBlacklisted(accessToken)) {
+            Date accessTokenExpiration = jwtService.extractExpiration(accessToken, TokenType.ACCESS_TOKEN);
+            long accessTokenDurationInSeconds = Math.max(0, (accessTokenExpiration.getTime() - System.currentTimeMillis()) / 1000);
+            tokenBlacklistService.blacklistToken(accessToken, accessTokenDurationInSeconds);
         }
-        cookieService.clearTokenCookie(response, TokenType.accessToken);
-        cookieService.clearTokenCookie(response, TokenType.refreshToken);
+
+        if (refreshToken != null && !tokenBlacklistService.isTokenBlacklisted(refreshToken)) {
+            Date refreshTokenExpiration = jwtService.extractExpiration(refreshToken, TokenType.REFRESH_TOKEN);
+            long refreshTokenDurationInSeconds = Math.max(0, (refreshTokenExpiration.getTime() - System.currentTimeMillis()) / 1000);
+            tokenBlacklistService.blacklistToken(refreshToken, refreshTokenDurationInSeconds);
+        }
+
+        cookieService.clearTokenCookie(response, TokenType.ACCESS_TOKEN);
+        cookieService.clearTokenCookie(response, TokenType.REFRESH_TOKEN);
 
         return Response.ok().setPayload("And you're out! Come back soon!");
     }
@@ -94,8 +97,8 @@ public class AuthorizationController {
         );
         AuthenticationResponse res = userService.signup(userDto);
 
-        cookieService.addTokenCookie(response, res.getToken(),TokenType.accessToken);
-        cookieService.addTokenCookie(response, res.getRefreshToken(),TokenType.refreshToken);
+        cookieService.addTokenCookie(response, res.getToken(),TokenType.ACCESS_TOKEN);
+        cookieService.addTokenCookie(response, res.getRefreshToken(),TokenType.REFRESH_TOKEN);
 
         return Response.ok().setPayload("Almost there! Just need to verify your email to make sure it's really you.");
     }
@@ -120,15 +123,13 @@ public class AuthorizationController {
     }
 
     @GetMapping("/resend_token")
-    public Response<?> resendVerificationToken(HttpServletRequest request) {
-        String token = getTokenFromCookie(request, jwtConfigProperties.getTokenName());
-        if (token == null) {
+    public Response<?> resendVerificationToken() {
+        User user = userService.getAuthenticatedUser();
+        if(user == null) {
             return Response.unauthorized();
         }
 
-        String username = jwtService.extractUsername(token,TokenType.accessToken);
-
-        userService.resendToken(username);
+        userService.resendToken(user.getUsername());
         return Response.ok().setPayload("Your new code is in your inbox!");
     }
 
@@ -137,6 +138,7 @@ public class AuthorizationController {
         userService.forgotPassword(username);
         return Response.ok().setPayload("Your reset password link is in your inbox!");
     }
+
     @GetMapping("/reset_password")
     public Response<?> resetPassword(@RequestParam String token) {
         Token t = tokenRepository.findByToken(token).orElse(null);
@@ -153,6 +155,4 @@ public class AuthorizationController {
         String username = userService.verifyPasswordResetToken(token);
         return Response.ok().setPayload(username);
     }
-
 }
-

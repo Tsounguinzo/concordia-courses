@@ -16,7 +16,6 @@ import courses.concordia.service.EmailService;
 import courses.concordia.service.JwtService;
 import courses.concordia.service.TokenGenerator;
 import courses.concordia.service.UserService;
-import courses.concordia.service.implementation.token.AlphanumericTokenGenerator;
 import courses.concordia.service.implementation.token.UUIDTokenGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -66,8 +65,8 @@ public class UserServiceImpl implements UserService {
 
         emailService.sendSimpleMailMessage(user.getUsername(), user.getEmail(), token.getToken());
         authenticate(userDto.getUsername(), userDto.getPassword());
-        var jwtToken = jwtService.generateToken(user, TokenType.accessToken);
-        var refreshToken = jwtService.generateToken(user, TokenType.refreshToken);
+        var jwtToken = jwtService.generateToken(user, TokenType.ACCESS_TOKEN);
+        var refreshToken = jwtService.generateToken(user, TokenType.REFRESH_TOKEN);
         return new AuthenticationResponse(jwtToken, refreshToken);
     }
 
@@ -82,8 +81,8 @@ public class UserServiceImpl implements UserService {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             User user = (User) authentication.getPrincipal();
-            String jwtToken = jwtService.generateToken(user, TokenType.accessToken);
-            String refreshToken = jwtService.generateToken(user, TokenType.refreshToken);
+            String jwtToken = jwtService.generateToken(user, TokenType.ACCESS_TOKEN);
+            String refreshToken = jwtService.generateToken(user, TokenType.REFRESH_TOKEN);
 
 
             log.info("Authentication successful for user: {}", loginRequest.getUsername());
@@ -122,7 +121,7 @@ public class UserServiceImpl implements UserService {
         log.info("Resending token to user: {}", username);
 
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> exception(USER, ENTITY_NOT_FOUND, username));
+                .orElseThrow(() -> exception(USER, ENTITY_NOT_FOUND));
 
         if (user.isVerified()) {
             throw exception(USER, CUSTOM_EXCEPTION, username + " is already verified.");
@@ -179,6 +178,16 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> exception(USER, ENTITY_NOT_FOUND));
 
         return user.getUsername();
+    }
+
+    @Override
+    public User getAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
+
+        return (User) authentication.getPrincipal();
     }
 
     @Override

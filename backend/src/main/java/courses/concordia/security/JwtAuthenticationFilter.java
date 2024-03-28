@@ -7,6 +7,7 @@ import courses.concordia.service.CookieService;
 import courses.concordia.service.JwtService;
 import courses.concordia.service.TokenBlacklistService;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,8 +25,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-import static courses.concordia.util.Misc.getTokenFromCookie;
-
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -42,45 +41,72 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
         try {
-            String jwtToken = getTokenFromCookie(request, jwtConfigProperties.getTokenName());
-            final String refreshToken = getTokenFromCookie(request, rtConfigProperties.getTokenName());
+            String jwtToken = cookieService.getTokenFromCookie(request, jwtConfigProperties.getTokenName());
+            String refreshToken = cookieService.getTokenFromCookie(request, rtConfigProperties.getTokenName());
+            UserDetails userDetails = null;
 
-            //TODO : check token validation
-            // check token validation
-            if( jwtToken != null && jwtService.isTokenExpired(jwtToken, TokenType.accessToken) ){
-                cookieService.clearTokenCookie(response, TokenType.accessToken);
-            }
-
-            // if jwt has expired but refresh token is valid, grant user a new jwt
-            if(jwtToken == null && refreshToken != null){
-                UserDetails userDetails = userDetailsService.loadUserByUsername(jwtService.extractUsername(refreshToken,TokenType.refreshToken));
-                jwtToken = jwtService.verifyRefreshToken(userDetails, refreshToken);
-                cookieService.addTokenCookie(response, jwtToken,TokenType.accessToken);
-
-            }
-
-            // check jwt validation
-            // check if jwt has been blacklisted or null
             if (jwtToken != null && !tokenBlacklistService.isTokenBlacklisted(jwtToken)) {
-                String username = jwtService.extractUsername(jwtToken, TokenType.accessToken);
+                userDetails = authenticateUsingJwtToken(jwtToken, request);
+            }
 
-                if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                    if (jwtService.isTokenValid(jwtToken, userDetails,TokenType.accessToken)) {
-                        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                                userDetails, null, userDetails.getAuthorities());
-                        authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                        SecurityContextHolder.getContext().setAuthentication(authToken);
-                    }
-                }
+            // If JWT authentication failed but refresh token is valid and not blacklisted
+            if (userDetails == null && refreshToken != null && !tokenBlacklistService.isTokenBlacklisted(refreshToken)) {
+                userDetails = authenticateUsingRefreshToken(refreshToken, request, response);
+            }
+
+            // Continue filter chain if authentication succeeds
+            if (userDetails != null) {
+                setAuthenticationContext(userDetails, request);
             }
         } catch (ExpiredJwtException eje) {
-            log.warn("Expired JWT token: " + eje.getMessage());
-            return;
+            log.warn("Expired JWT token: {}", eje.getMessage());
         } catch (Exception ex) {
-            log.error("JWT processing error: " + ex.getMessage());
+            log.error("JWT processing error: {}", ex.getMessage());
         }
 
         filterChain.doFilter(request, response);
     }
+
+    private UserDetails authenticateUsingJwtToken(String jwtToken, HttpServletRequest request) {
+        try {
+            String username = jwtService.extractUsername(jwtToken, TokenType.ACCESS_TOKEN);
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                if (jwtService.isTokenValid(jwtToken, userDetails, TokenType.ACCESS_TOKEN)) {
+                    setAuthenticationContext(userDetails, request);
+                    return userDetails;
+                }
+            }
+        } catch (JwtException e) {
+            log.info("Invalid JWT token: {}", e.getMessage());
+        }
+        return null;
+    }
+
+    private UserDetails authenticateUsingRefreshToken(String refreshToken, HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String username = jwtService.extractUsername(refreshToken, TokenType.REFRESH_TOKEN);
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                if (jwtService.isTokenValid(refreshToken, userDetails, TokenType.REFRESH_TOKEN)) {
+                    log.debug("Generating new access token for user: {}", userDetails.getUsername());
+                    String newJwtToken = jwtService.generateToken(userDetails, TokenType.ACCESS_TOKEN);
+                    cookieService.addTokenCookie(response, newJwtToken, TokenType.ACCESS_TOKEN);
+                    setAuthenticationContext(userDetails, request);
+                    return userDetails;
+                }
+            }
+        } catch (JwtException e) {
+            log.info("Failed to process refresh token: {}", e.getMessage());
+        }
+        return null;
+    }
+
+    private void setAuthenticationContext(UserDetails userDetails, HttpServletRequest request) {
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                userDetails, null, userDetails.getAuthorities());
+        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+
 }
