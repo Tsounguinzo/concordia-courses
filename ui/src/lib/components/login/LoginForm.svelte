@@ -50,7 +50,7 @@
         </div>
     </div>
     <div class='flex max-sm:hidden sm:w-1/2 items-center justify-center'>
-        <a href='https://concordia-groups.web.app' class='-m-1.5 p-1.5'>
+        <a href='/' class='-m-1.5 p-1.5'>
             <img class='sm:h-28 w-auto' src='/logo.png' alt='Concordia courses logo'/>
         </a>
     </div>

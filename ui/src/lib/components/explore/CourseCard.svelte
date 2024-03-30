@@ -1,8 +1,9 @@
 <script lang="ts">
-    import {courseIdToUrlParam, spliceCourseCode} from "$lib/utils.js";
+    import {courseIdToUrlParam, experienceToIcon, spliceCourseCode} from "$lib/utils.js";
     import Highlight from "$lib/components/common/Highlight.svelte";
     import type {Course} from "$lib/model/Course";
     import CourseTerms from "$lib/components/common/CourseTerms.svelte";
+    import {twMerge} from "tailwind-merge";
 
     export let course: Course;
     export let className: string;
@@ -12,11 +13,12 @@
         course.description.length > 400
             ? course.description.slice(0, 400) + ' ...'
             : course.description;
+
+    $: [color, icon] = experienceToIcon(course.avgExperience);
 </script>
 
-<a
-        href={`/course/${courseIdToUrlParam(course._id)}`}
-        class={className}
+<a href={`/course/${courseIdToUrlParam(course._id)}`}
+        class={twMerge("relative", className)}
 >
     <div class='max-w-xl rounded-lg bg-slate-50 p-5 duration-150 hover:bg-gray-50 dark:bg-neutral-800'>
         <div class='mb-2 font-bold dark:text-gray-200'>
@@ -38,5 +40,8 @@
                 {courseDescriptionShortened}
             {/if}
         </div>
+    </div>
+    <div class={twMerge("absolute top-4 right-4", color)}>
+        {@html icon}
     </div>
 </a>

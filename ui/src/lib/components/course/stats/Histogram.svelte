@@ -11,6 +11,7 @@
     export let height: number;
     export let gap: number = 0;
     export let className: string = '';
+    export let caption: string = 'Distribution';
 
     const loaded = writable(false);
 
@@ -41,4 +42,7 @@
         {/each}
     </div>
     <div class='absolute bottom-4 h-[1px] w-full bg-gray-300 dark:bg-gray-600'/>
+</div>
+<div class={twMerge('text-center my-4 text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-gray-400', className)}>
+    {caption}
 </div>

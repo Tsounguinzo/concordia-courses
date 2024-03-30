@@ -8,5 +8,8 @@ export type Course = {
     description: string;
     catalog: string;
     title: string;
+    avgDifficulty: number;
+    avgExperience: number;
+    reviewCount: number;
     schedules: Schedule[];
 };

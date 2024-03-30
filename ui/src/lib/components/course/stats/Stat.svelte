@@ -15,7 +15,7 @@
     {:else }
         <Star class='-mt-0.5 stroke-blue-600' size={18}/>
     {/if}
-    <div class={twMerge('mb-0.5 text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-gray-400')}>
+    <div class='mb-0.5 text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-gray-400'>
         {title}
     </div>
 </div>

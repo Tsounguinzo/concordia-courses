@@ -187,7 +187,7 @@ public class UserServiceImpl implements UserService {
             return null;
         }
 
-        return (User) authentication.getPrincipal();
+        return authentication.getPrincipal() instanceof User ? (User) authentication.getPrincipal() : null;
     }
 
     @Override

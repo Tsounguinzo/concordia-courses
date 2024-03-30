@@ -4,11 +4,11 @@
     import Autocomplete from "$lib/components/common/filter/Autocomplete.svelte";
     import type {Writable} from "svelte/store";
     import {writable} from "svelte/store";
-    import {RefreshCw} from "lucide-svelte";
+    import {Eraser} from "lucide-svelte";
     import {createEventDispatcher} from "svelte";
 
     export let showAllReviews: Writable<boolean>;
-    let rotate = false;
+    let reset = false;
 
     const sortTypes = [
         'Most Recent',
@@ -32,10 +32,10 @@
 
     function resetFilters() {
         sortBy.set('Most Recent')
-        rotate = true;
+        reset = true;
 
         setTimeout(() => {
-            rotate = false;
+            reset = false;
         }, 500);
     }
 </script>
@@ -52,7 +52,7 @@
                         </h2>
                         <div class='relative z-10'>
                             <Autocomplete
-                                    reset={rotate}
+                                    {reset}
                                     options={sortTypes}
                                     storeValue={sortBy}
                             />
@@ -74,8 +74,8 @@
                 </div>
             </div>
             <ResetButton className='absolute -top-4 right-2 ml-auto'>
-                <button on:click={resetFilters} class:rotate-once={rotate}>
-                    <RefreshCw class={'h-5 w-5 text-gray-500 dark:text-neutral-400'}/>
+                <button on:click={resetFilters} class:erase-effect={reset}>
+                    <Eraser class='h-5 w-5 text-gray-500 dark:text-neutral-400'/>
                 </button>
             </ResetButton>
         </div>

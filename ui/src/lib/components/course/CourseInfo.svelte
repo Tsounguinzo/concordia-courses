@@ -8,6 +8,8 @@
     import CourseInfoStats from "$lib/components/course/stats/CourseInfoStats.svelte";
     import {onMount} from "svelte";
     import {page} from "$app/stores";
+    import {experienceToIcon} from "$lib/utils";
+    import {twMerge} from "tailwind-merge";
 
     export let course: Course;
     export let reviews: Review[];
@@ -15,6 +17,7 @@
     const user = $page.data.user
 
     let isSubscribed = false;
+    $: [color, icon] = experienceToIcon(course.avgExperience);
 
     $: if (course) {
         if (user) {
@@ -128,5 +131,8 @@
                 allReviews={reviews}
                 className='lg:mr-8'
         />
+    </div>
+    <div class={twMerge("absolute top-4 right-4", color)}>
+        {@html icon}
     </div>
 </div>

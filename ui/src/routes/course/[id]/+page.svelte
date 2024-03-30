@@ -26,6 +26,7 @@
     const currentTerms = getCurrentTerms();
 
     let firstFetch = true;
+    const numberOfReviewsToShow = 5;
     const addReviewOpen = writable(false);
     const allReviews = writable<Review[] | undefined>(undefined);
     const course = writable<Course | null | undefined>(undefined);
@@ -186,7 +187,7 @@
         <div class='py-2.5'/>
         <div class='hidden gap-x-6 lg:grid lg:grid-cols-5'>
             <div class='col-span-3'>
-                <h2 class='text-center mb-2 text-xl font-bold leading-none text-gray-700 dark:text-gray-200'>
+                <h2 class:hidden={!$course?.schedules?.length} class='text-center mb-2 text-xl font-bold leading-none text-gray-700 dark:text-gray-200'>
                     Course Schedule
                 </h2>
                 <SchedulesDisplay
@@ -221,7 +222,7 @@
                     {#if $showingReviews}
                         {#each $showingReviews
                             .filter((review) => (user ? review.userId !== user?.id : true))
-                            .slice(0, $showAllReviews ? $showingReviews.length : 8) as review, i (i)}
+                            .slice(0, $showAllReviews ? $showingReviews.length : numberOfReviewsToShow) as review, i (i)}
                             <CourseReview
                                     canModify={Boolean(user && review.userId === user?.id)}
                                     handleDelete={() => handleDelete(review)}
@@ -234,7 +235,7 @@
                     {/if}
 
                 </div>
-                {#if !$showAllReviews && $showingReviews.length > 8}
+                {#if !$showAllReviews && $showingReviews.length > numberOfReviewsToShow}
                     <div class='flex justify-center text-gray-400 dark:text-neutral-500'>
                         <button
                                 class='h-full w-full border border-dashed border-neutral-400 py-2 dark:border-neutral-500'
@@ -254,7 +255,7 @@
             <div class='mb-4 flex'>
                 <CourseRequirements {course}/>
             </div>
-            <h2 class='text-center mb-2 text-xl font-bold leading-none text-gray-700 dark:text-gray-200'>
+            <h2 class:hidden={!$course?.schedules?.length} class='text-center mb-2 text-xl font-bold leading-none text-gray-700 dark:text-gray-200'>
                 Course Schedule
             </h2>
             <SchedulesDisplay course={$course}/>
@@ -292,7 +293,7 @@
                                 .filter((review) =>
                                     user ? review.userId !== user?.id : true
                                 )
-                                .slice(0, $showAllReviews ? $showingReviews.length : 8) as review, i (i)}
+                                .slice(0, $showAllReviews ? $showingReviews.length : numberOfReviewsToShow) as review, i (i)}
                                 <CourseReview
                                         canModify={Boolean(user && review.userId === user?.id)}
                                         handleDelete={() => handleDelete(review)}
@@ -305,7 +306,7 @@
                         {/if}
 
                     </div>
-                    {#if !$showAllReviews && $showingReviews.length > 8}
+                    {#if !$showAllReviews && $showingReviews.length > numberOfReviewsToShow}
                         <div class='flex justify-center text-gray-400 dark:text-neutral-500'>
                             <button
                                     class='h-full w-full border border-dashed border-neutral-400 py-2 dark:border-neutral-500'

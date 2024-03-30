@@ -119,6 +119,7 @@
                     <div class='mx-4 flex w-full flex-col rounded-md bg-slate-50 p-6 dark:bg-neutral-800 md:mt-10 relative'>
                         <div class="z-10">
                             {#if $tabs.selected === "SignUp"}
+                                <h1 class='text-3xl font-bold text-center text-gray-800 dark:text-gray-200'>Create Account</h1>
                                 <LoginForm {props}/>
                                 <Seperator text="Continue"/>
                                 <div class='flex flex-col md:m-4'>
@@ -139,6 +140,7 @@
                                     </div>
                                 </div>
                             {:else }
+                                <h1 class='text-3xl font-bold text-center text-gray-800 dark:text-gray-200'>Login</h1>
                                 <LoginForm {props}/>
                             {/if}
                             <Submit/>

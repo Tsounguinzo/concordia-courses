@@ -44,7 +44,7 @@
         >
             <div class='md:rounded-xl md:p-2'>
                 <Stat
-                        title='Experience'
+                        title='Experience Score'
                         value={round2Decimals(averageExperience)}
                         icon='star'
                         variant={variant}
@@ -57,12 +57,13 @@
                         max={5}
                         gap={10}
                         className='mx-auto hidden sm:block'
+                        caption="Experience Distribution"
                 />
             </div>
             <div class='py-1.5'/>
             <div class='md:rounded-xl md:p-2'>
                 <Stat
-                        title='Difficulty'
+                        title='Difficulty Score'
                         value={round2Decimals(averageDifficulty)}
                         icon='flame'
                         variant={variant}
@@ -75,6 +76,7 @@
                         max={5}
                         gap={10}
                         className='mx-auto hidden sm:block'
+                        caption="Difficulty Distribution"
                 />
             </div>
         </div>

@@ -8,7 +8,7 @@
     import {sortByOptions, termsOptions} from "$lib/types";
     import {levelsOptions, moreLevelsOptions, termColorMap, termToIcon} from "$lib/utils";
     import type {Writable} from "svelte/store";
-    import {RefreshCw} from "lucide-svelte";
+    import {Eraser} from "lucide-svelte";
     import Seperator from "$lib/components/common/Seperator.svelte";
 
     export let selectedSubjects: Writable<string[]>;
@@ -18,17 +18,17 @@
     export let variant: 'mobile' | 'desktop';
 
 
-    let rotate = false;
+    let reset = false;
 
     function resetFilters() {
         selectedSubjects.set([]);
         selectedLevels.set([]);
         selectedTerms.set([]);
         sortBy.set('')
-        rotate = true;
+        reset = true;
 
         setTimeout(() => {
-            rotate = false;
+            reset = false;
         }, 500);
     }
 </script>
@@ -38,19 +38,19 @@
         'relative flex h-fit flex-col flex-wrap rounded-lg bg-slate-50 px-8 py-6 dark:bg-neutral-800 dark:text-gray-200'
       )}>
     <ResetButton className='absolute right-4 top-4'>
-        <button on:click={resetFilters} class:rotate-once={rotate}>
-            <RefreshCw class={'h-5 w-5 text-gray-500 dark:text-neutral-400'}/>
+        <button on:click={resetFilters} class:erase-effect={reset}>
+            <Eraser class={'h-5 w-5 text-gray-500 dark:text-neutral-400'}/>
         </button>
     </ResetButton>
     <h1 class='text-sm font-semibold text-gray-600 dark:text-gray-400'>Sort By</h1>
     <div class='py-1'/>
     <div class='relative z-20'>
-        <Autocomplete reset={rotate} options={sortByOptions} storeValue={sortBy}/>
+        <Autocomplete {reset} options={sortByOptions} storeValue={sortBy}/>
     </div>
     <div class='py-2.5'/>
     <h1 class='text-sm font-semibold text-gray-600 dark:text-gray-400'>Subject</h1>
     <div class='py-1'/>
-    <div class='relative z-10'><MultiSelect reset={rotate} options={courseCodes} values={selectedSubjects}/>
+    <div class='relative z-10'><MultiSelect {reset} options={courseCodes} values={selectedSubjects}/>
     </div>
     <div class='py-2.5'/>
     <h1 class='text-sm font-semibold text-gray-600 dark:text-gray-400'>Level</h1>

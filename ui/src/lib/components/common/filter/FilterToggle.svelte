@@ -12,7 +12,7 @@
     <div class='text-sm font-medium text-gray-600 dark:text-gray-400'>
         Filter...
     </div>
-    <ChevronUp class="h-5 w-5 text-gray-500 {$filter.expanded ? 'rotate-180 transform' : ''}"/>
+    <ChevronUp class="h-5 w-5 text-gray-500 {$filter.expanded ? 'transform' : 'rotate-180'}"/>
 </button>
 {#if $filter.expanded}
     <div use:filter.panel>
