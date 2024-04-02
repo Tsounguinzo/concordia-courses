@@ -6,7 +6,9 @@
     import {Toaster} from "svelte-sonner";
     import Footer from "$lib/components/layout/Footer.svelte";
     import {page} from "$app/stores";
+    import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 
+    injectSpeedInsights();
     onMount(() => darkModeOn.set(localStorage.getItem('theme') === 'dark'))
 </script>
 
