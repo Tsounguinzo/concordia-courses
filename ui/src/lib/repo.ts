@@ -6,6 +6,7 @@ import type {Notification} from './model/Notification';
 import type {Review} from './model/Review';
 import type {Subscription} from './model/Subscription';
 import type {User} from './model/User';
+import {backendUrl} from "$lib/constants";
 
 const prefix = '/api/v1';
 
@@ -276,7 +277,7 @@ export const repo = {
         (input: RequestInfo | URL, init?: RequestInit | undefined): Promise<Response>;
         (arg0: string): any;
     }): Promise<string|null> {
-        const backendURL = 'http://localhost:8080/api/v1/auth/user';
+        const backendURL = `${backendUrl}/api/v1/auth/user`;
         const response = await fetch(backendURL);
         if(response.ok){
             const body = await response.json();
@@ -286,7 +287,7 @@ export const repo = {
     },
 
     async resetPassword(token: string): Promise<{ username: string, error: string }> {
-        const backendURL = `http://localhost:8080/api/v1/auth/reset_password?token=${token}`;
+        const backendURL = `${backendUrl}/api/v1/auth/reset_password?token=${token}`;
         const response = await fetch(backendURL);
         const body = await response.json()
         return {

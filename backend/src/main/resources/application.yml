@@ -1,10 +1,17 @@
 spring:
+
   data:
     mongodb:
       uri: ${MONGODB_URI:mongodb://localhost:27017/db}
       database: db
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+
   profiles:
     active: default
+
   cache:
     type: redis
 
@@ -23,12 +30,12 @@ spring:
 jwt:
   tokenName: "accessToken"
   secret: ${JWT_SECRET:5CE74751FAF5ED2877C51A93021368E0FD3C954444CF1F7136720388EE100998}
-  exp: 86400 # 24 hours
+  exp: ${JWT_EXP:86400} # 24 hours default
 
 rt:
   tokenName: "refreshToken"
   secret: ${REFRESH_SECRET:FFB8EA10274A8B65C913736BD9A4CD56200079ADBBD66865C72EF3D17C7E80B6}
-  exp: 2592000 # 30 days
+  exp: ${REFRESH_EXP:2592000} # 30 days default
 
 app:
   init-db: false

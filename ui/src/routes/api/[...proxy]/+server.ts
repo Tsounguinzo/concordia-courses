@@ -1,4 +1,4 @@
-const baseUrl = "http://localhost:8080";
+import {backendUrl} from "$lib/constants";
 
 export const GET = async ({ url, request }) => {
     return await sendRequest({ request, url, method: 'GET' });
@@ -38,7 +38,7 @@ export const DELETE = async ({ url, request }) => {
 
 
 const sendRequest = async ({ request, url, method, requestBody = null }) => {
-    const query = url.search ? `${baseUrl}${url.pathname}${url.search}` : `${baseUrl}${url.pathname}`;
+    const query = url.search ? `${backendUrl}${url.pathname}${url.search}` : `${backendUrl}${url.pathname}`;
     try {
         const options: RequestOptions = {
             method,
