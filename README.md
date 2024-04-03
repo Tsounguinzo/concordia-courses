@@ -128,7 +128,7 @@ The Svelte-based frontend is hosted on [Vercel](https://vercel.com), which provi
 
 #### MongoDB Hosting on MongoDB Atlas
 
-The MongoDB database is hosted on an M1 tier AWS cluster via [MongoDB Atlas](https://www.mongodb.com/cloud/atlas). This fully managed cloud database is configured for high availability and scalability. The M1 tier on AWS offers a cost-effective solution with sufficient resources for development and initial production use. Ensure your Spring Boot backend is configured with the connection string provided by MongoDB Atlas.
+The MongoDB database is hosted on an M0 tier AWS cluster via [MongoDB Atlas](https://www.mongodb.com/cloud/atlas). This fully managed cloud database is configured for high availability and scalability. The M0 tier on AWS offers a free solution with sufficient resources for development and initial production use. Ensure your Spring Boot backend is configured with the connection string provided by MongoDB Atlas.
 
 #### Spring Boot Backend Hosting on a VPS
 
@@ -147,10 +147,7 @@ Session management and caching are powered by Redis, hosted on [Redis Cloud](htt
 - Ensure your MongoDB Atlas cluster is up and running. Configure IP whitelisting and retrieve your connection string for the Spring Boot application.
 
 3. **Spring Boot Application Deployment:**
-- Deploy your Spring Boot application JAR file to your VPS. Use SSH to access your server, upload your JAR file, and run it with:
-  ```bash
-  java -jar concordia-courses.jar
-  ```
+- Push the latest changes to your GitHub repository connected to Railway for automatic deployment.
 - Set environment variables or use an `application.yml` file for production configurations, including MongoDB and Redis connection strings.
 
 4. **Redis Cloud Setup:**
