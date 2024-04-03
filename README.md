@@ -1,11 +1,13 @@
 # Conocrdia.courses
 
-<img src="https://github.com/Tsounguinzo/concordia-courses/blob/main/ui/static/logo.png" align="right"
-alt="concordia.courses logo" width="120" height="178">
+
 
 Welcome to the Course Review Platform, a comprehensive solution designed to empower students to share and discover reviews about courses they've attended. This platform is built using Svelte for the frontend, providing a modern and reactive user interface, and Spring Boot for the backend, ensuring a robust and scalable API.
 
 ## Table of Contents
+
+<img src="https://github.com/Tsounguinzo/concordia-courses/blob/main/ui/static/logo.png" align="right"
+alt="concordia.courses logo">
 
 - [Features](#features)
 - [Technology Stack](#technology-stack)
@@ -26,6 +28,7 @@ Welcome to the Course Review Platform, a comprehensive solution designed to empo
 - [Contributing](#contributing)
 - [Contact](#contact)
 - [Mentions](#mentions)
+
 ## Features
 
 - **Course Reviews:** Users can post reviews for courses they've attended, providing ratings and experience.
