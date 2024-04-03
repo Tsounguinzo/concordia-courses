@@ -7,8 +7,11 @@
     import Footer from "$lib/components/layout/Footer.svelte";
     import {page} from "$app/stores";
     import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
+    import { inject } from '@vercel/analytics'
+    import {dev} from "$app/environment";
 
     injectSpeedInsights();
+    inject({ mode: dev ? 'development' : 'production' });
     onMount(() => darkModeOn.set(localStorage.getItem('theme') === 'dark'))
 </script>
 
