@@ -43,6 +43,24 @@ type PersistConfigWithStore = BasePersistConfig & {
 };
 type PersistConfig = PersistConfigWithKey | PersistConfigWithStore;
 
+const load_cached_values = (
+    element: HTMLElement,
+    store: Writable<any>,
+    config: {
+        ignorePassword: boolean;
+    }
+) => {
+    for (const [key, value] of Object.entries(get(store))) {
+        if (element.attributes.getNamedItem('name')?.value === key) {
+            load_data(element, value, config);
+        }
+        const inputs = element.querySelectorAll(`[name="${key}"]`);
+        for (const input of inputs) {
+            load_data(input, value, config);
+        }
+    }
+};
+
 export function persist(element: HTMLElement, config: PersistConfig) {
     const _config = {
         persistOn: 'input',
@@ -106,9 +124,8 @@ function save_input(
     if (input instanceof HTMLSelectElement) {
         store.set({ ...value, [input.name]: input.selectedIndex });
     } else if (input instanceof HTMLInputElement) {
-        if (input.type === 'password' && config.ignorePassword) {
-            return;
-        } else if (input.type === 'checkbox') {
+        if (input.type === 'password' && config.ignorePassword) {}
+        else if (input.type === 'checkbox') {
             store.set({ ...value, [input.name]: input.checked ? input.value : null });
         } else if (input.type === 'radio') {
             if (input.checked) {
@@ -121,24 +138,6 @@ function save_input(
         store.set({ ...value, [input.name]: input.value });
     }
 }
-
-const load_cached_values = (
-    element: HTMLElement,
-    store: Writable<any>,
-    config: {
-        ignorePassword: boolean;
-    }
-) => {
-    for (const [key, value] of Object.entries(get(store))) {
-        if (element.attributes.getNamedItem('name')?.value === key) {
-            load_data(element, value, config);
-        }
-        const inputs = element.querySelectorAll(`[name="${key}"]`);
-        for (const input of inputs) {
-            load_data(input, value, config);
-        }
-    }
-};
 
 function load_data(element: Element, value: unknown, config: { ignorePassword: boolean }) {
     if (element instanceof HTMLInputElement) {

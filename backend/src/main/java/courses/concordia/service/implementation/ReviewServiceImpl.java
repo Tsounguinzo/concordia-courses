@@ -31,29 +31,29 @@ public class ReviewServiceImpl implements ReviewService {
     private final ModelMapper modelMapper;
 
     @Caching(evict = {
-            @CacheEvict(value = "courseReviewsCache", key = "#review.courseId"),
+            @CacheEvict(value = "courseReviewsCache", key = "#reviewDto.courseId"),
             @CacheEvict(value = "coursesCacheWithFilters", allEntries = true)
     })
     @Override
-    public ReviewDto addReview(Review review) {
-        List<Review> existingReviews = reviewRepository.findAllByCourseIdAndUserId(review.getCourseId(), review.getUserId());
-        Review updatedReview = review;
-        if (existingReviews.isEmpty()) {
-            updatedReview = reviewRepository.save(review);
-            updateCourseExperience(review.getCourseId());
-        }
-        return ReviewMapper.toDto(updatedReview);
+    public ReviewDto addOrUpdateReview(ReviewDto reviewDto) {
+        Review review = reviewRepository
+                .findByCourseIdAndUserId(reviewDto.getCourseId(), reviewDto.getUserId())
+                .map(r -> updateReviewFromDto(r, reviewDto))
+                .orElseGet(() -> createReviewFromDto(reviewDto));
+
+        review = reviewRepository.save(review);
+        updateCourseExperience(review.getCourseId());
+
+        return ReviewMapper.toDto(review);
     }
 
-    @Caching(evict = {
-            @CacheEvict(value = "courseReviewsCache", key = "#review.courseId"),
-            @CacheEvict(value = "coursesCacheWithFilters", allEntries = true)
-    })
-    @Override
-    public ReviewDto updateReview(Review review) {
-        Review updatedReview = reviewRepository.save(review);
-        updateCourseExperience(review.getCourseId());
-        return ReviewMapper.toDto(updatedReview);
+    private Review createReviewFromDto(ReviewDto reviewDto) {
+        return modelMapper.map(reviewDto, Review.class);
+    }
+
+    private Review updateReviewFromDto(Review existingReview, ReviewDto reviewDto) {
+        modelMapper.map(reviewDto, existingReview);
+        return existingReview;
     }
 
     @Caching(evict = {

@@ -2,6 +2,7 @@ package courses.concordia.service.implementation;
 
 import courses.concordia.dto.mapper.NotificationMapper;
 import courses.concordia.dto.model.course.NotificationDto;
+import courses.concordia.dto.model.course.ReviewDto;
 import courses.concordia.model.Notification;
 import courses.concordia.model.Review;
 import courses.concordia.model.Subscription;
@@ -10,6 +11,7 @@ import courses.concordia.repository.SubscriptionRepository;
 import courses.concordia.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -26,6 +28,7 @@ public class NotificationServiceImpl implements NotificationService {
     private final NotificationRepository notificationRepository;
     private final SubscriptionRepository subscriptionRepository;
     private final MongoTemplate mongoTemplate;
+    private final ModelMapper modelMapper;
     @Override
     public List<NotificationDto> getNotifications(String userId) {
         log.info("Fetching notifications for user ID: {}", userId);
@@ -35,12 +38,12 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void addNotifications(Review review) {
-        List<Subscription> subscriptions = subscriptionRepository.findByCourseId(review.getCourseId());
+    public void addNotifications(ReviewDto reviewDto) {
+        List<Subscription> subscriptions = subscriptionRepository.findByCourseId(reviewDto.getCourseId());
         List<Notification> notifications = subscriptions.stream()
-                .filter(subscription -> !subscription.getUserId().equals(review.getUserId()))
+                .filter(subscription -> !subscription.getUserId().equals(reviewDto.getUserId()))
                 .map(subscription -> new Notification()
-                        .setReview(review)
+                        .setReview(modelMapper.map(reviewDto, Review.class))
                         .setUserId(subscription.getUserId())
                         .setSeen(false))
                 .collect(Collectors.toList());
@@ -63,9 +66,9 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void updateNotifications(String creatorId, String courseId, Review review) {
+    public void updateNotifications(String creatorId, String courseId, ReviewDto reviewDto) {
         Query query = new Query(Criteria.where("review.userId").is(creatorId).and("review.courseId").is(courseId));
-        Update update = new Update().set("review", review).set("seen", false);
+        Update update = new Update().set("review", modelMapper.map(reviewDto, Review.class)).set("seen", false);
         mongoTemplate.updateMulti(query, update, Notification.class);
     }
 

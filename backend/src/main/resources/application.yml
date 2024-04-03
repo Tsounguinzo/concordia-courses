@@ -42,6 +42,9 @@ app:
   init-db: false
   seed-dir: backend/src/main/resources/seeds
 
+concordia:
+  apiUser: ${CU_API_USER:593}
+  apiKey: ${CU_API_KEY:45903278e7da59e5c3e9568f7070244c}
 
 server:
   port: 8080

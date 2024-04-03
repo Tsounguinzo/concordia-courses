@@ -49,8 +49,17 @@ public class SeedRunner {
 
         List<Course> newCourses = new ArrayList<>();
 
-        if (courseCatalogues == null || courseCatalogues.isEmpty()) {
-            log.error("Course catalogues list is null or empty. Terminating process.");
+        if (courseCatalogues.isEmpty()) {
+            log.error("Course catalogues list is empty. Terminating process.");
+            return;
+        } else if (courseWithDescriptions.isEmpty()) {
+            log.error("Course descriptions list is empty. Terminating process.");
+            return;
+        } else if (courseWithDetails.isEmpty()) {
+            log.error("Course details list is empty. Terminating process.");
+            return;
+        } else if (courseWithTermsAndInstructors.isEmpty()) {
+            log.error("Course with terms and instructors list is empty. Terminating process.");
             return;
         } else {
             log.info("Found {} course catalogues.", courseCatalogues.size());
@@ -151,7 +160,7 @@ public class SeedRunner {
         } catch (Exception e) {
             log.error("Failed to fetch course descriptions from URL: {}, Error: {}", urlStr, e.getMessage(), e);
         }
-        return null;
+        return Collections.emptyList();
     }
 
     private static List<CourseWithTermsAndInstructors> getCourseWithTermsAndInstructors(List<CourseWithDetails> courseWithDetails) {
@@ -165,24 +174,28 @@ public class SeedRunner {
 
         List<CourseWithTermsAndInstructors> result = new ArrayList<>();
         for (Map.Entry<String, List<String>> entry : courseTerms.entrySet()) {
-            String key = entry.getKey();
-            List<String> terms = entry.getValue();
-
-            String[] subjectAndCatalog = key.split(" ", 2);
-            String subject = subjectAndCatalog[0];
-            String catalog = subjectAndCatalog[1];
-
-            CourseWithTermsAndInstructors course = new CourseWithTermsAndInstructors();
-            course.setSubject(subject);
-            course.setCatalog(catalog);
-            course.setTerms(new ArrayList<>(new HashSet<>(terms))); // Remove duplicate terms
-            course.setInstructors(new ArrayList<>()); // Placeholder for instructors
-
+            CourseWithTermsAndInstructors course = getCourseWithTermsAndInstructors(entry);
             result.add(course);
         }
 
         log.info("Successfully finished composing the terms of {} course", result.size());
         return result;
+    }
+
+    private static CourseWithTermsAndInstructors getCourseWithTermsAndInstructors(Map.Entry<String, List<String>> entry) {
+        String key = entry.getKey();
+        List<String> terms = entry.getValue();
+
+        String[] subjectAndCatalog = key.split(" ", 2);
+        String subject = subjectAndCatalog[0];
+        String catalog = subjectAndCatalog[1];
+
+        CourseWithTermsAndInstructors course = new CourseWithTermsAndInstructors();
+        course.setSubject(subject);
+        course.setCatalog(catalog);
+        course.setTerms(new ArrayList<>(new HashSet<>(terms))); // Remove duplicate terms
+        course.setInstructors(new ArrayList<>()); // Placeholder for instructors
+        return course;
     }
 
     private static List<CourseWithDetails> getCourseWithDetails() {
@@ -219,7 +232,7 @@ public class SeedRunner {
             log.error("Failed to fetch course catalogues from URL: {}, Error: {}", urlStr, e.getMessage(), e);
         }
 
-        return null;
+        return Collections.emptyList();
     }
 
 

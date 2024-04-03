@@ -56,6 +56,8 @@ const client = {
                 return run(this.put);
             case 'DELETE':
                 return run(this.delete);
+            default:
+                throw new Error(`Unsupported method: ${method}`);
         }
     },
 };
@@ -80,14 +82,14 @@ export const repo = {
     async addSubscription(courseId: string): Promise<Response> {
         return client.post('/subscriptions', {
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({courseId: courseId}),
+            body: JSON.stringify({courseId}),
         });
     },
 
     async removeSubscription(courseId: string): Promise<Response> {
         return client.delete('/subscriptions', {
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({courseId: courseId}),
+            body: JSON.stringify({courseId}),
         });
     },
 
@@ -96,10 +98,10 @@ export const repo = {
     },
 
     async addReview(courseId: string, values: any): Promise<Response> {
-        return client.post(`/reviews`, {
+        return client.post('/reviews', {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-                courseId: courseId,
+                courseId,
                 timestamp: new Date(),
                 ...values,
             }),
@@ -107,7 +109,7 @@ export const repo = {
     },
 
     async updateReview(review: Review, values: any): Promise<Response> {
-        return client.put(`/reviews`, {
+        return client.put('/reviews', {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 _id: review._id,
@@ -126,7 +128,7 @@ export const repo = {
     async deleteReview(courseId: string): Promise<Response> {
         return client.delete('/reviews', {
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({courseId: courseId}),
+            body: JSON.stringify({courseId}),
         });
     },
 
@@ -161,8 +163,8 @@ export const repo = {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 kind,
-                courseId: courseId,
-                userId: userId,
+                courseId,
+                userId,
                 referrer,
             }),
         });
@@ -176,8 +178,8 @@ export const repo = {
         return client.delete('/interactions', {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-                courseId: courseId,
-                userId: userId,
+                courseId,
+                userId,
                 referrer,
             }),
         });
@@ -195,9 +197,9 @@ export const repo = {
         return client.put('/notifications', {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-                courseId: courseId,
-                creatorId: creatorId,
-                seen: seen,
+                courseId,
+                creatorId,
+                seen,
             }),
         });
     },
@@ -206,8 +208,8 @@ export const repo = {
         return client.delete('/notifications', {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-                courseId: courseId,
-                creatorId: creatorId
+                courseId,
+                creatorId
             }),
         });
     },

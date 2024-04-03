@@ -12,6 +12,6 @@ public interface ReviewRepository extends MongoRepository<Review, String> {
     List<Review> findAllByCourseId(String courseId);
     List<Review> findAllByUserId(String userId);
     List<Review> findAllByInstructor(String instructor);
-    List<Review> findAllByCourseIdAndUserId(String courseId, String userId);
+    Optional<Review> findByCourseIdAndUserId(String courseId, String userId);
     void deleteByCourseIdAndUserId(String courseId, String userId);
 }

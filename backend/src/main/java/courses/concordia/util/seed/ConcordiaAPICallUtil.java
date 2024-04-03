@@ -1,19 +1,20 @@
 package courses.concordia.util.seed;
 
+import courses.concordia.config.ConcordiaApiProperties;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Base64;
 
 @Slf4j
 public class ConcordiaAPICallUtil {
+    private static final ConcordiaApiProperties apiProperties = new ConcordiaApiProperties();
     /**
-     * https://github.com/opendataConcordiaU/documentation/
+     * <a href="https://github.com/opendataConcordiaU/documentation/">...</a>
      */
     public static final String BASE_URL = "https://opendata.concordia.ca/API/v1/";
     /**
@@ -29,23 +30,16 @@ public class ConcordiaAPICallUtil {
      */
     public static final String COURSE_SCHEDULE_TERM_ENDPOINT = "course/scheduleTerm/filter/";
 
-    public static String getRequest(String requestUrl) throws MalformedURLException, IOException {
-        /*String apiUser = System.getenv("CONCORDIA_API_USER");
-        String apiKey = System.getenv("CONCORDIA_API_KEY");
-
-        if (apiUser == null || apiKey == null) {
-            throw new IllegalStateException("API_USER or API_KEY environment variables are not set.");
-        }*/
+    public static String getRequest(String requestUrl) throws IOException {
 
         URL url = new URL(requestUrl);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Accept", "application/json");
 
-        // Encode user and key for basic authentication
-        //String credentials = apiUser + ":" + apiKey;
-        //String encoded = Base64.getEncoder().encodeToString(credentials.getBytes());
-        String encoded = Base64.getEncoder().encodeToString(("593:45903278e7da59e5c3e9568f7070244c").getBytes());
+
+        String encoded = Base64.getEncoder().encodeToString(
+                (apiProperties.getApiUser() + ":" + apiProperties.getApiKey()).getBytes());
         conn.setRequestProperty("Authorization", "Basic " + encoded);
 
         if (conn.getResponseCode() != 200) {

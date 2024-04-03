@@ -23,6 +23,8 @@ public class AIUtils {
     private static final String OLLAMA_TEXT_GENERATION_END_POINT = "http://localhost:11434/api/generate";
     private static final String DEFAULT_MODEL = "gemma:2b";
 
+    /*
+    Example usage
     public static void main(String[] args) {
         //Before using this, download ollama from https://ollama.com/download and pull the model you want, e.g gemma:7b or gemma:2b or any other available at https://ollama.com/library
 
@@ -54,6 +56,7 @@ public class AIUtils {
              System.out.println();
          }
     }
+     */
 
     public static void generateText(String prompt, boolean stream) throws IOException, InterruptedException {
         generateText(DEFAULT_MODEL, prompt, stream);

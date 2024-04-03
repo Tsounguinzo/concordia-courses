@@ -37,7 +37,7 @@ export const updateSearchResults = (
         ?.map((id) => courses[id as number]);
 
     searchResults.set({
-        query: query,
+        query,
         courses: courseSearchResults,
     });
 };

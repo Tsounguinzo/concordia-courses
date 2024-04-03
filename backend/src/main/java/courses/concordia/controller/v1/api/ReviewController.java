@@ -27,28 +27,28 @@ public class ReviewController {
     }
 
     @PostMapping
-    public Response<?> addReview(@RequestBody Review review) {
+    public Response<?> addReview(@RequestBody ReviewDto reviewDto) {
 
         User user = userService.getAuthenticatedUser();
         if(user == null) {
             return Response.unauthorized();
         }
-        review = review.setUserId(user.get_id());
-        ReviewDto addedReview = reviewService.addReview(review);
-        notificationService.addNotifications(review);
+        reviewDto = reviewDto.setUserId(user.get_id());
+        ReviewDto addedReview = reviewService.addOrUpdateReview(reviewDto);
+        notificationService.addNotifications(reviewDto);
         return Response.ok().setPayload(addedReview);
     }
 
     @PutMapping
-    public Response<?> updateReview(@RequestBody Review review) {
+    public Response<?> updateReview(@RequestBody ReviewDto reviewDto) {
 
         User user = userService.getAuthenticatedUser();
         if(user == null) {
             return Response.unauthorized();
         }
-        review = review.setUserId(user.get_id());
-        ReviewDto addedReview = reviewService.updateReview(review);
-        notificationService.updateNotifications(user.get_id(), review.getCourseId(), review);
+        reviewDto = reviewDto.setUserId(user.get_id());
+        ReviewDto addedReview = reviewService.addOrUpdateReview(reviewDto);
+        notificationService.updateNotifications(user.get_id(), reviewDto.getCourseId(), reviewDto);
         return Response.ok().setPayload(addedReview);
     }
 

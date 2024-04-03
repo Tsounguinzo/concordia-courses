@@ -5,6 +5,12 @@ export type CourseData = Pick<
   '_id' | 'subject' | 'title' | 'catalog'
 >;
 
+export interface RequestOptions {
+        method: string;
+        headers: { 'Content-Type': string };
+        body?: string;
+}
+
 export const sortByOptions = [
         '',
         'Best Experience',
