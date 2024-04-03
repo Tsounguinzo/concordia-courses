@@ -24,6 +24,7 @@ public class SecurityConfig{
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         return http
+                .requiresChannel(channel -> channel.anyRequest().requiresSecure())//enforce https
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/api/v1/courses/**").permitAll() // Allow unauthenticated access
                         .requestMatchers("/api/v1/auth/user", "/api/v1/auth/reset_password", "/api/v1/auth/forgot_password").permitAll()

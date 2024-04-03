@@ -276,10 +276,13 @@ export const repo = {
     async getUser(fetch: {
         (input: RequestInfo | URL, init?: RequestInit | undefined): Promise<Response>;
         (arg0: string): any;
-    }): Promise<string|null> {
+    }, cookies: string): Promise<string|null> {
         const backendURL = `${backendUrl}/api/v1/auth/user`;
         const response = await fetch(backendURL, {
             credentials: 'include',
+            headers: {
+                'Cookie': cookies,
+            },
         });
         if(response.ok){
             const body = await response.json();
