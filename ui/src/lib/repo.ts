@@ -278,7 +278,9 @@ export const repo = {
         (arg0: string): any;
     }): Promise<string|null> {
         const backendURL = `${backendUrl}/api/v1/auth/user`;
-        const response = await fetch(backendURL);
+        const response = await fetch(backendURL, {
+            credentials: 'include',
+        });
         if(response.ok){
             const body = await response.json();
             return body.payload;
