@@ -38,6 +38,7 @@ public class AuthorizationController {
 
 
     @GetMapping("/user")
+    @CrossOrigin(origins = "*")
     public Response<?> getUser() {
         User user = userService.getAuthenticatedUser();
         if(user == null) {
