@@ -16,6 +16,7 @@ export async function load({url}: LoadEvent) {
     }
 
     return {
+        token: token,
         username: username,
         error: error
     };

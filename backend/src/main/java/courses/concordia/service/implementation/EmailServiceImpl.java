@@ -19,6 +19,7 @@ public class EmailServiceImpl implements EmailService {
     public static final String NEW_USER_ACCOUNT_VERIFICATION = "New User Account Verification";
     public static final String NEW_VERIFICATION_TOKEN = "New Verification Code";
     public static final String RESET_PASSWORD_TOKEN = "Reset Password";
+    public static final String RESET_PASSWORD_CONFIRMATION = "Password Reset Confirmation";
     public static final String UTF_8_ENCODING = "UTF-8";
     @Override
     @Async
@@ -34,6 +35,11 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void sendResetPasswordMailMessage(String name, String to, String token) {
         sendHtmlEmail(name, to, token, RESET_PASSWORD_TOKEN, "resetPassword");
+    }
+
+    @Override
+    public void sendResetPasswordConfirmationMailMessage(String username, String email) {
+        sendHtmlEmail(username, email, null, RESET_PASSWORD_CONFIRMATION, "resetPasswordConfirmation");
     }
 
     private void sendHtmlEmail(String name, String to, String token, String subject, String templateName) {

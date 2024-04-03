@@ -4,6 +4,7 @@ import courses.concordia.config.JwtConfigProperties;
 import courses.concordia.config.TokenType;
 import courses.concordia.controller.v1.request.AuthenticationRequest;
 import courses.concordia.controller.v1.request.LoginRequest;
+import courses.concordia.controller.v1.request.PasswordChangeRequest;
 import courses.concordia.controller.v1.request.SignupRequest;
 import courses.concordia.dto.model.user.UserDto;
 import courses.concordia.dto.model.user.UserResponseDto;
@@ -154,5 +155,22 @@ public class AuthorizationController {
 
         String username = userService.verifyPasswordResetToken(token);
         return Response.ok().setPayload(username);
+    }
+
+    @PutMapping("/update_password")
+    public Response<?> setNewPassword(@RequestParam String token, @RequestBody PasswordChangeRequest passwordChangeRequest) {
+        Token t = tokenRepository.findByToken(token).orElse(null);
+
+        if(t == null) {
+            return Response.validationException();
+        }
+
+        if(t.isExpired()) {
+            tokenRepository.delete(t);
+            return Response.badRequest().setErrors("Whoops! Looks like this link has expired.");
+        }
+
+        userService.changePassword(t, passwordChangeRequest.getNewPassword());
+        return Response.ok().setPayload("Password updated successfully!");
     }
 }

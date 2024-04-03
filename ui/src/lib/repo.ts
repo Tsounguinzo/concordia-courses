@@ -299,4 +299,13 @@ export const repo = {
     async forgotPassword(username: string): Promise<Response> {
         return client.get(`/auth/forgot_password?username=${username}`);
     },
+
+    async updatePassword(newPassword: string, token: string): Promise<Response> {
+        return client.put(`/auth/update_password?token=${token}`, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({newPassword}),
+        });
+    }
 };

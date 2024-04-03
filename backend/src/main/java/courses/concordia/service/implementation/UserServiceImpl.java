@@ -150,15 +150,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto changePassword(UserDto userDto, String newPassword) {
-        log.info("Changing password for user: {}", userDto.getUsername());
-        User user = userRepository.findByUsername(userDto.getUsername())
-                .orElseThrow(() -> exception(USER, ENTITY_NOT_FOUND, userDto.getUsername()));
+    public void changePassword(Token token, String newPassword) {
+        String username = verifyPasswordResetToken(token.getToken());
+        log.info("Changing password for user: {}", username);
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> exception(USER, ENTITY_NOT_FOUND));
 
         String encodedPassword = bCryptPasswordEncoder.encode(newPassword);
         user.setPassword(encodedPassword);
         userRepository.save(user);
-        return UserMapper.toDto(user);
+        tokenRepository.delete(token);
+        emailService.sendResetPasswordConfirmationMailMessage(user.getUsername(), user.getEmail());
     }
 
     @Override
@@ -196,7 +198,10 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> exception(USER, ENTITY_NOT_FOUND));
 
-        Token token = createAndSaveNewToken(user, new UUIDTokenGenerator());
+        Token token = tokenRepository.findByUserId(user.get_id())
+                .filter(t -> !t.isExpired())
+                .orElseGet(() -> createAndSaveNewToken(user, new UUIDTokenGenerator()));
+
         emailService.sendResetPasswordMailMessage(user.getUsername(), user.getEmail(), token.getToken());
     }
 
@@ -233,12 +238,20 @@ public class UserServiceImpl implements UserService {
     }
 
     private Token createAndSaveNewToken(User user) {
+        Token t = tokenRepository.findByUserId(user.get_id()).orElse(null);
+        if(t != null && t.isExpired()) {
+            tokenRepository.delete(t);
+        }
         Token newToken = new Token(user);
         tokenRepository.save(newToken);
         return newToken;
     }
 
     private Token createAndSaveNewToken(User user, TokenGenerator tokenGenerator) {
+        Token t = tokenRepository.findByUserId(user.get_id()).orElse(null);
+        if(t != null && t.isExpired()) {
+            tokenRepository.delete(t);
+        }
         Token newToken = new Token(user, tokenGenerator);
         tokenRepository.save(newToken);
         return newToken;
