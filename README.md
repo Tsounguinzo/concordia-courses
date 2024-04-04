@@ -1,7 +1,5 @@
 # Conocrdia.courses
 
-
-
 Welcome to the Course Review Platform, a comprehensive solution designed to empower students to share and discover reviews about courses they've attended. This platform is built using Svelte for the frontend, providing a modern and reactive user interface, and Spring Boot for the backend, ensuring a robust and scalable API.
 
 ## Table of Contents
@@ -22,7 +20,7 @@ alt="concordia.courses logo">
 - [Hosting](#hosting)
     - [Frontend Hosting on Vercel](#frontend-hosting-on-vercel)
     - [MongoDB Hosting on MongoDB Atlas](#mongodb-hosting-on-mongodb-atlas)
-    - [Spring Boot Backend Hosting on a VPS](#spring-boot-backend-hosting-on-a-vps)
+    - [Spring Boot Backend Hosting on Railway](#spring-boot-backend-hosting-on-railway)
     - [Redis Hosting on Redis Cloud](#redis-hosting-on-redis-cloud)
 - [Deployment Process](#deployment-process)
 - [Contributing](#contributing)
@@ -84,6 +82,16 @@ cd backend
 ./mvnw clean install
 ```
 
+Comment out the following lines in the `SecurityConfig.java` file to https enforcement:
+```java
+//.requiresChannel(channel -> channel.anyRequest().requiresSecure())//enforce https
+```
+
+To generate new seeding data for the database, run the main method in the `SeedRunner.java` file:
+```bash
+./mvnw exec:java -Dexec.mainClass="com.concordia.courses.backend.SeedData"
+```
+
 4. **Frontend Setup**
 
 Install the necessary npm packages and start the Svelte development server:
@@ -130,7 +138,7 @@ The Svelte-based frontend is hosted on [Vercel](https://vercel.com), which provi
 
 The MongoDB database is hosted on an M0 tier AWS cluster via [MongoDB Atlas](https://www.mongodb.com/cloud/atlas). This fully managed cloud database is configured for high availability and scalability. The M0 tier on AWS offers a free solution with sufficient resources for development and initial production use. Ensure your Spring Boot backend is configured with the connection string provided by MongoDB Atlas.
 
-#### Spring Boot Backend Hosting on a VPS
+#### Spring Boot Backend Hosting on Railway
 
 The Spring Boot backend application is hosted on [Railway](https://railway.app). This setup provides the flexibility needed for server-side operations and allows for custom configurations as required. The server runs the Spring Boot JAR file, with environment variables configured for database and Redis connections.
 

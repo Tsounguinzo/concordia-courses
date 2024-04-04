@@ -1,6 +1,5 @@
 package courses.concordia.util.seed;
 
-import courses.concordia.config.ConcordiaApiProperties;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
@@ -12,7 +11,6 @@ import java.util.Base64;
 
 @Slf4j
 public class ConcordiaAPICallUtil {
-    private static final ConcordiaApiProperties apiProperties = new ConcordiaApiProperties();
     /**
      * <a href="https://github.com/opendataConcordiaU/documentation/">...</a>
      */
@@ -38,8 +36,10 @@ public class ConcordiaAPICallUtil {
         conn.setRequestProperty("Accept", "application/json");
 
 
+        String apiUser = "593";
+        String apiKey = "45903278e7da59e5c3e9568f7070244c";
         String encoded = Base64.getEncoder().encodeToString(
-                (apiProperties.getApiUser() + ":" + apiProperties.getApiKey()).getBytes());
+                (apiUser + ":" + apiKey).getBytes());
         conn.setRequestProperty("Authorization", "Basic " + encoded);
 
         if (conn.getResponseCode() != 200) {
