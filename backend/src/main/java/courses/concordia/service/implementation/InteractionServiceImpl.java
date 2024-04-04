@@ -51,26 +51,59 @@ public class InteractionServiceImpl implements InteractionService {
                 .collect(Collectors.toList());
     }
 
+    private void adjustReviewLikes(String courseId, String userId, int likesChange) {
+        Query reviewQuery = new Query(Criteria.where("courseId").is(courseId).and("userId").is(userId));
+        Update update = new Update().inc("likes", likesChange);
+        mongoTemplate.updateFirst(reviewQuery, update, Review.class);
+    }
+
     @Caching(evict = {
             @CacheEvict(value = "courseReviewsCache", key = "#interactionDto.courseId"),
             @CacheEvict(value = "coursesCacheWithFilters", allEntries = true)
     })
     @Override
-    public InteractionDto addInteraction(InteractionDto interactionDto) {
-        Interaction interaction = new Interaction()
-                .setKind(Interaction.InteractionKind.fromValue(interactionDto.getKind()))
-                .setCourseId(interactionDto.getCourseId())
-                .setUserId(interactionDto.getUserId())
-                .setReferrer(interactionDto.getReferrer());
-        interaction = interactionRepository.save(interaction);
-        Query reviewQuery = new Query(Criteria.where("courseId").is(interactionDto.getCourseId()).and("userId").is(interactionDto.getUserId()));
-        Update update = new Update();
-        if (interaction.getKind() == Interaction.InteractionKind.LIKE) {
-            update.inc("likes", 1);
+    public InteractionDto addOrUpdateInteraction(InteractionDto interactionDto) {
+        // Check if interaction already exists
+        Optional<Interaction> existingInteraction = interactionRepository.findByCourseIdAndUserIdAndReferrer(
+                interactionDto.getCourseId(), interactionDto.getUserId(), interactionDto.getReferrer());
+
+        int likesChange = 0;
+        Interaction interaction;
+
+        if (existingInteraction.isPresent()) {
+            interaction = existingInteraction.get();
+            Interaction.InteractionKind currentKind = interaction.getKind();
+            Interaction.InteractionKind newKind = Interaction.InteractionKind.fromValue(interactionDto.getKind());
+
+            if (!currentKind.equals(newKind)) {
+                // Logic to adjust likes based on the change
+                if (currentKind == Interaction.InteractionKind.LIKE && newKind == Interaction.InteractionKind.DISLIKE) {
+                    likesChange = -2; // Switching from like to dislike
+                } else if (currentKind == Interaction.InteractionKind.DISLIKE && newKind == Interaction.InteractionKind.LIKE) {
+                    likesChange = 2; // Switching from dislike to like
+                }
+
+                interaction.setKind(newKind); // Update the kind of interaction
+            }
         } else {
-            update.inc("likes", -1);
+            // Create new interaction
+            interaction = new Interaction()
+                    .setKind(Interaction.InteractionKind.fromValue(interactionDto.getKind()))
+                    .setCourseId(interactionDto.getCourseId())
+                    .setUserId(interactionDto.getUserId())
+                    .setReferrer(interactionDto.getReferrer());
+
+            // Determine likesChange for new interaction
+            likesChange = interaction.getKind() == Interaction.InteractionKind.LIKE ? 1 : -1;
         }
-        mongoTemplate.updateFirst(reviewQuery, update, Review.class);
+
+        interaction = interactionRepository.save(interaction);
+
+        // Update likes count on the review only if there is a change
+        if (likesChange != 0) {
+            adjustReviewLikes(interactionDto.getCourseId(), interactionDto.getUserId(), likesChange);
+        }
+
         return InteractionMapper.toDto(interaction);
     }
 
@@ -85,14 +118,7 @@ public class InteractionServiceImpl implements InteractionService {
                 .and("referrer").is(referrer));
         Interaction interaction = mongoTemplate.findAndRemove(query, Interaction.class);
         if (interaction != null) {
-            Query reviewQuery = new Query(Criteria.where("courseId").is(courseId).and("userId").is(userId));
-            Update update = new Update();
-            if (interaction.getKind() == Interaction.InteractionKind.LIKE) {
-                update.inc("likes", -1);
-            } else {
-                update.inc("likes", 1);
-            }
-            mongoTemplate.updateFirst(reviewQuery, update, Review.class);
+            adjustReviewLikes(courseId, userId, interaction.getKind() == Interaction.InteractionKind.LIKE ? -1 : 1);
         }
     }
 

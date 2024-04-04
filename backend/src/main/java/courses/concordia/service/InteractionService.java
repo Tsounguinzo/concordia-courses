@@ -10,7 +10,7 @@ public interface InteractionService {
 
     List<InteractionDto> getUserInteractionsForCourse(String courseId, String referrer);
 
-    InteractionDto addInteraction(InteractionDto interactionDto);
+    InteractionDto addOrUpdateInteraction(InteractionDto interactionDto);
 
     void deleteInteraction(String courseId, String userId, String referrer);
 

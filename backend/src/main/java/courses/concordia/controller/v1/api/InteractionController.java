@@ -35,8 +35,8 @@ public class InteractionController {
     }
 
     @PostMapping
-    public Response<?> addInteraction(@RequestBody InteractionDto interaction) {
-        InteractionDto interactionDto = interactionService.addInteraction(interaction);
+    public Response<?> addOrUpdateInteraction(@RequestBody InteractionDto interaction) {
+        InteractionDto interactionDto = interactionService.addOrUpdateInteraction(interaction);
         return Response.ok().setPayload(interactionDto);
     }
 

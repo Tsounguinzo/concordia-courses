@@ -20,10 +20,7 @@
     let {courseId, userId, likes} = review;
 
     const getUserInteractionKind = (interactions: Interaction[]): InteractionKind | undefined => {
-        const interaction = interactions.find(
-            (interaction: Interaction) => interaction.userId === review.userId
-        );
-
+        const interaction = interactions.find((interaction: Interaction) => interaction.userId === review.userId);
         return interaction?.kind;
     };
 
@@ -31,44 +28,35 @@
         kind.set(getUserInteractionKind(interactions))
     }
 
+    // Determine the change in likes based on interaction
     const getLikeChange = (before: InteractionKind | undefined | null, after: InteractionKind | 'remove') => {
-        if (after === 'remove') {
-            return before === 'like' ? -1 : before === 'dislike' ? 1 : 0;
-        } else if (before === after) {
-            return 0;
-        } else {
-            return after === 'like' ? (before === 'dislike' ? 2 : 1) : (before === 'like' ? -2 : -1);
-        }
+        if (after === 'remove') return before === 'like' ? -1 : before === 'dislike' ? 1 : 0;
+        if (before === after) return 0;
+        return after === 'like' ? (before === 'dislike' ? 2 : 1) : (before === 'like' ? -2 : -1);
     };
 
+    // Update interaction and handle likes/dislikes accordingly
     const updateInteraction = async (interactionKind: InteractionKind | 'remove') => {
-        let change;
+        if (!user) {
+            displayLoginPrompt();
+            return;
+        }
+
+        const change = getLikeChange($kind, interactionKind);
         try {
             if (interactionKind === 'remove') {
                 await repo.removeInteraction(courseId, userId, user?.id);
-                change = getLikeChange($kind, interactionKind);
             } else {
-                await repo.removeInteraction(courseId, userId, user?.id);
-                await repo.addInteraction(interactionKind, courseId, userId, user?.id);
-                change = getLikeChange($kind, interactionKind);
+                await repo.addOrUpdateInteraction(interactionKind, courseId, userId, user?.id);
             }
             updateLikes(review.likes + change);
             likes += change;
 
-            await refreshInteractions();
+            kind.set(interactionKind === 'remove' ? null : interactionKind);
 
             const actionWord = interactionKind === 'remove' ? 'Removed' : `Successfully ${interactionKind}d`;
             toast.success(`${actionWord} review for ${spliceCourseCode(courseId, ' ')}.`);
         } catch (err) {
-            toast.error(err.toString());
-        }
-    };
-
-    const refreshInteractions = async () => {
-        try {
-            const payload = await repo.getInteractions(courseId, userId, user?.id);
-            kind.set(payload);
-        } catch (err: any) {
             toast.error(err.toString());
         }
     };
@@ -78,21 +66,9 @@
         setTimeout(() => promptLogin.set(false), 3000);
     };
 
-    const handleLike = () => {
-        user
-            ? $kind === 'like'
-                ? updateInteraction('remove')
-                : updateInteraction('like')
-            : displayLoginPrompt();
-    };
-
-    const handleDislike = () => {
-        user
-            ? $kind === 'dislike'
-                ? updateInteraction('remove')
-                : updateInteraction('dislike')
-            : displayLoginPrompt();
-    };
+    // Handlers for like and dislike actions
+    const handleLike = () => $kind === 'like' ? updateInteraction('remove') : updateInteraction('like');
+    const handleDislike = () => $kind === 'dislike' ? updateInteraction('remove') : updateInteraction('dislike');
 </script>
 
 <div class='mb-0.5 flex items-center'>

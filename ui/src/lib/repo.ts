@@ -153,7 +153,7 @@ export const repo = {
         );
     },
 
-    async addInteraction(
+    async addOrUpdateInteraction(
         kind: InteractionKind,
         courseId: string,
         userId: string,

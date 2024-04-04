@@ -50,7 +50,11 @@ public class UserServiceImpl implements UserService {
         log.info("Attempting to signup user: {}", userDto.getUsername());
 
         userRepository.findByUsername(userDto.getUsername()).ifPresent(u -> {
-            throw exception(USER, DUPLICATE_ENTITY, userDto.getUsername());
+            throw exception(USER, DUPLICATE_ENTITY);
+        });
+
+        userRepository.findByEmail(userDto.getEmail()).ifPresent(u -> {
+            throw exception(USER, DUPLICATE_ENTITY);
         });
 
         User user = new User()
