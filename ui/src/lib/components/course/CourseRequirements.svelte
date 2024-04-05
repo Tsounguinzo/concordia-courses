@@ -11,15 +11,15 @@
     <div class='space-y-7 p-6'>
         <ReqsBlock
                 title='Prerequisites'
-                text={course.prerequisites}
+                text={course.prerequisites.trim()}
         />
         <ReqsBlock
                 title='Co-requisites'
-                text={course.prerequisites}
+                text='May be in the description or prerequisites.'
         />
         <ReqsBlock
                 title='Restrictions'
-                text={course.prerequisites}
+                text='May be in the description or prerequisites.'
         />
     </div>
 </div>

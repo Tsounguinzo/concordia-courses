@@ -248,12 +248,12 @@
 
             </div>
             <div class='col-span-2'>
-                <CourseRequirements {course}/>
+                <CourseRequirements course={$course}/>
             </div>
         </div>
         <div class='flex flex-col lg:hidden'>
             <div class='mb-4 flex'>
-                <CourseRequirements {course}/>
+                <CourseRequirements course={$course}/>
             </div>
             <h2 class:hidden={!$course?.schedules?.length} class='text-center mb-2 text-xl font-bold leading-none text-gray-700 dark:text-gray-200'>
                 Course Schedule
