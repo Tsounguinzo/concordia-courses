@@ -2,11 +2,11 @@ spring:
 
   data:
     mongodb:
-      uri: ${MONGODB_URI:mongodb://localhost:27017/db}
+      uri: ${MONGODB_URI}
       database: db
     redis:
-      host: ${REDIS_HOST:localhost}
-      port: ${REDIS_PORT:6379}
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
       username: ${REDIS_USERNAME:}
       password: ${REDIS_PASSWORD:}
 
@@ -19,8 +19,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: cdpl4ter@gmail.com
-    password: tyatgaqfjkfueqyf
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
     properties:
       mail:
         smtp:
@@ -30,12 +30,12 @@ spring:
 
 jwt:
   tokenName: "accessToken"
-  secret: ${JWT_SECRET:5CE74751FAF5ED2877C51A93021368E0FD3C954444CF1F7136720388EE100998}
+  secret: ${JWT_SECRET}
   exp: ${JWT_EXP:86400} # 24 hours default
 
 rt:
   tokenName: "refreshToken"
-  secret: ${REFRESH_SECRET:FFB8EA10274A8B65C913736BD9A4CD56200079ADBBD66865C72EF3D17C7E80B6}
+  secret: ${REFRESH_SECRET}
   exp: ${REFRESH_EXP:2592000} # 30 days default
 
 app:
