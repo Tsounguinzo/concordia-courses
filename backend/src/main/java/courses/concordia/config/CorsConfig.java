@@ -16,7 +16,7 @@ public class CorsConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(List.of("https://concordia-courses.vercel.app","http://localhost:5173","http://localhost:5174"));
+        config.setAllowedOrigins(List.of("https://concordia.courses","http://localhost:5173","http://localhost:5174"));
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
