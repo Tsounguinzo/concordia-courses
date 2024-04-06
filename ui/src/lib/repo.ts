@@ -64,7 +64,7 @@ const client = {
 
 export const repo = {
     async getSubscription(courseId: string): Promise<Subscription | null> {
-        return client.deserialize<Subscription | null>(
+        return await client.deserialize<Subscription | null>(
             'GET',
             `/subscriptions?courseId=${courseId}`,
             {
@@ -74,31 +74,31 @@ export const repo = {
     },
 
     async getSubscriptions(): Promise<Subscription[]> {
-        return client.deserialize<Subscription[]>('GET', '/subscriptions', {
+        return await client.deserialize<Subscription[]>('GET', '/subscriptions', {
             headers: {'Content-Type': 'application/json'},
         });
     },
 
     async addSubscription(courseId: string): Promise<Response> {
-        return client.post('/subscriptions', {
+        return await client.post('/subscriptions', {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({courseId}),
         });
     },
 
     async removeSubscription(courseId: string): Promise<Response> {
-        return client.delete('/subscriptions', {
+        return await client.delete('/subscriptions', {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({courseId}),
         });
     },
 
     async getReviews(userId: string): Promise<Review[]> {
-        return client.deserialize<Review[]>('GET', `/reviews?userId=${userId}`);
+        return await client.deserialize<Review[]>('GET', `/reviews?userId=${userId}`);
     },
 
     async addReview(courseId: string, values: any): Promise<Response> {
-        return client.post('/reviews', {
+        return await client.post('/reviews', {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 courseId,
@@ -109,7 +109,7 @@ export const repo = {
     },
 
     async updateReview(review: Review, values: any): Promise<Response> {
-        return client.put('/reviews', {
+        return await client.put('/reviews', {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 _id: review._id,
@@ -126,7 +126,7 @@ export const repo = {
     },
 
     async deleteReview(courseId: string): Promise<Response> {
-        return client.delete('/reviews', {
+        return await client.delete('/reviews', {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({courseId}),
         });
@@ -137,7 +137,7 @@ export const repo = {
         userId: string,
         referrer: string | undefined
     ): Promise<InteractionKind> {
-        return client.deserialize<InteractionKind>(
+        return await client.deserialize<InteractionKind>(
             'GET',
             `/interactions?courseId=${courseId}&userId=${userId}&referrer=${referrer}`
         );
@@ -147,7 +147,7 @@ export const repo = {
         courseId: string,
         referrer: string
     ): Promise<GetCourseReviewsInteractionPayload> {
-        return client.deserialize<GetCourseReviewsInteractionPayload>(
+        return await client.deserialize<GetCourseReviewsInteractionPayload>(
             'GET',
             `/interactions/${courseId}/referrer/${referrer}`
         );
@@ -159,7 +159,7 @@ export const repo = {
         userId: string,
         referrer: string | undefined
     ): Promise<Response> {
-        return client.post('/interactions', {
+        return await client.post('/interactions', {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 kind,
@@ -175,7 +175,7 @@ export const repo = {
         userId: string,
         referrer: string | undefined
     ): Promise<Response> {
-        return client.delete('/interactions', {
+        return await client.delete('/interactions', {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 courseId,
@@ -186,7 +186,7 @@ export const repo = {
     },
 
     async getNotifications(): Promise<Notification[]> {
-        return client.deserialize<Notification[]>('GET', '/notifications');
+        return await client.deserialize<Notification[]>('GET', '/notifications');
     },
 
     async updateNotification(
@@ -194,7 +194,7 @@ export const repo = {
         creatorId: string,
         seen: boolean
     ): Promise<Response> {
-        return client.put('/notifications', {
+        return await client.put('/notifications', {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 courseId,
@@ -205,7 +205,7 @@ export const repo = {
     },
 
     async deleteNotification(courseId: string, creatorId: string): Promise<Response> {
-        return client.delete('/notifications', {
+        return await client.delete('/notifications', {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 courseId,
@@ -217,7 +217,7 @@ export const repo = {
     async getCourseWithReviews(
         id: string | undefined
     ): Promise<GetCourseWithReviewsPayload | null> {
-        return client.deserialize<GetCourseWithReviewsPayload | null>(
+        return await client.deserialize<GetCourseWithReviewsPayload | null>(
             'GET',
             `/courses/${id}?with_reviews=true`
         );
@@ -228,7 +228,7 @@ export const repo = {
         offset: number,
         filters: any
     ): Promise<Course[]> {
-        return client.deserialize<Course[]>(
+        return await client.deserialize<Course[]>(
             'POST',
             `/courses/filter?limit=${limit}&offset=${offset}`,
             {
@@ -241,7 +241,7 @@ export const repo = {
     },
 
     async signUp(user: User): Promise<Response> {
-        return client.post('/auth/signup', {
+        return await client.post('/auth/signup', {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -250,7 +250,7 @@ export const repo = {
     },
 
     async signIn(user: User): Promise<Response> {
-        return client.post('/auth/signin', {
+        return await client.post('/auth/signin', {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -259,15 +259,15 @@ export const repo = {
     },
 
     async signOut(): Promise<Response> {
-        return client.get('/auth/signout');
+        return await client.get('/auth/signout');
     },
 
     async getNewToken(): Promise<Response> {
-        return client.get('/auth/resend_token');
+        return await client.get('/auth/resend_token');
     },
 
     async verifyToken(token: string): Promise<Response> {
-        return client.post('/auth/authorized', {
+        return await client.post('/auth/authorized', {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -304,11 +304,11 @@ export const repo = {
     },
 
     async forgotPassword(username: string): Promise<Response> {
-        return client.get(`/auth/forgot_password?username=${username}`);
+        return await client.get(`/auth/forgot_password?username=${username}`);
     },
 
     async updatePassword(newPassword: string, token: string): Promise<Response> {
-        return client.put(`/auth/update_password?token=${token}`, {
+        return await client.put(`/auth/update_password?token=${token}`, {
             headers: {
                 'Content-Type': 'application/json',
             },

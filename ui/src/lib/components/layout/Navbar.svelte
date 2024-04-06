@@ -52,7 +52,7 @@
     >
         <div class='z-40 my-auto mr-auto flex min-w-[48px] lg:flex-1'>
             <a href='/' class='-m-1.5 p-1.5'>
-                <img class='h-12 w-auto' src='/logo.png' alt='Concordia courses logo'/>
+                <img width="48" height="48" src='/logo.webp' alt='Concordia courses logo'/>
             </a>
         </div>
         {#if pathName !== '/'}

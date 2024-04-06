@@ -37,8 +37,9 @@
                         <div class='flex items-center'>
                             <a href='/'>
                                 <img
-                                        class='h-8 w-auto'
-                                        src="/logo.png"
+                                        width="32"
+                                        height="32"
+                                        src="/logo.webp"
                                         alt='Concordia courses logo'
                                         on:click|preventDefault={() => mobileMenuOpen.set(false)}
                                 />
@@ -78,15 +79,16 @@
                                         </a>
                                         <a href=""
                                            on:click={handleLogout}
+                                           on:click={() => mobileMenuOpen.set(false)}
                                            class='-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 dark:text-gray-200  dark:hover:bg-neutral-700'
                                         >
                                             Log out
                                         </a>
                                     </div>
                                 {:else }
-                                    <a
-                                            href='/login'
+                                    <a href='/login'
                                             class='-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 dark:text-gray-200  dark:hover:bg-neutral-700'
+                                       on:click={() => mobileMenuOpen.set(false)}
                                     >
                                         Log in
                                     </a>

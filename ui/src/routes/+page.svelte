@@ -32,7 +32,7 @@
 
 </script>
 <Seo title="Home" description="Home page of concordia.courses" />
-<div class='relative isolate px-6 pt-14 lg:px-8'>
+<div class='relative px-6 pt-14 lg:px-8'>
     <div class='mx-auto max-w-2xl py-8'>
         <div class='hidden sm:mb-8 sm:flex sm:justify-center'></div>
         <div class='text-center'>

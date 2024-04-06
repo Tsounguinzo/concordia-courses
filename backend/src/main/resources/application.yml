@@ -38,10 +38,6 @@ rt:
   secret: ${REFRESH_SECRET}
   exp: ${REFRESH_EXP:2592000} # 30 days default
 
-app:
-  init-db: false
-  seed-dir: backend/src/main/resources/seeds
-
 server:
   port: 8080
   forward-headers-strategy: native

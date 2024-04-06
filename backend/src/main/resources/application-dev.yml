@@ -17,10 +17,10 @@ spring:
     type: redis
 
   mail:
-    host: smtp.gmail.com
-    port: 587
-    username: # your email
-    password: # your password
+    host: smtp.gmail.com # your mail host
+    port: 587 # your mail port
+    username: # your mail name
+    password: # your mail password
     properties:
       mail:
         smtp:
@@ -30,12 +30,12 @@ spring:
 
 jwt:
   tokenName: "accessToken"
-  secret: 5CE74751FAF5ED2877C51A93021368E0FD3C954444CF1F7136720388EE100998 # random
+  secret: 5CE74751FAF5ED2877C51A93021368E0FD3C954444CF1F7136720388EE100998 # random 1 - 256 hex characters
   exp: 86400 # 24 hours
 
 rt:
   tokenName: "refreshToken"
-  secret: FFB8EA10274A8B65C913736BD9A4CD56200079ADBBD66865C72EF3D17C7E80B6 # random
+  secret: FFB8EA10274A8B65C913736BD9A4CD56200079ADBBD66865C72EF3D17C7E80B6 # random 1 - 256 hex characters
   exp: 2592000 # 30 days
 
 app:
