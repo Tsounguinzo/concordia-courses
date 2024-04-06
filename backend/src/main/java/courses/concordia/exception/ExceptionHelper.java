@@ -11,13 +11,13 @@ import java.util.Optional;
  * A helper class to generate RuntimeExceptions with a little AI inbuilt.
  */
 @Component
-public class CCException {
+public class ExceptionHelper {
 
     private static PropertiesConfig propertiesConfig;
 
     @Autowired
-    public CCException(PropertiesConfig propertiesConfig) {
-        CCException.propertiesConfig = propertiesConfig;
+    public ExceptionHelper(PropertiesConfig propertiesConfig) {
+        ExceptionHelper.propertiesConfig = propertiesConfig;
     }
 
     /**
@@ -93,10 +93,7 @@ public class CCException {
 
     private static String format(String template, String... args) {
         Optional<String> templateContent = Optional.ofNullable(propertiesConfig.getConfigValue(template));
-        if (templateContent.isPresent()) {
-            return MessageFormat.format(templateContent.get(), (Object[]) args);
-        }
-        return String.format(template, (Object[]) args);
+        return templateContent.map(s -> MessageFormat.format(s, (Object[]) args)).orElseGet(() -> String.format(template, (Object[]) args));
     }
 
     public static class EntityNotFoundException extends RuntimeException {

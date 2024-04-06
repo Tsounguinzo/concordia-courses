@@ -5,7 +5,7 @@ import courses.concordia.controller.v1.request.LoginRequest;
 import courses.concordia.dto.mapper.UserMapper;
 import courses.concordia.dto.model.user.UserDto;
 import courses.concordia.dto.response.AuthenticationResponse;
-import courses.concordia.exception.CCException;
+import courses.concordia.exception.ExceptionHelper;
 import courses.concordia.exception.EntityType;
 import courses.concordia.exception.ExceptionType;
 import courses.concordia.model.Token;
@@ -210,7 +210,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private RuntimeException exception(EntityType entityType, ExceptionType exceptionType, String... args) {
-        return CCException.throwException(entityType, exceptionType, args);
+        return ExceptionHelper.throwException(entityType, exceptionType, args);
     }
 
     public boolean checkIfUserExist(String username){

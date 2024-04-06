@@ -1,11 +1,11 @@
 <script lang="ts">
-    import _ from 'lodash';
+    import escapeRegExp from 'lodash/escapeRegExp';
 
     export let text: string;
     export let query: string;
     export let className: string = '';
 
-    $: parts = text.split(new RegExp(`(${_.escapeRegExp(query)})`, 'gi'));
+    $: parts = text.split(new RegExp(`(${escapeRegExp(query)})`, 'gi'));
 </script>
 
 <span class={className}>

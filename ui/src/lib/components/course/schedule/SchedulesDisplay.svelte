@@ -4,14 +4,14 @@
     import ScheduleRow from "./ScheduleRow.svelte";
     import {ArrowDown} from "lucide-svelte";
     import {addAcademicYear, sortTerms} from "$lib/utils";
-    import _ from "lodash";
+    import uniq from "lodash/uniq";
 
     export let course: Course;
     export let className: string = '';
 
     $: schedules = course?.schedules ?? [];
     $: offeredTerms = sortTerms(
-        _.uniq(schedules.map(schedule => schedule.term))
+        uniq(schedules.map(schedule => schedule.term))
     );
     $: selectedTerm = offeredTerms?.[0];
     $: blocks = schedules.find(schedule => schedule.term === selectedTerm)?.blocks ?? [];

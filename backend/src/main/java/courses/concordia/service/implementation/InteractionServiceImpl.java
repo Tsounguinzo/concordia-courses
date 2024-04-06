@@ -2,7 +2,7 @@ package courses.concordia.service.implementation;
 
 import courses.concordia.dto.mapper.InteractionMapper;
 import courses.concordia.dto.model.course.InteractionDto;
-import courses.concordia.exception.CCException;
+import courses.concordia.exception.ExceptionHelper;
 import courses.concordia.exception.EntityType;
 import courses.concordia.exception.ExceptionType;
 import courses.concordia.model.Interaction;
@@ -140,6 +140,6 @@ public class InteractionServiceImpl implements InteractionService {
     }
 
     private RuntimeException exception(EntityType entityType, ExceptionType exceptionType, String... args) {
-        return CCException.throwException(entityType, exceptionType, args);
+        return ExceptionHelper.throwException(entityType, exceptionType, args);
     }
 }

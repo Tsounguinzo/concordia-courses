@@ -48,7 +48,7 @@
               try {
                   const payload = await repo.getCourseWithReviews(id);
 
-                  if (payload === null) {
+                  if (typeof payload === 'string') {
                       course.set(null);
                       return;
                   }
@@ -76,9 +76,9 @@
           inner();
       };
 
-     if ($course === null) {
-           goto("/explore")
-     }
+     $: if ($course === null) {
+             goto("/explore")
+         }
 
     if ($course?.terms.some((term) => !currentTerms.includes(addAcademicYear(term)))) {
         course.set({
@@ -176,7 +176,7 @@
 </script>
 <Seo title={params?.replace('-', ' ').toUpperCase()} description="{'Give and see reviews of ' + params?.replace('-', ' ').toUpperCase() + ' on concordia.courses'}" />
 
-{#if $course === undefined || $showingReviews === undefined}
+{#if $course === undefined || $course === null || $showingReviews === undefined}
     <Loading/>
 {:else }
     <div class='mx-auto mt-10 max-w-6xl md:mt-0'>

@@ -2,7 +2,7 @@
     import type {Review} from "$lib/model/Review";
     import {onMount} from "svelte";
     import {writable} from "svelte/store";
-    import _ from "lodash";
+    import sum from "lodash/sum";
     import {twMerge} from "tailwind-merge";
     import {round2Decimals} from "$lib/utils";
     import Stat from "./Stat.svelte";
@@ -28,9 +28,9 @@
     const lg = useMediaQuery('(min-width: 1024px)');
 
     $: experience = allReviews.map((r) => r.experience);
-    $: averageExperience = _.sum(experience) / allReviews.length;
+    $: averageExperience = sum(experience) / allReviews.length;
     $: difficulties = allReviews.map((r) => r.difficulty);
-    $: averageDifficulty = _.sum(difficulties) / allReviews.length;
+    $: averageDifficulty = sum(difficulties) / allReviews.length;
 
 </script>
 
