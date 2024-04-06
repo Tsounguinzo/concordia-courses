@@ -4,7 +4,7 @@ Welcome to the Course Review Platform, a comprehensive solution designed to empo
 
 ## Table of Contents
 
-<img src="https://github.com/Tsounguinzo/concordia-courses/blob/main/ui/static/logo.png" align="right"
+<img src="https://github.com/Tsounguinzo/concordia-courses/blob/main/ui/static/logo.webp" align="right"
 alt="concordia.courses logo">
 
 - [Features](#features)
