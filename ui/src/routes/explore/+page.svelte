@@ -125,7 +125,7 @@
         Explore all courses
     </h1>
     <div class='relative flex w-full max-w-xl flex-col lg:max-w-6xl lg:flex-row lg:justify-center'>
-        <div class='sm:mx-2 lg:hidden'>
+        <div class='lg:hidden'>
             <FilterToggle>
                 <ExploreFilter
                         {selectedSubjects}
