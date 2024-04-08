@@ -22,6 +22,12 @@ public class InteractionController {
         return Response.ok().setPayload(kind);
     }
 
+    @GetMapping("/referrer/{referrer}")
+    public Response<?> getUserInteraction(@PathVariable String referrer) {
+        List<InteractionDto> interactions = interactionService.getUserInteractions(referrer);
+        return Response.ok().setPayload(interactions);
+    }
+
     @GetMapping("/{courseId}/referrer/{referrer}")
     public Response<?> getUserInteractionsForCourse(@PathVariable String courseId, @PathVariable String referrer) {
         log.info("fetching review interactions from {} for course {}", referrer, courseId);

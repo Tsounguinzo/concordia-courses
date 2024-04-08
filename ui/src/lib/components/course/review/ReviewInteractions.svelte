@@ -18,9 +18,10 @@
     const user =  $page.data.user;
     const kind = writable<InteractionKind | undefined | null>(undefined);
     let {courseId, userId, likes} = review;
+    $: ({courseId, userId, likes} = review);
 
     const getUserInteractionKind = (interactions: Interaction[]): InteractionKind | undefined => {
-        const interaction = interactions.find((interaction: Interaction) => interaction.userId === review.userId);
+        const interaction = interactions.find((interaction: Interaction) => interaction.userId === userId && interaction.courseId === courseId);
         return interaction?.kind;
     };
 

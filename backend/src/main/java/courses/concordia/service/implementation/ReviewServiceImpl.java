@@ -2,6 +2,7 @@ package courses.concordia.service.implementation;
 
 import courses.concordia.dto.mapper.ReviewMapper;
 import courses.concordia.dto.model.course.ReviewDto;
+import courses.concordia.dto.model.course.ReviewFilterDto;
 import courses.concordia.model.Review;
 import courses.concordia.repository.CourseRepository;
 import courses.concordia.repository.ReviewRepository;
@@ -11,8 +12,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -30,9 +32,17 @@ public class ReviewServiceImpl implements ReviewService {
     private final MongoTemplate mongoTemplate;
     private final ModelMapper modelMapper;
 
+    /**
+     * Adds or updates a review based on the provided ReviewDto.
+     * If the review exists, it updates; otherwise, it creates a new review.
+     *
+     * @param reviewDto The review data transfer object containing review details.
+     * @return The added or updated review data transfer object.
+     */
     @Caching(evict = {
             @CacheEvict(value = "courseReviewsCache", key = "#reviewDto.courseId"),
-            @CacheEvict(value = "coursesCacheWithFilters", allEntries = true)
+            @CacheEvict(value = "coursesCacheWithFilters", allEntries = true),
+            @CacheEvict(value = "reviewsCacheWithFilters", allEntries = true)
     })
     @Override
     public ReviewDto addOrUpdateReview(ReviewDto reviewDto) {
@@ -47,18 +57,38 @@ public class ReviewServiceImpl implements ReviewService {
         return ReviewMapper.toDto(review);
     }
 
+    /**
+     * Creates a Review entity from a ReviewDto.
+     *
+     * @param reviewDto The review data transfer object.
+     * @return A new Review entity.
+     */
     private Review createReviewFromDto(ReviewDto reviewDto) {
         return modelMapper.map(reviewDto, Review.class);
     }
 
+    /**
+     * Updates an existing Review entity from a ReviewDto.
+     *
+     * @param existingReview The existing Review entity.
+     * @param reviewDto The review data transfer object with updated fields.
+     * @return The updated Review entity.
+     */
     private Review updateReviewFromDto(Review existingReview, ReviewDto reviewDto) {
         modelMapper.map(reviewDto, existingReview);
         return existingReview;
     }
 
+    /**
+     * Deletes a review identified by courseId and userId.
+     *
+     * @param courseId The ID of the course.
+     * @param userId The ID of the user.
+     */
     @Caching(evict = {
             @CacheEvict(value = "courseReviewsCache", key = "#courseId"),
-            @CacheEvict(value = "coursesCacheWithFilters", allEntries = true)
+            @CacheEvict(value = "coursesCacheWithFilters", allEntries = true),
+            @CacheEvict(value = "reviewsCacheWithFilters", allEntries = true)
     })
     @Override
     public void deleteReview(String courseId, String userId) {
@@ -66,6 +96,12 @@ public class ReviewServiceImpl implements ReviewService {
         updateCourseExperience(courseId);
     }
 
+    /**
+     * Retrieves a list of reviews for a specific user.
+     *
+     * @param userId The ID of the user.
+     * @return A list of ReviewDto objects representing the user's reviews.
+     */
     @Override
     public List<ReviewDto> getUserReviews(String userId) {
         log.info("Retrieving reviews for user with ID {}", userId);
@@ -76,18 +112,84 @@ public class ReviewServiceImpl implements ReviewService {
                 .collect(Collectors.toList());
     }
 
-    public List<Review> findReviewsByCourseId(String courseId) {
-        return reviewRepository.findAllByCourseId(courseId);
+    /**
+     * Retrieves reviews based on filtering criteria with pagination support.
+     *
+     * @param limit The maximum number of reviews to return.
+     * @param offset The offset from where to start the query.
+     * @param filters The filtering criteria for reviews.
+     * @return A list of ReviewDto objects that match the filtering criteria.
+     */
+    @Cacheable(value = "reviewsCacheWithFilters", key = "{#limit, #offset, #filters.hashCode()}")
+    @Override
+    public List<ReviewDto> getReviewsWithFilter(int limit, int offset, ReviewFilterDto filters) {
+        log.info("Retrieving reviews with limit {}, offset {}, and filters {}", limit, offset, filters);
+        Pageable pageable = PageRequest.of(offset / limit, limit);
+        Page<Review> page = findFilteredReviews(filters, pageable);
+        return page.getContent()
+                .stream()
+                .map(review -> modelMapper.map(review, ReviewDto.class))
+                .collect(Collectors.toList());
     }
 
-    public List<Review> findReviewsByUserId(String userId) {
-        return reviewRepository.findAllByUserId(userId);
+    /**
+     * Finds reviews based on filtering criteria with pagination support.
+     *
+     * @param filters The filtering criteria for reviews.
+     * @param pageable The pagination information.
+     * @return A page of Review objects that match the filtering criteria.
+     */
+    private Page<Review> findFilteredReviews(ReviewFilterDto filters, Pageable pageable) {
+        Query query = new Query().with(pageable);
+        // Handle sorting
+        applySorting(filters, query);
+
+        long count = mongoTemplate.count(query, Review.class);
+        List<Review> reviews = mongoTemplate.find(query, Review.class);
+
+        log.info("Found {} courses matching filter criteria", reviews.size());
+
+        return new PageImpl<>(reviews, pageable, count);
     }
 
-    public List<Review> findReviewsByInstructorName(String instructorName) {
-        return reviewRepository.findAllByInstructor(instructorName);
+    /**
+     * Applies sorting to the query based on the provided filter criteria.
+     * If no sorting criteria is specified, the default sorting is by date.
+     * @param filter The filter criteria for reviews.
+     * @param query The query to which sorting will be applied.
+     */
+    private void applySorting(ReviewFilterDto filter, Query query) {
+        System.out.println("Applying sorting " + filter);
+        if (filter.getSortBy() != null) {
+            ReviewFilterDto.ReviewSortType sortType = filter.getSortBy();
+            String sortField = "timestamp"; // Default sorting by date
+
+            switch (sortType) {
+                case Experience:
+                    sortField = "experience";
+                    break;
+                case Likes: // Assuming you have a corresponding enum value for this
+                    sortField = "likes";
+                    break;
+                case Date: // Explicit case for clarity, even though it's the default
+                default:
+                    // The default sortField is already set to "timestamp"
+                    break;
+            }
+
+            log.info("Applying sort by {}", sortField);
+            query.with(Sort.by(Sort.Direction.DESC, sortField));
+        } else {
+            log.info("No sort type specified, defaulting to sort by date");
+            query.with(Sort.by(Sort.Direction.DESC, "timestamp"));
+        }
     }
 
+    /**
+     * Updates the average experience and difficulty for a course based on its reviews.
+     *
+     * @param courseId The ID of the course.
+     */
     private void updateCourseExperience(String courseId) {
         List<Review> reviews = reviewRepository.findAllByCourseId(courseId);
         double avgExperience = reviews.stream().mapToInt(Review::getExperience).average().orElse(0.0);

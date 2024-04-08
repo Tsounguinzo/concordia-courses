@@ -63,8 +63,13 @@ export const punctuate = (s: string): string =>
 export const isValidCourseCode = (s: string) =>
     /^(([A-Z0-9]){4} [0-9]{3,4})$/.test(s);
 
-export const spliceCourseCode = (courseCode: string, delimiter: string) =>
-    courseCode.slice(0, 4) + delimiter + courseCode.slice(4);
+export const spliceCourseCode = (courseCode: string, delimiter: string) => {
+    const firstIntIndex = courseCode.search(/\d/);
+    if (firstIntIndex === -1) {
+        return courseCode;
+    }
+    return courseCode.slice(0, firstIntIndex) + delimiter + courseCode.slice(firstIntIndex);
+}
 
 export const round2Decimals = (n: number) => Math.round(n * 100) / 100;
 
@@ -129,7 +134,7 @@ export const experienceToIcon = (experience: number): [string, string] => {
     } else if (experience > 2 && experience <= 3) {
         return ['text-teal-400', '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-smile"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" x2="9.01" y1="9" y2="9"/><line x1="15" x2="15.01" y1="9" y2="9"/></svg>']
     } else if (experience > 3 && experience <= 4) {
-        return ['text-green-600', '<svg xmlns="<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-laugh"><circle cx="12" cy="12" r="10"/><path d="M18 13a6 6 0 0 1-6 5 6 6 0 0 1-6-5h12Z"/><line x1="9" x2="9.01" y1="9" y2="9"/><line x1="15" x2="15.01" y1="9" y2="9"/></svg>']
+        return ['text-green-600', '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-laugh"><circle cx="12" cy="12" r="10"/><path d="M18 13a6 6 0 0 1-6 5 6 6 0 0 1-6-5h12Z"/><line x1="9" x2="9.01" y1="9" y2="9"/><line x1="15" x2="15.01" y1="9" y2="9"/></svg>']
     } else if (experience > 4 && experience <= 5) {
         return ['text-yellow-700', '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-crown"><path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"/><path d="M5 21h14"/></svg>']
     } else {

@@ -15,6 +15,7 @@
     import type {Interaction} from "$lib/model/Interaction";
 
     export let canModify: boolean;
+    export let courseName: string;
     export let handleDelete: () => void;
     export let editReview: Writable<boolean> = writable(false);
     export let interactions: Interaction[];
@@ -41,13 +42,22 @@
         <div class='flex w-full'>
             <div class='relative flex w-full flex-col'>
                 <div class='flex w-full'>
-                    <Tooltip {show} text={longDate}>
-                        <p class='cursor-default py-2 text-xs font-medium text-gray-700 dark:text-gray-300'
-                           on:mouseenter={() => show = true}
-                           on:mouseleave={() => show = false}>
-                            {shortDate}
-                        </p>
-                    </Tooltip>
+                    <div class="flex flex-col py-1">
+                        {#if courseName}
+                            <div>
+                                <h3 class='text-lg font-semibold text-gray-800 dark:text-gray-200'>
+                                    {courseName}
+                                </h3>
+                            </div>
+                        {/if}
+                        <Tooltip {show} text={longDate}>
+                            <p class='cursor-default text-xs font-medium text-gray-700 dark:text-gray-300'
+                               on:mouseenter={() => show = true}
+                               on:mouseleave={() => show = false}>
+                                {shortDate}
+                            </p>
+                        </Tooltip>
+                    </div>
                     {#if canModify}
                         <Pin class='ml-2 mt-2 text-blue-600'/>
                     {/if}
@@ -87,7 +97,7 @@
         <p class='mb-2 mt-auto flex-1 text-sm italic leading-4 text-gray-700 dark:text-gray-200'>
             {#if includeTaughtBy}
                 Taught by{' '}
-                    <span class='font-medium'>
+                <span class='font-medium'>
                         {review.instructor}
                     </span>
             {:else }

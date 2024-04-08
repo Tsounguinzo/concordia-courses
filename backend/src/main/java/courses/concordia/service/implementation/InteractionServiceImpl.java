@@ -33,17 +33,29 @@ public class InteractionServiceImpl implements InteractionService {
     private final InteractionRepository interactionRepository;
     private final MongoTemplate mongoTemplate;
 
+    /**
+     * Retrieves the kind of interaction (e.g., LIKE, DISLIKE) a user has with a course based on a referrer.
+     *
+     * @param courseId  The ID of the course.
+     * @param userId    The ID of the user.
+     * @param referrer  The referrer identifier.
+     * @return The kind of interaction.
+     * @throws RuntimeException if the interaction is not found.
+     */
     @Override
     public String getInteractionKind(String courseId, String userId, String referrer) {
-        Optional<Interaction> interaction = interactionRepository.findByCourseIdAndUserIdAndReferrer(courseId, userId, referrer);
-
-        if (interaction.isPresent()) {
-            return InteractionMapper.toDto(interaction.get()).getKind();
-        }
-
-        throw exception(INTERACTION, ENTITY_NOT_FOUND);
+        return interactionRepository.findByCourseIdAndUserIdAndReferrer(courseId, userId, referrer)
+                .map(interaction -> InteractionMapper.toDto(interaction).getKind())
+                .orElseThrow(() -> exception(INTERACTION, ENTITY_NOT_FOUND));
     }
 
+    /**
+     * Fetches all interactions a user has for a specific course and referrer.
+     *
+     * @param courseId The ID of the course.
+     * @param referrer The referrer identifier.
+     * @return A list of {@link InteractionDto} objects.
+     */
     @Override
     public List<InteractionDto> getUserInteractionsForCourse(String courseId, String referrer) {
         return interactionRepository.findByCourseIdAndReferrer(courseId, referrer).stream()
@@ -51,15 +63,29 @@ public class InteractionServiceImpl implements InteractionService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Adjusts the likes count for a review based on user interaction changes.
+     *
+     * @param courseId    The ID of the course.
+     * @param userId      The ID of the user.
+     * @param likesChange The amount to adjust the likes by.
+     */
     private void adjustReviewLikes(String courseId, String userId, int likesChange) {
         Query reviewQuery = new Query(Criteria.where("courseId").is(courseId).and("userId").is(userId));
         Update update = new Update().inc("likes", likesChange);
         mongoTemplate.updateFirst(reviewQuery, update, Review.class);
     }
 
+    /**
+     * Adds or updates a user interaction for a course, adjusting review likes as necessary.
+     *
+     * @param interactionDto The interaction data transfer object.
+     * @return An updated or new {@link InteractionDto}.
+     */
     @Caching(evict = {
             @CacheEvict(value = "courseReviewsCache", key = "#interactionDto.courseId"),
-            @CacheEvict(value = "coursesCacheWithFilters", allEntries = true)
+            @CacheEvict(value = "coursesCacheWithFilters", allEntries = true),
+            @CacheEvict(value = "reviewsCacheWithFilters", allEntries = true)
     })
     @Override
     public InteractionDto addOrUpdateInteraction(InteractionDto interactionDto) {
@@ -107,9 +133,17 @@ public class InteractionServiceImpl implements InteractionService {
         return InteractionMapper.toDto(interaction);
     }
 
+    /**
+     * Deletes a specific interaction for a user based on the course and referrer, adjusting review likes accordingly.
+     *
+     * @param courseId The ID of the course.
+     * @param userId   The ID of the user.
+     * @param referrer The referrer identifier.
+     */
     @Caching(evict = {
             @CacheEvict(value = "courseReviewsCache", key = "#courseId"),
-            @CacheEvict(value = "coursesCacheWithFilters", allEntries = true)
+            @CacheEvict(value = "coursesCacheWithFilters", allEntries = true),
+            @CacheEvict(value = "reviewsCacheWithFilters", allEntries = true)
     })
     @Override
     public void deleteInteraction(String courseId, String userId, String referrer) {
@@ -122,9 +156,16 @@ public class InteractionServiceImpl implements InteractionService {
         }
     }
 
+    /**
+     * Deletes all interactions for a user based on the course.
+     *
+     * @param courseId The ID of the course.
+     * @param userId   The ID of the user.
+     */
     @Caching(evict = {
             @CacheEvict(value = "courseReviewsCache", key = "#courseId"),
-            @CacheEvict(value = "coursesCacheWithFilters", allEntries = true)
+            @CacheEvict(value = "coursesCacheWithFilters", allEntries = true),
+            @CacheEvict(value = "reviewsCacheWithFilters", allEntries = true)
     })
     @Override
     public void deleteInteractions(String courseId, String userId) {
@@ -132,11 +173,17 @@ public class InteractionServiceImpl implements InteractionService {
         mongoTemplate.remove(query, Interaction.class);
     }
 
+    /**
+     * Retrieves all interactions for a user which is the referrer in this case.
+     *
+     * @param referrer The referrer identifier.
+     * @return A list of {@link InteractionDto} objects.
+     */
     @Override
-    public List<Interaction> interactionsForReview(String courseId, String userId) {
-        return mongoTemplate.find(
-                new Query(Criteria.where("courseId").is(courseId).and("userId").is(userId)),
-                Interaction.class);
+    public List<InteractionDto> getUserInteractions(String referrer) {
+        return interactionRepository.findByReferrer(referrer).stream()
+                .map(InteractionMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     private RuntimeException exception(EntityType entityType, ExceptionType exceptionType, String... args) {

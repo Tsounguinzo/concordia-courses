@@ -259,7 +259,7 @@ public class CourseServiceImpl implements CourseService {
      * @return A page of courses prioritized by _id matches.
      */
     private Page<Course> prioritizeCoursesByIdMatch(List<Course> courses, String query, Pageable pageable, long totalCount) {
-        if (query != null && !query.isEmpty()) {
+        if (query != null && !query.isBlank()){
             final Pattern idPattern = Pattern.compile(".*" + Pattern.quote(query.replaceAll("\\s+", "")) + ".*", Pattern.CASE_INSENSITIVE);
 
             // Sort courses with a custom comparator that prioritizes _id matches

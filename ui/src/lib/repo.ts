@@ -1,7 +1,7 @@
 import type {Course} from './model/Course';
 import type {GetCourseReviewsInteractionPayload} from './model/GetCourseReviewsInteractionsPayload';
 import type {GetCourseWithReviewsPayload} from './model/GetCourseWithReviewsPayload';
-import type {InteractionKind} from './model/Interaction';
+import type {Interaction, InteractionKind} from './model/Interaction';
 import type {Notification} from './model/Notification';
 import type {Review} from './model/Review';
 import type {Subscription} from './model/Subscription';
@@ -153,6 +153,15 @@ export const repo = {
         );
     },
 
+    async getUserInteractions(
+        referrer: string
+    ): Promise<Interaction[]> {
+        return await client.deserialize<Interaction[]>(
+            'GET',
+            `/interactions/referrer/${referrer}`
+        );
+    },
+
     async addOrUpdateInteraction(
         kind: InteractionKind,
         courseId: string,
@@ -231,6 +240,23 @@ export const repo = {
         return await client.deserialize<Course[]>(
             'POST',
             `/courses/filter?limit=${limit}&offset=${offset}`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(filters),
+            }
+        );
+    },
+
+    async getReviewsFeed(
+        limit: number,
+        offset: number,
+        filters: any
+    ): Promise<Review[]> {
+        return await client.deserialize<Review[]>(
+            'POST',
+            `/reviews/filter?limit=${limit}&offset=${offset}`,
             {
                 headers: {
                     'Content-Type': 'application/json',

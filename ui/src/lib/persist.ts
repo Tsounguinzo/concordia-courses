@@ -124,8 +124,9 @@ function save_input(
     if (input instanceof HTMLSelectElement) {
         store.set({ ...value, [input.name]: input.selectedIndex });
     } else if (input instanceof HTMLInputElement) {
-        if (input.type === 'password' && config.ignorePassword) {}
-        else if (input.type === 'checkbox') {
+        if (input.type === 'password' && config.ignorePassword) {
+          // continue
+        } else if (input.type === 'checkbox') {
             store.set({ ...value, [input.name]: input.checked ? input.value : null });
         } else if (input.type === 'radio') {
             if (input.checked) {

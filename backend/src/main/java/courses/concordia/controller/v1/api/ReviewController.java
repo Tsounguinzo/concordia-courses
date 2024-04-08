@@ -1,9 +1,7 @@
 package courses.concordia.controller.v1.api;
 
-import courses.concordia.dto.model.course.ReviewDto;
-import courses.concordia.dto.model.course.ReviewPayloadDto;
+import courses.concordia.dto.model.course.*;
 import courses.concordia.dto.response.Response;
-import courses.concordia.model.Review;
 import courses.concordia.model.User;
 import courses.concordia.service.*;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +21,12 @@ public class ReviewController {
     @GetMapping
     public Response<?> getReviews(@RequestParam String userId) {
         List<ReviewDto> reviews = reviewService.getUserReviews(userId);
+        return Response.ok().setPayload(reviews);
+    }
+
+    @PostMapping("/filter")
+    public Response<?> getReviewsWithFilters(@RequestBody ReviewFilterDto filters, @RequestParam int limit, @RequestParam int offset) {
+        List<ReviewDto> reviews = reviewService.getReviewsWithFilter(limit, offset, filters);
         return Response.ok().setPayload(reviews);
     }
 
