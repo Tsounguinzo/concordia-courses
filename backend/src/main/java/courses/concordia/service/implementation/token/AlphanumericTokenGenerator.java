@@ -11,6 +11,12 @@ public class AlphanumericTokenGenerator implements TokenGenerator {
     private static final String DATA_FOR_RANDOM_STRING = CHAR_LOWER + CHAR_UPPER + NUMBER;
     private static final SecureRandom random = new SecureRandom();
 
+    /**
+     * Generates a token consisting of a sequence of random characters. The characters
+     * are selected from a predefined set and the length of the token is 36 characters.
+     *
+     * @return A String representing the generated token.
+     */
     @Override
     public String generateToken() {
         StringBuilder sb = new StringBuilder(36);

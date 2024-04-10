@@ -3,7 +3,7 @@ package courses.concordia.service.implementation;
 import courses.concordia.dto.model.course.CourseDto;
 import courses.concordia.dto.model.course.CourseReviewsDto;
 import courses.concordia.dto.model.course.ReviewDto;
-import courses.concordia.exception.ExceptionHelper;
+import courses.concordia.exception.CustomExceptionFactory;
 import courses.concordia.exception.EntityType;
 import courses.concordia.exception.ExceptionType;
 import courses.concordia.model.Course;
@@ -26,9 +26,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
-import static courses.concordia.exception.EntityType.COURSE;
-import static courses.concordia.exception.ExceptionType.ENTITY_NOT_FOUND;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -89,7 +86,7 @@ public class CourseServiceImpl implements CourseService {
         log.info("Retrieving course with ID {}", id);
         Optional<Course> course = courseRepository.findById(id);
         return course.map(c -> modelMapper.map(c, CourseDto.class))
-                .orElseThrow(() -> exception(COURSE, ENTITY_NOT_FOUND, id));
+                .orElseThrow(() -> exception(id));
     }
 
     /**
@@ -282,7 +279,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
 
-    private RuntimeException exception(EntityType entityType, ExceptionType exceptionType, String... args) {
-        return ExceptionHelper.throwException(entityType, exceptionType, args);
+    private RuntimeException exception(String... args) {
+        return CustomExceptionFactory.throwCustomException(EntityType.COURSE, ExceptionType.ENTITY_NOT_FOUND, args);
     }
 }

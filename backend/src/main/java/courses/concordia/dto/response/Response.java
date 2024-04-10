@@ -3,7 +3,6 @@ package courses.concordia.dto.response;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import courses.concordia.util.DateUtils;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -92,18 +91,6 @@ public class Response<T> {
     @Accessors(chain = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static class PageMetadata {
-        private final int size;
-        private final long totalElements;
-        private final int totalPages;
-        private final int number;
-
-        public PageMetadata(int size, long totalElements, int totalPages, int number) {
-            this.size = size;
-            this.totalElements = totalElements;
-            this.totalPages = totalPages;
-            this.number = number;
-        }
-    }
+    public record PageMetadata(int size, long totalElements, int totalPages, int number) {}
 
 }

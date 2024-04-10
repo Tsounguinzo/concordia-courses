@@ -5,7 +5,7 @@ import courses.concordia.controller.v1.request.LoginRequest;
 import courses.concordia.dto.mapper.UserMapper;
 import courses.concordia.dto.model.user.UserDto;
 import courses.concordia.dto.response.AuthenticationResponse;
-import courses.concordia.exception.ExceptionHelper;
+import courses.concordia.exception.CustomExceptionFactory;
 import courses.concordia.exception.EntityType;
 import courses.concordia.exception.ExceptionType;
 import courses.concordia.model.Token;
@@ -28,6 +28,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import static courses.concordia.exception.EntityType.TOKEN;
 import static courses.concordia.exception.EntityType.USER;
@@ -45,17 +46,19 @@ public class UserServiceImpl implements UserService {
     private final AuthenticationManager authenticationManager;
 
 
+    /**
+     * Registers a new user in the system with the provided user details.
+     * This method also checks for duplicate username or email, encodes the password,
+     * saves the user, sends a verification email, and automatically logs in the user upon successful signup.
+     *
+     * @param userDto User details provided for registration.
+     * @return AuthenticationResponse containing JWT and refresh tokens.
+     */
     @Override
+    @Transactional
     public AuthenticationResponse signup(UserDto userDto) {
         log.info("Attempting to signup user: {}", userDto.getUsername());
-
-        userRepository.findByUsername(userDto.getUsername()).ifPresent(u -> {
-            throw exception(USER, DUPLICATE_ENTITY);
-        });
-
-        userRepository.findByEmail(userDto.getEmail()).ifPresent(u -> {
-            throw exception(USER, DUPLICATE_ENTITY);
-        });
+        checkUserExistence(userDto.getUsername(), userDto.getEmail());
 
         User user = new User()
                 .setUsername(userDto.getUsername())
@@ -66,14 +69,23 @@ public class UserServiceImpl implements UserService {
         user = userRepository.save(user);
 
         Token token = createAndSaveNewToken(user);
-
         emailService.sendSimpleMailMessage(user.getUsername(), user.getEmail(), token.getToken());
+
         authenticate(userDto.getUsername(), userDto.getPassword());
+
         var jwtToken = jwtService.generateToken(user, TokenType.ACCESS_TOKEN);
         var refreshToken = jwtService.generateToken(user, TokenType.REFRESH_TOKEN);
+
         return new AuthenticationResponse(jwtToken, refreshToken);
     }
 
+    /**
+     * Authenticates a user with the provided login credentials.
+     *
+     * @param loginRequest Contains the username and password for authentication.
+     * @return AuthenticationResponse containing JWT and refresh tokens upon successful authentication.
+     */
+    @Override
     public AuthenticationResponse authenticate(LoginRequest loginRequest) {
 
         try {
@@ -90,7 +102,6 @@ public class UserServiceImpl implements UserService {
 
 
             log.info("Authentication successful for user: {}", loginRequest.getUsername());
-
             return new AuthenticationResponse(jwtToken, refreshToken);
         } catch (BadCredentialsException e) {
             log.error("Authentication failed for user: {}", loginRequest.getUsername(), e);
@@ -104,6 +115,12 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * Verifies if a token is valid and not expired.
+     *
+     * @param token The token to verify.
+     * @return true if the token is valid and not expired, false otherwise.
+     */
     @Override
     public boolean verifyToken(String token) {
         log.info("Verifying token: {}", token);
@@ -112,14 +129,11 @@ public class UserServiceImpl implements UserService {
         return verifyAndActivateUser(foundToken);
     }
 
-    @Override
-    public boolean isUserVerified(String username) {
-        log.info("Checking verification status for user: {}", username);
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> exception(USER, ENTITY_NOT_FOUND, username));
-        return user.isVerified();
-    }
-
+    /**
+     * Resends a verification token to the user if they are not already verified.
+     *
+     * @param username The username of the user to resend the token to.
+     */
     @Override
     public void resendToken(String username) {
         log.info("Resending token to user: {}", username);
@@ -138,6 +152,13 @@ public class UserServiceImpl implements UserService {
         emailService.sendNewTokenMailMessage(user.getUsername(), user.getEmail(), token.getToken());
     }
 
+    /**
+     * Changes the username for an existing user.
+     *
+     * @param newUsername       The new username for the user.
+     * @param originalUsername  The current username of the user.
+     * @return UserDto with updated username.
+     */
     @Override
     public UserDto changeUsername(String newUsername, String originalUsername) {
         log.info("Changing username for user: {}", originalUsername);
@@ -153,6 +174,12 @@ public class UserServiceImpl implements UserService {
         return UserMapper.toDto(user);
     }
 
+    /**
+     * Changes the password for a user identified by a reset token.
+     *
+     * @param token        The token identifying the user.
+     * @param newPassword  The new password to set for the user.
+     */
     @Override
     public void changePassword(Token token, String newPassword) {
         String username = verifyPasswordResetToken(token.getToken());
@@ -167,13 +194,12 @@ public class UserServiceImpl implements UserService {
         emailService.sendResetPasswordConfirmationMailMessage(user.getUsername(), user.getEmail());
     }
 
-    @Override
-    public String getUserIdFromUsername(String username) {
-        return userRepository.findByUsername(username)
-                .map(User::get_id)
-                .orElseThrow(() -> exception(USER, ENTITY_NOT_FOUND));
-    }
-
+    /**
+     * Verifies a password reset token and returns the associated username.
+     *
+     * @param token The password reset token to verify.
+     * @return The username associated with the valid token.
+     */
     @Override
     public String verifyPasswordResetToken(String token) {
         log.info("Verifying reset password token: {}", token);
@@ -185,7 +211,11 @@ public class UserServiceImpl implements UserService {
 
         return user.getUsername();
     }
-
+    /**
+     * Retrieves the currently authenticated user.
+     *
+     * @return The currently authenticated User, or null if not authenticated.
+     */
     @Override
     public User getAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -196,6 +226,11 @@ public class UserServiceImpl implements UserService {
         return authentication.getPrincipal() instanceof User ? (User) authentication.getPrincipal() : null;
     }
 
+    /**
+     * Initiates a forgot password request for a user, generating and sending a reset token.
+     *
+     * @param username The username of the user requesting password reset.
+     */
     @Override
     public void forgotPassword(String username) {
         log.info("Forgot password request for user: {}", username);
@@ -210,7 +245,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private RuntimeException exception(EntityType entityType, ExceptionType exceptionType, String... args) {
-        return ExceptionHelper.throwException(entityType, exceptionType, args);
+        return CustomExceptionFactory.throwCustomException(entityType, exceptionType, args);
     }
 
     public boolean checkIfUserExist(String username){
@@ -259,5 +294,11 @@ public class UserServiceImpl implements UserService {
         Token newToken = new Token(user, tokenGenerator);
         tokenRepository.save(newToken);
         return newToken;
+    }
+
+    private void checkUserExistence(String username, String email) {
+        if (userRepository.existsByUsernameOrEmail(username, email)) {
+            throw exception(USER, DUPLICATE_ENTITY);
+        }
     }
 }

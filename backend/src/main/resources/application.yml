@@ -38,6 +38,10 @@ rt:
   secret: ${REFRESH_SECRET}
   exp: ${REFRESH_EXP:2592000} # 30 days default
 
+cookie:
+  secure: true
+  httpOnly: true
+
 server:
   port: 8080
   forward-headers-strategy: native

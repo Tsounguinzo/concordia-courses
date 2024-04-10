@@ -13,10 +13,8 @@ public interface UserService {
     AuthenticationResponse authenticate(LoginRequest loginRequest);
     boolean verifyToken(String token);
     User getAuthenticatedUser();
-    boolean isUserVerified(String username);
     void resendToken(String username);
     boolean checkIfUserExist(String username);
-    String getUserIdFromUsername(String username);
     String verifyPasswordResetToken(String token);
     void forgotPassword(String username);
 }
