@@ -87,8 +87,6 @@ public class Response<T> {
         OK, BAD_REQUEST, UNAUTHORIZED, VALIDATION_EXCEPTION, EXCEPTION, WRONG_CREDENTIALS, ACCESS_DENIED, NOT_FOUND, DUPLICATE_ENTITY
     }
 
-    @Getter
-    @Accessors(chain = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonIgnoreProperties(ignoreUnknown = true)
     public record PageMetadata(int size, long totalElements, int totalPages, int number) {}
