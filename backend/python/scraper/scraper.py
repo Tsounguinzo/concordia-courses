@@ -51,7 +51,6 @@ def parse_course_data(html_content, course_key, course_code):
                 'non_editing_teachers': non_editing_teachers,
                 'teaching_assistants': teaching_assistants
             }
-            print(course_dict)
             course_details.append(course_dict)
         except Exception as e:
             logging.warning(f"Error parsing course box: {str(e)}")

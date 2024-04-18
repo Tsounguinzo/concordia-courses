@@ -1,5 +1,6 @@
 import logging
 import os
+from tqdm import tqdm
 
 from python.processor.processor import process_courses
 from python.scraper.scraper import fetch_html_content, parse_course_data
@@ -36,6 +37,11 @@ def save_course_data(all_course_data, failed_retrievals):
 def fetch_and_parse_courses(courses):
     all_course_data = []
     failed_retrievals = []
+
+    # Calculate the total number of courses for the progress bar
+    total_courses = sum(len(codes) for codes in courses.values())
+    progress_bar = tqdm(total=total_courses, desc="Fetching Courses", unit="course")
+
     for course_key, course_codes in courses.items():
         for course_code in course_codes:
             url = CONFIG['courses_url_template'].format(course_key + '+' + course_code)
@@ -49,6 +55,11 @@ def fetch_and_parse_courses(courses):
             except Exception as e:
                 logging.error(f"Failed to process {course_key} {course_code}: {e}")
                 failed_retrievals.append(f"{course_key}{course_code}")
+            finally:
+                # Update progress bar after each course is processed
+                progress_bar.update(1)
+
+    progress_bar.close()
     return all_course_data, failed_retrievals
 
 
@@ -58,10 +69,10 @@ def main():
 
     try:
         json_valid_ids = load_json(os.path.join(CONFIG['json_filepath'], 'input', 'subject-catalogs.json'))
-        #all_course_data, failed_retrievals = fetch_and_parse_courses(json_valid_ids)
-        #save_course_data(all_course_data, failed_retrievals)
-        all_course_data = load_json(os.path.join(CONFIG['json_filepath'], 'output', 'all_courses.json'))
-        failed_retrievals = load_json(os.path.join(CONFIG['json_filepath'], 'output', 'failed_retrievals.json'))
+        all_course_data, failed_retrievals = fetch_and_parse_courses(json_valid_ids)
+        save_course_data(all_course_data, failed_retrievals)
+        #all_course_data = load_json(os.path.join(CONFIG['json_filepath'], 'output', 'all_courses.json'))
+        #failed_retrievals = load_json(os.path.join(CONFIG['json_filepath'], 'output', 'failed_retrievals.json'))
 
         final_courses, used_ids = process_courses(all_course_data, json_valid_ids)
 
