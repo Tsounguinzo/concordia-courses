@@ -12,8 +12,9 @@ def find_common_ids(name_ids, summary_ids, course_id):
         # One set is empty, use the non-empty set and check it against the normalized course ID
         active_set = name_ids if name_ids else summary_ids
         normalized_course_id = normalize_text(course_id)
-        return {id for id in active_set if normalize_text(id).startswith(normalized_course_id)}
+        return {id[:len(course_id)] for id in active_set if normalize_text(id)[:4] == normalized_course_id[:4]}
     else:
+        normalized_course_id = normalize_text(course_id)
         # Both sets are non-empty, find common IDs
         for name_id in name_ids:
             for summary_id in summary_ids:
@@ -23,6 +24,11 @@ def find_common_ids(name_ids, summary_ids, course_id):
                     common_id = longest_common_start(name_id, summary_id)
                     if common_id:
                         common_ids.add(common_id)
+
+        for name_id in name_ids:
+            if normalize_text(name_id)[:4] == normalized_course_id[:4]:
+                common_ids.add(name_id[:len(course_id)])
+
         return common_ids
 
 

@@ -49,6 +49,6 @@ def check_missing_ids(valid_ids, used_ids, not_available_ids):
     missing_ids = all_valid_ids.difference(all_used_ids)
 
     if missing_ids:
-        print("Missing IDs:", missing_ids)
+        print(f"Missing IDs:({len(missing_ids)})", missing_ids)
     else:
         print("All IDs are accounted for.")

@@ -69,10 +69,10 @@ def main():
 
     try:
         json_valid_ids = load_json(os.path.join(CONFIG['json_filepath'], 'input', 'subject-catalogs.json'))
-        all_course_data, failed_retrievals = fetch_and_parse_courses(json_valid_ids)
-        save_course_data(all_course_data, failed_retrievals)
-        #all_course_data = load_json(os.path.join(CONFIG['json_filepath'], 'output', 'all_courses.json'))
-        #failed_retrievals = load_json(os.path.join(CONFIG['json_filepath'], 'output', 'failed_retrievals.json'))
+        #all_course_data, failed_retrievals = fetch_and_parse_courses(json_valid_ids)
+        #save_course_data(all_course_data, failed_retrievals)
+        all_course_data = load_json(os.path.join(CONFIG['json_filepath'], 'output', 'all_courses.json'))
+        failed_retrievals = load_json(os.path.join(CONFIG['json_filepath'], 'output', 'failed_retrievals.json'))
 
         final_courses, used_ids = process_courses(all_course_data, json_valid_ids)
 
