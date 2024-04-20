@@ -1,5 +1,5 @@
 import re
-from python.utils.utilities import normalize_text, longest_common_start, extract_ids_from_text
+from python.scrapping.moodle.utils.utilities import normalize_text, longest_common_start, extract_ids_from_text
 
 
 def find_common_ids(name_ids, summary_ids, course_id):

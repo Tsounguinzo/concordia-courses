@@ -2,15 +2,15 @@ import logging
 import os
 from tqdm import tqdm
 
-from python.processor.processor import process_courses
-from python.scraper.scraper import fetch_html_content, parse_course_data
-from python.utils.utilities import load_json, check_missing_ids, save_json
+from python.scrapping.moodle.processor.processor import process_courses
+from python.scrapping.moodle.scraper.scraper import fetch_html_content, parse_course_data
+from python.scrapping.moodle.utils.utilities import load_json, check_missing_ids, save_json
 
 # Configuration
 CONFIG = {
-    "json_filepath": "data",
+    "json_filepath": "scrapping/moodle/data",
     "courses_url_template": "https://moodle.concordia.ca/moodle/course/search.php?areaids=core_course-course&q={}",
-    "log_file": "data/logs/application.log"
+    "log_file": "scrapping/moodle/data/logs/application.log"
 }
 
 
