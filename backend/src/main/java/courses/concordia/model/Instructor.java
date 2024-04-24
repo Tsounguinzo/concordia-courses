@@ -17,6 +17,7 @@ public class Instructor {
     private String _id;
     private String firstName;
     private String lastName;
+    private String department;
     private List<InstructorCourse> courses;
     @ToString.Exclude @EqualsAndHashCode.Exclude
     private double avgDifficulty = 0.0;

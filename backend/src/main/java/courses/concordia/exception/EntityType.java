@@ -11,5 +11,6 @@ public enum EntityType {
     NOTIFICATION,
     REVIEW,
     SUBSCRIPTION,
-    TOKEN
+    TOKEN,
+    INSTRUCTOR
 }

@@ -21,6 +21,7 @@ public class InstructorFilterDto {
     private List<String> levels;
     private String query;
     private List<String> subjects;
+    private List<String> departments;
     private CourseFilterDto.CourseSort sortBy;
 
     @Data

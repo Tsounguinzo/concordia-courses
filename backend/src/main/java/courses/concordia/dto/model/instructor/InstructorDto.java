@@ -18,6 +18,7 @@ public class InstructorDto {
     private String _id;
     private String firstName;
     private String lastName;
+    private String department;
     private List<InstructorCourseDto> courses;
     @ToString.Exclude @EqualsAndHashCode.Exclude
     private double avgDifficulty = 0.0;
