@@ -1,7 +1,7 @@
 package courses.concordia.controller.v1.api;
 
-import courses.concordia.dto.model.course.InteractionDto;
-import courses.concordia.dto.model.course.UserInteractionsForCourseDto;
+import courses.concordia.dto.model.interaction.InteractionDto;
+import courses.concordia.dto.model.interaction.UserInteractionsForCourseDto;
 import courses.concordia.dto.response.Response;
 import courses.concordia.service.InteractionService;
 import lombok.RequiredArgsConstructor;

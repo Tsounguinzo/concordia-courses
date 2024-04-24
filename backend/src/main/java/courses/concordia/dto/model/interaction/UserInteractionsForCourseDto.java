@@ -1,4 +1,4 @@
-package courses.concordia.dto.model.course;
+package courses.concordia.dto.model.interaction;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;

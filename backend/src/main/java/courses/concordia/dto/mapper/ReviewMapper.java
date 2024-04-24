@@ -1,6 +1,6 @@
 package courses.concordia.dto.mapper;
 
-import courses.concordia.dto.model.course.ReviewDto;
+import courses.concordia.dto.model.review.ReviewDto;
 import courses.concordia.model.Review;
 
 public class ReviewMapper {

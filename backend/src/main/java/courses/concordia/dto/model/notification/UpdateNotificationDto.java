@@ -1,11 +1,12 @@
-package courses.concordia.dto.model.course;
+package courses.concordia.dto.model.notification;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -14,7 +15,8 @@ import java.util.List;
 @ToString
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CourseReviewsInteractionDto {
+public class UpdateNotificationDto {
+    private String creatorId;
+    private boolean seen;
     private String courseId;
-    private List<InteractionDto> interactions;
 }

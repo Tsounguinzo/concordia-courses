@@ -1,7 +1,6 @@
 package courses.concordia.service;
 
-import courses.concordia.dto.model.course.SubscriptionDto;
-import courses.concordia.dto.model.course.SubscriptionPayloadDto;
+import courses.concordia.dto.model.subscription.SubscriptionDto;
 
 import java.util.List;
 

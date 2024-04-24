@@ -1,4 +1,4 @@
-package courses.concordia.dto.model.course;
+package courses.concordia.dto.model.notification;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -15,8 +15,7 @@ import lombok.experimental.Accessors;
 @ToString
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UpdateNotificationDto {
-    private String creatorId;
-    private boolean seen;
+public class DeleteNotificationDto {
     private String courseId;
+    private String creatorId;
 }

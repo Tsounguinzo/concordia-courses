@@ -2,6 +2,7 @@ package courses.concordia.dto.model.course;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import courses.concordia.dto.model.review.ReviewDto;
 import lombok.*;
 import lombok.experimental.Accessors;
 

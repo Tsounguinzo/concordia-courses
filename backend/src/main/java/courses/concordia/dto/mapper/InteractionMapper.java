@@ -1,6 +1,6 @@
 package courses.concordia.dto.mapper;
 
-import courses.concordia.dto.model.course.InteractionDto;
+import courses.concordia.dto.model.interaction.InteractionDto;
 import courses.concordia.model.Interaction;
 
 public class InteractionMapper {

@@ -2,7 +2,7 @@ package courses.concordia.service.implementation;
 
 import courses.concordia.dto.model.course.CourseDto;
 import courses.concordia.dto.model.course.CourseReviewsDto;
-import courses.concordia.dto.model.course.ReviewDto;
+import courses.concordia.dto.model.review.ReviewDto;
 import courses.concordia.exception.CustomExceptionFactory;
 import courses.concordia.exception.EntityType;
 import courses.concordia.exception.ExceptionType;

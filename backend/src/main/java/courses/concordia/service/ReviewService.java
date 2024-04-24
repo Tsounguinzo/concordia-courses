@@ -1,6 +1,6 @@
 package courses.concordia.service;
-import courses.concordia.dto.model.course.ReviewDto;
-import courses.concordia.dto.model.course.ReviewFilterDto;
+import courses.concordia.dto.model.review.ReviewDto;
+import courses.concordia.dto.model.review.ReviewFilterDto;
 
 import java.util.List;
 

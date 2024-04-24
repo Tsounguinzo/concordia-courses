@@ -1,8 +1,8 @@
 package courses.concordia.service.implementation;
 
 import courses.concordia.dto.mapper.ReviewMapper;
-import courses.concordia.dto.model.course.ReviewDto;
-import courses.concordia.dto.model.course.ReviewFilterDto;
+import courses.concordia.dto.model.review.ReviewDto;
+import courses.concordia.dto.model.review.ReviewFilterDto;
 import courses.concordia.model.Review;
 import courses.concordia.repository.CourseRepository;
 import courses.concordia.repository.ReviewRepository;

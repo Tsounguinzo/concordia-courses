@@ -1,7 +1,7 @@
 package courses.concordia.service.implementation;
 
 import courses.concordia.dto.mapper.InteractionMapper;
-import courses.concordia.dto.model.course.InteractionDto;
+import courses.concordia.dto.model.interaction.InteractionDto;
 import courses.concordia.exception.CustomExceptionFactory;
 import courses.concordia.exception.EntityType;
 import courses.concordia.exception.ExceptionType;

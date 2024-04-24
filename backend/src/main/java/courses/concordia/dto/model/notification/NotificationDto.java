@@ -1,7 +1,8 @@
-package courses.concordia.dto.model.course;
+package courses.concordia.dto.model.notification;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import courses.concordia.dto.model.review.ReviewDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +16,9 @@ import lombok.experimental.Accessors;
 @ToString
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SubscriptionPayloadDto {
-    private String courseId;
+public class NotificationDto {
+    private String _id;
+    private ReviewDto review;
+    private boolean seen;
+    private String userId;
 }

@@ -1,6 +1,8 @@
 package courses.concordia.controller.v1.api;
 
-import courses.concordia.dto.model.course.*;
+import courses.concordia.dto.model.review.ReviewDto;
+import courses.concordia.dto.model.review.ReviewFilterDto;
+import courses.concordia.dto.model.review.ReviewPayloadDto;
 import courses.concordia.dto.response.Response;
 import courses.concordia.model.User;
 import courses.concordia.service.*;

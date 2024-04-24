@@ -1,7 +1,7 @@
 package courses.concordia.controller.v1.api;
 
-import courses.concordia.dto.model.course.SubscriptionDto;
-import courses.concordia.dto.model.course.SubscriptionPayloadDto;
+import courses.concordia.dto.model.subscription.SubscriptionDto;
+import courses.concordia.dto.model.subscription.SubscriptionPayloadDto;
 import courses.concordia.dto.response.Response;
 import courses.concordia.model.User;
 import courses.concordia.service.SubscriptionService;

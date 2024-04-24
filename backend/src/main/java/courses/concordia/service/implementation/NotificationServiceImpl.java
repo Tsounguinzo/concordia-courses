@@ -1,8 +1,8 @@
 package courses.concordia.service.implementation;
 
 import courses.concordia.dto.mapper.NotificationMapper;
-import courses.concordia.dto.model.course.NotificationDto;
-import courses.concordia.dto.model.course.ReviewDto;
+import courses.concordia.dto.model.notification.NotificationDto;
+import courses.concordia.dto.model.review.ReviewDto;
 import courses.concordia.model.Notification;
 import courses.concordia.model.Review;
 import courses.concordia.model.Subscription;

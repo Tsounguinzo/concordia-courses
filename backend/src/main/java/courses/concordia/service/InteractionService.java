@@ -1,6 +1,6 @@
 package courses.concordia.service;
 
-import courses.concordia.dto.model.course.InteractionDto;
+import courses.concordia.dto.model.interaction.InteractionDto;
 
 import java.util.List;
 
