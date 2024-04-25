@@ -54,6 +54,9 @@ export const sortSchedulesByBlocks = (schedules: Schedule[]) => {
 export const courseIdToUrlParam = (courseId: string) =>
     `${courseId.slice(0, 4)}-${courseId.slice(4)}`.toLowerCase();
 
+export const instructorNameToUrlParam = (firstName: string, lastName: string) =>
+    `${firstName}-${lastName}`.replace(' ', '-').toLowerCase();
+
 export const capitalize = (s: string): string =>
     s.charAt(0).toUpperCase() + s.slice(1);
 

@@ -15,6 +15,99 @@
     import Skeleton from "$lib/components/common/loader/Skeleton.svelte";
     import {toast} from "svelte-sonner";
     import Seo from "$lib/components/common/Seo.svelte";
+    import {faker} from '@faker-js/faker';
+    import InstructorCard from "$lib/components/explore/InstructorCard.svelte";
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+    const coursesmock = [
+        {"subject": "POLI", "catalog": "397"},
+        {"subject": "SPEC", "catalog": "609"},
+        {"subject": "RELI", "catalog": "685"},
+        {"subject": "FTRA", "catalog": "615"},
+        {"subject": "FPST", "catalog": "301"},
+        {"subject": "PSYC", "catalog": "321"},
+        {"subject": "IRST", "catalog": "209"},
+        {"subject": "WILS", "catalog": "601"},
+        {"subject": "BLDG", "catalog": "6701"},
+        {"subject": "HIST", "catalog": "101"},
+        {"subject": "MATH", "catalog": "205"},
+        {"subject": "PHYS", "catalog": "284"},
+        {"subject": "ECON", "catalog": "201"},
+        {"subject": "BIO", "catalog": "205"},
+        {"subject": "CHEM", "catalog": "206"},
+        {"subject": "MANA", "catalog": "300"},
+    ];
+
+    const tags = [
+        "Tough Grader",
+        "Get Ready To Read",
+        "Participation Matters",
+        "Extra Credit",
+        "Group Projects",
+        "Amazing Lectures",
+        "Clear Grading Criteria",
+        "Gives Good Feedback",
+        "Inspirational",
+        "Lots Of Homework",
+        "Hilarious",
+        "Beware Of Pop Quizzes",
+        "So Many Papers",
+        "Caring",
+        "Respected",
+        "Flexible Deadlines",
+        "Lecture Heavy",
+        "Test Heavy",
+        "Graded By Few Things",
+        "Accessible Outside Class",
+        "Online Savvy",
+        "Engaging",
+        "Technically Proficient",
+        "Industry Experienced",
+        "Research-Oriented",
+        "Multidisciplinary Approach",
+        "Interactive Sessions",
+        "Encourages Critical Thinking",
+        "Uses Multimedia",
+        "Culturally Inclusive"
+    ];
+
+    function getRandomSubarray(arr, size) {
+        const shuffled = arr.slice(0);
+        let i = arr.length, temp, index;
+        while (i--) {
+            index = Math.floor((i + 1) * Math.random());
+            temp = shuffled[index];
+            shuffled[index] = shuffled[i];
+            shuffled[i] = temp;
+        }
+        return shuffled.slice(0, size);
+    }
+
+    function createFakeInstructor(id) {
+        return {
+            _id: id,
+            firstName: faker.person.firstName(),
+            lastName: faker.person.lastName(),
+            department: faker.commerce.department(),
+            courses: getRandomSubarray(coursesmock, Math.floor(Math.random() * 10)), // 0 to 10 courses
+            tags: getRandomSubarray(tags, Math.floor(Math.random() * 3)), // 0 to 3 tags
+            avgDifficulty: parseFloat((Math.random() * 5).toFixed(1)),
+            avgRating: parseFloat((Math.random() * 5).toFixed(1)),
+            reviewCount: Math.floor(Math.random() * 100)
+        };
+    }
+
+    const fakeInstructors = [];
+    for (let i = 0; i < 20; i++) {
+        fakeInstructors.push(createFakeInstructor(faker.datatype.uuid()));
+    }
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 
     type SortByType = (typeof allSortByOptions)[number];
 
@@ -140,7 +233,7 @@
         }
     };
 </script>
-<Seo title="Explore" description="Explore courses at concordia.courses" />
+<Seo title="Explore" description="Explore courses and instructors at concordia.courses"/>
 <div class='flex flex-col items-center py-8'>
     <h1 class='mb-16 text-center text-5xl font-bold tracking-tight text-gray-900 dark:text-gray-200 sm:text-5xl'>
         Explore all {$instructorsModeOn ? 'instructors' : 'courses'}
@@ -177,20 +270,32 @@
                                 class="absolute bottom-4 right-0 mr-3 flex items-center"
                         >
                             <div class="relative flex ">
-                                <div class="w-12 h-6 flex border border-gray-400 items-center rounded-full p-1 duration-300 ease-in-out" class:bg-blue-500={$instructorsModeOn}>
-                                    <div class="dark:bg-white bg-neutral-400 w-4 h-4 rounded-full shadow-md transform duration-300 ease-in-out" class:translate-x-6={$instructorsModeOn}></div>
+                                <div class="w-12 h-6 flex border border-gray-400 items-center rounded-full p-1 duration-300 ease-in-out"
+                                     class:bg-blue-500={$instructorsModeOn}>
+                                    <div class="dark:bg-white bg-neutral-400 w-4 h-4 rounded-full shadow-md transform duration-300 ease-in-out"
+                                         class:translate-x-6={$instructorsModeOn}></div>
                                 </div>
                                 <span class="ml-2 font-semibold text-gray-600 dark:text-gray-400">Instructors</span>
                             </div>
                         </button>
                     </SearchBar>
-                    {#each courses as course}
-                        <CourseCard
-                                className='my-1.5'
-                                {course}
-                                {query}
-                        />
-                    {/each}
+                    {#if $instructorsModeOn}
+                        {#each fakeInstructors as instructor}
+                            <InstructorCard
+                                    className='my-1.5'
+                                    {instructor}
+                                    {query}
+                            />
+                        {/each}
+                    {:else}
+                        {#each courses as course}
+                            <CourseCard
+                                    className='my-1.5'
+                                    {course}
+                                    {query}
+                            />
+                        {/each}
+                    {/if}
                     <InfiniteScroll hasMore={hasMore} threshold={courses?.length || 20} window={true}
                                     on:loadMore={() => fetchMore()}/>
                 {:else }
@@ -201,15 +306,15 @@
                 {/if}
 
                 {#if !hasMore || !courses?.length}
-                        <div class='mx-auto mt-4 text-center'>
-                            <p class='text-gray-500 dark:text-gray-400'>
-                                Whoa! We've scrolled through them all. No more courses in sight!
-                            </p>
-                        </div>
-                    {:else }
-                        <div class='mt-4 text-center'>
-                            <Spinner/>
-                        </div>
+                    <div class='mx-auto mt-4 text-center'>
+                        <p class='text-gray-500 dark:text-gray-400'>
+                            Whoa! We've scrolled through them all. No more courses in sight!
+                        </p>
+                    </div>
+                {:else }
+                    <div class='mt-4 text-center'>
+                        <Spinner/>
+                    </div>
                 {/if}
             </div>
         </div>
