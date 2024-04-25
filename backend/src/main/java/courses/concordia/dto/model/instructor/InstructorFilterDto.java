@@ -3,7 +3,6 @@ package courses.concordia.dto.model.instructor;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonValue;
-import courses.concordia.dto.model.course.CourseFilterDto;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -22,12 +21,13 @@ public class InstructorFilterDto {
     private String query;
     private List<String> subjects;
     private List<String> departments;
-    private CourseFilterDto.CourseSort sortBy;
+    private List<String> tags;
+    private CourseSort sortBy;
 
     @Data
     @AllArgsConstructor
     public static class CourseSort {
-        private CourseFilterDto.CourseSortType sortType;
+        private CourseSortType sortType;
         private boolean reverse;
     }
 

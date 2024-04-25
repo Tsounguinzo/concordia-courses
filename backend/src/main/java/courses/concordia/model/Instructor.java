@@ -1,5 +1,6 @@
 package courses.concordia.model;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -70,6 +71,10 @@ public class Instructor {
 
         private final String displayName;
 
+        @JsonValue
+        public String toValue() {
+            return this.displayName;
+        }
         public static InstructorTag fromString(String text) {
             for (InstructorTag b : InstructorTag.values()) {
                 if (b.displayName.equalsIgnoreCase(text)) {

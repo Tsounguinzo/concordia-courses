@@ -132,6 +132,9 @@ public class InstructorServiceImpl implements InstructorService {
         // Handle 'departments' filter
         buildDepartmentCriteria(filter, criteriaList);
 
+        // Handle 'tags' filter
+        buildTagsCriteria(filter, criteriaList);
+
         // Handle 'query' filter ('query' can be matched against multiple fields like title or description)
         buildQueryCriteria(filter, criteriaList);
 
@@ -139,6 +142,9 @@ public class InstructorServiceImpl implements InstructorService {
         if (!criteriaList.isEmpty()) {
             query.addCriteria(new Criteria().andOperator(criteriaList.toArray(new Criteria[0])));
         }
+
+        // Handle sorting
+        applySorting(filter, query);
 
         long count = mongoTemplate.count(query, Instructor.class);
         List<Instructor> instructors = mongoTemplate.find(query, Instructor.class);
@@ -192,6 +198,19 @@ public class InstructorServiceImpl implements InstructorService {
     }
 
     /**
+     * Builds the criteria for filtering instructors by tags.
+     *
+     * @param filter The instructor filter DTO containing filter criteria.
+     * @param criteriaList The list of criteria to which the new criteria will be added.
+     */
+    private void buildTagsCriteria(InstructorFilterDto filter, List<Criteria> criteriaList) {
+        if (filter.getTags() != null && !filter.getTags().isEmpty()) {
+            criteriaList.add(Criteria.where("tags").in(filter.getTags()));
+            log.info("Filtering by tags to include all specified: {}", filter.getTags());
+        }
+    }
+
+    /**
      * Builds the criteria for filtering instructors based on a general query.
      * The query can match multiple fields like name, department, etc.
      *
@@ -212,6 +231,33 @@ public class InstructorServiceImpl implements InstructorService {
             );
             criteriaList.add(queryCriteria);
             log.info("Applying query filter: {}", filter.getQuery());
+        }
+    }
+
+    /**
+     * Applies sorting to the query based on the sort criteria specified in the filter.
+     *
+     * @param filter The course filter DTO containing sorting criteria.
+     * @param query The MongoDB query to which sorting will be applied.
+     */
+    private void applySorting(InstructorFilterDto filter, Query query) {
+        if (filter.getSortBy() != null) {
+            InstructorFilterDto.CourseSort sort = filter.getSortBy();
+            log.info("Applying sort by {} in {} order", sort.getSortType(), sort.isReverse() ? "DESC" : "ASC");
+            switch (sort.getSortType()) {
+                case Difficulty:
+                    query.with(Sort.by(sort.isReverse() ? Sort.Direction.DESC : Sort.Direction.ASC, "avgDifficulty"));
+                    break;
+                case Rating:
+                    query.with(Sort.by(sort.isReverse() ? Sort.Direction.DESC : Sort.Direction.ASC, "avgRating"));
+                    break;
+                case ReviewCount:
+                    query.with(Sort.by(sort.isReverse() ? Sort.Direction.DESC : Sort.Direction.ASC, "reviewCount"));
+                    break;
+                default:
+                    query.with(Sort.by(Sort.Direction.ASC, "firstName", "lastName"));
+                    break;
+            }
         }
     }
 

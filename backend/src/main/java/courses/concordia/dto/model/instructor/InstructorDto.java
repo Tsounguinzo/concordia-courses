@@ -2,6 +2,7 @@ package courses.concordia.dto.model.instructor;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -70,7 +71,10 @@ public class InstructorDto {
         CULTURALLY_INCLUSIVE("Culturally Inclusive");
 
         private final String displayName;
-
+        @JsonValue
+        public String toValue() {
+            return this.displayName;
+        }
         public static InstructorTagDto fromString(String text) {
             for (InstructorTagDto b : InstructorTagDto.values()) {
                 if (b.displayName.equalsIgnoreCase(text)) {

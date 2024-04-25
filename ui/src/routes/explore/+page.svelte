@@ -17,11 +17,12 @@
     import Seo from "$lib/components/common/Seo.svelte";
     import {faker} from '@faker-js/faker';
     import InstructorCard from "$lib/components/explore/InstructorCard.svelte";
+    import type {Instructor} from "$lib/model/Instructor";
 
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////
     const coursesmock = [
         {"subject": "POLI", "catalog": "397"},
         {"subject": "SPEC", "catalog": "609"},
@@ -102,12 +103,12 @@
 
     const fakeInstructors = [];
     for (let i = 0; i < 20; i++) {
-        fakeInstructors.push(createFakeInstructor(faker.datatype.uuid()));
+        fakeInstructors.push(createFakeInstructor(faker.string.uuid()));
     }
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////
 
     type SortByType = (typeof allSortByOptions)[number];
 
@@ -160,7 +161,9 @@
 
     const limit = 20;
     let courses: Course[];
-    let hasMore = true;
+    let instructors: Instructor[];
+    let hasMoreCourses = true;
+    let hasMoreInstructors = true;
     let offset = limit;
     let query = '';
     const searchSelected = writable<boolean>(false);
@@ -192,24 +195,28 @@
         sortBy: makeSortPayload($sortBy),
     };
 
-    const fetchCourses = async (reset = false) => {
+    const fetchData = async (reset = false) => {
         try {
-            const data = await repo.getCourses(limit, reset ? 0 : offset, filters);
-            if (reset) {
-                courses = data;
-                offset = limit; // Reset offset if it's a fresh fetch
+            let data;
+            if ($instructorsModeOn) {
+                data = await repo.getInstructors(limit, reset ? 0 : offset, filters);
+                if (reset) instructors = data;
+                else instructors = [...instructors, ...data];
+                hasMoreInstructors = data?.length === limit;
             } else {
-                courses = [...courses, ...data];
-                offset += limit;
+                data = await repo.getCourses(limit, reset ? 0 : offset, filters);
+                if (reset) courses = data;
+                else courses = [...courses, ...data];
+                hasMoreCourses = data?.length === limit;
             }
-            hasMore = true;
+            offset = reset ? limit : offset + limit;
         } catch (error) {
-            toast.error('Failed to fetch courses. Please try again later.');
+            toast.error(`Failed to fetch ${$instructorsModeOn ? 'instructors' : 'courses'}. Please try again later.`);
         }
     };
 
     onMount(() => {
-        fetchCourses(true);
+        fetchData(true);
         isMounted = true;
     });
 
@@ -217,19 +224,31 @@
         const currentState = JSON.stringify([$selectedSubjects, $selectedLevels, $selectedTerms, $selectedTags, $selectedInstructors, $selectedDepartments, $sortBy]);
 
         if (isMounted && (query !== '' || currentState !== previousState)) {
-            fetchCourses(true);
+            fetchData(true);
             previousState = currentState;
         }
     }
 
     const fetchMore = async () => {
-        const batch = await repo.getCourses(limit, offset, filters);
+        try {
+            let batch;
+            if ($instructorsModeOn) {
+                batch = await repo.getInstructors(limit, offset, filters);
+                if (batch?.length) {
+                    instructors = [...instructors, ...batch];
+                }
+                hasMoreInstructors = batch?.length === limit;
+            } else {
+                batch = await repo.getCourses(limit, offset, filters);
+                if (batch?.length) {
+                    courses = [...courses, ...batch];
+                }
+                hasMoreCourses = batch?.length === limit;
+            }
 
-        if (!batch?.length) {
-            hasMore = false;
-        } else {
-            courses = [...courses, ...batch];
             offset = offset + limit;
+        } catch (error) {
+            toast.error(`Failed to fetch more ${$instructorsModeOn ? 'instructors' : 'courses'}. Please try again later.`);
         }
     };
 </script>
@@ -256,7 +275,6 @@
         </div>
         <div class='lg:flex-1'>
             <div class='ml-auto flex w-full max-w-xl flex-col overflow-y-hidden'>
-                {#if courses !== undefined}
                     <SearchBar
                             handleInputChange={(value) => query = value}
                             iconStyle='mt-2 lg:mt-0 absolute top-1/4 transform -translate-y-1/4'
@@ -279,6 +297,7 @@
                             </div>
                         </button>
                     </SearchBar>
+                {#if (!$instructorsModeOn && courses !== undefined) || ($instructorsModeOn && fakeInstructors !== undefined) }
                     {#if $instructorsModeOn}
                         {#each fakeInstructors as instructor}
                             <InstructorCard
@@ -296,7 +315,9 @@
                             />
                         {/each}
                     {/if}
-                    <InfiniteScroll hasMore={hasMore} threshold={courses?.length || 20} window={true}
+                    <InfiniteScroll hasMore={$instructorsModeOn ? hasMoreInstructors : hasMoreCourses}
+                                    threshold={($instructorsModeOn ? instructors?.length : courses?.length) || 20}
+                                    window={true}
                                     on:loadMore={() => fetchMore()}/>
                 {:else }
                     <div class='mx-2 text-gray-50'>
@@ -305,7 +326,7 @@
                     </div>
                 {/if}
 
-                {#if !hasMore || !courses?.length}
+                {#if (!$instructorsModeOn && !hasMoreCourses) || ($instructorsModeOn && !hasMoreInstructors)}
                     <div class='mx-auto mt-4 text-center'>
                         <p class='text-gray-500 dark:text-gray-400'>
                             Whoa! We've scrolled through them all. No more courses in sight!

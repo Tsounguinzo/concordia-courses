@@ -7,6 +7,7 @@ import type {Review} from './model/Review';
 import type {Subscription} from './model/Subscription';
 import type {User} from './model/User';
 import {backendUrl} from "$lib/constants";
+import type {Instructor} from "$lib/model/Instructor";
 
 const prefix = '/api/v1';
 
@@ -240,6 +241,23 @@ export const repo = {
         return await client.deserialize<Course[]>(
             'POST',
             `/courses/filter?limit=${limit}&offset=${offset}`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(filters),
+            }
+        );
+    },
+
+    async getInstructors(
+        limit: number,
+        offset: number,
+        filters: any
+    ): Promise<Instructor[]> {
+        return await client.deserialize<Instructor[]>(
+            'POST',
+            `/instructors/filter?limit=${limit}&offset=${offset}`,
             {
                 headers: {
                     'Content-Type': 'application/json',

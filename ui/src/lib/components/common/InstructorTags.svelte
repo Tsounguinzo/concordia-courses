@@ -18,7 +18,7 @@
             <div class='flex items-center space-x-1'>
                 <X size={variantToSize(variant)} class='text-gray-700 dark:text-gray-200'/>
                 <div class='pr-1 font-medium text-gray-800 dark:text-gray-200'>
-                    Not Tags
+                    No Tags
                 </div>
             </div>
         </div>
