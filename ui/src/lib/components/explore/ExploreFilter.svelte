@@ -8,7 +8,7 @@
     import tags from '$lib/data/tags.json'
     import departments from '$lib/data/faculty_department.json'
     import instructors from '$lib/data/subset_teachers.json'
-    import {sortByOptions, termsOptions} from "$lib/types";
+    import {getSortByOptions, termsOptions} from "$lib/types";
     import {levelsOptions, moreLevelsOptions, termColorMap, termToIcon} from "$lib/utils";
     import type {Writable} from "svelte/store";
     import {Eraser} from "lucide-svelte";
@@ -27,6 +27,7 @@
     let reset = false;
     const departmentsOptions = departments.map(department => department.deparmentDescription);
     $: $instructorsModeOn, resetFilters();
+    $: sortByOptions = getSortByOptions($instructorsModeOn);
 
     function resetFilters() {
         selectedSubjects.set([]);

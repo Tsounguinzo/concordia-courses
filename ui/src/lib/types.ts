@@ -11,7 +11,7 @@ export interface RequestOptions {
         body?: string;
 }
 
-export const sortByOptions = [
+export const allSortByOptions = [
         '',
         'Best Experience',
         'Best Rating',
@@ -22,6 +22,21 @@ export const sortByOptions = [
         'Most Reviews',
         'Least Reviews',
     ] as const;
+
+export const getSortByOptions = (instructorsModeOn: boolean) => {
+        const sortOptions: { [key: string]: boolean } = {
+                'Best Rating': instructorsModeOn,
+                'Worst Rating': instructorsModeOn,
+                'Best Experience': !instructorsModeOn,
+                'Worst Experience': !instructorsModeOn,
+                'Easiest': true,
+                'Hardest': true,
+                'Most Reviews': true,
+                'Least Reviews': true,
+        };
+
+        return ['', ...Object.keys(sortOptions).filter(option => sortOptions[option])];
+};
 
 export const feedSortByOptions = [
         '',

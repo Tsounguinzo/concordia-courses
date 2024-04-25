@@ -10,13 +10,13 @@
     import Spinner from "$lib/components/common/loader/Spinning.svelte";
     import JumpToTopButton from "$lib/components/common/JumpToTopButton.svelte";
     import CourseCard from "$lib/components/explore/CourseCard.svelte";
-    import {sortByOptions} from "$lib/types";
+    import {allSortByOptions} from "$lib/types";
     import {darkModeOn} from "$lib/darkmode";
     import Skeleton from "$lib/components/common/loader/Skeleton.svelte";
     import {toast} from "svelte-sonner";
     import Seo from "$lib/components/common/Seo.svelte";
 
-    type SortByType = (typeof sortByOptions)[number];
+    type SortByType = (typeof allSortByOptions)[number];
 
     const makeSortPayload = (sort: SortByType) => {
         switch (sort) {
