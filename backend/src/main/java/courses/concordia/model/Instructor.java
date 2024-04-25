@@ -42,6 +42,7 @@ public class Instructor {
         GET_READY_TO_READ("Get Ready To Read"),
         PARTICIPATION_MATTERS("Participation Matters"),
         EXTRA_CREDIT("Extra Credit"),
+        SKIP_CLASS_YOU_WONT_PASS("Skip Class? You Won't Pass"),
         GROUP_PROJECTS("Group Projects"),
         AMAZING_LECTURES("Amazing Lectures"),
         CLEAR_GRADING_CRITERIA("Clear Grading Criteria"),
