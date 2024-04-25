@@ -95,8 +95,8 @@
             </Transition>
             <div class='mt-2 flex w-full flex-wrap gap-1'>
                     {#each $combobox.selected as selected (selected)}
-                        <div class='flex space-x-1 rounded-3xl bg-gray-100 px-2.5 py-1 text-sm font-medium text-gray-800 dark:bg-neutral-700 dark:text-gray-200'>
-                            <div>{selected}</div>
+                        <div class='max-w-60 flex space-x-1 rounded-3xl bg-gray-100 px-2.5 py-1 text-sm font-medium text-gray-800 dark:bg-neutral-700 dark:text-gray-200'>
+                            <div class="text-xs">{selected}</div>
                             <button type='button' use:combobox.deselect={selected}>
                                 <X size={18} class='transition duration-75 hover:stroke-blue-600'/>
                             </button>

@@ -27,9 +27,19 @@
                     sortType: 'experience',
                     reverse: true,
                 };
+            case 'Best Rating':
+                return {
+                    sortType: 'rating',
+                    reverse: true,
+                };
             case 'Worst Experience':
                 return {
                     sortType: 'experience',
+                    reverse: false,
+                };
+            case 'Worst Rating':
+                return {
+                    sortType: 'rating',
                     reverse: false,
                 };
             case 'Hardest':
@@ -64,15 +74,26 @@
     const selectedLevels = writable<string[]>([]);
     const selectedSubjects = writable<string[]>([]);
     const selectedTerms = writable<string[]>([]);
+    const selectedDepartments = writable<string[]>([]);
+    const selectedTags = writable<string[]>([]);
+    const selectedInstructors = writable<string[]>([]);
     const sortBy = writable<SortByType>('');
     let isMounted = false;
     let previousState = '';
+    const instructorsModeOn = writable<boolean>(false);
+
+    function toggle() {
+        instructorsModeOn.update(state => !state);
+    }
 
     const nullable = (arr: string[]) => (arr.length === 0 ? null : arr);
 
     $: filters = {
         subjects: nullable($selectedSubjects),
         levels: nullable($selectedLevels),
+        departments: nullable($selectedDepartments),
+        tags: nullable($selectedTags),
+        instructors: nullable($selectedInstructors),
         terms: nullable($selectedTerms),
         query: query === '' ? null : query,
         sortBy: makeSortPayload($sortBy),
@@ -100,7 +121,7 @@
     });
 
     $: {
-        const currentState = JSON.stringify([$selectedSubjects, $selectedLevels, $selectedTerms, $sortBy]);
+        const currentState = JSON.stringify([$selectedSubjects, $selectedLevels, $selectedTerms, $selectedTags, $selectedInstructors, $selectedDepartments, $sortBy]);
 
         if (isMounted && (query !== '' || currentState !== previousState)) {
             fetchCourses(true);
@@ -122,7 +143,7 @@
 <Seo title="Explore" description="Explore courses at concordia.courses" />
 <div class='flex flex-col items-center py-8'>
     <h1 class='mb-16 text-center text-5xl font-bold tracking-tight text-gray-900 dark:text-gray-200 sm:text-5xl'>
-        Explore all courses
+        Explore all {$instructorsModeOn ? 'instructors' : 'courses'}
     </h1>
     <div class='relative flex w-full max-w-xl flex-col lg:max-w-6xl lg:flex-row lg:justify-center'>
         <div class='lg:hidden'>
@@ -132,7 +153,11 @@
                         {selectedLevels}
                         {selectedTerms}
                         {sortBy}
+                        {selectedDepartments}
+                        {selectedTags}
+                        {selectedInstructors}
                         variant='mobile'
+                        {instructorsModeOn}
                 />
             </FilterToggle>
         </div>
@@ -141,12 +166,24 @@
                 {#if courses !== undefined}
                     <SearchBar
                             handleInputChange={(value) => query = value}
-                            iconStyle='mt-2 lg:mt-0'
+                            iconStyle='mt-2 lg:mt-0 absolute top-1/4 transform -translate-y-1/4'
                             inputStyle='block rounded-lg w-full bg-slate-50 p-3 pr-5 pl-10 text-sm text-black outline-none dark:border-neutral-50 dark:bg-neutral-800 dark:text-gray-200 dark:placeholder:text-neutral-500'
-                            outerInputStyle='my-2 mt-4 lg:mt-2'
-                            placeholder='Search by course identifier, title or description'
+                            outerInputStyle='my-2 mt-4 lg:mt-2 flex flex-col h-20 rounded-lg bg-slate-50 dark:border-neutral-50 dark:bg-neutral-800 dark:text-gray-200 rounded-lg'
+                            placeholder={`Search by ${$instructorsModeOn ? "instructor's name, department or course code" : 'course code, title or description'}`}
                             searchSelected={searchSelected}
-                    />
+                    >
+                        <button
+                                on:click={toggle}
+                                class="absolute bottom-4 right-0 mr-3 flex items-center"
+                        >
+                            <div class="relative flex ">
+                                <div class="w-12 h-6 flex border border-gray-400 items-center rounded-full p-1 duration-300 ease-in-out" class:bg-blue-500={$instructorsModeOn}>
+                                    <div class="dark:bg-white bg-neutral-400 w-4 h-4 rounded-full shadow-md transform duration-300 ease-in-out" class:translate-x-6={$instructorsModeOn}></div>
+                                </div>
+                                <span class="ml-2 font-semibold text-gray-600 dark:text-gray-400">Instructors</span>
+                            </div>
+                        </button>
+                    </SearchBar>
                     {#each courses as course}
                         <CourseCard
                                 className='my-1.5'
@@ -183,6 +220,10 @@
                     selectedTerms={selectedTerms}
                     sortBy={sortBy}
                     variant='desktop'
+                    {selectedDepartments}
+                    {selectedTags}
+                    {selectedInstructors}
+                    {instructorsModeOn}
             />
         </div>
     </div>

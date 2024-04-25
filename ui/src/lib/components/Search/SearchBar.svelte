@@ -35,5 +35,8 @@
                 type='text'
                 bind:value={value}
         />
+        <div>
+            <slot/>
+        </div>
     </div>
 </div>

@@ -14,7 +14,9 @@ export interface RequestOptions {
 export const sortByOptions = [
         '',
         'Best Experience',
+        'Best Rating',
         'Worst Experience',
+        'Worst Rating',
         'Easiest',
         'Hardest',
         'Most Reviews',
