@@ -11,6 +11,7 @@
     import type {Writable} from "svelte/store";
     import Form from "$lib/components/common/form/Form.svelte";
     import type {Instructor} from "$lib/model/Instructor";
+    import {validateReviewContent} from "$lib/utils";
 
     export let course: Course | null = null;
     export let instructor: Instructor | null = null;
@@ -41,8 +42,10 @@
             difficulty: ''
         };
 
-        if (values.content ==='') {
-            errors.content = 'Review content is required';
+        const validationResult = validateReviewContent(values.content);
+
+        if (validationResult) {
+            errors.content = validationResult;
         } else if (values.instructor == '') {
             errors.instructor = "The instructor's name is required" ;
         } else if (values.experience === 0) {
@@ -103,7 +106,7 @@
                                     let:setFieldValue
                             >
                                 <Form storageKey="review-form">
-                                    <ReviewForm {setFieldValue} {props} {course}/>
+                                    <ReviewForm {setFieldValue} {props} {course} variant="instructor"/>
                                 </Form>
                             </Sveltik>
                         </div>

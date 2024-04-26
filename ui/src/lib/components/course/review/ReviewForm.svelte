@@ -11,6 +11,7 @@
     export let instructor: Instructor | null = null;
     export let setFieldValue: (name: string, value: any) => void;
     export let resetButton: boolean = false;
+    export let variant: 'course' | 'instructor' | 'school' = 'course';
 
 </script>
 <div class='flex flex-col'>
