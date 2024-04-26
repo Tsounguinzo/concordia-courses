@@ -9,14 +9,14 @@
     import Loading from "$lib/components/common/loader/Loading.svelte";
     import CourseInfo from "$lib/components/course/CourseInfo.svelte";
     import CourseReviewPrompt from "$lib/components/common/ReviewPrompt.svelte";
-    import ReviewEmptyPrompt from "$lib/components/course/ReviewEmptyPrompt.svelte";
+    import ReviewEmptyPrompt from "$lib/components/review/ReviewEmptyPrompt.svelte";
     import CourseRequirements from "$lib/components/course/CourseRequirements.svelte";
-    import ReviewFilter from "$lib/components/course/review/ReviewFilter.svelte";
+    import ReviewFilter from "$lib/components/review/ReviewFilter.svelte";
     import SchedulesDisplay from "$lib/components/course/schedule/SchedulesDisplay.svelte";
-    import CourseReview from "$lib/components/course/review/CourseReview.svelte";
-    import EditReviewForm from "$lib/components/course/review/EditReviewForm.svelte";
+    import CourseReview from "$lib/components/review/CourseReview.svelte";
+    import EditReviewForm from "$lib/components/review/EditReviewForm.svelte";
     import type {Interaction} from "$lib/model/Interaction";
-    import AddReviewForm from "$lib/components/course/review/AddReviewForm.svelte";
+    import AddReviewForm from "$lib/components/review/AddReviewForm.svelte";
     import {goto} from "$app/navigation";
     import Seo from "$lib/components/common/Seo.svelte";
 

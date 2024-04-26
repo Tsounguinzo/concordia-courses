@@ -3,7 +3,7 @@
     import Transition from "svelte-transition";
     import type {Notification} from "$lib/model/Notification";
     import {Bell, Dot, Trash} from "lucide-svelte";
-    import CourseReview from "$lib/components/course/review/CourseReview.svelte";
+    import CourseReview from "$lib/components/review/CourseReview.svelte";
     import {courseIdToUrlParam, spliceCourseCode} from "$lib/utils";
     import {createMenu} from "svelte-headlessui";
     import {toast} from "svelte-sonner";

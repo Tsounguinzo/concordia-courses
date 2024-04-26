@@ -1,66 +1,70 @@
 <script lang="ts">
     import Transition from "svelte-transition";
-    import {twMerge} from "tailwind-merge";
-    import {Sveltik} from "sveltik/src";
-    import {repo} from "$lib/repo.js";
-    import ReviewForm from "./ReviewForm.svelte";
-    import {toast} from "svelte-sonner";
-    import {darkModeOn} from "$lib/darkmode";
-    import type {Course} from "$lib/model/Course";
     import {createDialog} from "svelte-headlessui";
+    import {twMerge} from "tailwind-merge";
+    import {darkModeOn} from "$lib/darkmode";
+    import ReviewForm from "./ReviewForm.svelte";
+    import type {Review} from "$lib/model/Review";
+    import type {Course} from "$lib/model/Course";
+    import {Sveltik} from "sveltik/src";
+    import {repo} from "$lib/repo";
+    import {toast} from "svelte-sonner";
     import type {Writable} from "svelte/store";
     import Form from "$lib/components/common/form/Form.svelte";
-    import type {Instructor} from "$lib/model/Instructor";
-    import {validateReviewContent} from "$lib/utils";
+    import {instructorIdToName} from "$lib/utils.js";
+    import {validateReviewContent, validateFieldPresence, validateNumericRange, validateTags} from "$lib/validators";
 
-    export let course: Course | null = null;
-    export let instructor: Instructor | null = null;
-    export let school: Course | null = null;
+    export let course: Course;
+    export let review: Review;
     export let open: Writable<boolean>;
     export let handleSubmit: (res: Response) => void;
     export let variant: 'course' | 'instructor' | 'school' = 'course';
 
-    let initialValues = {
-        content: '',
-        instructor: '',
-        experience: 0,
-        difficulty: 0,
+    let resetButton = true;
+
+    $: initialValues = {
+        content: review.content,
+        instructor: instructorIdToName(review.instructorId),
+        experience: review.experience,
+        difficulty: review.difficulty,
+        rating: review.rating,
+        tags: review.tags,
+        school: review.schoolId,
+        course: review.courseId
     };
 
     const handleClose = () => {
         open.set(false)
-        toast.success('Review draft saved.');
+       toast.success('Review draft saved.');
     };
 
-    const dialog = createDialog({label: 'Add'})
+    const dialog = createDialog({label: 'Edit'})
 
     const validate = (values, actions) => {
         const errors = {
             content: '',
             instructor: '',
             experience: '',
-            difficulty: ''
+            difficulty: '',
+            rating: '',
+            tags: '',
+            school: '',
+            course: ''
         };
 
-        const validationResult = validateReviewContent(values.content);
-
-        if (validationResult) {
-            errors.content = validationResult;
-        } else if (values.instructor == '') {
-            errors.instructor = "The instructor's name is required" ;
-        } else if (values.experience === 0) {
-            errors.experience = "Experience is required" ;
-        } else if (values.experience < 1 || values.experience > 5) {
-            errors.experience = "Experience must be between 1 and 5" ;
-        } else if (values.difficulty === 0) {
-            errors.difficulty = "Difficulty is required" ;
-        } else if (values.difficulty < 1 || values.difficulty > 5) {
-            errors.difficulty = "Difficulty must be between 1 and 5" ;
-        }
+        errors.content = validateReviewContent(values.content) || '';
+        errors.instructor = validateFieldPresence(values.instructor, "Instructor's name");
+        errors.course = validateFieldPresence(values.course, "Course name");
+        errors.school = validateFieldPresence(values.school, "School name");
+        errors.experience = validateNumericRange(values.experience, "Experience", 1, 5);
+        errors.difficulty = validateNumericRange(values.difficulty, "Difficulty", 1, 5);
+        errors.rating = validateNumericRange(values.rating, "Rating", 1, 5);
+        errors.tags = validateTags(values.tags);
 
         return errors;
     };
 </script>
+
 
 {#if $open}
     <Transition appear show={$open} unmount={true}>
@@ -89,24 +93,25 @@
                         <div class='w-full overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all dark:bg-neutral-800'
                              use:dialog.modal>
                             <h3 class='mb-4 text-lg font-medium leading-6 text-gray-900 dark:text-gray-200'>
-                                {`Reviewing ${course?.subject} ${course?.catalog} - ${course?.title}`}
+                                {`Editing review of ${course.subject} ${course.catalog} - ${course.title}`}
                             </h3>
+
                             <Sveltik
                                     validateOnBlur={false}
                                     validateOnChange={false}
                                     {validate}
                                     {initialValues}
                                     onSubmit={async (values, actions) => {
-                                    const res = await repo.addReview(course?._id, values);
-                                    actions.setSubmitting(false);
-                                    open.set(false)
-                                    handleSubmit(res);
-                                }}
+                                        const res = await repo.updateReview(review, values);
+                                        actions.setSubmitting(false);
+                                        open.set(false);
+                                        handleSubmit(res);
+                                    }}
                                     let:props
                                     let:setFieldValue
                             >
                                 <Form storageKey="review-form">
-                                    <ReviewForm {setFieldValue} {props} {course} variant="instructor"/>
+                                    <ReviewForm {setFieldValue} {props} {course} {resetButton} {variant}/>
                                 </Form>
                             </Sveltik>
                         </div>

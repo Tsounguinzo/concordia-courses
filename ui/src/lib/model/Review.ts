@@ -21,6 +21,7 @@ export type Review = {
     tags: string[];
 
     // School specific ratings
+    schoolId: string;
     internetRating: number; // 0-5
     locationRating: number; // 0-5
     opportunitiesRating: number; // 0-5
