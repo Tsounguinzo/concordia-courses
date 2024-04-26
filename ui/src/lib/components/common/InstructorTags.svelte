@@ -28,8 +28,9 @@
         {#each instructor.tags as tag, i (i)}
 
             <div class={twMerge(
-                'relative my-1.5 rounded-full text-sm dark:bg-neutral-700',
-                variant === 'small' ? 'px-2 py-1' : 'max-w-fit p-1'
+                'relative my-1.5 bg-gray-200 rounded-full text-sm dark:bg-neutral-700',
+                variant === 'small' ? 'px-2 py-1' : 'max-w-fit p-1',
+                $$props.class
               )}
             >
                 <div class='flex items-center space-x-1.5 whitespace-nowrap dark:text-gray-400'>

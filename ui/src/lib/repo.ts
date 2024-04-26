@@ -8,6 +8,8 @@ import type {Subscription} from './model/Subscription';
 import type {User} from './model/User';
 import {backendUrl} from "$lib/constants";
 import type {Instructor} from "$lib/model/Instructor";
+import type {GetInstructorWithReviewsPayload} from "$lib/model/GetInstructorWithReviewsPayload";
+import type {GetInstructorReviewsInteractionPayload} from "$lib/model/GetInstructorReviewsInteractionPayload";
 
 const prefix = '/api/v1';
 
@@ -150,7 +152,17 @@ export const repo = {
     ): Promise<GetCourseReviewsInteractionPayload> {
         return await client.deserialize<GetCourseReviewsInteractionPayload>(
             'GET',
-            `/interactions/${courseId}/referrer/${referrer}`
+            `/interactions/${courseId}/referrer/${referrer}?type=course`
+        );
+    },
+
+    async getUserInteractionsForInstructor(
+        instructorId: string,
+        referrer: string
+    ): Promise<GetInstructorReviewsInteractionPayload> {
+        return await client.deserialize<GetInstructorReviewsInteractionPayload>(
+            'GET',
+            `/interactions/${instructorId}/referrer/${referrer}?type=instructor`
         );
     },
 
@@ -230,6 +242,15 @@ export const repo = {
         return await client.deserialize<GetCourseWithReviewsPayload | null>(
             'GET',
             `/courses/${id}?with_reviews=true`
+        );
+    },
+
+    async getInstructorWithReviews(
+        id: string | undefined
+    ): Promise<GetInstructorWithReviewsPayload | null> {
+        return await client.deserialize<GetInstructorWithReviewsPayload | null>(
+            'GET',
+            `/instructors/${id}?with_reviews=true`
         );
     },
 

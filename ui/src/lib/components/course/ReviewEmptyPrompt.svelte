@@ -4,7 +4,7 @@
 
     export let className: string = "";
     export let isLogin: boolean = false;
-    export let variant: 'course' | 'instructor' = "course";
+    export let variant: 'course' | 'instructor' | 'school' = "course";
 </script>
 
 {#if isLogin}

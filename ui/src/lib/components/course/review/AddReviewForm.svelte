@@ -10,10 +10,14 @@
     import {createDialog} from "svelte-headlessui";
     import type {Writable} from "svelte/store";
     import Form from "$lib/components/common/form/Form.svelte";
+    import type {Instructor} from "$lib/model/Instructor";
 
-    export let course: Course;
+    export let course: Course | null = null;
+    export let instructor: Instructor | null = null;
+    export let school: Course | null = null;
     export let open: Writable<boolean>;
     export let handleSubmit: (res: Response) => void;
+    export let variant: 'course' | 'instructor' | 'school' = 'course';
 
     let initialValues = {
         content: '',
@@ -82,7 +86,7 @@
                         <div class='w-full overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all dark:bg-neutral-800'
                              use:dialog.modal>
                             <h3 class='mb-4 text-lg font-medium leading-6 text-gray-900 dark:text-gray-200'>
-                                {`Reviewing ${course.subject} ${course.catalog} - ${course.title}`}
+                                {`Reviewing ${course?.subject} ${course?.catalog} - ${course?.title}`}
                             </h3>
                             <Sveltik
                                     validateOnBlur={false}
@@ -90,7 +94,7 @@
                                     {validate}
                                     {initialValues}
                                     onSubmit={async (values, actions) => {
-                                    const res = await repo.addReview(course._id, values);
+                                    const res = await repo.addReview(course?._id, values);
                                     actions.setSubmitting(false);
                                     open.set(false)
                                     handleSubmit(res);

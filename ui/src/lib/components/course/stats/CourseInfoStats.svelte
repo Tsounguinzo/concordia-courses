@@ -11,6 +11,7 @@
     export let allReviews: Review[];
     export let className: string = '';
     export let variant: 'small' | 'medium' | 'large' = 'small';
+    export let type: 'course' | 'instructor' = 'course';
 
     const useMediaQuery = (query: string) => {
 
@@ -27,7 +28,9 @@
 
     const lg = useMediaQuery('(min-width: 1024px)');
 
-    $: experience = allReviews.map((r) => r.experience);
+    $: rating = allReviews.map((r) => r?.rating);
+    $: averageRating = sum(rating) / allReviews.length;
+    $: experience = allReviews.map((r) => r?.experience);
     $: averageExperience = sum(experience) / allReviews.length;
     $: difficulties = allReviews.map((r) => r.difficulty);
     $: averageDifficulty = sum(difficulties) / allReviews.length;
@@ -44,8 +47,8 @@
         >
             <div class='md:rounded-xl md:p-2'>
                 <Stat
-                        title='Experience Score'
-                        value={round2Decimals(averageExperience)}
+                        title={`${type === 'course' ? 'Experience' : 'Rating'} Score`}
+                        value={round2Decimals(type === 'course' ? averageExperience : averageRating)}
                         icon='star'
                         variant={variant}
                 />
@@ -53,11 +56,11 @@
                 <Histogram
                         width={180}
                         height={lg ? 132 : 80}
-                        data={experience}
+                        data={type === 'course' ? experience : rating}
                         max={5}
                         gap={10}
                         className='mx-auto hidden sm:block'
-                        caption="Experience Distribution"
+                        caption={`${type === 'course' ? 'Experience' : 'Rating'} Distribution`}
                 />
             </div>
             <div class='py-1.5'/>

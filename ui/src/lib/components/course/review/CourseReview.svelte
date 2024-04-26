@@ -5,7 +5,7 @@
     import DeleteButton from "./DeleteButton.svelte";
     import {Edit, Pin} from "lucide-svelte";
     import LoginPrompt from "./LoginPrompt.svelte";
-    import {courseIdToUrlParam} from "$lib/utils.js";
+    import {courseIdToUrlParam, instructorIdToName, spliceCourseCode} from "$lib/utils.js";
     import type {Review} from "$lib/model/Review";
     import type {Writable} from "svelte/store";
     import {writable} from "svelte/store";
@@ -21,7 +21,7 @@
     export let interactions: Interaction[];
     export let updateLikes: (likes: number) => void;
     export let review: Review;
-    export let includeTaughtBy: boolean = true;
+    export let type: 'course' | 'instructor' | 'school' = 'course';
     export let className: string = '';
 
     let readMore = false;
@@ -65,9 +65,9 @@
                     <div class='flex w-64 flex-col items-end rounded-lg p-2'>
                         <div class='flex items-center gap-x-2'>
                             <div class='text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
-                                Experience
+                                {type === 'course' ? 'Experience' : 'Rating'}
                             </div>
-                            <IconRating rating={review.experience} icon="star"/>
+                            <IconRating rating={type === 'course' ? review.experience : review.rating} icon="star"/>
                         </div>
                         <div class='flex items-center gap-x-2'>
                             <div class='text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
@@ -95,16 +95,17 @@
     </div>
     <div class='flex items-center'>
         <p class='mb-2 mt-auto flex-1 text-sm italic leading-4 text-gray-700 dark:text-gray-200'>
-            {#if includeTaughtBy}
+            {#if type === 'course'}
                 Taught by{' '}
-                <span class='font-medium'>
-                        {review.instructor}
-                    </span>
+                <a href={`/instructor/${review.instructorId}`}
+                   class='font-medium transition hover:text-blue-600'>
+                    {instructorIdToName(review.instructorId)}
+                </a>
             {:else }
                 Written for{' '}
                 <a href={`/course/${courseIdToUrlParam(review.courseId)}`}
                    class='font-medium transition hover:text-blue-600'>
-                    {review.courseId}
+                    {spliceCourseCode(review.courseId, ' ')}
                 </a>
             {/if}
         </p>
@@ -129,7 +130,7 @@
                         </button>
                         <DeleteButton
                                 title='Delete Review'
-                                text={`Are you sure you want to delete your review of ${review.courseId}? `}
+                                text={`Are you sure you want to delete your review  for ${type === 'course' ? instructorIdToName(review.instructorId) : spliceCourseCode(review.courseId, ' ')}? `}
                                 onConfirm={handleDelete}
                                 size={20}
                         />

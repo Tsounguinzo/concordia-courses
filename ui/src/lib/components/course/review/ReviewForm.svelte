@@ -4,9 +4,11 @@
     import FieldLabel from "$lib/components/common/form/FieldLabel.svelte";
     import FieldError from "$lib/components/common/form/FieldError.svelte";
     import IconRatingInput from "./IconRatingInput.svelte";
+    import {type Instructor} from "$lib/model/Instructor";
 
     export let props;
-    export let course: Course;
+    export let course: Course | null = null;
+    export let instructor: Instructor | null = null;
     export let setFieldValue: (name: string, value: any) => void;
     export let resetButton: boolean = false;
 

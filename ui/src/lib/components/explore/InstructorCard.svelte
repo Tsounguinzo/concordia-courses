@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {courseIdToUrlParam, experienceToIcon, instructorNameToUrlParam} from "$lib/utils.js";
+    import {courseIdToUrlParam, experienceToIcon, instructorIdToUrlParam} from "$lib/utils.js";
     import Highlight from "$lib/components/common/Highlight.svelte";
     import {twMerge} from "tailwind-merge";
     import type {Instructor} from "$lib/model/Instructor";
@@ -12,7 +12,7 @@
     $: [color, icon] = experienceToIcon(instructor.avgRating);
 </script>
 
-<a href={`/course/${instructorNameToUrlParam(instructor.firstName, instructor.lastName)}`}
+<a href={`/instructor/${instructorIdToUrlParam(instructor.firstName, instructor.lastName)}`}
    class={twMerge("relative", className)}
 >
     <div class='max-w-xl rounded-lg bg-slate-50 p-5 duration-150 hover:bg-gray-50 dark:bg-neutral-800'>

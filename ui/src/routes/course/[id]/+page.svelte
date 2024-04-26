@@ -8,7 +8,7 @@
     import {toast} from "svelte-sonner";
     import Loading from "$lib/components/common/loader/Loading.svelte";
     import CourseInfo from "$lib/components/course/CourseInfo.svelte";
-    import CourseReviewPrompt from "$lib/components/course/CourseReviewPrompt.svelte";
+    import CourseReviewPrompt from "$lib/components/common/ReviewPrompt.svelte";
     import ReviewEmptyPrompt from "$lib/components/course/ReviewEmptyPrompt.svelte";
     import CourseRequirements from "$lib/components/course/CourseRequirements.svelte";
     import ReviewFilter from "$lib/components/course/review/ReviewFilter.svelte";
@@ -53,10 +53,10 @@
                       return;
                   }
 
-                  if (firstFetch) course.set(payload.course);
+                  if (firstFetch) course.set(payload?.course);
 
-                  showingReviews.set(payload.reviews);
-                  allReviews.set(payload.reviews);
+                  showingReviews.set(payload?.reviews);
+                  allReviews.set(payload?.reviews);
 
                   if (user && id) {
                       const courseInteractionsPayload =
@@ -203,7 +203,7 @@
 
                 {#if $allReviews && $allReviews?.length > 0}
                     <div class='mb-2 py-2'>
-                        <ReviewFilter on:sortChanged={handleSortChange} {showAllReviews}/>
+                        <ReviewFilter on:sortChanged={handleSortChange} {showAllReviews} course={$course}/>
                     </div>
                 {:else }
                     <ReviewEmptyPrompt variant='course' isLogin={user !== null}/>
@@ -270,7 +270,7 @@
 
                     {#if $allReviews.length > 0}
                         <div class='my-2'>
-                            <ReviewFilter on:sortChanged={handleSortChange} {showAllReviews}/>
+                            <ReviewFilter on:sortChanged={handleSortChange} {showAllReviews} course={$course}/>
                         </div>
                     {:else }
                         <ReviewEmptyPrompt className="max-sm:p-2" variant='course' isLogin={user !== null}/>

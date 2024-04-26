@@ -16,6 +16,8 @@
     export let review: Review;
     export let open: Writable<boolean>;
     export let handleSubmit: (res: Response) => void;
+    export let variant: 'course' | 'instructor' | 'school' = 'course';
+
     let resetButton = true;
 
     $: initialValues = {

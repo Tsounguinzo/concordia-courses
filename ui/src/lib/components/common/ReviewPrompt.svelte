@@ -4,6 +4,7 @@
     import {page} from "$app/stores";
 
     export let openAddReview: Writable<boolean>;
+    export let type: 'course' | 'instructor' | 'school' = 'course';
 
     const user =  $page.data.user
     let promptLogin = false;
@@ -20,7 +21,14 @@
 </script>
 <div class='flex h-fit justify-between rounded-md px-3 py-2 dark:bg-neutral-900'>
     <p class='my-auto text-sm dark:text-gray-200 sm:text-base'>
-        Taken this course?{' '}
+        {#if type === 'course'}
+            {'Taken this course?'}
+        {:else if type === 'instructor'}
+            {'Had this instructor?'}
+        {:else if type === 'school'}
+            {'Attended this school?'}
+        {/if}
+        {' '}
     </p>
     <button class='mt-2 rounded-lg bg-blue-700 px-3 py-2 text-sm font-medium text-white transition duration-200 hover:bg-blue-500 sm:text-base'
             on:click={handleClick}>
