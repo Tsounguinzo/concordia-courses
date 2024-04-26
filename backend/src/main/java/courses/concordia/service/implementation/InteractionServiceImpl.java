@@ -64,6 +64,20 @@ public class InteractionServiceImpl implements InteractionService {
     }
 
     /**
+     * Fetches all interactions a user has for a specific instructor and referrer.
+     *
+     * @param instructorId       The ID of the instructor.
+     * @param referrer The referrer identifier.
+     * @return A list of {@link InteractionDto} objects.
+     */
+    @Override
+    public List<InteractionDto> getUserInteractionsForInstructor(String instructorId, String referrer) {
+        return interactionRepository.findByInstructorIdAndReferrer(instructorId, referrer).stream()
+                .map(InteractionMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    /**
      * Adjusts the likes count for a review based on user interaction changes.
      *
      * @param courseId    The ID of the course.

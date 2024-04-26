@@ -16,6 +16,7 @@ public class Interaction {
     private String _id;
     private InteractionKind kind;
     private String courseId;
+    private String instructorId;
     private String userId;
     private String referrer;
 

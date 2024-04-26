@@ -16,4 +16,6 @@ public interface InteractionService {
     void deleteInteractions(String courseId, String userId);
 
     List<InteractionDto> getUserInteractions(String referrer);
+
+    List<InteractionDto> getUserInteractionsForInstructor(String instructorId, String referrer);
 }

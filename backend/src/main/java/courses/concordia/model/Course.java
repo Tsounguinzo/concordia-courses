@@ -16,6 +16,7 @@ public class Course {
     @MongoId
     private String _id;
     private List<String> terms;
+    private List<String> instructors;
     private String prerequisites;
     private String subject;
     private String description;

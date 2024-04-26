@@ -8,6 +8,8 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Accessors(chain = true)
@@ -15,11 +17,9 @@ import lombok.experimental.Accessors;
 @ToString
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class InteractionDto {
-    private String kind;
-    private String courseId;
+public class UserInteractionsForInstructorDto {
     private String instructorId;
-    private String userId;
     private String referrer;
+    private List<InteractionDto> interactions;
 
 }

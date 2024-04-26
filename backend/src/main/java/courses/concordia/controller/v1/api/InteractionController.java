@@ -2,6 +2,7 @@ package courses.concordia.controller.v1.api;
 
 import courses.concordia.dto.model.interaction.InteractionDto;
 import courses.concordia.dto.model.interaction.UserInteractionsForCourseDto;
+import courses.concordia.dto.model.interaction.UserInteractionsForInstructorDto;
 import courses.concordia.dto.response.Response;
 import courses.concordia.service.InteractionService;
 import lombok.RequiredArgsConstructor;
@@ -28,16 +29,16 @@ public class InteractionController {
         return Response.ok().setPayload(interactions);
     }
 
-    @GetMapping("/{courseId}/referrer/{referrer}")
-    public Response<?> getUserInteractionsForCourse(@PathVariable String courseId, @PathVariable String referrer) {
-        log.info("fetching review interactions from {} for course {}", referrer, courseId);
-        List<InteractionDto> interactions = interactionService.getUserInteractionsForCourse(courseId, referrer);
+    @GetMapping("/{id}/referrer/{referrer}")
+    public Response<?> getUserInteractionsForCourseOrInstructor(@PathVariable String id, @PathVariable String referrer, @RequestParam String type) {
+        log.info("fetching review interactions from {} for {}", referrer, id);
+        List<InteractionDto> interactions = type.equals("course") ? interactionService.getUserInteractionsForCourse(id, referrer) : interactionService.getUserInteractionsForInstructor(id, referrer);
+        Object payload = type.equals("course") ?
+                new UserInteractionsForCourseDto().setCourseId(id).setReferrer(referrer).setInteractions(interactions)
+                : new UserInteractionsForInstructorDto().setInstructorId(id).setReferrer(referrer).setInteractions(interactions);
         return Response
                 .ok()
-                .setPayload(new UserInteractionsForCourseDto()
-                        .setCourseId(courseId)
-                        .setReferrer(referrer)
-                        .setInteractions(interactions));
+                .setPayload(payload);
     }
 
     @PostMapping

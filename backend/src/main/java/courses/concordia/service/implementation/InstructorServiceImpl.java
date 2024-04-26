@@ -73,35 +73,35 @@ public class InstructorServiceImpl implements InstructorService {
 
     /**
      * Retrieves an instructor by its unique identifier.
-     * The result is cached to improve performance for subsequent requests with the same name.
+     * The result is cached to improve performance for subsequent requests with the same id.
      *
-     * @param name The unique identifier of the instructor.
+     * @param id The unique identifier of the instructor.
      * @return The {@link InstructorDto} representing the instructor.
-     * @throws RuntimeException if the instructor with the specified name is not found.
+     * @throws RuntimeException if the instructor with the specified id is not found.
      */
-    @Cacheable(value = "instructorsCache", key = "#name")
+    @Cacheable(value = "instructorsCache", key = "#id")
     @Override
-    public InstructorDto getInstructorByName(String name) {
-        log.info("Retrieving instructor named {}", name);
-        Optional<Instructor> instructor = instructorRepository.findById(name);
+    public InstructorDto getInstructorById(String id) {
+        log.info("Retrieving instructor named {}", id);
+        Optional<Instructor> instructor = instructorRepository.findById(id);
         return instructor.map(i -> modelMapper.map(i, InstructorDto.class))
-                .orElseThrow(() -> exception(name));
+                .orElseThrow(() -> exception(id));
     }
 
     /**
-     * Retrieves an instructor along with its reviews based on his name.
-     * The results are cached to improve performance on subsequent calls with the same name.
+     * Retrieves an instructor along with its reviews based on his id.
+     * The results are cached to improve performance on subsequent calls with the same id.
      *
-     * @param name The unique identifier for the instructor.
+     * @param id The unique identifier for the instructor.
      * @return A {@link InstructorReviewsDto} object containing the instructor and its reviews.
      */
-    @Cacheable(value = "instructorReviewsCache", key = "#name")
+    @Cacheable(value = "instructorReviewsCache", key = "#id")
     @Override
-    public InstructorReviewsDto getInstructorAndReviewsByName(String name) {
-        log.info("Retrieving instructor and reviews with name {}", name);
-        InstructorDto instructor = getInstructorByName(name);
+    public InstructorReviewsDto getInstructorAndReviewsById(String id) {
+        log.info("Retrieving instructor and reviews with id {}", id);
+        InstructorDto instructor = getInstructorById(id);
 
-        Query query = new Query(Criteria.where("instructor").is(name)).with(Sort.by(Sort.Direction.DESC, "timestamp"));
+        Query query = new Query(Criteria.where("instructor").is(id)).with(Sort.by(Sort.Direction.DESC, "timestamp"));
         List<ReviewDto> reviews = mongoTemplate.find(query, Review.class)
                 .stream()
                 .map(review -> modelMapper.map(review, ReviewDto.class))

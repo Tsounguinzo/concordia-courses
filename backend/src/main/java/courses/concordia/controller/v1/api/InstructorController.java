@@ -22,9 +22,9 @@ public class InstructorController {
                 .setPayload(instructorService.getInstructors());
     }
 
-    @GetMapping("/{name}")
-    public Response<?> getInstructorByName(@PathVariable String name, @RequestParam(name = "with_reviews", defaultValue = "false") boolean withReviews) {
-        Object instructor = withReviews ? instructorService.getInstructorAndReviewsByName(name) : instructorService.getInstructorByName(name);
+    @GetMapping("/{id}")
+    public Response<?> getInstructorById(@PathVariable String id, @RequestParam(name = "with_reviews", defaultValue = "false") boolean withReviews) {
+        Object instructor = withReviews ? instructorService.getInstructorAndReviewsById(id) : instructorService.getInstructorById(id);
         return Response.ok().setPayload(instructor);
     }
 
