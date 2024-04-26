@@ -28,7 +28,7 @@
 
         </div>
         <InstructorTags {instructor} variant='small' {query}/>
-        <div class='mt-2 text-gray-600 dark:text-gray-400'>
+        <div class='mt-2 mb-10 text-gray-600 dark:text-gray-400'>
             {#if instructor.courses.length}
                 <div>Teaches or has taught the following course(s):</div>
                 <div class='max-w-sm flex flex-wrap'>
@@ -47,7 +47,7 @@
                     {/each}
                 </div>
             {:else}
-                <div class="mb-10">Looks like we don't have any courses on record for this instructor yet.</div>
+                <div>Looks like we don't have any courses on record for this instructor yet.</div>
             {/if}
         </div>
     </div>

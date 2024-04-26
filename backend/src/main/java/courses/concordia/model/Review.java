@@ -29,8 +29,6 @@ public class Review {
     private Date adminReviewedAt;
     private boolean flagged;
     private int likes;
-    private int thumbsDownTotal;
-    private int thumbsUpTotal;
 
     // common fields for course and instructor
     private int difficulty; // 0-5

@@ -6,8 +6,6 @@ export type Review = {
     content: string;
     timestamp: Date;
     likes: number;
-    thumbsDownTotal: number;
-    thumbsUpTotal: number;
 
     // common fields for course and instructor
     difficulty: number; // 0-5
