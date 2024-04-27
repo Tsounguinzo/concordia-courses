@@ -56,7 +56,7 @@
             <FieldError name='school'/>
         {/if}
     </div>
-    <div class='flex gap-x-10'>
+    <div class='flex gap-x-10 flex-wrap'>
         {#if variant === 'course' || variant === 'instructor' }
             <div class='flex flex-col gap-y-1'>
                 <FieldLabel
