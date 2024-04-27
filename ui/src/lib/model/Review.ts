@@ -6,10 +6,10 @@ export type Review = {
     content: string;
     timestamp: Date;
     likes: number;
+    userId: string;
 
     // common fields for course and instructor
     difficulty: number; // 0-5
-    userId: string;
     courseId: string;
     instructorId: string;
 
@@ -22,14 +22,4 @@ export type Review = {
 
     // School specific ratings
     schoolId: string;
-    internetRating: number; // 0-5
-    locationRating: number; // 0-5
-    opportunitiesRating: number; // 0-5
-    reputationRating: number; // 0-5
-    safetyRating: number; // 0-5
-    socialRating: number; // 0-5
-    foodRating: number; // 0-5
-    happinessRating: number; // 0-5
-    facilitiesRating: number; // 0-5
-    clubsRating: number; // 0-5
 };
