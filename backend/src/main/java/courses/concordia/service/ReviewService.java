@@ -9,4 +9,5 @@ public interface ReviewService {
     void deleteReview(String courseId, String userId);
     List<ReviewDto> getUserReviews(String userId);
     List<ReviewDto> getReviewsWithFilter(int limit, int offset, ReviewFilterDto filters);
+    ReviewDto getReviewById(String id);
 }

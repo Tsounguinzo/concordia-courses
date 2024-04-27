@@ -60,6 +60,9 @@ export const instructorIdToUrlParam = (firstName: string, lastName: string) =>
 export const instructorIdToName = (id: string) =>
     id?.split('-').map(capitalize).join(' ');
 
+export const schoolIdToName = (id: string) =>
+    id?.split('-').map(capitalize).join(' ');
+
 export const capitalize = (s: string): string =>
     s.charAt(0).toUpperCase() + s.slice(1);
 

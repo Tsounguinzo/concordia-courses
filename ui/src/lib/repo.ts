@@ -100,6 +100,16 @@ export const repo = {
         return await client.deserialize<Review[]>('GET', `/reviews?userId=${userId}`);
     },
 
+    async getSharedReviews(id: string): Promise<{ review: Review, error: string }> {
+        const backendURL = `${backendUrl}/api/v1/reviews/shared?id=${id}`;
+        const response = await fetch(backendURL);
+        const body = await response.json()
+        return {
+            review: body.payload,
+            error: body.errors
+        };
+    },
+
     async addReview(courseId: string, values: any): Promise<Response> {
         return await client.post('/reviews', {
             headers: {'Content-Type': 'application/json'},

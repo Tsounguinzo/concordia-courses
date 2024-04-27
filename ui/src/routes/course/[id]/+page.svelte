@@ -13,7 +13,7 @@
     import CourseRequirements from "$lib/components/course/CourseRequirements.svelte";
     import ReviewFilter from "$lib/components/review/ReviewFilter.svelte";
     import SchedulesDisplay from "$lib/components/course/schedule/SchedulesDisplay.svelte";
-    import CourseReview from "$lib/components/review/CourseReview.svelte";
+    import CourseReview from "$lib/components/review/Review.svelte";
     import EditReviewForm from "$lib/components/review/EditReviewForm.svelte";
     import type {Interaction} from "$lib/model/Interaction";
     import AddReviewForm from "$lib/components/review/AddReviewForm.svelte";

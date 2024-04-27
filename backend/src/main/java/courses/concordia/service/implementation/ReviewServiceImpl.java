@@ -3,6 +3,9 @@ package courses.concordia.service.implementation;
 import courses.concordia.dto.mapper.ReviewMapper;
 import courses.concordia.dto.model.review.ReviewDto;
 import courses.concordia.dto.model.review.ReviewFilterDto;
+import courses.concordia.exception.CustomExceptionFactory;
+import courses.concordia.exception.EntityType;
+import courses.concordia.exception.ExceptionType;
 import courses.concordia.model.Review;
 import courses.concordia.repository.CourseRepository;
 import courses.concordia.repository.ReviewRepository;
@@ -133,6 +136,19 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     /**
+     * Retrieves a review given its id.
+     *
+     * @param id The ID of the review.
+     * @return A ReviewDto objects representing the target reviews.
+     */
+    @Override
+    public ReviewDto getReviewById(String id) {
+        return reviewRepository.findById(id)
+                .map(ReviewMapper::toDto)
+                .orElseThrow(() -> exception(id));
+    }
+
+    /**
      * Finds reviews based on filtering criteria with pagination support.
      *
      * @param filters The filtering criteria for reviews.
@@ -202,5 +218,9 @@ public class ReviewServiceImpl implements ReviewService {
             course.setReviewCount(reviewsCount);
             courseRepository.save(course);
         }
+    }
+
+    private RuntimeException exception(String... args) {
+        return CustomExceptionFactory.throwCustomException(EntityType.REVIEW, ExceptionType.ENTITY_NOT_FOUND, args);
     }
 }

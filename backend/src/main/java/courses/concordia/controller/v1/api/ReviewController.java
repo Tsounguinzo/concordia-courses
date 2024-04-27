@@ -26,6 +26,12 @@ public class ReviewController {
         return Response.ok().setPayload(reviews);
     }
 
+    @GetMapping("/shared")
+    public Response<?> getReview(@RequestParam String id) {
+        ReviewDto review = reviewService.getReviewById(id);
+        return Response.ok().setPayload(review);
+    }
+
     @PostMapping("/filter")
     public Response<?> getReviewsWithFilters(@RequestBody ReviewFilterDto filters, @RequestParam int limit, @RequestParam int offset) {
         List<ReviewDto> reviews = reviewService.getReviewsWithFilter(limit, offset, filters);

@@ -1,6 +1,6 @@
 <script lang="ts">
     import DeleteButton from "$lib/components/review/DeleteButton.svelte";
-    import CourseReview from "$lib/components/review/CourseReview.svelte";
+    import CourseReview from "$lib/components/review/Review.svelte";
     import JumpToTopButton from "$lib/components/common/JumpToTopButton.svelte";
     import {Bell, FileText, Info, User} from "lucide-svelte";
     import {writable} from "svelte/store";

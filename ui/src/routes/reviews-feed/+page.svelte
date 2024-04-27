@@ -12,7 +12,7 @@
     import {onMount} from "svelte";
     import FeedFilter from "$lib/components/common/filter/FeedFilter.svelte";
     import type {Review} from "$lib/model/Review";
-    import CourseReview from "$lib/components/review/CourseReview.svelte";
+    import CourseReview from "$lib/components/review/Review.svelte";
     import {type Interaction} from "$lib/model/Interaction";
     import {page} from "$app/stores";
     import {spliceCourseCode} from "$lib/utils";

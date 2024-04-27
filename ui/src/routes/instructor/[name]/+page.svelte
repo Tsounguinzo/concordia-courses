@@ -9,7 +9,7 @@
     import CourseReviewPrompt from "$lib/components/common/ReviewPrompt.svelte";
     import ReviewEmptyPrompt from "$lib/components/review/ReviewEmptyPrompt.svelte";
     import ReviewFilter from "$lib/components/review/ReviewFilter.svelte";
-    import CourseReview from "$lib/components/review/CourseReview.svelte";
+    import InstructorReview from "$lib/components/review/Review.svelte";
     import EditReviewForm from "$lib/components/review/EditReviewForm.svelte";
     import type {Interaction} from "$lib/model/Interaction";
     import AddReviewForm from "$lib/components/review/AddReviewForm.svelte";
@@ -256,7 +256,7 @@
 
                 <div class='w-full shadow-sm'>
                     {#if userReview}
-                        <CourseReview
+                        <InstructorReview
                                 type="instructor"
                                 canModify={Boolean(user && userReview.userId === user?.id)}
                                 handleDelete={() => handleDelete(userReview)}
@@ -273,7 +273,7 @@
                                 user ? review.userId !== user?.id : true
                             )
                             .slice(0, $showAllReviews ? $showingReviews.length : numberOfReviewsToShow) as review, i (i)}
-                            <CourseReview
+                            <InstructorReview
                                     type="instructor"
                                     canModify={Boolean(user && review.userId === user?.id)}
                                     handleDelete={() => handleDelete(review)}
