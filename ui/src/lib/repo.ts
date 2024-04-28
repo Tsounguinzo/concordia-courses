@@ -106,7 +106,7 @@ export const repo = {
         const body = await response.json()
         return {
             review: body.payload,
-            error: body.errors
+            error: body.errors?.message
         };
     },
 
@@ -374,7 +374,7 @@ export const repo = {
         const body = await response.json()
         return {
             username: body.payload,
-            error: body.errors
+            error: body.errors?.message
         };
     },
 

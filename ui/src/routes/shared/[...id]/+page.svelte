@@ -3,7 +3,7 @@
     import BackgroundBeams from "$lib/components/common/animation/BackgroundBeams.svelte";
     import {page} from "$app/stores";
     import type {Review} from "$lib/model/Review";
-    import {instructorIdToName, schoolIdToName, spliceCourseCode} from "$lib/utils.js";
+    import {determineReviewFor} from "$lib/utils.js";
     import SharedReview from "$lib/components/review/Review.svelte";
     import {Info} from "lucide-svelte";
 
@@ -11,13 +11,7 @@
     const error = $page.data.error;
     let reviewFor: string;
 
-    if (review.type === 'course') {
-        reviewFor = spliceCourseCode(review.courseId, ' ');
-    } else if (review.type === 'instructor') {
-        reviewFor = instructorIdToName(review.instructorId)
-    } else {
-        reviewFor = schoolIdToName(review.schoolId)
-    }
+    if(!error) reviewFor = determineReviewFor(review)
 
 </script>
 
@@ -44,7 +38,8 @@
                 </div>
                 <div class="z-10">
                     <SharedReview
-                            type={review.type}
+                            className="bg-transparent dark:bg-transparent"
+                            type={review?.type}
                             canModify={false}
                             handleDelete={() => {}}
                             review={review}

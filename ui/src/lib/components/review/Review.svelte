@@ -5,7 +5,7 @@
     import DeleteButton from "./DeleteButton.svelte";
     import {Edit, Pin} from "lucide-svelte";
     import LoginPrompt from "./LoginPrompt.svelte";
-    import {courseIdToUrlParam, instructorIdToName, spliceCourseCode} from "$lib/utils.js";
+    import {courseIdToUrlParam, determineReviewFor, instructorIdToName, spliceCourseCode} from "$lib/utils.js";
     import type {Review} from "$lib/model/Review";
     import type {Writable} from "svelte/store";
     import {writable} from "svelte/store";
@@ -13,6 +13,7 @@
     import IconRating from "./IconRating.svelte";
     import ReviewInteractions from "./ReviewInteractions.svelte";
     import type {Interaction} from "$lib/model/Interaction";
+    import Share from "$lib/components/common/Share.svelte";
 
     export let canModify: boolean;
     export let courseName: string;
@@ -137,14 +138,18 @@
                     </div>
                 {/if}
             </div>
-            {#if updateLikes}
-                <ReviewInteractions
-                        {review}
-                        {interactions}
-                        {promptLogin}
-                        {updateLikes}
-                />
-            {/if}
+            <div class="flex gap-x-3">
+                {#if updateLikes}
+                    <ReviewInteractions
+                            {review}
+                            {interactions}
+                            {promptLogin}
+                            {updateLikes}
+                    />
+                {/if}
+                <Share sharedLink={`https://concordia.courses/shared?id=${review._id}`}
+                       reviewFor={determineReviewFor(review)}/>
+            </div>
         </div>
     </div>
 </div>
