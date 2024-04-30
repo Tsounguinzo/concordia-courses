@@ -45,7 +45,7 @@ for edge in data['data']['search']['teachers']['edges']:
 
 progress_bar.close()
 # Save all results to a file
-with open('AggregatedProfessorDetails.json', 'w') as f:
+with open('../data/output/AggregatedProfessorDetails.json', 'w') as f:
     json.dump(all_professors_details, f, indent=4)
 
 print("Detailed information for all professors has been saved.")
