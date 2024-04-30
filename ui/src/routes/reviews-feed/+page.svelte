@@ -126,7 +126,7 @@
                 <FeedFilter {sortBy}/>
                 {#each reviews as review (review._id)}
                     <CourseReview
-                            courseName={spliceCourseCode(review?.courseId, " ")}
+                            title={spliceCourseCode(review?.courseId, " ")}
                             interactions={$userInteractions}
                             updateLikes={updateLikes(review)}
                             className='rounded-md my-1.5'

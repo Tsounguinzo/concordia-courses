@@ -16,7 +16,7 @@
     import Share from "$lib/components/common/Share.svelte";
 
     export let canModify: boolean;
-    export let courseName: string;
+    export let title: string = '';
     export let handleDelete: () => void;
     export let editReview: Writable<boolean> = writable(false);
     export let interactions: Interaction[];
@@ -44,10 +44,10 @@
             <div class='relative flex w-full flex-col'>
                 <div class='flex w-full'>
                     <div class="flex flex-col py-1">
-                        {#if courseName}
+                        {#if title}
                             <div>
                                 <h3 class='text-lg font-semibold text-gray-800 dark:text-gray-200'>
-                                    {courseName}
+                                    {title}
                                 </h3>
                             </div>
                         {/if}
