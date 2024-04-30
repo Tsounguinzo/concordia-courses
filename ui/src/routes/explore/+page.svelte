@@ -94,7 +94,6 @@
     const selectedTerms = writable<string[]>([]);
     const selectedDepartments = writable<string[]>([]);
     const selectedTags = writable<string[]>([]);
-    const selectedInstructors = writable<string[]>([]);
     const sortBy = writable<SortByType>('');
     let isMounted = false;
     let previousState = '';
@@ -111,7 +110,6 @@
         levels: nullable($selectedLevels),
         departments: nullable($selectedDepartments),
         tags: nullable($selectedTags),
-        instructors: nullable($selectedInstructors),
         terms: nullable($selectedTerms),
         query: query === '' ? null : query,
         sortBy: makeSortPayload($sortBy),
@@ -143,7 +141,7 @@
     });
 
     $: {
-        const currentState = JSON.stringify([$selectedSubjects, $selectedLevels, $selectedTerms, $selectedTags, $selectedInstructors, $selectedDepartments, $sortBy]);
+        const currentState = JSON.stringify([$selectedSubjects, $selectedLevels, $selectedTerms, $selectedTags, $selectedDepartments, $sortBy]);
 
         if (isMounted && (query !== '' || currentState !== previousState)) {
             fetchData(true);
@@ -189,7 +187,6 @@
                         {sortBy}
                         {selectedDepartments}
                         {selectedTags}
-                        {selectedInstructors}
                         variant='mobile'
                         {instructorsModeOn}
                 />
@@ -251,7 +248,7 @@
                 {#if (!$instructorsModeOn && !hasMoreCourses) || ($instructorsModeOn && !hasMoreInstructors)}
                     <div class='mx-auto mt-4 text-center'>
                         <p class='text-gray-500 dark:text-gray-400'>
-                            Whoa! We've scrolled through them all. No more courses in sight!
+                            Whoa! We've scrolled through them all. No more {$instructorsModeOn ? 'instructors' : 'courses'} in sight!
                         </p>
                     </div>
                 {:else }
@@ -270,7 +267,6 @@
                     variant='desktop'
                     {selectedDepartments}
                     {selectedTags}
-                    {selectedInstructors}
                     {instructorsModeOn}
             />
         </div>

@@ -7,7 +7,6 @@
     import courseCodes from '$lib/data/courseCodes.json'
     import tags from '$lib/data/tags.json'
     import departments from '$lib/data/faculty_department.json'
-    import instructors from '$lib/data/subset_teachers.json'
     import {getSortByOptions, termsOptions} from "$lib/types";
     import {levelsOptions, moreLevelsOptions, termColorMap, termToIcon} from "$lib/utils";
     import type {Writable} from "svelte/store";
@@ -18,7 +17,6 @@
     export let selectedLevels: Writable<string[]>;
     export let selectedTerms: Writable<string[]>;
     export let selectedDepartments: Writable<string[]>;
-    export let selectedInstructors: Writable<string[]>;
     export let selectedTags: Writable<string[]>;
     export let sortBy: Writable<string>;
     export let variant: 'mobile' | 'desktop';
@@ -34,7 +32,6 @@
         selectedLevels.set([]);
         selectedTerms.set([]);
         selectedDepartments.set([]);
-        selectedInstructors.set([]);
         selectedTags.set([]);
         sortBy.set('')
         reset = true;
@@ -60,14 +57,14 @@
         <Autocomplete {reset} options={sortByOptions} storeValue={sortBy}/>
     </div>
     <div class='py-2.5'/>
-    <h1 class='text-sm font-semibold text-gray-600 dark:text-gray-400'>{$instructorsModeOn ? 'Departments' : 'Instructors'}</h1>
-    <div class='py-1'/>
-    <div class='relative z-30'>
-        <MultiSelect {reset} options={$instructorsModeOn ? departmentsOptions : instructors}
-                     values={$instructorsModeOn ? selectedDepartments : selectedInstructors}/>
-    </div>
-    <div class='py-2.5'/>
     {#if $instructorsModeOn}
+        <h1 class='text-sm font-semibold text-gray-600 dark:text-gray-400'>Departments</h1>
+        <div class='py-1'/>
+        <div class='relative z-30'>
+            <MultiSelect {reset} options={departmentsOptions}
+                         values={selectedDepartments}/>
+        </div>
+        <div class='py-2.5'/>
         <h1 class='text-sm font-semibold text-gray-600 dark:text-gray-400'>Tags</h1>
         <div class='py-1'/>
         <div class='relative z-20'>
