@@ -9,7 +9,7 @@ headers = {
     "Content-Type": "application/json",
     "Authorization": "Basic dGVzdDp0ZXN0",  # Base64 encoded username:password
     "Origin": "https://www.ratemyprofessors.com",
-    "Referer": "https://www.ratemyprofessors.com/search/professors/1422?q=*",
+    "Referer": "https://www.ratemyprofessors.com/search/professors/1422?q=*", # 1422 is the school ID for Concordia University
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
     "Sec-Fetch-Dest": "empty",
     "Sec-Fetch-Mode": "cors",
