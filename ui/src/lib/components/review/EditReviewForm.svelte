@@ -13,7 +13,7 @@
     import Form from "$lib/components/common/form/Form.svelte";
     import {instructorIdToName} from "$lib/utils.js";
     import {validateReviewContent, validateFieldPresence, validateNumericRange, validateTags} from "$lib/validators";
-    import {Instructor} from "$lib/model/Instructor";
+    import {type Instructor} from "$lib/model/Instructor";
 
     export let course: Course | null = null;
     export let instructor: Instructor | null = null;
