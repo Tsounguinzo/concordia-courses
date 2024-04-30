@@ -5,8 +5,7 @@ import courses.concordia.model.Review;
 
 public class ReviewMapper {
     public static ReviewDto toDto(Review review) {
-        String reviewType = "course";//review.getType();
-        if (reviewType == null) return new ReviewDto();
+        String reviewType = review.getType() == null ? "course" : review.getType();
 
         ReviewDto dto = new ReviewDto();
         dto.set_id(review.get_id());

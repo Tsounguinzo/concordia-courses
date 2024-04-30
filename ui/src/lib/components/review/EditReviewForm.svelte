@@ -13,8 +13,10 @@
     import Form from "$lib/components/common/form/Form.svelte";
     import {instructorIdToName} from "$lib/utils.js";
     import {validateReviewContent, validateFieldPresence, validateNumericRange, validateTags} from "$lib/validators";
+    import {Instructor} from "$lib/model/Instructor";
 
-    export let course: Course;
+    export let course: Course | null = null;
+    export let instructor: Instructor | null = null;
     export let review: Review;
     export let open: Writable<boolean>;
     export let handleSubmit: (res: Response) => void;
@@ -53,13 +55,17 @@
         };
 
         errors.content = validateReviewContent(values.content) || '';
-        errors.instructor = validateFieldPresence(values.instructor, "Instructor's name");
-        errors.course = validateFieldPresence(values.course, "Course name");
-        errors.school = validateFieldPresence(values.school, "School name");
-        errors.experience = validateNumericRange(values.experience, "Experience", 1, 5);
         errors.difficulty = validateNumericRange(values.difficulty, "Difficulty", 1, 5);
-        errors.rating = validateNumericRange(values.rating, "Rating", 1, 5);
-        errors.tags = validateTags(values.tags);
+        if (variant === 'course'){
+            errors.instructor = validateFieldPresence(values.instructor, "Instructor's name");
+            errors.experience = validateNumericRange(values.experience, "Experience", 1, 5);
+        } else if (variant === 'instructor') {
+            errors.course = validateFieldPresence(values.course, "Course name");
+            errors.rating = validateNumericRange(values.rating, "Rating", 1, 5);
+            errors.tags = validateTags(values.tags);
+        } else {
+            errors.school = validateFieldPresence(values.school, "School name");
+        }
 
         return errors;
     };
@@ -93,7 +99,13 @@
                         <div class='w-full overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all dark:bg-neutral-800'
                              use:dialog.modal>
                             <h3 class='mb-4 text-lg font-medium leading-6 text-gray-900 dark:text-gray-200'>
-                                {`Editing review of ${course.subject} ${course.catalog} - ${course.title}`}
+                                {#if variant === 'course'}
+                                    {`Editing review of ${course?.subject} ${course?.catalog} - ${course?.title}`}
+                                {:else if variant === 'instructor'}
+                                    {`Editing review of ${instructor?.firstName} ${instructor?.lastName}`}
+                                {:else}
+                                    Editing review of Concordia University
+                                {/if}
                             </h3>
 
                             <Sveltik
@@ -111,7 +123,7 @@
                                     let:setFieldValue
                             >
                                 <Form storageKey="review-form">
-                                    <ReviewForm {setFieldValue} {props} {course} {resetButton} {variant}/>
+                                    <ReviewForm {setFieldValue} {props} {course} {instructor} {resetButton} {variant}/>
                                 </Form>
                             </Sveltik>
                         </div>

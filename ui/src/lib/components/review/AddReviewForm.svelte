@@ -15,7 +15,6 @@
 
     export let course: Course | null = null;
     export let instructor: Instructor | null = null;
-    export let school: Course | null = null;
     export let open: Writable<boolean>;
     export let handleSubmit: (res: Response) => void;
     export let variant: 'course' | 'instructor' | 'school' = 'course';
@@ -51,13 +50,17 @@
         };
 
         errors.content = validateReviewContent(values.content) || '';
-        errors.instructor = validateFieldPresence(values.instructor, "Instructor's name");
-        errors.course = validateFieldPresence(values.course, "Course name");
-        errors.school = validateFieldPresence(values.school, "School name");
-        errors.experience = validateNumericRange(values.experience, "Experience", 1, 5);
         errors.difficulty = validateNumericRange(values.difficulty, "Difficulty", 1, 5);
-        errors.rating = validateNumericRange(values.rating, "Rating", 1, 5);
-        errors.tags = validateTags(values.tags);
+        if (variant === 'course'){
+            errors.instructor = validateFieldPresence(values.instructor, "Instructor's name");
+            errors.experience = validateNumericRange(values.experience, "Experience", 1, 5);
+        } else if (variant === 'instructor') {
+            errors.course = validateFieldPresence(values.course, "Course name");
+            errors.rating = validateNumericRange(values.rating, "Rating", 1, 5);
+            errors.tags = validateTags(values.tags);
+        } else {
+            errors.school = validateFieldPresence(values.school, "School name");
+        }
 
         return errors;
     };
@@ -113,7 +116,7 @@
                                     let:setFieldValue
                             >
                                 <Form storageKey="review-form">
-                                    <ReviewForm {setFieldValue} {props} {course} {variant}/>
+                                    <ReviewForm {setFieldValue} {props} {instructor} {course} {variant}/>
                                 </Form>
                             </Sveltik>
                         </div>
