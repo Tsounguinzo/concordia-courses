@@ -3,7 +3,7 @@ import type {GetCourseReviewsInteractionPayload} from './model/GetCourseReviewsI
 import type {GetCourseWithReviewsPayload} from './model/GetCourseWithReviewsPayload';
 import type {Interaction, InteractionKind} from './model/Interaction';
 import type {Notification} from './model/Notification';
-import type {Review} from './model/Review';
+import type {Review, ReviewType} from './model/Review';
 import type {Subscription} from './model/Subscription';
 import type {User} from './model/User';
 import {backendUrl} from "$lib/constants";
@@ -110,13 +110,20 @@ export const repo = {
         };
     },
 
-    async addReview(courseId: string, values: any): Promise<Response> {
+    async addReview(courseId: string, instructorId: string, type: ReviewType, values: any): Promise<Response> {
         return await client.post('/reviews', {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-                courseId,
+                type: type,
+                content: values.content,
                 timestamp: new Date(),
-                ...values,
+                difficulty: values.difficulty,
+                courseId: courseId ?? values.course.replace(/\s+/g, '').toUpperCase(),
+                instructorId: instructorId ?? values.instructor.replace(/\s+/g, '-').toLowerCase(),
+                experience: values.experience,
+                rating: values.rating,
+                tags: values.tags,
+                schoolId: values.school,
             }),
         });
     },
@@ -126,12 +133,16 @@ export const repo = {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 _id: review._id,
+                type: review.type,
                 content: values.content,
-                courseId: review.courseId,
-                instructor: values.instructor,
-                experience: values.experience,
-                difficulty: values.difficulty,
                 timestamp: new Date(),
+                difficulty: values.difficulty || review.difficulty,
+                courseId: review.courseId ?? values.course.replace(/\s+/g, '').toUpperCase(),
+                instructorId: review.instructorId ?? values.instructor.replace(/\s+/g, '-').toLowerCase(),
+                experience: values.experience || review.experience,
+                rating: values.rating || review.rating,
+                tags: values.tags,
+                schoolId: values.school,
                 userId: review.userId,
                 likes: review.likes
             }),

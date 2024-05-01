@@ -26,7 +26,7 @@
 
     $: initialValues = {
         content: review.content,
-        instructor: instructorIdToName(review.instructorId),
+        instructor: instructorIdToName(review.instructorId ?? ''),
         experience: review.experience,
         difficulty: review.difficulty,
         rating: review.rating,

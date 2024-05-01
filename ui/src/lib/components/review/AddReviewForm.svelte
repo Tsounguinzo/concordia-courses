@@ -107,7 +107,7 @@
                                     {validate}
                                     {initialValues}
                                     onSubmit={async (values, actions) => {
-                                    const res = await repo.addReview(course?._id, values);
+                                    const res = await repo.addReview(course?._id, instructor?._id, variant, values);
                                     actions.setSubmitting(false);
                                     open.set(false)
                                     handleSubmit(res);
