@@ -5,7 +5,7 @@
     export let query: string;
     export let className: string = '';
 
-    $: parts = text.split(new RegExp(`(${escapeRegExp(query)})`, 'gi'));
+    $: parts = text?.split(new RegExp(`(${escapeRegExp(query)})`, 'gi'));
 </script>
 
 <span class={className}>

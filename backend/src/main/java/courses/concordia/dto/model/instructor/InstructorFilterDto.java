@@ -3,6 +3,7 @@ package courses.concordia.dto.model.instructor;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonValue;
+import courses.concordia.model.Instructor;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -20,8 +21,8 @@ public class InstructorFilterDto {
     private List<String> levels;
     private String query;
     private List<String> subjects;
-    private List<String> departments;
-    private List<String> tags;
+    private List<Instructor.Department> departments;
+    private List<Instructor.Tag> tags;
     private CourseSort sortBy;
 
     @Data

@@ -41,7 +41,7 @@ public class Review {
 
     // instructor specific fields
     private int rating; // 0-5
-    private Set<Instructor.InstructorTag> tags;
+    private Set<Instructor.Tag> tags;
 
     // School specific ratings
     private int schoolId;

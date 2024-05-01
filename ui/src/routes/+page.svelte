@@ -37,7 +37,7 @@
         <div class='hidden sm:mb-8 sm:flex sm:justify-center'></div>
         <div class='text-center'>
             <h1 class='mb-6 py-3 text-left text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-200 md:text-5xl'>
-                Share and explore student insights on courses, instructors, and campus life.
+                Share and explore student insights on courses and instructors @ Concordia.
             </h1>
             <div class='flex flex-col gap-6 text-center'>
             <CourseSearchBar
