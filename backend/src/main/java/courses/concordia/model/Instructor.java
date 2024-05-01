@@ -9,6 +9,8 @@ import lombok.experimental.Accessors;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -213,19 +215,42 @@ public class Instructor {
             return this.description;
         }
 
+        /**
+         * Enhances matching by looking for the highest token match count and best specificity.
+         * @param text the text to match against department descriptions.
+         * @return the best matching Department enum constant, or null if no match is found.
+         */
         public static Department fromString(String text) {
-            if (text != null && !text.isEmpty()) {
-                String searchText = text.toLowerCase();
-                if (searchText.contains("accounting")) {
-                    return ACCOUNTANCY;
-                }
-                for (Department department : values()) {
-                    if (department.getDescription().toLowerCase().contains(searchText)) {
-                        return department;
-                    }
+            if (text == null || text.isEmpty()) {
+                return null;
+            }
+
+            String normalizedText = text.toLowerCase().replaceAll("[^a-z0-9\\s]", "");
+            List<String> inputTokens = Arrays.asList(normalizedText.split("\\s+"));
+
+            Department bestMatch = null;
+            int highestMatchCount = 0; // Highest number of matching tokens
+            int smallestTokenDifference = Integer.MAX_VALUE; // Smallest difference in the number of tokens (for specificity)
+
+            for (Department department : values()) {
+                String descNormalized = department.getDescription().toLowerCase().replaceAll("[^a-z0-9\\s]", "");
+                List<String> descTokens = Arrays.asList(descNormalized.split("\\s+"));
+
+                int matchCount = (int) inputTokens.stream()
+                        .filter(descTokens::contains)
+                        .count();
+
+                int tokenDifference = Math.abs(descTokens.size() - inputTokens.size()); // Difference in token size for specificity
+
+                // Prioritize matches with more tokens and more specific (smaller token difference)
+                if (matchCount > highestMatchCount || (matchCount == highestMatchCount && tokenDifference < smallestTokenDifference)) {
+                    bestMatch = department;
+                    highestMatchCount = matchCount;
+                    smallestTokenDifference = tokenDifference;
                 }
             }
-            return null;
+
+            return bestMatch;
         }
 
     }

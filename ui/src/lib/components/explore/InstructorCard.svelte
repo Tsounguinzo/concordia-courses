@@ -27,6 +27,11 @@
             {/if}
 
         </div>
+        {#if instructor.department}
+        <h2 class='break-words font-semibold text-blue-800 dark:text-blue-200 my-3'>
+            {instructor.department.toLowerCase().includes("department") ? '' : 'Department of'} {instructor.department}
+        </h2>
+            {/if}
         <InstructorTags {instructor} variant='small' {query}/>
         <div class='mt-2 mb-10 text-gray-600 dark:text-gray-400'>
             {#if instructor.courses.length}
