@@ -6,6 +6,7 @@
     import IconRatingInput from "./IconRatingInput.svelte";
     import {type Instructor} from "$lib/model/Instructor";
     import TagsInput from "$lib/components/review/TagsInput.svelte";
+    import AutocompleteInput from "$lib/components/review/AutocompleteInput.svelte";
 
     export let props;
     export let course: Course | null = null;
@@ -15,30 +16,28 @@
     export let variant: 'course' | 'instructor' | 'school' = 'course';
 
 </script>
-<div style="max-width: calc(100vw - 10rem); max-height: calc(100vh - 10rem);" class='overflow-auto'>
+<div style="max-width: calc(100vw - 10rem); max-height: calc(100vh - 10rem);" class='overflow-auto scrollbar-hide'>
     <div class='flex flex-col'>
         {#if variant === 'instructor'}
             <FieldLabel For='course'>Course Name</FieldLabel>
-            <Field
-                    on:input={(e) => props.values.course = e.target.value}
-                    on:blur={props.handleBlur}
+            <AutocompleteInput
+                    {setFieldValue}
                     value={props.values.course}
-                    id='course'
+                    options={instructor?.courses.map(c => `${c.subject} ${c.catalog}`) ?? []}
                     name='course'
                     placeholder='What course did you take...'
-                    class='capitalize resize-none rounded-md border bg-gray-50 p-3 outline-none dark:border-neutral-600 dark:bg-neutral-700 dark:text-gray-200 dark:caret-white'
+                    class='capitalize resize-none rounded-md border bg-gray-50 p-3 outline-none dark:border-neutral-600 dark:bg-neutral-700 dark:text-gray-200 dark:caret-white w-full'
             />
             <FieldError name='course'/>
         {:else if variant === 'course'}
             <FieldLabel For='instructor'>Instructor Name</FieldLabel>
-            <Field
-                    on:input={(e) => props.values.instructor = e.target.value}
-                    on:blur={props.handleBlur}
+            <AutocompleteInput
+                    {setFieldValue}
                     value={props.values.instructor}
-                    id='instructor'
+                    options={course?.instructors ?? []}
                     name='instructor'
                     placeholder='Who was your prof...'
-                    class='capitalize resize-none rounded-md border bg-gray-50 p-3 outline-none dark:border-neutral-600 dark:bg-neutral-700 dark:text-gray-200 dark:caret-white'
+                    class='capitalize resize-none rounded-md border bg-gray-50 p-3 outline-none dark:border-neutral-600 dark:bg-neutral-700 dark:text-gray-200 dark:caret-white w-full'
             />
             <FieldError name='instructor'/>
         {:else if variant === 'school'}
@@ -101,7 +100,7 @@
     </div>
     <div class='flex flex-col'>
         {#if variant === 'instructor'}
-            <FieldLabel For='tags'>Tags (1 min. - 3 max.)</FieldLabel>
+            <FieldLabel For='tags'>Tags (0 min. - 3 max.)</FieldLabel>
             <TagsInput
                     {setFieldValue}
                     selectedTags={props.values.tags}

@@ -29,8 +29,8 @@
     let show = false;
     const promptLogin = writable(false);
 
-    $: shortDate = format(review.timestamp, 'P');
-    $: longDate = format(review.timestamp, 'EEEE, MMMM d, yyyy');
+    $: shortDate = format(review.timestamp ?? Date.now(), 'P');
+    $: longDate = format(review.timestamp ?? Date.now(), 'EEEE, MMMM d, yyyy');
 
 </script>
 
@@ -78,13 +78,13 @@
                         </div>
                     </div>
                 </div>
-                {#if review.content.length < 300 || readMore}
+                {#if review.content?.length < 300 || readMore}
                     <div class='ml-1 mr-4 mt-2 hyphens-auto text-left text-gray-800 dark:text-gray-300'>
                         {review.content}
                     </div>
                 {:else }
                     <div class='ml-1 mr-4 mt-2 hyphens-auto text-left text-gray-800 dark:text-gray-300'>
-                        {review.content.substring(0, 300) + '...'}
+                        {review.content?.substring(0, 300) + '...'}
                         <button class='ml-1 mr-auto pt-1 text-gray-700 underline transition duration-300 ease-in-out hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-500'
                                 on:click={() => readMore = true}>
                             Show more

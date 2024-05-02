@@ -18,7 +18,7 @@
     }
 
     function shareOnWhatsApp() {
-        const text = `Check out this review for ${reviewFor} on Concordia.courses:\n${sharedLink}`;
+        const text = `Check out this review for *${reviewFor}* on Concordia.courses:\n${sharedLink}`;
         const encodedText = encodeURIComponent(text);
         const whatsappUrl = `https://wa.me/?text=${encodedText}`;
         window.open(whatsappUrl);

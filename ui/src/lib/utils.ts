@@ -53,7 +53,7 @@ export const sortSchedulesByBlocks = (schedules: Schedule[]) => {
 };
 
 export const courseIdToUrlParam = (courseId: string) =>
-    `${courseId.slice(0, 4)}-${courseId.slice(4)}`.toLowerCase();
+    `${courseId?.slice(0, 4)}-${courseId?.slice(4)}`.toLowerCase();
 
 export const instructorIdToUrlParam = (firstName: string, lastName: string) =>
     `${firstName}-${lastName}`.replace(' ', '-').toLowerCase();
@@ -78,7 +78,7 @@ export const spliceCourseCode = (courseCode: string, delimiter: string) => {
     if (firstIntIndex === undefined || firstIntIndex === -1) {
         return courseCode;
     }
-    return courseCode?.slice(0, firstIntIndex) + delimiter + courseCode.slice(firstIntIndex);
+    return courseCode?.slice(0, firstIntIndex) + delimiter + courseCode?.slice(firstIntIndex);
 }
 
 export const round2Decimals = (n: number) => Math.round(n * 100) / 100;
