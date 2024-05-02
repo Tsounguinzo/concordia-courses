@@ -18,7 +18,7 @@
     const selectedIndex = writable(0);
 
     const handleKeyDown = (event: KeyboardEvent) => {
-        const length = results.courses.length
+        const length = results.courses.length + results.instructors.length;
 
         if (event.key === 'ArrowUp') {
             event.preventDefault();
@@ -74,7 +74,7 @@
             {/each}
             {#each results.instructors as result, index}
                 <SearchResult
-                        {index}
+                        index={results.courses.length + index}
                         query={results.query}
                         selectedIndex={$selectedIndex}
                         text={result}
