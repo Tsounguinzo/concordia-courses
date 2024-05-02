@@ -29,9 +29,6 @@ export function validateReviewContent(content: string) {
 }
 
 export const validateTags = (tags: string[]) => {
-    if (!tags.length) {
-        return "At least one tag is required";
-    }
     if (tags.length > 3) {
         return "No more than 3 tags are allowed";
     }
