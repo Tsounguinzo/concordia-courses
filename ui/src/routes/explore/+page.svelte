@@ -101,6 +101,7 @@
 
     function toggle() {
         instructorsModeOn.update(state => !state);
+        fetchData(true);
     }
 
     const nullable = (arr: string[]) => (arr.length === 0 ? null : arr);
@@ -131,6 +132,7 @@
             }
             offset = reset ? limit : offset + limit;
         } catch (error) {
+            console.log(error)
             toast.error(`Failed to fetch ${$instructorsModeOn ? 'instructors' : 'courses'}. Please try again later.`);
         }
     };

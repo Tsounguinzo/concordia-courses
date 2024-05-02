@@ -16,6 +16,7 @@
     import {type Interaction} from "$lib/model/Interaction";
     import {page} from "$app/stores";
     import {spliceCourseCode} from "$lib/utils";
+    import {instructorIdToName} from "$lib/utils.js";
 
     type SortByType = (typeof feedSortByOptions)[number];
 
@@ -126,7 +127,7 @@
                 <FeedFilter {sortBy}/>
                 {#each reviews as review (review._id)}
                     <CourseReview
-                            title={spliceCourseCode(review?.courseId, " ")}
+                            title={review?.type === 'instructor' ? instructorIdToName(review?.instructorId) : spliceCourseCode(review?.courseId, " ")}
                             interactions={$userInteractions}
                             updateLikes={updateLikes(review)}
                             className='rounded-md my-1.5'

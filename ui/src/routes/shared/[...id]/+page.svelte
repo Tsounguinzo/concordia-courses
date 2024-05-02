@@ -39,7 +39,6 @@
                 <div class="z-10">
                     <SharedReview
                             className="bg-transparent dark:bg-transparent"
-                            type={review?.type}
                             canModify={false}
                             handleDelete={() => {}}
                             review={review}

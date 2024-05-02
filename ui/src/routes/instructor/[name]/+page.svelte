@@ -115,7 +115,7 @@
     };
 
     const handleDelete = async (review: Review) => {
-        const res = await repo.deleteReview(review.courseId);
+        const res = await repo.deleteReview(review._id);
 
         if (res.ok) {
             showingReviews.set($showingReviews?.filter((r) => r.userId !== review.userId));
@@ -199,9 +199,14 @@
                     <div class='flex w-fit flex-col p-4 md:w-1/2'>
                         <div class='flex flex-row items-center space-x-2 align-middle'>
                             <h1 class='break-words text-4xl font-semibold text-gray-800 dark:text-gray-200'>
-                                {params && instructorIdToName(params)}
+                                {$instructor.firstName} {$instructor.lastName}
                             </h1>
                         </div>
+                        {#if $instructor.department}
+                            <h2 class='break-words text-lg font-semibold text-blue-800 dark:text-blue-200 my-3'>
+                                {$instructor.department.toLowerCase().includes("department") ? '' : 'Department of'} {$instructor.department}
+                            </h2>
+                        {/if}
                         <InstructorTags instructor={$instructor} variant='large'/>
                         <p class='mt-4 text-gray-700 dark:text-gray-400'>
                             {#if $instructor.courses.length}
@@ -257,7 +262,6 @@
                 <div class='w-full shadow-sm'>
                     {#if userReview}
                         <InstructorReview
-                                type="instructor"
                                 canModify={Boolean(user && userReview.userId === user?.id)}
                                 handleDelete={() => handleDelete(userReview)}
                                 editReview={editReviewOpen}
@@ -274,7 +278,6 @@
                             )
                             .slice(0, $showAllReviews ? $showingReviews.length : numberOfReviewsToShow) as review, i (i)}
                             <InstructorReview
-                                    type="instructor"
                                     canModify={Boolean(user && review.userId === user?.id)}
                                     handleDelete={() => handleDelete(review)}
                                     editReview={editReviewOpen}

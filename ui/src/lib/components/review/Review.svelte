@@ -22,7 +22,6 @@
     export let interactions: Interaction[];
     export let updateLikes: (likes: number) => void;
     export let review: Review;
-    export let type: 'course' | 'instructor' | 'school' = 'course';
     export let className: string = '';
     export let shareable: boolean = true;
 
@@ -67,9 +66,9 @@
                     <div class='flex w-64 flex-col items-end rounded-lg p-2'>
                         <div class='flex items-center gap-x-2'>
                             <div class='text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
-                                {type === 'course' ? 'Experience' : 'Rating'}
+                                {(review.type ?? 'course') === 'course' ? 'Experience' : 'Rating'}
                             </div>
-                            <IconRating rating={type === 'course' ? review.experience : review.rating} icon="star"/>
+                            <IconRating rating={(review.type ?? 'course') === 'course' ? review.experience : review.rating} icon="star"/>
                         </div>
                         <div class='flex items-center gap-x-2'>
                             <div class='text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
@@ -86,13 +85,13 @@
                 {:else }
                     <div class='ml-1 mr-4 mt-2 hyphens-auto text-left text-gray-800 dark:text-gray-300'>
                         {review.content.substring(0, 300) + '...'}
+                        <button class='ml-1 mr-auto pt-1 text-gray-700 underline transition duration-300 ease-in-out hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-500'
+                                on:click={() => readMore = true}>
+                            Show more
+                        </button>
                     </div>
-                    <button class='ml-1 mr-auto pt-1 text-gray-700 underline transition duration-300 ease-in-out hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-500'
-                            on:click={() => readMore = true}>
-                        Show more
-                    </button>
                 {/if}
-                {#if review.tags}
+                {#if review?.tags}
                     <div class='flex flex-wrap gap-1 mt-1'>
                         {#each review.tags as tag}
                             <span class='px-2 py-1 text-xs font-medium text-gray-700 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-300'>
@@ -106,7 +105,7 @@
     </div>
     <div class='flex items-center'>
         <p class='mb-2 mt-auto flex-1 text-sm italic leading-4 text-gray-700 dark:text-gray-200'>
-            {#if type === 'course'}
+            {#if (review.type ?? 'course') === 'course'}
                 Taught by{' '}
                 <a href={`/instructor/${review.instructorId}`}
                    class='font-medium transition hover:text-blue-600'>
@@ -141,7 +140,7 @@
                         </button>
                         <DeleteButton
                                 title='Delete Review'
-                                text={`Are you sure you want to delete your review  for ${type === 'course' ? instructorIdToName(review.instructorId) : spliceCourseCode(review.courseId, ' ')}? `}
+                                text={`Are you sure you want to delete your review  for ${(review.type ?? 'course') === 'course' ? instructorIdToName(review.instructorId) : spliceCourseCode(review.courseId, ' ')}? `}
                                 onConfirm={handleDelete}
                                 size={20}
                         />
@@ -151,7 +150,7 @@
             <div class="flex gap-x-3">
                 {#if updateLikes}
                     <ReviewInteractions
-                            {type}
+                            type={review.type ?? 'course'}
                             {review}
                             {interactions}
                             {promptLogin}

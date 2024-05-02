@@ -71,11 +71,11 @@ export const punctuate = (s: string): string =>
     s.charAt(s.length - 1) === '.' ? s : `${s}.`;
 
 export const spliceCourseCode = (courseCode: string, delimiter: string) => {
-    const firstIntIndex = courseCode.search(/\d/);
-    if (firstIntIndex === -1) {
+    const firstIntIndex = courseCode?.search(/\d/);
+    if (firstIntIndex === undefined || firstIntIndex === -1) {
         return courseCode;
     }
-    return courseCode.slice(0, firstIntIndex) + delimiter + courseCode.slice(firstIntIndex);
+    return courseCode?.slice(0, firstIntIndex) + delimiter + courseCode.slice(firstIntIndex);
 }
 
 export const round2Decimals = (n: number) => Math.round(n * 100) / 100;
