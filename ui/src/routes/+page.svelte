@@ -12,7 +12,7 @@
         ['invalidMail', 'Please use a Concordia email address to authenticate.'],
     ]);
 
-    const {courses, coursesIndex} = getSearchIndex();
+    const { courses, instructors, coursesIndex, instructorsIndex } = getSearchIndex();
 
     const searchParams = $page.url.searchParams;
 
@@ -27,6 +27,8 @@
             query,
             courses,
             coursesIndex,
+            instructors,
+            instructorsIndex,
         );
     }
 
