@@ -13,7 +13,7 @@
     import {repo} from "$lib/repo";
     import {toast} from "svelte-sonner";
 
-    const {courses, coursesIndex} = getSearchIndex();
+    const { courses, instructors, coursesIndex, instructorsIndex } = getSearchIndex();
 
     const user = $page.data.user;
     $: pathName = $page.url.pathname;
@@ -32,7 +32,9 @@
         updateSearchResults(
             query,
             courses,
-            coursesIndex
+            coursesIndex,
+            instructors,
+            instructorsIndex,
         );
     };
 
@@ -40,6 +42,7 @@
         searchResults.set({
             query: '',
             courses: [],
+            instructors: [],
         });
     };
 

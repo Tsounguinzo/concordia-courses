@@ -58,6 +58,9 @@ export const courseIdToUrlParam = (courseId: string) =>
 export const instructorIdToUrlParam = (firstName: string, lastName: string) =>
     `${firstName}-${lastName}`.replace(' ', '-').toLowerCase();
 
+export const instructorNameToUrlParam = (name: string) =>
+    name.replace(' ', '-').toLowerCase();
+
 export const instructorIdToName = (id: string) =>
     id?.split('-').map(capitalize).join(' ');
 

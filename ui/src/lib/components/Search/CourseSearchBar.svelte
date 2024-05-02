@@ -1,6 +1,6 @@
 <script lang="ts">
 
-    import {courseIdToUrlParam, spliceCourseCode} from "$lib/utils";
+    import {courseIdToUrlParam, instructorIdToUrlParam, instructorNameToUrlParam, spliceCourseCode} from "$lib/utils";
     import {writable} from "svelte/store";
     import {goto} from "$app/navigation";
     import type {SearchResults} from "$lib/model/SearchResults";
@@ -33,7 +33,11 @@
         }
 
         if ($selectedIndex > -1 && event.key === 'Enter') {
-            goto(`/course/${courseIdToUrlParam(results.courses[$selectedIndex]._id)}`);
+            goto(
+                $selectedIndex < results.courses.length
+                    ? `/course/${courseIdToUrlParam(results.courses[$selectedIndex]._id)}`
+                    : `/instructor/${instructorNameToUrlParam(results.instructors[$selectedIndex - results.courses.length])}`
+            );
             if (onResultClick) {
                 onResultClick();
                 event.currentTarget?.blur()
@@ -65,6 +69,17 @@
                         text={`${spliceCourseCode(result._id, ' ')} - ${result.title}`}
                         type="course"
                         url={`/course/${courseIdToUrlParam(result._id)}`}
+                        on:click={onResultClick}
+                />
+            {/each}
+            {#each results.instructors as result, index}
+                <SearchResult
+                        {index}
+                        query={results.query}
+                        selectedIndex={$selectedIndex}
+                        text={result}
+                        type="instructor"
+                        url={`/instructor/${instructorNameToUrlParam(result)}`}
                         on:click={onResultClick}
                 />
             {/each}

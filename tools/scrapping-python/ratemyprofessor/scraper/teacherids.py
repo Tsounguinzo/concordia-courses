@@ -37,7 +37,7 @@ payload = {
     }
 
     fragment TeacherSearchPagination_search_1ZLmLD on newSearch {
-      teachers(query: $query, first: 3658, after: "") {
+      teachers(query: $query, first: 999999, after: "") {
         didFallback
         edges {
           cursor

@@ -2,7 +2,7 @@ import type {Course} from "$lib/model/Course";
 
 export type CourseData = Pick<
   Course,
-  '_id' | 'subject' | 'title' | 'catalog'
+  '_id' | 'subject' | 'title' | 'catalog' | 'instructors'
 >;
 
 export interface RequestOptions {
