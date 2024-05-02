@@ -31,9 +31,11 @@
         <div class='flex w-full justify-center mx-auto max-w-2xl'>
             <div class='mx-4 flex w-full flex-col rounded-md bg-slate-50 p-6 dark:bg-neutral-800 md:mt-10 relative'>
                 <div class='flex flex-col items-center'>
-                    <h1 class='text-3xl font-bold text-center text-gray-800 dark:text-gray-200'>Shared Review</h1>
-                    <p class='text-gray-600 dark:text-gray-400 text-center'>
+                    <h1 class='text-3xl font-bold text-center text-gray-800 dark:text-gray-200'>
                         Review for <strong>{reviewFor}</strong>
+                    </h1>
+                    <p class='text-gray-600 dark:text-gray-400 text-center'>
+                        Shared Review
                     </p>
                 </div>
                 <div class="z-10">
