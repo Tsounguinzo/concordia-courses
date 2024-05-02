@@ -6,11 +6,13 @@ import courses.concordia.dto.model.review.ReviewFilterDto;
 import courses.concordia.exception.CustomExceptionFactory;
 import courses.concordia.exception.EntityType;
 import courses.concordia.exception.ExceptionType;
+import courses.concordia.model.Course;
+import courses.concordia.model.Instructor;
 import courses.concordia.model.Review;
 import courses.concordia.repository.CourseRepository;
+import courses.concordia.repository.InstructorRepository;
 import courses.concordia.repository.ReviewRepository;
 import courses.concordia.service.ReviewService;
-import courses.concordia.model.Course;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -24,6 +26,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -32,6 +36,7 @@ import java.util.stream.Collectors;
 public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
     private final CourseRepository courseRepository;
+    private final InstructorRepository instructorRepository;
     private final MongoTemplate mongoTemplate;
     private final ModelMapper modelMapper;
 
@@ -49,13 +54,22 @@ public class ReviewServiceImpl implements ReviewService {
     })
     @Override
     public ReviewDto addOrUpdateReview(ReviewDto reviewDto) {
-        Review review = reviewRepository
-                .findByCourseIdAndUserId(reviewDto.getCourseId(), reviewDto.getUserId())
-                .map(r -> updateReviewFromDto(r, reviewDto))
-                .orElseGet(() -> createReviewFromDto(reviewDto));
+        Review review = new Review();
+        if (review.getType() != null && review.getType().equals("instructor")){
+            review = reviewRepository
+                    .findByInstructorIdAndUserId(reviewDto.getInstructorId(), reviewDto.getUserId())
+                    .map(r -> updateReviewFromDto(r, reviewDto))
+                    .orElseGet(() -> createReviewFromDto(reviewDto));
+            updateInstructorRatingAndTags(review.getInstructorId());
+        } else {
+            review = reviewRepository
+                    .findByCourseIdAndUserId(reviewDto.getCourseId(), reviewDto.getUserId())
+                    .map(r -> updateReviewFromDto(r, reviewDto))
+                    .orElseGet(() -> createReviewFromDto(reviewDto));
+            updateCourseExperience(review.getCourseId());
+        }
 
         review = reviewRepository.save(review);
-        updateCourseExperience(review.getCourseId());
 
         return ReviewMapper.toDto(review);
     }
@@ -85,18 +99,27 @@ public class ReviewServiceImpl implements ReviewService {
     /**
      * Deletes a review identified by courseId and userId.
      *
-     * @param courseId The ID of the course.
-     * @param userId The ID of the user.
+     * @param id The ID of the review.
      */
     @Caching(evict = {
-            @CacheEvict(value = "courseReviewsCache", key = "#courseId"),
+            @CacheEvict(value = "courseReviewsCache", key = "#id"),
             @CacheEvict(value = "coursesCacheWithFilters", allEntries = true),
             @CacheEvict(value = "reviewsCacheWithFilters", allEntries = true)
     })
     @Override
-    public void deleteReview(String courseId, String userId) {
-        reviewRepository.deleteByCourseIdAndUserId(courseId, userId);
-        updateCourseExperience(courseId);
+    public void deleteReview(String id) {
+        Optional<Review> review = reviewRepository.findById(id);
+        if (review.isEmpty()) {
+            throw exception(id);
+        } else {
+            if (review.get().getType() != null && review.get().getType().equals("instructor")){
+                reviewRepository.deleteById(id);
+                updateInstructorRatingAndTags(review.get().getInstructorId());
+            } else {
+                reviewRepository.deleteById(id);
+                updateCourseExperience(review.get().getCourseId());
+            }
+        }
     }
 
     /**
@@ -217,6 +240,27 @@ public class ReviewServiceImpl implements ReviewService {
             course.setAvgDifficulty(avgDifficulty);
             course.setReviewCount(reviewsCount);
             courseRepository.save(course);
+        }
+    }
+
+    /**
+     * Updates the average rating, difficulty and tags for a prof based on its reviews.
+     *
+     * @param instructorId The ID of the prof.
+     */
+    private void updateInstructorRatingAndTags(String instructorId){
+        List<Review> reviews = reviewRepository.findAllByInstructorId(instructorId);
+        double avgRating = reviews.stream().mapToInt(Review::getRating).average().orElse(0.0);
+        double avgDifficulty = reviews.stream().mapToInt(Review::getDifficulty).average().orElse(0.0);
+        int reviewsCount = reviews.size();
+        Set<Instructor.Tag> tags = reviews.stream().flatMap(review -> review.getTags().stream()).collect(Collectors.toSet());
+        Instructor instructor = instructorRepository.findById(instructorId).orElse(null);
+        if (instructor != null) {
+            instructor.setTags(tags);
+            instructor.setAvgRating(avgRating);
+            instructor.setAvgDifficulty(avgDifficulty);
+            instructor.setReviewCount(reviewsCount);
+            instructorRepository.save(instructor);
         }
     }
 

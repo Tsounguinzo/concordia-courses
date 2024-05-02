@@ -9,11 +9,11 @@ public interface InteractionService {
 
     List<InteractionDto> getUserInteractionsForCourse(String courseId, String referrer);
 
-    InteractionDto addOrUpdateInteraction(InteractionDto interactionDto);
+    InteractionDto addOrUpdateInteraction(InteractionDto interactionDto, String ReviewType);
 
-    void deleteInteraction(String courseId, String userId, String referrer);
+    void deleteInteraction(InteractionDto interactionDto, String ReviewType);
 
-    void deleteInteractions(String courseId, String userId);
+    void deleteInteractions(String id, String userId);
 
     List<InteractionDto> getUserInteractions(String referrer);
 

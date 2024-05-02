@@ -9,16 +9,18 @@
     import {toast} from "svelte-sonner";
     import {spliceCourseCode} from "$lib/utils";
     import {page} from "$app/stores";
+    import {instructorIdToName} from "$lib/utils.js";
 
     export let review: Review;
     export let interactions: Interaction[];
     export let promptLogin: Writable<boolean>;
+    export let type: 'course' | 'instructor' | 'school' = 'course';
     export let updateLikes: (likes: number) => void;
 
     const user =  $page.data.user;
     const kind = writable<InteractionKind | undefined | null>(undefined);
-    let {courseId, userId, likes} = review;
-    $: ({courseId, userId, likes} = review);
+    let {courseId, instructorId, userId, likes} = review;
+    $: ({courseId, instructorId, userId, likes} = review);
 
     const getUserInteractionKind = (interactions: Interaction[]): InteractionKind | undefined => {
         const interaction = interactions.find((interaction: Interaction) => interaction.userId === userId && interaction.courseId === courseId);
@@ -46,9 +48,9 @@
         const change = getLikeChange($kind, interactionKind);
         try {
             if (interactionKind === 'remove') {
-                await repo.removeInteraction(courseId, userId, user?.id);
+                await repo.removeInteraction(courseId, userId, instructorId, user?.id, type);
             } else {
-                await repo.addOrUpdateInteraction(interactionKind, courseId, userId, user?.id);
+                await repo.addOrUpdateInteraction(interactionKind, courseId, instructorId, userId, user?.id, type);
             }
             updateLikes(review.likes + change);
             likes += change;
@@ -56,9 +58,9 @@
             kind.set(interactionKind === 'remove' ? null : interactionKind);
 
             const actionWord = interactionKind === 'remove' ? 'Removed' : `Successfully ${interactionKind}d`;
-            toast.success(`${actionWord} review for ${spliceCourseCode(courseId, ' ')}.`);
+            toast.success(`${actionWord} review for ${type === 'instructor' ? instructorIdToName(instructorId) : spliceCourseCode(courseId, ' ')}.`);
         } catch (err) {
-            toast.error(err.toString());
+            toast.error(err?.toString());
         }
     };
 

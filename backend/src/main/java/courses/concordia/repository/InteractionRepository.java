@@ -13,4 +13,5 @@ public interface InteractionRepository extends MongoRepository<Interaction, Stri
     Optional<Interaction> findByCourseIdAndUserIdAndReferrer(String courseId, String userId, String referrer);
     List<Interaction> findByReferrer(String referrer);
     List<Interaction> findByInstructorIdAndReferrer(String instructorId, String referrer);
+    Optional<Interaction> findByInstructorIdAndUserIdAndReferrer(String instructorId, String userId, String referrer);
 }

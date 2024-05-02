@@ -149,10 +149,10 @@ export const repo = {
         });
     },
 
-    async deleteReview(courseId: string): Promise<Response> {
+    async deleteReview(id: string): Promise<Response> {
         return await client.delete('/reviews', {
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({courseId}),
+            body: JSON.stringify({id}),
         });
     },
 
@@ -199,14 +199,17 @@ export const repo = {
     async addOrUpdateInteraction(
         kind: InteractionKind,
         courseId: string,
+        instructorId: string,
         userId: string,
-        referrer: string | undefined
+        referrer: string | undefined,
+        type: ReviewType
     ): Promise<Response> {
-        return await client.post('/interactions', {
+        return await client.post(`/interactions?type=${type}`, {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 kind,
                 courseId,
+                instructorId,
                 userId,
                 referrer,
             }),
@@ -216,12 +219,15 @@ export const repo = {
     async removeInteraction(
         courseId: string,
         userId: string,
-        referrer: string | undefined
+        instructorId: string,
+        referrer: string | undefined,
+        type: ReviewType
     ): Promise<Response> {
-        return await client.delete('/interactions', {
+        return await client.delete(`/interactions?type=${type}`, {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 courseId,
+                instructorId,
                 userId,
                 referrer,
             }),

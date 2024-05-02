@@ -8,6 +8,7 @@ public class InteractionMapper {
         return new InteractionDto()
                 .setKind(interaction.getKind().toValue())
                 .setCourseId(interaction.getCourseId())
+                .setInstructorId(interaction.getInstructorId())
                 .setUserId(interaction.getUserId())
                 .setReferrer(interaction.getReferrer());
     }

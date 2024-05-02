@@ -11,5 +11,6 @@ import java.util.Optional;
 public interface ReviewRepository extends MongoRepository<Review, String> {
     List<Review> findAllByCourseId(String courseId);
     Optional<Review> findByCourseIdAndUserId(String courseId, String userId);
-    void deleteByCourseIdAndUserId(String courseId, String userId);
+    List<Review> findAllByInstructorId(String instructorId);
+    Optional<Review> findByInstructorIdAndUserId(String instructorId, String userId);
 }

@@ -113,6 +113,7 @@
                                         canModify={false}
                                         handleDelete={() => undefined}
                                         editReview={writable(false)}
+                                        shareable={false}
                                 />
                             </div>
                         {/each}

@@ -42,14 +42,14 @@ public class InteractionController {
     }
 
     @PostMapping
-    public Response<?> addOrUpdateInteraction(@RequestBody InteractionDto interaction) {
-        InteractionDto interactionDto = interactionService.addOrUpdateInteraction(interaction);
+    public Response<?> addOrUpdateInteraction(@RequestBody InteractionDto interaction, @RequestParam String type) {
+        InteractionDto interactionDto = interactionService.addOrUpdateInteraction(interaction, type);
         return Response.ok().setPayload(interactionDto);
     }
 
     @DeleteMapping
-    public Response<?> deleteInteraction(@RequestBody InteractionDto interaction) {
-        interactionService.deleteInteraction(interaction.getCourseId(), interaction.getUserId(), interaction.getReferrer());
+    public Response<?> deleteInteraction(@RequestBody InteractionDto interaction, @RequestParam String type) {
+        interactionService.deleteInteraction(interaction, type);
         return Response.ok().setPayload("Interaction was deleted successfully");
     }
 }

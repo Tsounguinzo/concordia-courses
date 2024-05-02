@@ -5,7 +5,10 @@ import courses.concordia.dto.model.review.ReviewFilterDto;
 import courses.concordia.dto.model.review.ReviewPayloadDto;
 import courses.concordia.dto.response.Response;
 import courses.concordia.model.User;
-import courses.concordia.service.*;
+import courses.concordia.service.InteractionService;
+import courses.concordia.service.NotificationService;
+import courses.concordia.service.ReviewService;
+import courses.concordia.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -71,9 +74,10 @@ public class ReviewController {
         if(user == null) {
             return Response.unauthorized();
         }
-        reviewService.deleteReview(reviewPayloadDto.getCourseId(), user.get_id());
-        interactionService.deleteInteractions(reviewPayloadDto.getCourseId(), user.get_id());
-        notificationService.deleteNotification(user.get_id(), null, reviewPayloadDto.getCourseId());
+        ReviewDto reviewDto = reviewService.getReviewById(reviewPayloadDto.getId());
+        reviewService.deleteReview(reviewPayloadDto.getId());
+        interactionService.deleteInteractions(reviewPayloadDto.getId(), user.get_id());
+        notificationService.deleteNotification(user.get_id(), null, reviewDto.getCourseId());
         return Response.ok().setPayload("Review was deleted successfully");
     }
 }

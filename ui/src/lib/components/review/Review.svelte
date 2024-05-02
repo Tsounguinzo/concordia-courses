@@ -24,6 +24,7 @@
     export let review: Review;
     export let type: 'course' | 'instructor' | 'school' = 'course';
     export let className: string = '';
+    export let shareable: boolean = true;
 
     let readMore = false;
     let show = false;
@@ -91,6 +92,15 @@
                         Show more
                     </button>
                 {/if}
+                {#if review.tags}
+                    <div class='flex flex-wrap gap-1 mt-1'>
+                        {#each review.tags as tag}
+                            <span class='px-2 py-1 text-xs font-medium text-gray-700 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-300'>
+                                {tag}
+                            </span>
+                        {/each}
+                    </div>
+                {/if}
             </div>
         </div>
     </div>
@@ -141,14 +151,17 @@
             <div class="flex gap-x-3">
                 {#if updateLikes}
                     <ReviewInteractions
+                            {type}
                             {review}
                             {interactions}
                             {promptLogin}
                             {updateLikes}
                     />
                 {/if}
+                {#if shareable}
                 <Share sharedLink={`https://concordia.courses/shared?id=${review._id}`}
                        reviewFor={determineReviewFor(review)}/>
+                    {/if}
             </div>
         </div>
     </div>
