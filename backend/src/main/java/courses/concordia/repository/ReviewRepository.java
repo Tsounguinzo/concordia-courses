@@ -10,7 +10,8 @@ import java.util.Optional;
 @Repository
 public interface ReviewRepository extends MongoRepository<Review, String> {
     List<Review> findAllByCourseId(String courseId);
-    Optional<Review> findByCourseIdAndUserId(String courseId, String userId);
     List<Review> findAllByInstructorId(String instructorId);
-    Optional<Review> findByInstructorIdAndUserId(String instructorId, String userId);
+    Optional<Review> findByInstructorIdAndUserIdAndType(String instructorId, String userId, String type);
+
+    Optional<Review> findByCourseIdAndUserIdAndType(String courseId, String userId, String type);
 }

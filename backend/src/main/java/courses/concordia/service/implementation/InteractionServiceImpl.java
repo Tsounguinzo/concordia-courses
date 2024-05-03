@@ -19,12 +19,10 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static courses.concordia.exception.EntityType.INTERACTION;
-import static courses.concordia.exception.ExceptionType.ENTITY_NOT_FOUND;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -34,19 +32,21 @@ public class InteractionServiceImpl implements InteractionService {
     private final MongoTemplate mongoTemplate;
 
     /**
-     * Retrieves the kind of interaction (e.g., LIKE, DISLIKE) a user has with a course based on a referrer.
+     * Fetches all interactions a user has for a specific course or instructor.
      *
-     * @param courseId  The ID of the course.
-     * @param userId    The ID of the user.
-     * @param referrer  The referrer identifier.
-     * @return The kind of interaction.
-     * @throws RuntimeException if the interaction is not found.
+     * @param id The ID of the course or instructor.
+     * @param referrer The referrer identifier.
+     * @param type The type of the interaction.
+     * @return A list of {@link InteractionDto} objects.
      */
     @Override
-    public String getInteractionKind(String courseId, String userId, String referrer) {
-        return interactionRepository.findByCourseIdAndUserIdAndReferrer(courseId, userId, referrer)
-                .map(interaction -> InteractionMapper.toDto(interaction).getKind())
-                .orElseThrow(() -> exception(INTERACTION, ENTITY_NOT_FOUND));
+    public List<InteractionDto> getUserInteractions(String id, String referrer, String type) {
+        if (type.equals("course")) {
+            return getUserInteractionsForCourse(id, referrer, type);
+        } else if (type.equals("instructor")) {
+            return getUserInteractionsForInstructor(id, referrer, type);
+        }
+        return Collections.emptyList();
     }
 
     /**
@@ -54,11 +54,11 @@ public class InteractionServiceImpl implements InteractionService {
      *
      * @param courseId The ID of the course.
      * @param referrer The referrer identifier.
+     * @param type The type of the interaction.
      * @return A list of {@link InteractionDto} objects.
      */
-    @Override
-    public List<InteractionDto> getUserInteractionsForCourse(String courseId, String referrer) {
-        return interactionRepository.findByCourseIdAndReferrer(courseId, referrer).stream()
+    private List<InteractionDto> getUserInteractionsForCourse(String courseId, String referrer, String type) {
+        return interactionRepository.findByCourseIdAndReferrerAndType(courseId, referrer, type).stream()
                 .map(InteractionMapper::toDto)
                 .collect(Collectors.toList());
     }
@@ -68,11 +68,11 @@ public class InteractionServiceImpl implements InteractionService {
      *
      * @param instructorId       The ID of the instructor.
      * @param referrer The referrer identifier.
+     * @param type The type of the interaction.
      * @return A list of {@link InteractionDto} objects.
      */
-    @Override
-    public List<InteractionDto> getUserInteractionsForInstructor(String instructorId, String referrer) {
-        return interactionRepository.findByInstructorIdAndReferrer(instructorId, referrer).stream()
+    private List<InteractionDto> getUserInteractionsForInstructor(String instructorId, String referrer, String type) {
+        return interactionRepository.findByInstructorIdAndReferrerAndType(instructorId, referrer, type).stream()
                 .map(InteractionMapper::toDto)
                 .collect(Collectors.toList());
     }
@@ -87,9 +87,9 @@ public class InteractionServiceImpl implements InteractionService {
     private void adjustReviewLikes(String courseId, String instructorId, String userId, int likesChange, String ReviewType) {
         Query reviewQuery = new Query();
         if (ReviewType.equals("instructor")) {
-            reviewQuery = new Query(Criteria.where("instructorId").is(instructorId).and("userId").is(userId));
+            reviewQuery = new Query(Criteria.where("instructorId").is(instructorId).and("userId").is(userId).and("type").is("instructor"));
         } else if (ReviewType.equals("course")) {
-            reviewQuery = new Query(Criteria.where("courseId").is(courseId).and("userId").is(userId));
+            reviewQuery = new Query(Criteria.where("courseId").is(courseId).and("userId").is(userId).and("type").is("course"));
         }
         Update update = new Update().inc("likes", likesChange);
         mongoTemplate.updateFirst(reviewQuery, update, Review.class);
@@ -102,20 +102,22 @@ public class InteractionServiceImpl implements InteractionService {
      * @return An updated or new {@link InteractionDto}.
      */
     @Caching(evict = {
-            @CacheEvict(value = "courseReviewsCache", key = "#interactionDto.courseId"),
-            @CacheEvict(value = "coursesCacheWithFilters", allEntries = true),
+            @CacheEvict(value = "courseReviewsCache", key = "{#interactionDto.courseId, #interactionDto.type}", condition = "#interactionDto.type.equals('course')"),
+            @CacheEvict(value = "instructorReviewsCache", key = "{#interactionDto.instructorId, #interactionDto.type}", condition = "#interactionDto.type.equals('instructor')"),
+            @CacheEvict(value = "coursesCacheWithFilters", allEntries = true, condition = "#interactionDto.type.equals('course')"),
+            @CacheEvict(value = "instructorsCacheWithFilters", allEntries = true, condition = "#interactionDto.type.equals('instructor')"),
             @CacheEvict(value = "reviewsCacheWithFilters", allEntries = true)
     })
     @Override
-    public InteractionDto addOrUpdateInteraction(InteractionDto interactionDto, String ReviewType) {
+    public InteractionDto addOrUpdateInteraction(InteractionDto interactionDto) {
         // Check if interaction already exists
         Optional<Interaction> existingInteraction = Optional.empty();
-        if(ReviewType.equals("course")) {
-            existingInteraction = interactionRepository.findByCourseIdAndUserIdAndReferrer(
-                    interactionDto.getCourseId(), interactionDto.getUserId(), interactionDto.getReferrer());
-        } else if(ReviewType.equals("instructor")) {
-            existingInteraction = interactionRepository.findByInstructorIdAndUserIdAndReferrer(
-                    interactionDto.getInstructorId(), interactionDto.getUserId(), interactionDto.getReferrer());
+        if(interactionDto.getType().equals("course")) {
+            existingInteraction = interactionRepository.findByCourseIdAndUserIdAndReferrerAndType(
+                    interactionDto.getCourseId(), interactionDto.getUserId(), interactionDto.getReferrer(), "course");
+        } else if(interactionDto.getType().equals("instructor")) {
+            existingInteraction = interactionRepository.findByInstructorIdAndUserIdAndReferrerAndType(
+                    interactionDto.getInstructorId(), interactionDto.getUserId(), interactionDto.getReferrer(), "instructor");
         }
 
         int likesChange = 0;
@@ -140,6 +142,7 @@ public class InteractionServiceImpl implements InteractionService {
             // Create new interaction
             interaction = new Interaction()
                     .setKind(Interaction.InteractionKind.fromValue(interactionDto.getKind()))
+                    .setType(interactionDto.getType())
                     .setCourseId(interactionDto.getCourseId())
                     .setInstructorId(interactionDto.getInstructorId())
                     .setUserId(interactionDto.getUserId())
@@ -153,7 +156,7 @@ public class InteractionServiceImpl implements InteractionService {
 
         // Update likes count on the review only if there is a change
         if (likesChange != 0) {
-            adjustReviewLikes(interactionDto.getCourseId(), interactionDto.getInstructorId(), interactionDto.getUserId(), likesChange, ReviewType);
+            adjustReviewLikes(interactionDto.getCourseId(), interactionDto.getInstructorId(), interactionDto.getUserId(), likesChange, interactionDto.getType());
         }
 
         return InteractionMapper.toDto(interaction);
@@ -165,26 +168,30 @@ public class InteractionServiceImpl implements InteractionService {
      *  @param interactionDto The interaction data transfer object.
      */
     @Caching(evict = {
-            @CacheEvict(value = "courseReviewsCache", key = "#interactionDto.courseId"),
-            @CacheEvict(value = "coursesCacheWithFilters", allEntries = true),
+            @CacheEvict(value = "courseReviewsCache", key = "{#interactionDto.courseId, #interactionDto.type}", condition = "#interactionDto.type.equals('course')"),
+            @CacheEvict(value = "instructorReviewsCache", key = "{#interactionDto.instructorId, #interactionDto.type}", condition = "#interactionDto.type.equals('instructor')"),
+            @CacheEvict(value = "coursesCacheWithFilters", allEntries = true, condition = "#interactionDto.type.equals('course')"),
+            @CacheEvict(value = "instructorsCacheWithFilters", allEntries = true, condition = "#interactionDto.type.equals('instructor')"),
             @CacheEvict(value = "reviewsCacheWithFilters", allEntries = true)
     })
     @Override
-    public void deleteInteraction(InteractionDto interactionDto, String ReviewType) {
+    public void deleteInteraction(InteractionDto interactionDto) {
         Query query = new Query();
-        if(ReviewType.equals("course")) {
+        if(interactionDto.getType().equals("course")) {
             query = new Query(Criteria.where("courseId").is(interactionDto.getCourseId())
                     .and("userId").is(interactionDto.getUserId())
-                    .and("referrer").is(interactionDto.getReferrer()));
-        } else if(ReviewType.equals("instructor")) {
+                    .and("referrer").is(interactionDto.getReferrer())
+                    .and("type").is("course"));
+        } else if(interactionDto.getType().equals("instructor")) {
             query = new Query(Criteria.where("instructorId").is(interactionDto.getInstructorId())
                     .and("userId").is(interactionDto.getUserId())
-                    .and("referrer").is(interactionDto.getReferrer()));
+                    .and("referrer").is(interactionDto.getReferrer())
+                    .and("type").is("instructor"));
         }
 
         Interaction interaction = mongoTemplate.findAndRemove(query, Interaction.class);
         if (interaction != null) {
-            adjustReviewLikes(interaction.getCourseId(), interaction.getInstructorId(), interactionDto.getUserId(), interaction.getKind() == Interaction.InteractionKind.LIKE ? -1 : 1, ReviewType);
+            adjustReviewLikes(interaction.getCourseId(), interaction.getInstructorId(), interactionDto.getUserId(), interaction.getKind() == Interaction.InteractionKind.LIKE ? -1 : 1, interactionDto.getType());
         }
     }
 
@@ -193,27 +200,25 @@ public class InteractionServiceImpl implements InteractionService {
      *
      * @param id The ID of the review.
      * @param userId   The ID of the user.
+     * @param type The type of the interaction.
      */
     @Caching(evict = {
-            @CacheEvict(value = "courseReviewsCache", key = "#id"),
-            @CacheEvict(value = "coursesCacheWithFilters", allEntries = true),
+            @CacheEvict(value = "courseReviewsCache", key = "{#id, #type}"),
+            @CacheEvict(value = "instructorReviewsCache", key = "{#id, #type}"),
+            @CacheEvict(value = "coursesCacheWithFilters", allEntries = true, condition = "#type.equals('course')"),
+            @CacheEvict(value = "instructorsCacheWithFilters", allEntries = true, condition = "#type.equals('instructor')"),
             @CacheEvict(value = "reviewsCacheWithFilters", allEntries = true)
     })
     @Override
-    public void deleteInteractions(String id, String userId) {
+    public void deleteInteractions(String id, String userId, String type) {
         Review review = mongoTemplate.findById(id, Review.class);
         if (review == null) {
             return;
         }
-        if (review.getInstructorId() != null) {
-            Query query = new Query(Criteria.where("instructorId").is(review.getInstructorId()).and("userId").is(userId));
-            mongoTemplate.remove(query, Interaction.class);
-        }
 
-        if (review.getCourseId() != null) {
-            Query query = new Query(Criteria.where("courseId").is(review.getCourseId()).and("userId").is(userId));
-            mongoTemplate.remove(query, Interaction.class);
-        }
+        Query query = new Query(Criteria.where("instructorId").is(review.getInstructorId()).and("courseId").is(review.getCourseId()).and("userId").is(userId).and("type").is(review.getType()));
+        mongoTemplate.remove(query, Interaction.class);
+
     }
 
     /**

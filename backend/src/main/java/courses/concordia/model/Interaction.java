@@ -15,6 +15,7 @@ public class Interaction {
     @MongoId
     private String _id;
     private InteractionKind kind;
+    private String type;
     private String courseId;
     private String instructorId;
     private String userId;

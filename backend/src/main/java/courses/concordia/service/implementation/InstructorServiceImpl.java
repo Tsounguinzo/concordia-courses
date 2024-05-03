@@ -82,7 +82,7 @@ public class InstructorServiceImpl implements InstructorService {
     @Cacheable(value = "instructorsCache", key = "#id")
     @Override
     public InstructorDto getInstructorById(String id) {
-        log.info("Retrieving instructor named {}", id);
+        log.info("Retrieving instructor with id: {}", id);
         Optional<Instructor> instructor = instructorRepository.findById(id);
         return instructor.map(i -> modelMapper.map(i, InstructorDto.class))
                 .orElseThrow(() -> exception(id));
@@ -95,7 +95,7 @@ public class InstructorServiceImpl implements InstructorService {
      * @param id The unique identifier for the instructor.
      * @return A {@link InstructorReviewsDto} object containing the instructor and its reviews.
      */
-    @Cacheable(value = "instructorReviewsCache", key = "#id")
+    @Cacheable(value = "instructorReviewsCache", key = "{#id, 'instructor'}")
     @Override
     public InstructorReviewsDto getInstructorAndReviewsById(String id) {
         log.info("Retrieving instructor and reviews with id {}", id);
@@ -146,10 +146,10 @@ public class InstructorServiceImpl implements InstructorService {
         // Handle sorting
         applySorting(filter, query);
 
-        long count = mongoTemplate.count(query, Instructor.class);
         List<Instructor> instructors = mongoTemplate.find(query, Instructor.class);
+        long count = instructors.size();
 
-        log.info("Found {} instructors matching filter criteria", instructors.size());
+        log.info("Found {} instructors matching filter criteria", count);
 
         return new PageImpl<>(instructors, pageable, count);
     }
@@ -226,6 +226,7 @@ public class InstructorServiceImpl implements InstructorService {
                     Criteria.where("firstName").regex(restRegexPattern, "i"),
                     Criteria.where("lastName").regex(restRegexPattern, "i"),
                     Criteria.where("department").regex(restRegexPattern, "i"),
+                    Criteria.where("tags").regex(restRegexPattern, "i"),
                     Criteria.where("courses").elemMatch(Criteria.where("catalog").regex(restRegexPattern, "i")),
                     Criteria.where("courses").elemMatch(Criteria.where("subject").regex(restRegexPattern, "i"))
             );

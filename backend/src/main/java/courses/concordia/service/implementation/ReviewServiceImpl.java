@@ -48,30 +48,36 @@ public class ReviewServiceImpl implements ReviewService {
      * @return The added or updated review data transfer object.
      */
     @Caching(evict = {
-            @CacheEvict(value = "courseReviewsCache", key = "#reviewDto.courseId"),
-            @CacheEvict(value = "coursesCacheWithFilters", allEntries = true),
+            @CacheEvict(value = "courseReviewsCache", key = "{#reviewDto.courseId, #reviewDto.type}", condition = "#reviewDto.type.equals('course')"),
+            @CacheEvict(value = "instructorReviewsCache", key = "{#reviewDto.instructorId, #reviewDto.type}", condition = "#reviewDto.type.equals('instructor')"),
+            @CacheEvict(value = "coursesCacheWithFilters", allEntries = true, condition = "#reviewDto.type.equals('course')"),
+            @CacheEvict(value = "instructorsCacheWithFilters", allEntries = true, condition = "#reviewDto.type.equals('instructor')"),
             @CacheEvict(value = "reviewsCacheWithFilters", allEntries = true)
     })
     @Override
     public ReviewDto addOrUpdateReview(ReviewDto reviewDto) {
         Review review = new Review();
-        if (review.getType() != null && review.getType().equals("instructor")){
-            review = reviewRepository
-                    .findByInstructorIdAndUserId(reviewDto.getInstructorId(), reviewDto.getUserId())
-                    .map(r -> updateReviewFromDto(r, reviewDto))
-                    .orElseGet(() -> createReviewFromDto(reviewDto));
-            updateInstructorRatingAndTags(review.getInstructorId());
-        } else {
-            review = reviewRepository
-                    .findByCourseIdAndUserId(reviewDto.getCourseId(), reviewDto.getUserId())
-                    .map(r -> updateReviewFromDto(r, reviewDto))
-                    .orElseGet(() -> createReviewFromDto(reviewDto));
-            updateCourseExperience(review.getCourseId());
+        if (review.getType() != null) {
+
+            if (review.getType().equals("instructor")) {
+                review = reviewRepository
+                        .findByInstructorIdAndUserIdAndType(reviewDto.getInstructorId(), reviewDto.getUserId(), reviewDto.getType())
+                        .map(r -> updateReviewFromDto(r, reviewDto))
+                        .orElseGet(() -> createReviewFromDto(reviewDto));
+                updateInstructorRatingAndTags(review.getInstructorId());
+            } else {
+                review = reviewRepository
+                        .findByCourseIdAndUserIdAndType(reviewDto.getCourseId(), reviewDto.getUserId(), reviewDto.getType())
+                        .map(r -> updateReviewFromDto(r, reviewDto))
+                        .orElseGet(() -> createReviewFromDto(reviewDto));
+                updateCourseExperience(review.getCourseId());
+            }
+
+            review = reviewRepository.save(review);
+
+            return ReviewMapper.toDto(review);
         }
-
-        review = reviewRepository.save(review);
-
-        return ReviewMapper.toDto(review);
+        throw exception();
     }
 
     /**
@@ -102,17 +108,19 @@ public class ReviewServiceImpl implements ReviewService {
      * @param id The ID of the review.
      */
     @Caching(evict = {
-            @CacheEvict(value = "courseReviewsCache", key = "#id"),
+            @CacheEvict(value = "courseReviewsCache", key = "{#id, 'course'}"),
+            @CacheEvict(value = "instructorReviewsCache", key = "{#id, 'instructor'}"),
             @CacheEvict(value = "coursesCacheWithFilters", allEntries = true),
+            @CacheEvict(value = "instructorsCacheWithFilters", allEntries = true),
             @CacheEvict(value = "reviewsCacheWithFilters", allEntries = true)
     })
     @Override
     public void deleteReview(String id) {
         Optional<Review> review = reviewRepository.findById(id);
-        if (review.isEmpty()) {
+        if (review.isEmpty() || review.get().getType() == null) {
             throw exception(id);
         } else {
-            if (review.get().getType() != null && review.get().getType().equals("instructor")){
+            if (review.get().getType().equals("instructor")){
                 reviewRepository.deleteById(id);
                 updateInstructorRatingAndTags(review.get().getInstructorId());
             } else {

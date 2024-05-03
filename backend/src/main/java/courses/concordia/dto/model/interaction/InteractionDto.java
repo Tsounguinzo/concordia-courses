@@ -17,6 +17,7 @@ import lombok.experimental.Accessors;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class InteractionDto {
     private String kind;
+    private String type;
     private String courseId;
     private String instructorId;
     private String userId;

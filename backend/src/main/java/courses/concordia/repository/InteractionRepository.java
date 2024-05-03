@@ -9,9 +9,9 @@ import java.util.Optional;
 
 @Repository
 public interface InteractionRepository extends MongoRepository<Interaction, String> {
-    List<Interaction> findByCourseIdAndReferrer(String courseId, String referrer);
-    Optional<Interaction> findByCourseIdAndUserIdAndReferrer(String courseId, String userId, String referrer);
     List<Interaction> findByReferrer(String referrer);
-    List<Interaction> findByInstructorIdAndReferrer(String instructorId, String referrer);
-    Optional<Interaction> findByInstructorIdAndUserIdAndReferrer(String instructorId, String userId, String referrer);
+    Optional<Interaction> findByCourseIdAndUserIdAndReferrerAndType(String courseId, String userId, String referrer, String type);
+    Optional<Interaction> findByInstructorIdAndUserIdAndReferrerAndType(String instructorId, String userId, String referrer, String type);
+    List<Interaction> findByCourseIdAndReferrerAndType(String courseId, String referrer, String type);
+    List<Interaction> findByInstructorIdAndReferrerAndType(String instructorId, String referrer, String type);
 }

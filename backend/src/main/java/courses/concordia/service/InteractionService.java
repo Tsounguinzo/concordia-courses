@@ -5,17 +5,14 @@ import courses.concordia.dto.model.interaction.InteractionDto;
 import java.util.List;
 
 public interface InteractionService {
-    String getInteractionKind(String courseId, String userId, String referrer);
+    List<InteractionDto> getUserInteractions(String id, String referrer, String type);
 
-    List<InteractionDto> getUserInteractionsForCourse(String courseId, String referrer);
+    InteractionDto addOrUpdateInteraction(InteractionDto interactionDto);
 
-    InteractionDto addOrUpdateInteraction(InteractionDto interactionDto, String ReviewType);
+    void deleteInteraction(InteractionDto interactionDto);
 
-    void deleteInteraction(InteractionDto interactionDto, String ReviewType);
-
-    void deleteInteractions(String id, String userId);
+    void deleteInteractions(String id, String userId, String type);
 
     List<InteractionDto> getUserInteractions(String referrer);
 
-    List<InteractionDto> getUserInteractionsForInstructor(String instructorId, String referrer);
 }

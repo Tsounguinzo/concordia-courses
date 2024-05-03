@@ -24,8 +24,8 @@ public class InstructorController {
 
     @GetMapping("/{id}")
     public Response<?> getInstructorById(@PathVariable String id, @RequestParam(name = "with_reviews", defaultValue = "false") boolean withReviews) {
-        Object instructor = withReviews ? instructorService.getInstructorAndReviewsById(id) : instructorService.getInstructorById(id);
-        return Response.ok().setPayload(instructor);
+        Object instructorPayload = withReviews ? instructorService.getInstructorAndReviewsById(id) : instructorService.getInstructorById(id);
+        return Response.ok().setPayload(instructorPayload);
     }
 
     @PostMapping("/filter")

@@ -2,7 +2,6 @@ package courses.concordia.service;
 
 import courses.concordia.dto.model.course.CourseDto;
 import courses.concordia.dto.model.course.CourseReviewsDto;
-import courses.concordia.model.Course;
 import courses.concordia.dto.model.course.CourseFilterDto;
 
 import java.util.List;

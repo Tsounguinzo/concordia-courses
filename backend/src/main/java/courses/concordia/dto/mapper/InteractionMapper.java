@@ -7,6 +7,7 @@ public class InteractionMapper {
     public static InteractionDto toDto(Interaction interaction) {
         return new InteractionDto()
                 .setKind(interaction.getKind().toValue())
+                .setType(interaction.getType())
                 .setCourseId(interaction.getCourseId())
                 .setInstructorId(interaction.getInstructorId())
                 .setUserId(interaction.getUserId())

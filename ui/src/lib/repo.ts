@@ -156,17 +156,6 @@ export const repo = {
         });
     },
 
-    async getInteractions(
-        courseId: string,
-        userId: string,
-        referrer: string | undefined
-    ): Promise<InteractionKind> {
-        return await client.deserialize<InteractionKind>(
-            'GET',
-            `/interactions?courseId=${courseId}&userId=${userId}&referrer=${referrer}`
-        );
-    },
-
     async getUserInteractionsForCourse(
         courseId: string,
         referrer: string
@@ -204,10 +193,11 @@ export const repo = {
         referrer: string | undefined,
         type: ReviewType
     ): Promise<Response> {
-        return await client.post(`/interactions?type=${type}`, {
+        return await client.post(`/interactions`, {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 kind,
+                type,
                 courseId,
                 instructorId,
                 userId,
@@ -223,9 +213,10 @@ export const repo = {
         referrer: string | undefined,
         type: ReviewType
     ): Promise<Response> {
-        return await client.delete(`/interactions?type=${type}`, {
+        return await client.delete(`/interactions`, {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
+                type,
                 courseId,
                 instructorId,
                 userId,

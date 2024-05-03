@@ -96,7 +96,7 @@ public class CourseServiceImpl implements CourseService {
      * @param id The unique identifier for the course.
      * @return A {@link CourseReviewsDto} object containing the course and its reviews.
      */
-    @Cacheable(value = "courseReviewsCache", key = "#id")
+    @Cacheable(value = "courseReviewsCache", key = "{#id, 'course'}")
     @Override
     public CourseReviewsDto getCourseAndReviewsById(String id) {
         log.info("Retrieving course and reviews with ID {}", id);
