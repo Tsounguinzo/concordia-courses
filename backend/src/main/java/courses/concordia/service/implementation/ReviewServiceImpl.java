@@ -24,6 +24,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -55,6 +56,7 @@ public class ReviewServiceImpl implements ReviewService {
             @CacheEvict(value = "reviewsCacheWithFilters", allEntries = true),
             @CacheEvict(value = "instructorsCache", key = "#reviewDto.instructorId", condition = "#reviewDto.type.equals('instructor')"),
     })
+    @Transactional
     @Override
     public ReviewDto addOrUpdateReview(ReviewDto reviewDto) {
         Review review;
@@ -64,7 +66,7 @@ public class ReviewServiceImpl implements ReviewService {
                         .findByInstructorIdAndUserIdAndType(reviewDto.getInstructorId(), reviewDto.getUserId(), reviewDto.getType())
                         .map(r -> updateReviewFromDto(r, reviewDto))
                         .orElseGet(() -> createReviewFromDto(reviewDto));
-                updateInstructorRatingAndTags(review.getInstructorId());
+                updateInstructorRatingCoursesAndTags(review);
             } else {
                 review = reviewRepository
                         .findByCourseIdAndUserIdAndType(reviewDto.getCourseId(), reviewDto.getUserId(), reviewDto.getType())
@@ -88,7 +90,7 @@ public class ReviewServiceImpl implements ReviewService {
      * @return A new Review entity.
      */
     private Review createReviewFromDto(ReviewDto reviewDto) {
-        return modelMapper.map(reviewDto, Review.class);
+        return reviewRepository.save(modelMapper.map(reviewDto, Review.class));
     }
 
     /**
@@ -100,7 +102,7 @@ public class ReviewServiceImpl implements ReviewService {
      */
     private Review updateReviewFromDto(Review existingReview, ReviewDto reviewDto) {
         modelMapper.map(reviewDto, existingReview);
-        return existingReview;
+        return reviewRepository.save(existingReview);
     }
 
     /**
@@ -116,6 +118,7 @@ public class ReviewServiceImpl implements ReviewService {
             @CacheEvict(value = "reviewsCacheWithFilters", allEntries = true),
             @CacheEvict(value = "instructorsCache", key = "#id"),
     })
+    @Transactional
     @Override
     public void deleteReview(String id) {
         Optional<Review> review = reviewRepository.findById(id);
@@ -124,7 +127,7 @@ public class ReviewServiceImpl implements ReviewService {
         } else {
             if (review.get().getType().equals("instructor")){
                 reviewRepository.deleteById(id);
-                updateInstructorRatingAndTags(review.get().getInstructorId());
+                updateInstructorRatingCoursesAndTags(review.get());
             } else {
                 reviewRepository.deleteById(id);
                 updateCourseExperience(review.get().getCourseId());
@@ -256,14 +259,15 @@ public class ReviewServiceImpl implements ReviewService {
     /**
      * Updates the average rating, difficulty and tags for a prof based on its reviews.
      *
-     * @param instructorId The ID of the prof.
+     * @param review The review object.
      */
-    private void updateInstructorRatingAndTags(String instructorId){
+    private void updateInstructorRatingCoursesAndTags(Review review){
+        String instructorId = review.getInstructorId();
         List<Review> reviews = reviewRepository.findAllByInstructorId(instructorId);
         double avgRating = reviews.stream().mapToInt(Review::getRating).average().orElse(0.0);
         double avgDifficulty = reviews.stream().mapToInt(Review::getDifficulty).average().orElse(0.0);
         int reviewsCount = reviews.size();
-        Set<Instructor.Tag> tags = reviews.stream().flatMap(review -> review.getTags().stream()).collect(Collectors.toSet());
+        Set<Instructor.Tag> tags = reviews.stream().flatMap(r -> r.getTags().stream()).collect(Collectors.toSet());
         Instructor instructor = instructorRepository.findById(instructorId).orElse(null);
         if (instructor != null) {
             instructor.setTags(tags);
