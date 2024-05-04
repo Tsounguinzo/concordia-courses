@@ -79,7 +79,7 @@ public class NotificationServiceImpl implements NotificationService {
         if(creatorId == null && userId == null) return;
 
         Criteria criteria = Criteria.where("review.courseId").is(courseId);
-        if (userId != null) criteria = criteria.and("userId").is(userId).and("review.userId").is(creatorId);
+        if (userId != null) criteria = criteria.and("userId").is(userId);
         if (creatorId != null) criteria = criteria.and("review.userId").is(creatorId);
 
         Query query = new Query(criteria);

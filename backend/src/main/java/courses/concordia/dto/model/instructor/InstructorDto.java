@@ -20,7 +20,7 @@ public class InstructorDto {
     private String firstName;
     private String lastName;
     private Instructor.Department department;
-    private Set<Instructor.InstructorCourse> courses;
+    private Set<Instructor.Course> courses;
     private Set<Instructor.Tag> tags;
     @ToString.Exclude @EqualsAndHashCode.Exclude
     private double avgDifficulty = 0.0;

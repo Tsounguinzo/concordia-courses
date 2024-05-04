@@ -1,5 +1,6 @@
 package courses.concordia.service.implementation;
 
+import com.google.gson.reflect.TypeToken;
 import courses.concordia.dto.mapper.ReviewMapper;
 import courses.concordia.dto.model.review.ReviewDto;
 import courses.concordia.dto.model.review.ReviewFilterDto;
@@ -13,6 +14,7 @@ import courses.concordia.repository.CourseRepository;
 import courses.concordia.repository.InstructorRepository;
 import courses.concordia.repository.ReviewRepository;
 import courses.concordia.service.ReviewService;
+import courses.concordia.util.JsonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -26,9 +28,10 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -40,6 +43,25 @@ public class ReviewServiceImpl implements ReviewService {
     private final InstructorRepository instructorRepository;
     private final MongoTemplate mongoTemplate;
     private final ModelMapper modelMapper;
+    private final static Map<String, Instructor.Course> courseMap = new HashMap<>();
+
+    static {
+        Path jsonFilePath;
+        try {
+            jsonFilePath = Paths.get(ClassLoader.getSystemResource("subject-catalogs.json").toURI());
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+        Map<String, List<String>> coursesData = JsonUtils.getData(jsonFilePath, new TypeToken<Map<String, List<String>>>(){});
+
+        if (coursesData != null) {
+            coursesData.forEach((key, values) -> values.forEach(value -> {
+                String courseKey = key + value;
+                Instructor.Course course = new Instructor.Course(key, value);
+                courseMap.put(courseKey, course);
+            }));
+        }
+    }
 
     /**
      * Adds or updates a review based on the provided ReviewDto.
@@ -268,9 +290,14 @@ public class ReviewServiceImpl implements ReviewService {
         double avgDifficulty = reviews.stream().mapToInt(Review::getDifficulty).average().orElse(0.0);
         int reviewsCount = reviews.size();
         Set<Instructor.Tag> tags = reviews.stream().flatMap(r -> r.getTags().stream()).collect(Collectors.toSet());
+        Set<Instructor.Course> courses = reviews.stream()
+                .map(r -> courseMap.get(r.getCourseId()))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
         Instructor instructor = instructorRepository.findById(instructorId).orElse(null);
         if (instructor != null) {
             instructor.setTags(tags);
+            instructor.setCourses(courses);
             instructor.setAvgRating(avgRating);
             instructor.setAvgDifficulty(avgDifficulty);
             instructor.setReviewCount(reviewsCount);

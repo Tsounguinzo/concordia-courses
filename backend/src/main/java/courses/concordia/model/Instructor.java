@@ -24,7 +24,7 @@ public class Instructor {
     private String firstName;
     private String lastName;
     private Department department;
-    private Set<InstructorCourse> courses;
+    private Set<Course> courses;
     private Set<Tag> tags;
     @ToString.Exclude @EqualsAndHashCode.Exclude
     private double avgDifficulty = 0.0;
@@ -36,7 +36,7 @@ public class Instructor {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class InstructorCourse {
+    public static class Course {
         private String subject;
         private String catalog;
     }
