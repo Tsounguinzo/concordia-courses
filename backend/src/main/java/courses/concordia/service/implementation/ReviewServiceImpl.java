@@ -52,14 +52,14 @@ public class ReviewServiceImpl implements ReviewService {
             @CacheEvict(value = "instructorReviewsCache", key = "{#reviewDto.instructorId, #reviewDto.type}", condition = "#reviewDto.type.equals('instructor')"),
             @CacheEvict(value = "coursesCacheWithFilters", allEntries = true, condition = "#reviewDto.type.equals('course')"),
             @CacheEvict(value = "instructorsCacheWithFilters", allEntries = true, condition = "#reviewDto.type.equals('instructor')"),
-            @CacheEvict(value = "reviewsCacheWithFilters", allEntries = true)
+            @CacheEvict(value = "reviewsCacheWithFilters", allEntries = true),
+            @CacheEvict(value = "instructorsCache", key = "#reviewDto.instructorId", condition = "#reviewDto.type.equals('instructor')"),
     })
     @Override
     public ReviewDto addOrUpdateReview(ReviewDto reviewDto) {
-        Review review = new Review();
-        if (review.getType() != null) {
-
-            if (review.getType().equals("instructor")) {
+        Review review;
+        if (reviewDto.getType() != null) {
+            if (reviewDto.getType().equals("instructor")) {
                 review = reviewRepository
                         .findByInstructorIdAndUserIdAndType(reviewDto.getInstructorId(), reviewDto.getUserId(), reviewDto.getType())
                         .map(r -> updateReviewFromDto(r, reviewDto))
@@ -76,8 +76,9 @@ public class ReviewServiceImpl implements ReviewService {
             review = reviewRepository.save(review);
 
             return ReviewMapper.toDto(review);
+        } else {
+            throw exception();
         }
-        throw exception();
     }
 
     /**
@@ -112,7 +113,8 @@ public class ReviewServiceImpl implements ReviewService {
             @CacheEvict(value = "instructorReviewsCache", key = "{#id, 'instructor'}"),
             @CacheEvict(value = "coursesCacheWithFilters", allEntries = true),
             @CacheEvict(value = "instructorsCacheWithFilters", allEntries = true),
-            @CacheEvict(value = "reviewsCacheWithFilters", allEntries = true)
+            @CacheEvict(value = "reviewsCacheWithFilters", allEntries = true),
+            @CacheEvict(value = "instructorsCache", key = "#id"),
     })
     @Override
     public void deleteReview(String id) {
