@@ -198,8 +198,8 @@
             <div class='ml-auto flex w-full max-w-xl flex-col overflow-y-hidden'>
                     <SearchBar
                             handleInputChange={(value) => query = value}
-                            iconStyle='mt-2 lg:mt-0 absolute top-1/4 transform -translate-y-1/4'
-                            inputStyle='block rounded-lg w-full bg-slate-50 p-3 pr-5 pl-10 text-sm text-black outline-none dark:border-neutral-50 dark:bg-neutral-800 dark:text-gray-200 dark:placeholder:text-neutral-500'
+                            iconStyle='mt-2 lg:mt-0 absolute top-1/3 transform -translate-y-1/2'
+                            inputStyle='block rounded-lg w-full bg-slate-50 p-3 pr-5 pl-10 text-md text-black outline-none dark:border-neutral-50 dark:bg-neutral-800 dark:text-gray-200 dark:placeholder:text-neutral-500'
                             outerInputStyle='my-2 mt-4 lg:mt-2 flex flex-col h-20 rounded-lg bg-slate-50 dark:border-neutral-50 dark:bg-neutral-800 dark:text-gray-200 rounded-lg'
                             placeholder={`Search by ${$instructorsModeOn ? "instructor's name, department or course code" : 'course code, title or description'}`}
                             searchSelected={searchSelected}

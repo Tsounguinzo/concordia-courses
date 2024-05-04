@@ -47,7 +47,7 @@
         >
             <div class='md:rounded-xl md:p-2'>
                 <Stat
-                        title={`${type === 'course' ? 'Experience' : 'Rating'} Score`}
+                        title={`${type === 'course' ? 'Experience' : 'Clarity Rating'} Score`}
                         value={round2Decimals(type === 'course' ? averageExperience : averageRating)}
                         icon='star'
                         variant={variant}
@@ -60,7 +60,7 @@
                         max={5}
                         gap={10}
                         className='mx-auto hidden sm:block'
-                        caption={`${type === 'course' ? 'Experience' : 'Rating'} Distribution`}
+                        caption={`${type === 'course' ? 'Experience' : 'Clarity Rating'} Distribution`}
                 />
             </div>
             <div class='py-1.5'/>

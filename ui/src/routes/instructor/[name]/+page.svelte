@@ -44,7 +44,6 @@
 
     const user = $page.data.user;
 
-    let firstFetch = true;
     const numberOfReviewsToShow = 5;
     const addReviewOpen = writable(false);
     const allReviews = writable<Review[] | undefined>(undefined);
@@ -55,7 +54,6 @@
     const userInteractions = writable<Interaction[] | undefined>([]);
 
     $: if (params) {
-        firstFetch = true;
         showAllReviews.set(false);
         refetch()
     }
@@ -72,7 +70,7 @@
                     return;
                 }
 
-                if (firstFetch) instructor.set(payload?.instructor);
+                instructor.set(payload?.instructor);
 
                 showingReviews.set(payload?.reviews);
                 allReviews.set(payload?.reviews);
@@ -84,7 +82,6 @@
                     userInteractions.set(instructorInteractionsPayload.interactions);
                 }
 
-                firstFetch = false;
             } catch (err) {
                 toast.error(
                     'An error occurred while trying to fetch course information.'
@@ -127,8 +124,6 @@
         }
 
         handleSubmit('Review deleted successfully.')(res);
-
-        localStorage.removeItem($instructor?._id);
     };
 
     const updateLikes = (review: Review) => {
