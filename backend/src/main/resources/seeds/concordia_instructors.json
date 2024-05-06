@@ -17,18 +17,6 @@
             },
             {
                 "subject": "PSYC",
-                "catalog": "398"
-            },
-            {
-                "subject": "PSYC",
-                "catalog": "398"
-            },
-            {
-                "subject": "PSYC",
-                "catalog": "398"
-            },
-            {
-                "subject": "PSYC",
                 "catalog": "444"
             }
         ],
@@ -97,10 +85,6 @@
                 "catalog": "399"
             },
             {
-                "subject": "ARTT",
-                "catalog": "399"
-            },
-            {
                 "subject": "IMCA",
                 "catalog": "470"
             }
@@ -151,10 +135,6 @@
             "Fine Arts"
         ],
         "courses": [
-            {
-                "subject": "DRAW",
-                "catalog": "399"
-            },
             {
                 "subject": "DRAW",
                 "catalog": "399"
@@ -378,23 +358,11 @@
             },
             {
                 "subject": "PHIL",
-                "catalog": "201"
-            },
-            {
-                "subject": "PHIL",
                 "catalog": "210"
             },
             {
                 "subject": "PHIL",
                 "catalog": "232"
-            },
-            {
-                "subject": "PHIL",
-                "catalog": "235"
-            },
-            {
-                "subject": "PHIL",
-                "catalog": "235"
             },
             {
                 "subject": "PHIL",
@@ -429,10 +397,6 @@
             {
                 "subject": "ENGL",
                 "catalog": "261"
-            },
-            {
-                "subject": "ENGL",
-                "catalog": "311"
             },
             {
                 "subject": "ENGL",
@@ -508,10 +472,6 @@
             },
             {
                 "subject": "ELEC",
-                "catalog": "6301"
-            },
-            {
-                "subject": "ELEC",
                 "catalog": "6341"
             },
             {
@@ -543,10 +503,6 @@
             },
             {
                 "subject": "PSYC",
-                "catalog": "223"
-            },
-            {
-                "subject": "PSYC",
                 "catalog": "241"
             },
             {
@@ -555,15 +511,7 @@
             },
             {
                 "subject": "PSYC",
-                "catalog": "305"
-            },
-            {
-                "subject": "PSYC",
                 "catalog": "321"
-            },
-            {
-                "subject": "PSYC",
-                "catalog": "340"
             },
             {
                 "subject": "PSYC",
@@ -718,14 +666,6 @@
             },
             {
                 "subject": "POLI",
-                "catalog": "204"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "205"
-            },
-            {
-                "subject": "POLI",
                 "catalog": "205"
             },
             {
@@ -836,10 +776,6 @@
             },
             {
                 "subject": "AHSC",
-                "catalog": "220"
-            },
-            {
-                "subject": "AHSC",
                 "catalog": "260"
             },
             {
@@ -906,10 +842,6 @@
             },
             {
                 "subject": "ACCO",
-                "catalog": "230"
-            },
-            {
-                "subject": "ACCO",
                 "catalog": "240"
             },
             {
@@ -957,10 +889,6 @@
             },
             {
                 "subject": "POLI",
-                "catalog": "206"
-            },
-            {
-                "subject": "POLI",
                 "catalog": "316"
             },
             {
@@ -978,10 +906,6 @@
             {
                 "subject": "POLI",
                 "catalog": "389"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "490"
             },
             {
                 "subject": "POLI",
@@ -1057,10 +981,6 @@
             },
             {
                 "subject": "POLI",
-                "catalog": "328"
-            },
-            {
-                "subject": "POLI",
                 "catalog": "339"
             },
             {
@@ -1070,14 +990,6 @@
             {
                 "subject": "POLI",
                 "catalog": "368"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "398"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "398"
             },
             {
                 "subject": "POLI",
@@ -1142,10 +1054,6 @@
             },
             {
                 "subject": "PSYC",
-                "catalog": "200"
-            },
-            {
-                "subject": "PSYC",
                 "catalog": "457"
             }
         ],
@@ -1165,10 +1073,6 @@
             {
                 "subject": "ENGR",
                 "catalog": "251"
-            },
-            {
-                "subject": "ENGR",
-                "catalog": "361"
             },
             {
                 "subject": "ENGR",
@@ -1207,14 +1111,6 @@
             {
                 "subject": "URBS",
                 "catalog": "230"
-            },
-            {
-                "subject": "URBS",
-                "catalog": "250"
-            },
-            {
-                "subject": "URBS",
-                "catalog": "250"
             },
             {
                 "subject": "URBS",
@@ -1666,10 +1562,6 @@
                 "catalog": "398"
             },
             {
-                "subject": "FFAZ",
-                "catalog": "398"
-            },
-            {
                 "subject": "POLI",
                 "catalog": "398"
             }
@@ -1991,10 +1883,6 @@
             },
             {
                 "subject": "COMP",
-                "catalog": "228"
-            },
-            {
-                "subject": "COMP",
                 "catalog": "335"
             },
             {
@@ -2221,10 +2109,6 @@
             },
             {
                 "subject": "FRAN",
-                "catalog": "211"
-            },
-            {
-                "subject": "FRAN",
                 "catalog": "212"
             }
         ],
@@ -2283,30 +2167,6 @@
             },
             {
                 "subject": "GEOG",
-                "catalog": "272"
-            },
-            {
-                "subject": "GEOG",
-                "catalog": "272"
-            },
-            {
-                "subject": "GEOG",
-                "catalog": "272"
-            },
-            {
-                "subject": "GEOG",
-                "catalog": "274"
-            },
-            {
-                "subject": "GEOG",
-                "catalog": "274"
-            },
-            {
-                "subject": "GEOG",
-                "catalog": "274"
-            },
-            {
-                "subject": "GEOG",
                 "catalog": "274"
             }
         ],
@@ -2351,10 +2211,6 @@
             {
                 "subject": "GEOG",
                 "catalog": "333"
-            },
-            {
-                "subject": "URBS",
-                "catalog": "230"
             },
             {
                 "subject": "URBS",
@@ -2635,14 +2491,6 @@
             },
             {
                 "subject": "ANTH",
-                "catalog": "311"
-            },
-            {
-                "subject": "ANTH",
-                "catalog": "311"
-            },
-            {
-                "subject": "ANTH",
                 "catalog": "312"
             },
             {
@@ -2690,14 +2538,6 @@
             {
                 "subject": "EDUC",
                 "catalog": "398"
-            },
-            {
-                "subject": "EDUC",
-                "catalog": "4"
-            },
-            {
-                "subject": "EDUC",
-                "catalog": "4"
             },
             {
                 "subject": "EDUC",
@@ -2812,18 +2652,6 @@
             {
                 "subject": "POLI",
                 "catalog": "398"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "398"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "398"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "398"
             }
         ],
         "tags": [
@@ -2860,10 +2688,6 @@
             {
                 "subject": "JOUR",
                 "catalog": "208"
-            },
-            {
-                "subject": "JOUR",
-                "catalog": "298"
             },
             {
                 "subject": "JOUR",
@@ -3137,10 +2961,6 @@
             },
             {
                 "subject": "ENGL",
-                "catalog": "246"
-            },
-            {
-                "subject": "ENGL",
                 "catalog": "250"
             },
             {
@@ -3165,15 +2985,7 @@
             },
             {
                 "subject": "ENGL",
-                "catalog": "395"
-            },
-            {
-                "subject": "ENGL",
                 "catalog": "398"
-            },
-            {
-                "subject": "ENGZ",
-                "catalog": "298"
             },
             {
                 "subject": "ENGZ",
@@ -3333,10 +3145,6 @@
                 "catalog": "499"
             },
             {
-                "subject": "COMM",
-                "catalog": "499"
-            },
-            {
                 "subject": "ENGR",
                 "catalog": "244"
             },
@@ -3415,10 +3223,6 @@
             {
                 "subject": "MATH",
                 "catalog": "206"
-            },
-            {
-                "subject": "MATH",
-                "catalog": "208"
             },
             {
                 "subject": "MATH",
@@ -3523,10 +3327,6 @@
             {
                 "subject": "COMM",
                 "catalog": "220"
-            },
-            {
-                "subject": "ECON",
-                "catalog": "201"
             },
             {
                 "subject": "ECON",
@@ -3664,10 +3464,6 @@
             {
                 "subject": "POLI",
                 "catalog": "315"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "315"
             }
         ],
         "tags": [],
@@ -3686,14 +3482,6 @@
             {
                 "subject": "ECON",
                 "catalog": "301"
-            },
-            {
-                "subject": "ECON",
-                "catalog": "325"
-            },
-            {
-                "subject": "ECON",
-                "catalog": "325"
             },
             {
                 "subject": "ECON",
@@ -3796,10 +3584,6 @@
             {
                 "subject": "HIST",
                 "catalog": "202"
-            },
-            {
-                "subject": "HIST",
-                "catalog": "203"
             },
             {
                 "subject": "HIST",
@@ -3965,10 +3749,6 @@
             },
             {
                 "subject": "COMS",
-                "catalog": "398"
-            },
-            {
-                "subject": "COMS",
                 "catalog": "424"
             },
             {
@@ -4056,18 +3836,6 @@
             },
             {
                 "subject": "POLI",
-                "catalog": "398"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "498"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "498"
-            },
-            {
-                "subject": "POLI",
                 "catalog": "498"
             }
         ],
@@ -4109,10 +3877,6 @@
             {
                 "subject": "IBUS",
                 "catalog": "492"
-            },
-            {
-                "subject": "MARK",
-                "catalog": "491"
             },
             {
                 "subject": "MARK",
@@ -4187,10 +3951,6 @@
             {
                 "subject": "ELEC",
                 "catalog": "264"
-            },
-            {
-                "subject": "ELEC",
-                "catalog": "273"
             },
             {
                 "subject": "ELEC",
@@ -4477,10 +4237,6 @@
             },
             {
                 "subject": "COMM",
-                "catalog": "210"
-            },
-            {
-                "subject": "COMM",
                 "catalog": "222"
             },
             {
@@ -4507,27 +4263,7 @@
             },
             {
                 "subject": "COMM",
-                "catalog": "215"
-            },
-            {
-                "subject": "COMM",
                 "catalog": "225"
-            },
-            {
-                "subject": "COMM",
-                "catalog": "499"
-            },
-            {
-                "subject": "COMM",
-                "catalog": "499"
-            },
-            {
-                "subject": "COMM",
-                "catalog": "499"
-            },
-            {
-                "subject": "COMM",
-                "catalog": "499"
             },
             {
                 "subject": "COMM",
@@ -4999,18 +4735,6 @@
             {
                 "subject": "EDUC",
                 "catalog": "4"
-            },
-            {
-                "subject": "EDUC",
-                "catalog": "4"
-            },
-            {
-                "subject": "EDUC",
-                "catalog": "4"
-            },
-            {
-                "subject": "EDUC",
-                "catalog": "4"
             }
         ],
         "tags": [],
@@ -5037,10 +4761,6 @@
             {
                 "subject": "POLI",
                 "catalog": "315"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "319"
             },
             {
                 "subject": "POLI",
@@ -5241,14 +4961,6 @@
             },
             {
                 "subject": "ITAL",
-                "catalog": "301"
-            },
-            {
-                "subject": "ITAL",
-                "catalog": "301"
-            },
-            {
-                "subject": "ITAL",
                 "catalog": "302"
             },
             {
@@ -5368,10 +5080,6 @@
             {
                 "subject": "ARTH",
                 "catalog": "271"
-            },
-            {
-                "subject": "ARTH",
-                "catalog": "298"
             },
             {
                 "subject": "ARTH",
@@ -5672,14 +5380,6 @@
             },
             {
                 "subject": "ENGL",
-                "catalog": "298"
-            },
-            {
-                "subject": "ENGL",
-                "catalog": "298"
-            },
-            {
-                "subject": "ENGL",
                 "catalog": "321"
             }
         ],
@@ -5875,10 +5575,6 @@
                 "catalog": "470"
             },
             {
-                "subject": "ACCO",
-                "catalog": "470"
-            },
-            {
                 "subject": "COMM",
                 "catalog": "217"
             },
@@ -5921,10 +5617,6 @@
             {
                 "subject": "CLAS",
                 "catalog": "242"
-            },
-            {
-                "subject": "CLAS",
-                "catalog": "341"
             },
             {
                 "subject": "CLAS",
@@ -6008,10 +5700,6 @@
             {
                 "subject": "TESL",
                 "catalog": "221"
-            },
-            {
-                "subject": "TESL",
-                "catalog": "231"
             },
             {
                 "subject": "TESL",
@@ -6131,10 +5819,6 @@
             {
                 "subject": "ELEC",
                 "catalog": "462"
-            },
-            {
-                "subject": "ELEC",
-                "catalog": "6601"
             },
             {
                 "subject": "ELEC",
@@ -6435,10 +6119,6 @@
             },
             {
                 "subject": "MARK",
-                "catalog": "453"
-            },
-            {
-                "subject": "MARK",
                 "catalog": "460"
             },
             {
@@ -6517,14 +6197,6 @@
             {
                 "subject": "POLI",
                 "catalog": "352"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "398"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "398"
             },
             {
                 "subject": "POLI",
@@ -6622,10 +6294,6 @@
             {
                 "subject": "POLI",
                 "catalog": "202"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "204"
             },
             {
                 "subject": "POLI",
@@ -6846,14 +6514,6 @@
             },
             {
                 "subject": "ECON",
-                "catalog": "391"
-            },
-            {
-                "subject": "ECON",
-                "catalog": "491"
-            },
-            {
-                "subject": "ECON",
                 "catalog": "491"
             },
             {
@@ -6965,10 +6625,6 @@
             },
             {
                 "subject": "ECON",
-                "catalog": "221"
-            },
-            {
-                "subject": "ECON",
                 "catalog": "222"
             },
             {
@@ -7026,10 +6682,6 @@
             "Applied Human Sciences"
         ],
         "courses": [
-            {
-                "subject": "AHSC",
-                "catalog": "281"
-            },
             {
                 "subject": "AHSC",
                 "catalog": "281"
@@ -7173,10 +6825,6 @@
             {
                 "subject": "FINA",
                 "catalog": "210"
-            },
-            {
-                "subject": "FINA",
-                "catalog": "450"
             },
             {
                 "subject": "FINA",
@@ -7476,10 +7124,6 @@
                 "catalog": "359"
             },
             {
-                "subject": "ENGL",
-                "catalog": "359"
-            },
-            {
                 "subject": "IRST",
                 "catalog": "203"
             }
@@ -7586,10 +7230,6 @@
             "Management"
         ],
         "courses": [
-            {
-                "subject": "COMM",
-                "catalog": "210"
-            },
             {
                 "subject": "COMM",
                 "catalog": "210"
@@ -7795,10 +7435,6 @@
             },
             {
                 "subject": "RELI",
-                "catalog": "380"
-            },
-            {
-                "subject": "RELI",
                 "catalog": "382"
             },
             {
@@ -7973,14 +7609,6 @@
             },
             {
                 "subject": "LUCC",
-                "catalog": "298"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "298"
-            },
-            {
-                "subject": "POLI",
                 "catalog": "298"
             },
             {
@@ -8202,10 +7830,6 @@
                 "catalog": "499"
             },
             {
-                "subject": "COMM",
-                "catalog": "499"
-            },
-            {
                 "subject": "MARK",
                 "catalog": "201"
             },
@@ -8309,10 +7933,6 @@
             },
             {
                 "subject": "POLI",
-                "catalog": "215"
-            },
-            {
-                "subject": "POLI",
                 "catalog": "311"
             },
             {
@@ -8326,14 +7946,6 @@
             {
                 "subject": "POLI",
                 "catalog": "423"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "486"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "486"
             },
             {
                 "subject": "POLI",
@@ -8481,10 +8093,6 @@
             },
             {
                 "subject": "MANA",
-                "catalog": "446"
-            },
-            {
-                "subject": "MANA",
                 "catalog": "466"
             }
         ],
@@ -8521,10 +8129,6 @@
             {
                 "subject": "SOCI",
                 "catalog": "498"
-            },
-            {
-                "subject": "SOCI",
-                "catalog": "498"
             }
         ],
         "tags": [
@@ -8547,18 +8151,6 @@
             {
                 "subject": "SOEN",
                 "catalog": "342"
-            },
-            {
-                "subject": "SOEN",
-                "catalog": "342"
-            },
-            {
-                "subject": "SOEN",
-                "catalog": "342"
-            },
-            {
-                "subject": "SOEN",
-                "catalog": "343"
             },
             {
                 "subject": "SOEN",
@@ -8586,18 +8178,6 @@
             "Political Science"
         ],
         "courses": [
-            {
-                "subject": "POLI",
-                "catalog": "298"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "298"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "298"
-            },
             {
                 "subject": "POLI",
                 "catalog": "298"
@@ -8655,14 +8235,6 @@
             {
                 "subject": "ECON",
                 "catalog": "201"
-            },
-            {
-                "subject": "ECON",
-                "catalog": "201"
-            },
-            {
-                "subject": "ECON",
-                "catalog": "203"
             },
             {
                 "subject": "ECON",
@@ -8776,10 +8348,6 @@
             },
             {
                 "subject": "ENGL",
-                "catalog": "214"
-            },
-            {
-                "subject": "ENGL",
                 "catalog": "215"
             },
             {
@@ -8845,14 +8413,6 @@
             {
                 "subject": "CHEM",
                 "catalog": "271"
-            },
-            {
-                "subject": "CHEM",
-                "catalog": "498"
-            },
-            {
-                "subject": "CHEM",
-                "catalog": "498"
             },
             {
                 "subject": "CHEM",
@@ -8971,10 +8531,6 @@
             {
                 "subject": "MATH",
                 "catalog": "206"
-            },
-            {
-                "subject": "MATH",
-                "catalog": "208"
             },
             {
                 "subject": "MATH",
@@ -9169,10 +8725,6 @@
             "Exercise Science"
         ],
         "courses": [
-            {
-                "subject": "EXCI",
-                "catalog": "253"
-            },
             {
                 "subject": "EXCI",
                 "catalog": "253"
@@ -9417,10 +8969,6 @@
             },
             {
                 "subject": "ACCO",
-                "catalog": "320"
-            },
-            {
-                "subject": "ACCO",
                 "catalog": "340"
             },
             {
@@ -9532,14 +9080,6 @@
             },
             {
                 "subject": "COMM",
-                "catalog": "210"
-            },
-            {
-                "subject": "COMM",
-                "catalog": "210"
-            },
-            {
-                "subject": "COMM",
                 "catalog": "220"
             },
             {
@@ -9617,10 +9157,6 @@
             {
                 "subject": "ENGL",
                 "catalog": "207"
-            },
-            {
-                "subject": "ENGL",
-                "catalog": "210"
             },
             {
                 "subject": "ENGL",
@@ -9904,14 +9440,6 @@
             {
                 "subject": "COMS",
                 "catalog": "361"
-            },
-            {
-                "subject": "COMS",
-                "catalog": "361"
-            },
-            {
-                "subject": "COMS",
-                "catalog": "361"
             }
         ],
         "tags": [],
@@ -10031,15 +9559,7 @@
             },
             {
                 "subject": "POLI",
-                "catalog": "398"
-            },
-            {
-                "subject": "POLI",
                 "catalog": "400"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "486"
             },
             {
                 "subject": "POLI",
@@ -10348,10 +9868,6 @@
             },
             {
                 "subject": "ANTH",
-                "catalog": "202"
-            },
-            {
-                "subject": "ANTH",
                 "catalog": "307"
             },
             {
@@ -10480,14 +9996,6 @@
             },
             {
                 "subject": "COMM",
-                "catalog": "215"
-            },
-            {
-                "subject": "COMM",
-                "catalog": "215"
-            },
-            {
-                "subject": "COMM",
                 "catalog": "217"
             },
             {
@@ -10535,10 +10043,6 @@
             {
                 "subject": "ECON",
                 "catalog": "203"
-            },
-            {
-                "subject": "ECON",
-                "catalog": "221"
             },
             {
                 "subject": "ECON",
@@ -10658,23 +10162,7 @@
             },
             {
                 "subject": "FMST",
-                "catalog": "630"
-            },
-            {
-                "subject": "FMST",
-                "catalog": "630"
-            },
-            {
-                "subject": "FMST",
                 "catalog": "665"
-            },
-            {
-                "subject": "FMST",
-                "catalog": "665"
-            },
-            {
-                "subject": "FMST",
-                "catalog": "670"
             },
             {
                 "subject": "FMST",
@@ -10716,10 +10204,6 @@
             "Education"
         ],
         "courses": [
-            {
-                "subject": "TESL",
-                "catalog": "427"
-            },
             {
                 "subject": "TESL",
                 "catalog": "427"
@@ -10788,10 +10272,6 @@
                 "catalog": "353"
             },
             {
-                "subject": "SOCI",
-                "catalog": "353"
-            },
-            {
                 "subject": "FPST",
                 "catalog": "341"
             },
@@ -10825,23 +10305,11 @@
             },
             {
                 "subject": "PHIL",
-                "catalog": "263"
-            },
-            {
-                "subject": "PHIL",
-                "catalog": "263"
-            },
-            {
-                "subject": "PHIL",
                 "catalog": "377"
             },
             {
                 "subject": "PHIL",
                 "catalog": "387"
-            },
-            {
-                "subject": "PHIL",
-                "catalog": "389"
             },
             {
                 "subject": "PHIL",
@@ -11044,15 +10512,7 @@
             },
             {
                 "subject": "ITAL",
-                "catalog": "201"
-            },
-            {
-                "subject": "ITAL",
                 "catalog": "202"
-            },
-            {
-                "subject": "ITAL",
-                "catalog": "310"
             },
             {
                 "subject": "ITAL",
@@ -11182,10 +10642,6 @@
             {
                 "subject": "PHIL",
                 "catalog": "398"
-            },
-            {
-                "subject": "PHIL",
-                "catalog": "498"
             },
             {
                 "subject": "PHIL",
@@ -11384,10 +10840,6 @@
                 "catalog": "470"
             },
             {
-                "subject": "FINA",
-                "catalog": "470"
-            },
-            {
                 "subject": "MSCA",
                 "catalog": "632"
             }
@@ -11466,10 +10918,6 @@
             "Fine Arts"
         ],
         "courses": [
-            {
-                "subject": "FFAR",
-                "catalog": "398"
-            },
             {
                 "subject": "FFAR",
                 "catalog": "398"
@@ -11604,14 +11052,6 @@
             "Applied Human Sciences"
         ],
         "courses": [
-            {
-                "subject": "AHSC",
-                "catalog": "232"
-            },
-            {
-                "subject": "AHSC",
-                "catalog": "232"
-            },
             {
                 "subject": "AHSC",
                 "catalog": "232"
@@ -11894,10 +11334,6 @@
             },
             {
                 "subject": "ENGR",
-                "catalog": "242"
-            },
-            {
-                "subject": "ENGR",
                 "catalog": "6991"
             },
             {
@@ -11980,10 +11416,6 @@
             {
                 "subject": "POLI",
                 "catalog": "498"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "498"
             }
         ],
         "tags": [],
@@ -12002,10 +11434,6 @@
             {
                 "subject": "ANTH",
                 "catalog": "230"
-            },
-            {
-                "subject": "SOCI",
-                "catalog": "203"
             },
             {
                 "subject": "SOCI",
@@ -12075,10 +11503,6 @@
             "Philosophy"
         ],
         "courses": [
-            {
-                "subject": "PHIL",
-                "catalog": "260"
-            },
             {
                 "subject": "PHIL",
                 "catalog": "260"
@@ -12194,10 +11618,6 @@
             {
                 "subject": "ECON",
                 "catalog": "414"
-            },
-            {
-                "subject": "ECON",
-                "catalog": "442"
             },
             {
                 "subject": "ECON",
@@ -12350,10 +11770,6 @@
                 "catalog": "398"
             },
             {
-                "subject": "RELI",
-                "catalog": "398"
-            },
-            {
                 "subject": "RELZ",
                 "catalog": "215"
             }
@@ -12442,10 +11858,6 @@
             {
                 "subject": "POLI",
                 "catalog": "427"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "498"
             },
             {
                 "subject": "POLI",
@@ -12878,10 +12290,6 @@
             },
             {
                 "subject": "ITAL",
-                "catalog": "201"
-            },
-            {
-                "subject": "ITAL",
                 "catalog": "202"
             },
             {
@@ -12972,10 +12380,6 @@
             {
                 "subject": "POLI",
                 "catalog": "487"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "487"
             }
         ],
         "tags": [
@@ -13054,10 +12458,6 @@
             {
                 "subject": "ACCO",
                 "catalog": "310"
-            },
-            {
-                "subject": "COMM",
-                "catalog": "217"
             },
             {
                 "subject": "COMM",
@@ -13188,28 +12588,12 @@
                 "catalog": "654"
             },
             {
-                "subject": "ASEM",
-                "catalog": "654"
-            },
-            {
-                "subject": "ASEM",
-                "catalog": "654"
-            },
-            {
                 "subject": "FMST",
                 "catalog": "337"
             },
             {
                 "subject": "FMST",
                 "catalog": "414"
-            },
-            {
-                "subject": "FMST",
-                "catalog": "650"
-            },
-            {
-                "subject": "FMST",
-                "catalog": "650"
             },
             {
                 "subject": "FMST",
@@ -13471,14 +12855,6 @@
             },
             {
                 "subject": "POLI",
-                "catalog": "298"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "298"
-            },
-            {
-                "subject": "POLI",
                 "catalog": "300"
             }
         ],
@@ -13617,10 +12993,6 @@
             },
             {
                 "subject": "MATH",
-                "catalog": "203"
-            },
-            {
-                "subject": "MATH",
                 "catalog": "205"
             },
             {
@@ -13671,14 +13043,6 @@
             {
                 "subject": "SOCI",
                 "catalog": "380"
-            },
-            {
-                "subject": "SOCI",
-                "catalog": "380"
-            },
-            {
-                "subject": "SOCI",
-                "catalog": "398"
             },
             {
                 "subject": "SOCI",
@@ -13741,10 +13105,6 @@
             {
                 "subject": "COMM",
                 "catalog": "222"
-            },
-            {
-                "subject": "COMM",
-                "catalog": "222"
             }
         ],
         "tags": [],
@@ -13763,10 +13123,6 @@
             {
                 "subject": "INDU",
                 "catalog": "211"
-            },
-            {
-                "subject": "INDU",
-                "catalog": "330"
             },
             {
                 "subject": "INDU",
@@ -13811,10 +13167,6 @@
             {
                 "subject": "DFTT",
                 "catalog": "315"
-            },
-            {
-                "subject": "PROD",
-                "catalog": "211"
             },
             {
                 "subject": "PROD",
@@ -14193,10 +13545,6 @@
             {
                 "subject": "ESL",
                 "catalog": "298"
-            },
-            {
-                "subject": "ESL",
-                "catalog": "298"
             }
         ],
         "tags": [],
@@ -14270,10 +13618,6 @@
             "Computer Science & Software Engineering"
         ],
         "courses": [
-            {
-                "subject": "COMP",
-                "catalog": "6771"
-            },
             {
                 "subject": "COMP",
                 "catalog": "6771"
@@ -14487,19 +13831,7 @@
             },
             {
                 "subject": "SOCI",
-                "catalog": "261"
-            },
-            {
-                "subject": "SOCI",
                 "catalog": "262"
-            },
-            {
-                "subject": "SOCI",
-                "catalog": "262"
-            },
-            {
-                "subject": "SOCI",
-                "catalog": "263"
             },
             {
                 "subject": "SOCI",
@@ -14906,10 +14238,6 @@
                 "catalog": "4"
             },
             {
-                "subject": "EDUC",
-                "catalog": "4"
-            },
-            {
                 "subject": "UNSS",
                 "catalog": "201"
             },
@@ -14945,10 +14273,6 @@
             {
                 "subject": "ARTH",
                 "catalog": "362"
-            },
-            {
-                "subject": "ARTH",
-                "catalog": "368"
             },
             {
                 "subject": "ARTH",
@@ -14993,10 +14317,6 @@
                 "catalog": "298"
             },
             {
-                "subject": "GEOL",
-                "catalog": "298"
-            },
-            {
                 "subject": "SCOL",
                 "catalog": "360"
             }
@@ -15021,10 +14341,6 @@
             {
                 "subject": "ECON",
                 "catalog": "203"
-            },
-            {
-                "subject": "ECON",
-                "catalog": "331"
             },
             {
                 "subject": "ECON",
@@ -15104,10 +14420,6 @@
             "Economics"
         ],
         "courses": [
-            {
-                "subject": "ECON",
-                "catalog": "201"
-            },
             {
                 "subject": "ECON",
                 "catalog": "201"
@@ -15280,23 +14592,11 @@
             },
             {
                 "subject": "THEO",
-                "catalog": "201"
-            },
-            {
-                "subject": "THEO",
-                "catalog": "201"
-            },
-            {
-                "subject": "THEO",
                 "catalog": "298"
             },
             {
                 "subject": "THEO",
                 "catalog": "331"
-            },
-            {
-                "subject": "THEO",
-                "catalog": "343"
             },
             {
                 "subject": "THEO",
@@ -15345,10 +14645,6 @@
             {
                 "subject": "MARK",
                 "catalog": "491"
-            },
-            {
-                "subject": "MARK",
-                "catalog": "495"
             },
             {
                 "subject": "MARK",
@@ -15758,10 +15054,6 @@
             {
                 "subject": "CHEM",
                 "catalog": "494"
-            },
-            {
-                "subject": "CHEM",
-                "catalog": "494"
             }
         ],
         "tags": [],
@@ -15777,10 +15069,6 @@
             "History"
         ],
         "courses": [
-            {
-                "subject": "HIST",
-                "catalog": "298"
-            },
             {
                 "subject": "HIST",
                 "catalog": "298"
@@ -15810,10 +15098,6 @@
             {
                 "subject": "ECON",
                 "catalog": "501"
-            },
-            {
-                "subject": "ECON",
-                "catalog": "612"
             },
             {
                 "subject": "ECON",
@@ -15978,10 +15262,6 @@
             {
                 "subject": "THEO",
                 "catalog": "301"
-            },
-            {
-                "subject": "THEO",
-                "catalog": "301"
             }
         ],
         "tags": [],
@@ -16102,14 +15382,6 @@
             {
                 "subject": "POLI",
                 "catalog": "395"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "398"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "398"
             },
             {
                 "subject": "POLI",
@@ -16242,14 +15514,6 @@
             {
                 "subject": "BIOL",
                 "catalog": "227"
-            },
-            {
-                "subject": "BIOL",
-                "catalog": "227"
-            },
-            {
-                "subject": "BIOL",
-                "catalog": "322"
             },
             {
                 "subject": "BIOL",
@@ -16437,10 +15701,6 @@
             {
                 "subject": "FINA",
                 "catalog": "385"
-            },
-            {
-                "subject": "FINA",
-                "catalog": "410"
             },
             {
                 "subject": "FINA",
@@ -16668,14 +15928,6 @@
             {
                 "subject": "EDUC",
                 "catalog": "240"
-            },
-            {
-                "subject": "EDUC",
-                "catalog": "298"
-            },
-            {
-                "subject": "EDUC",
-                "catalog": "298"
             },
             {
                 "subject": "EDUC",
@@ -16958,10 +16210,6 @@
                 "catalog": "398"
             },
             {
-                "subject": "ARTH",
-                "catalog": "398"
-            },
-            {
                 "subject": "FFAR",
                 "catalog": "250"
             }
@@ -17088,10 +16336,6 @@
             {
                 "subject": "FINA",
                 "catalog": "416"
-            },
-            {
-                "subject": "FINA",
-                "catalog": "455"
             },
             {
                 "subject": "FINA",
@@ -17678,10 +16922,6 @@
             {
                 "subject": "ELEC",
                 "catalog": "498"
-            },
-            {
-                "subject": "ELEC",
-                "catalog": "498"
             }
         ],
         "tags": [],
@@ -17988,10 +17228,6 @@
             },
             {
                 "subject": "POLI",
-                "catalog": "366"
-            },
-            {
-                "subject": "POLI",
                 "catalog": "388"
             },
             {
@@ -18055,14 +17291,6 @@
             {
                 "subject": "POLI",
                 "catalog": "202"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "202"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "206"
             },
             {
                 "subject": "POLI",
@@ -18157,10 +17385,6 @@
             {
                 "subject": "CLAS",
                 "catalog": "398"
-            },
-            {
-                "subject": "CLAS",
-                "catalog": "398"
             }
         ],
         "tags": [],
@@ -18179,10 +17403,6 @@
             {
                 "subject": "IBUS",
                 "catalog": "462"
-            },
-            {
-                "subject": "MARK",
-                "catalog": "453"
             },
             {
                 "subject": "MARK",
@@ -18213,18 +17433,6 @@
             {
                 "subject": "FFAR",
                 "catalog": "298"
-            },
-            {
-                "subject": "FFAR",
-                "catalog": "298"
-            },
-            {
-                "subject": "FFAR",
-                "catalog": "298"
-            },
-            {
-                "subject": "FFAR",
-                "catalog": "398"
             },
             {
                 "subject": "FFAR",
@@ -19091,14 +18299,6 @@
             },
             {
                 "subject": "CLAS",
-                "catalog": "266"
-            },
-            {
-                "subject": "CLAS",
-                "catalog": "298"
-            },
-            {
-                "subject": "CLAS",
                 "catalog": "298"
             },
             {
@@ -19811,10 +19011,6 @@
             },
             {
                 "subject": "POLI",
-                "catalog": "315"
-            },
-            {
-                "subject": "POLI",
                 "catalog": "329"
             },
             {
@@ -20113,10 +19309,6 @@
             {
                 "subject": "CART",
                 "catalog": "454"
-            },
-            {
-                "subject": "CART",
-                "catalog": "454"
             }
         ],
         "tags": [],
@@ -20248,34 +19440,6 @@
             {
                 "subject": "FFAR",
                 "catalog": "250"
-            },
-            {
-                "subject": "FFAR",
-                "catalog": "298"
-            },
-            {
-                "subject": "FFAR",
-                "catalog": "298"
-            },
-            {
-                "subject": "FFAR",
-                "catalog": "298"
-            },
-            {
-                "subject": "FFAR",
-                "catalog": "298"
-            },
-            {
-                "subject": "FFAR",
-                "catalog": "298"
-            },
-            {
-                "subject": "FFAR",
-                "catalog": "298"
-            },
-            {
-                "subject": "FFAR",
-                "catalog": "298"
             },
             {
                 "subject": "FFAR",
@@ -20502,10 +19666,6 @@
             {
                 "subject": "SOCI",
                 "catalog": "498"
-            },
-            {
-                "subject": "SOCI",
-                "catalog": "498"
             }
         ],
         "tags": [
@@ -20555,10 +19715,6 @@
             "Religions and Cultures"
         ],
         "courses": [
-            {
-                "subject": "HIST",
-                "catalog": "398"
-            },
             {
                 "subject": "HIST",
                 "catalog": "398"
@@ -20628,10 +19784,6 @@
                 "catalog": "398"
             },
             {
-                "subject": "FFAR",
-                "catalog": "398"
-            },
-            {
                 "subject": "INTE",
                 "catalog": "398"
             }
@@ -20688,10 +19840,6 @@
             "Applied Human Sciences"
         ],
         "courses": [
-            {
-                "subject": "AHSC",
-                "catalog": "241"
-            },
             {
                 "subject": "AHSC",
                 "catalog": "241"
@@ -20845,14 +19993,6 @@
             {
                 "subject": "POLI",
                 "catalog": "400"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "400"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "487"
             },
             {
                 "subject": "POLI",
@@ -21362,10 +20502,6 @@
             },
             {
                 "subject": "WSDB",
-                "catalog": "398"
-            },
-            {
-                "subject": "WSDB",
                 "catalog": "492"
             },
             {
@@ -21785,10 +20921,6 @@
             {
                 "subject": "HIST",
                 "catalog": "397"
-            },
-            {
-                "subject": "HIST",
-                "catalog": "398"
             },
             {
                 "subject": "HIST",
@@ -22591,10 +21723,6 @@
             },
             {
                 "subject": "HIST",
-                "catalog": "398"
-            },
-            {
-                "subject": "HIST",
                 "catalog": "200"
             },
             {
@@ -23278,14 +22406,6 @@
             },
             {
                 "subject": "RELI",
-                "catalog": "398"
-            },
-            {
-                "subject": "RELI",
-                "catalog": "398"
-            },
-            {
-                "subject": "RELI",
                 "catalog": "498"
             }
         ],
@@ -23538,10 +22658,6 @@
             {
                 "subject": "EDUC",
                 "catalog": "398"
-            },
-            {
-                "subject": "EDUC",
-                "catalog": "4"
             },
             {
                 "subject": "EDUC",
@@ -24136,10 +23252,6 @@
             "Business Administration"
         ],
         "courses": [
-            {
-                "subject": "COMM",
-                "catalog": "212"
-            },
             {
                 "subject": "COMM",
                 "catalog": "212"
@@ -25566,10 +24678,6 @@
             {
                 "subject": "COMM",
                 "catalog": "225"
-            },
-            {
-                "subject": "COMM",
-                "catalog": "225"
             }
         ],
         "tags": [],
@@ -25642,14 +24750,6 @@
                 "catalog": "398"
             },
             {
-                "subject": "POLI",
-                "catalog": "398"
-            },
-            {
-                "subject": "RELI",
-                "catalog": "398"
-            },
-            {
                 "subject": "RELI",
                 "catalog": "398"
             }
@@ -25710,10 +24810,6 @@
             {
                 "subject": "ARTH",
                 "catalog": "271"
-            },
-            {
-                "subject": "ARTH",
-                "catalog": "272"
             },
             {
                 "subject": "ARTH",
@@ -25998,10 +25094,6 @@
             {
                 "subject": "THEO",
                 "catalog": "238"
-            },
-            {
-                "subject": "THEO",
-                "catalog": "298"
             },
             {
                 "subject": "THEO",
@@ -26425,10 +25517,6 @@
             },
             {
                 "subject": "BIOL",
-                "catalog": "364"
-            },
-            {
-                "subject": "BIOL",
                 "catalog": "380"
             },
             {
@@ -26649,10 +25737,6 @@
             "Fine Arts"
         ],
         "courses": [
-            {
-                "subject": "DRAW",
-                "catalog": "200"
-            },
             {
                 "subject": "DRAW",
                 "catalog": "200"
@@ -26933,10 +26017,6 @@
             {
                 "subject": "COEN",
                 "catalog": "691"
-            },
-            {
-                "subject": "COEN",
-                "catalog": "691"
             }
         ],
         "tags": [],
@@ -26952,10 +26032,6 @@
             "Art History"
         ],
         "courses": [
-            {
-                "subject": "ARTH",
-                "catalog": "200"
-            },
             {
                 "subject": "ARTH",
                 "catalog": "200"
@@ -27617,10 +26693,6 @@
             {
                 "subject": "FFAR",
                 "catalog": "298"
-            },
-            {
-                "subject": "FFAR",
-                "catalog": "298"
             }
         ],
         "tags": [],
@@ -27864,10 +26936,6 @@
             {
                 "subject": "PSYC",
                 "catalog": "351"
-            },
-            {
-                "subject": "PSYC",
-                "catalog": "351"
             }
         ],
         "tags": [],
@@ -27904,10 +26972,6 @@
             {
                 "subject": "POLI",
                 "catalog": "217"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "398"
             },
             {
                 "subject": "POLI",
@@ -27955,10 +27019,6 @@
         "courses": [
             {
                 "subject": "FFAR",
-                "catalog": "398"
-            },
-            {
-                "subject": "INTE",
                 "catalog": "398"
             },
             {
@@ -28110,10 +27170,6 @@
             {
                 "subject": "POLI",
                 "catalog": "394"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "398"
             },
             {
                 "subject": "POLI",
@@ -28507,10 +27563,6 @@
             {
                 "subject": "SPAN",
                 "catalog": "201"
-            },
-            {
-                "subject": "SPAN",
-                "catalog": "306"
             },
             {
                 "subject": "SPAN",
@@ -30724,10 +29776,6 @@
             },
             {
                 "subject": "SOEN",
-                "catalog": "342"
-            },
-            {
-                "subject": "SOEN",
                 "catalog": "345"
             },
             {
@@ -30754,10 +29802,6 @@
             {
                 "subject": "SOCI",
                 "catalog": "230"
-            },
-            {
-                "subject": "SOCI",
-                "catalog": "310"
             },
             {
                 "subject": "SOCI",
@@ -30795,10 +29839,6 @@
             "Economics"
         ],
         "courses": [
-            {
-                "subject": "ECON",
-                "catalog": "201"
-            },
             {
                 "subject": "ECON",
                 "catalog": "201"
@@ -31375,14 +30415,6 @@
             },
             {
                 "subject": "LING",
-                "catalog": "336"
-            },
-            {
-                "subject": "LING",
-                "catalog": "336"
-            },
-            {
-                "subject": "LING",
                 "catalog": "457"
             }
         ],
@@ -31448,10 +30480,6 @@
             "Art History"
         ],
         "courses": [
-            {
-                "subject": "ARTH",
-                "catalog": "298"
-            },
             {
                 "subject": "ARTH",
                 "catalog": "298"
@@ -31638,15 +30666,7 @@
             },
             {
                 "subject": "ENGL",
-                "catalog": "260"
-            },
-            {
-                "subject": "ENGL",
                 "catalog": "370"
-            },
-            {
-                "subject": "ENGL",
-                "catalog": "376"
             },
             {
                 "subject": "ENGL",
@@ -31870,10 +30890,6 @@
             "Psychology"
         ],
         "courses": [
-            {
-                "subject": "PSYC",
-                "catalog": "297"
-            },
             {
                 "subject": "PSYC",
                 "catalog": "297"
@@ -33461,10 +32477,6 @@
             },
             {
                 "subject": "PSYC",
-                "catalog": "310"
-            },
-            {
-                "subject": "PSYC",
                 "catalog": "311"
             },
             {
@@ -33622,10 +32634,6 @@
             "Mathematics and Statistics"
         ],
         "courses": [
-            {
-                "subject": "MATH",
-                "catalog": "200"
-            },
             {
                 "subject": "MATH",
                 "catalog": "200"
@@ -33837,10 +32845,6 @@
             {
                 "subject": "COEN",
                 "catalog": "212"
-            },
-            {
-                "subject": "COEN",
-                "catalog": "313"
             },
             {
                 "subject": "COEN",
@@ -34517,10 +33521,6 @@
             {
                 "subject": "THEO",
                 "catalog": "298"
-            },
-            {
-                "subject": "THEO",
-                "catalog": "298"
             }
         ],
         "tags": [],
@@ -35039,10 +34039,6 @@
             {
                 "subject": "ENGL",
                 "catalog": "357"
-            },
-            {
-                "subject": "ENGL",
-                "catalog": "359"
             },
             {
                 "subject": "ENGL",
@@ -35949,10 +34945,6 @@
             },
             {
                 "subject": "RELI",
-                "catalog": "215"
-            },
-            {
-                "subject": "RELI",
                 "catalog": "225"
             },
             {
@@ -36327,10 +35319,6 @@
             },
             {
                 "subject": "ENGL",
-                "catalog": "332"
-            },
-            {
-                "subject": "ENGL",
                 "catalog": "336"
             }
         ],
@@ -36444,10 +35432,6 @@
             "Communication Studies"
         ],
         "courses": [
-            {
-                "subject": "COMM",
-                "catalog": "212"
-            },
             {
                 "subject": "COMM",
                 "catalog": "212"
@@ -36615,10 +35599,6 @@
             {
                 "subject": "RELI",
                 "catalog": "320"
-            },
-            {
-                "subject": "RELI",
-                "catalog": "326"
             },
             {
                 "subject": "RELI",
@@ -37400,10 +36380,6 @@
             },
             {
                 "subject": "EDUC",
-                "catalog": "211"
-            },
-            {
-                "subject": "EDUC",
                 "catalog": "303"
             }
         ],
@@ -37629,10 +36605,6 @@
             {
                 "subject": "POLI",
                 "catalog": "353"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "489"
             },
             {
                 "subject": "POLI",
@@ -38531,10 +37503,6 @@
             },
             {
                 "subject": "POLI",
-                "catalog": "204"
-            },
-            {
-                "subject": "POLI",
                 "catalog": "207"
             },
             {
@@ -38659,10 +37627,6 @@
             "Political Science"
         ],
         "courses": [
-            {
-                "subject": "POLI",
-                "catalog": "312"
-            },
             {
                 "subject": "POLI",
                 "catalog": "312"
@@ -38821,14 +37785,6 @@
             "Education"
         ],
         "courses": [
-            {
-                "subject": "EDUC",
-                "catalog": "4"
-            },
-            {
-                "subject": "EDUC",
-                "catalog": "4"
-            },
             {
                 "subject": "EDUC",
                 "catalog": "4"
@@ -39925,10 +38881,6 @@
             "Business Administration"
         ],
         "courses": [
-            {
-                "subject": "COMM",
-                "catalog": "215"
-            },
             {
                 "subject": "COMM",
                 "catalog": "215"
@@ -41156,10 +40108,6 @@
             },
             {
                 "subject": "POLI",
-                "catalog": "203"
-            },
-            {
-                "subject": "POLI",
                 "catalog": "204"
             },
             {
@@ -41622,10 +40570,6 @@
                 "catalog": "345"
             },
             {
-                "subject": "BCEE",
-                "catalog": "345"
-            },
-            {
                 "subject": "ENGR",
                 "catalog": "242"
             },
@@ -41763,10 +40707,6 @@
             {
                 "subject": "COMM",
                 "catalog": "401"
-            },
-            {
-                "subject": "MANA",
-                "catalog": "374"
             },
             {
                 "subject": "MANA",
@@ -43080,10 +42020,6 @@
             },
             {
                 "subject": "COMS",
-                "catalog": "398"
-            },
-            {
-                "subject": "COMS",
                 "catalog": "506"
             }
         ],
@@ -43427,10 +42363,6 @@
             "Computer Science & Software Engineering"
         ],
         "courses": [
-            {
-                "subject": "COEN",
-                "catalog": "231"
-            },
             {
                 "subject": "COEN",
                 "catalog": "231"
@@ -44244,14 +43176,6 @@
             {
                 "subject": "EDUC",
                 "catalog": "4"
-            },
-            {
-                "subject": "EDUC",
-                "catalog": "4"
-            },
-            {
-                "subject": "EDUC",
-                "catalog": "4"
             }
         ],
         "tags": [],
@@ -44764,10 +43688,6 @@
             "Finance"
         ],
         "courses": [
-            {
-                "subject": "FFAR",
-                "catalog": "298"
-            },
             {
                 "subject": "FFAR",
                 "catalog": "298"
@@ -45313,10 +44233,6 @@
             "Art Education"
         ],
         "courses": [
-            {
-                "subject": "FFAR",
-                "catalog": "298"
-            },
             {
                 "subject": "FFAR",
                 "catalog": "298"
@@ -48440,10 +47356,6 @@
             {
                 "subject": "EDUC",
                 "catalog": "4"
-            },
-            {
-                "subject": "EDUC",
-                "catalog": "4"
             }
         ],
         "tags": [],
@@ -48492,10 +47404,6 @@
             {
                 "subject": "PSYC",
                 "catalog": "255"
-            },
-            {
-                "subject": "PSYC",
-                "catalog": "310"
             },
             {
                 "subject": "PSYC",
@@ -54422,10 +53330,6 @@
             },
             {
                 "subject": "ECON",
-                "catalog": "203"
-            },
-            {
-                "subject": "ECON",
                 "catalog": "298"
             },
             {
@@ -54443,10 +53347,6 @@
             {
                 "subject": "ECON",
                 "catalog": "377"
-            },
-            {
-                "subject": "ECON",
-                "catalog": "442"
             },
             {
                 "subject": "ECON",
@@ -54912,14 +53812,6 @@
                 "catalog": "398"
             },
             {
-                "subject": "ENGL",
-                "catalog": "398"
-            },
-            {
-                "subject": "ENGL",
-                "catalog": "398"
-            },
-            {
                 "subject": "HIST",
                 "catalog": "101"
             },
@@ -55137,10 +54029,6 @@
             },
             {
                 "subject": "CLAS",
-                "catalog": "261"
-            },
-            {
-                "subject": "CLAS",
                 "catalog": "262"
             },
             {
@@ -55154,10 +54042,6 @@
             {
                 "subject": "CLAS",
                 "catalog": "320"
-            },
-            {
-                "subject": "CLAS",
-                "catalog": "353"
             },
             {
                 "subject": "CLAS",
@@ -55467,10 +54351,6 @@
             "Psychology"
         ],
         "courses": [
-            {
-                "subject": "PSYC",
-                "catalog": "298"
-            },
             {
                 "subject": "PSYC",
                 "catalog": "298"
@@ -56107,10 +54987,6 @@
             "Mathematics and Statistics"
         ],
         "courses": [
-            {
-                "subject": "STAT",
-                "catalog": "249"
-            },
             {
                 "subject": "STAT",
                 "catalog": "249"
@@ -56957,10 +55833,6 @@
             {
                 "subject": "FINA",
                 "catalog": "395"
-            },
-            {
-                "subject": "FINA",
-                "catalog": "410"
             },
             {
                 "subject": "FINA",
@@ -58506,19 +57378,11 @@
             },
             {
                 "subject": "SOCI",
-                "catalog": "203"
-            },
-            {
-                "subject": "SOCI",
                 "catalog": "244"
             },
             {
                 "subject": "SOCI",
                 "catalog": "261"
-            },
-            {
-                "subject": "SOCI",
-                "catalog": "274"
             },
             {
                 "subject": "SOCI",
@@ -58567,10 +57431,6 @@
             {
                 "subject": "ARTH",
                 "catalog": "271"
-            },
-            {
-                "subject": "ARTH",
-                "catalog": "298"
             },
             {
                 "subject": "ARTH",
@@ -59012,26 +57872,6 @@
             },
             {
                 "subject": "FFAR",
-                "catalog": "298"
-            },
-            {
-                "subject": "FFAR",
-                "catalog": "298"
-            },
-            {
-                "subject": "FFAR",
-                "catalog": "298"
-            },
-            {
-                "subject": "FFAR",
-                "catalog": "298"
-            },
-            {
-                "subject": "FFAR",
-                "catalog": "398"
-            },
-            {
-                "subject": "FFAR",
                 "catalog": "398"
             },
             {
@@ -59089,10 +57929,6 @@
             "Studio Art I"
         ],
         "courses": [
-            {
-                "subject": "DRAW",
-                "catalog": "200"
-            },
             {
                 "subject": "DRAW",
                 "catalog": "200"
@@ -59208,23 +58044,11 @@
             },
             {
                 "subject": "INDU",
-                "catalog": "211"
-            },
-            {
-                "subject": "INDU",
-                "catalog": "324"
-            },
-            {
-                "subject": "INDU",
                 "catalog": "324"
             },
             {
                 "subject": "INDU",
                 "catalog": "6111"
-            },
-            {
-                "subject": "INDU",
-                "catalog": "6321"
             },
             {
                 "subject": "INDU",
@@ -59502,10 +58326,6 @@
             {
                 "subject": "ACCO",
                 "catalog": "320"
-            },
-            {
-                "subject": "ACCO",
-                "catalog": "400"
             },
             {
                 "subject": "ACCO",
@@ -60598,23 +59418,11 @@
             },
             {
                 "subject": "APLI",
-                "catalog": "601"
-            },
-            {
-                "subject": "APLI",
                 "catalog": "604"
             },
             {
                 "subject": "APLI",
                 "catalog": "644"
-            },
-            {
-                "subject": "TESL",
-                "catalog": "330"
-            },
-            {
-                "subject": "TESL",
-                "catalog": "330"
             },
             {
                 "subject": "TESL",
@@ -61034,10 +59842,6 @@
             },
             {
                 "subject": "MATH",
-                "catalog": "203"
-            },
-            {
-                "subject": "MATH",
                 "catalog": "205"
             },
             {
@@ -61066,10 +59870,6 @@
             "Mechanical, Industrial and Aerospace Engineering"
         ],
         "courses": [
-            {
-                "subject": "INDU",
-                "catalog": "320"
-            },
             {
                 "subject": "INDU",
                 "catalog": "320"
@@ -61347,16 +60147,8 @@
                 "catalog": "234"
             },
             {
-                "subject": "MAST",
-                "catalog": "234"
-            },
-            {
                 "subject": "MATH",
                 "catalog": "203"
-            },
-            {
-                "subject": "MATH",
-                "catalog": "204"
             },
             {
                 "subject": "MATH",
@@ -61486,10 +60278,6 @@
             "Computer Science & Software Engineering"
         ],
         "courses": [
-            {
-                "subject": "COMP",
-                "catalog": "474"
-            },
             {
                 "subject": "COMP",
                 "catalog": "474"
@@ -61855,10 +60643,6 @@
             },
             {
                 "subject": "URBS",
-                "catalog": "300"
-            },
-            {
-                "subject": "URBS",
                 "catalog": "333"
             },
             {
@@ -61965,10 +60749,6 @@
             {
                 "subject": "COMM",
                 "catalog": "217"
-            },
-            {
-                "subject": "MBA",
-                "catalog": "643"
             },
             {
                 "subject": "MBA",
@@ -62129,10 +60909,6 @@
             "Exercise Science"
         ],
         "courses": [
-            {
-                "subject": "EXCI",
-                "catalog": "210"
-            },
             {
                 "subject": "EXCI",
                 "catalog": "210"
@@ -62931,10 +61707,6 @@
             },
             {
                 "subject": "COMS",
-                "catalog": "398"
-            },
-            {
-                "subject": "COMS",
                 "catalog": "423"
             }
         ],
@@ -63310,10 +62082,6 @@
             {
                 "subject": "POLI",
                 "catalog": "202"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "204"
             },
             {
                 "subject": "POLI",
@@ -64282,27 +63050,11 @@
             },
             {
                 "subject": "AHSC",
-                "catalog": "230"
-            },
-            {
-                "subject": "AHSC",
-                "catalog": "230"
-            },
-            {
-                "subject": "AHSC",
-                "catalog": "230"
-            },
-            {
-                "subject": "AHSC",
                 "catalog": "232"
             },
             {
                 "subject": "AHSC",
                 "catalog": "260"
-            },
-            {
-                "subject": "AHSC",
-                "catalog": "311"
             },
             {
                 "subject": "AHSC",
@@ -65588,10 +64340,6 @@
             },
             {
                 "subject": "PHYS",
-                "catalog": "205"
-            },
-            {
-                "subject": "PHYS",
                 "catalog": "206"
             },
             {
@@ -65957,10 +64705,6 @@
                 "catalog": "380"
             },
             {
-                "subject": "BTM",
-                "catalog": "380"
-            },
-            {
                 "subject": "COMM",
                 "catalog": "215"
             }
@@ -66237,19 +64981,11 @@
             },
             {
                 "subject": "POLI",
-                "catalog": "398"
-            },
-            {
-                "subject": "POLI",
                 "catalog": "399"
             },
             {
                 "subject": "POLI",
                 "catalog": "410"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "487"
             },
             {
                 "subject": "POLI",
@@ -66625,10 +65361,6 @@
             {
                 "subject": "WSDB",
                 "catalog": "292"
-            },
-            {
-                "subject": "WSDB",
-                "catalog": "380"
             },
             {
                 "subject": "WSDB",
@@ -67135,14 +65867,6 @@
             },
             {
                 "subject": "FFAR",
-                "catalog": "298"
-            },
-            {
-                "subject": "FFAR",
-                "catalog": "298"
-            },
-            {
-                "subject": "FFAR",
                 "catalog": "259"
             }
         ],
@@ -67425,14 +66149,6 @@
             {
                 "subject": "CHEM",
                 "catalog": "221"
-            },
-            {
-                "subject": "CHEM",
-                "catalog": "222"
-            },
-            {
-                "subject": "CHEM",
-                "catalog": "222"
             },
             {
                 "subject": "CHEM",
@@ -67915,10 +66631,6 @@
             {
                 "subject": "SOEN",
                 "catalog": "6591"
-            },
-            {
-                "subject": "SOEN",
-                "catalog": "691"
             },
             {
                 "subject": "SOEN",
@@ -69664,10 +68376,6 @@
             },
             {
                 "subject": "EDUC",
-                "catalog": "298"
-            },
-            {
-                "subject": "EDUC",
                 "catalog": "801"
             },
             {
@@ -70110,14 +68818,6 @@
             {
                 "subject": "POLI",
                 "catalog": "485"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "487"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "487"
             },
             {
                 "subject": "POLI",
@@ -70875,10 +69575,6 @@
                 "catalog": "222"
             },
             {
-                "subject": "COMM",
-                "catalog": "222"
-            },
-            {
                 "subject": "MBA",
                 "catalog": "609"
             },
@@ -70889,10 +69585,6 @@
             {
                 "subject": "MSCA",
                 "catalog": "640"
-            },
-            {
-                "subject": "MSCA",
-                "catalog": "652"
             },
             {
                 "subject": "MSCA",
@@ -71228,19 +69920,11 @@
             },
             {
                 "subject": "ACCO",
-                "catalog": "310"
-            },
-            {
-                "subject": "ACCO",
                 "catalog": "320"
             },
             {
                 "subject": "ACCO",
                 "catalog": "400"
-            },
-            {
-                "subject": "ACCO",
-                "catalog": "420"
             },
             {
                 "subject": "ACCO",
@@ -71922,10 +70606,6 @@
                 "catalog": "308"
             },
             {
-                "subject": "COMM",
-                "catalog": "308"
-            },
-            {
                 "subject": "FINA",
                 "catalog": "385"
             }
@@ -72119,10 +70799,6 @@
             {
                 "subject": "ENGL",
                 "catalog": "317"
-            },
-            {
-                "subject": "ENGL",
-                "catalog": "318"
             },
             {
                 "subject": "ENGL",
@@ -72659,10 +71335,6 @@
             },
             {
                 "subject": "FTRA",
-                "catalog": "200"
-            },
-            {
-                "subject": "FTRA",
                 "catalog": "202"
             },
             {
@@ -72807,10 +71479,6 @@
             {
                 "subject": "EDUC",
                 "catalog": "307"
-            },
-            {
-                "subject": "EDUC",
-                "catalog": "4"
             },
             {
                 "subject": "EDUC",
@@ -73301,10 +71969,6 @@
             {
                 "subject": "GERM",
                 "catalog": "450"
-            },
-            {
-                "subject": "GERM",
-                "catalog": "450"
             }
         ],
         "tags": [
@@ -73687,10 +72351,6 @@
             },
             {
                 "subject": "HIST",
-                "catalog": "276"
-            },
-            {
-                "subject": "HIST",
                 "catalog": "277"
             },
             {
@@ -73708,14 +72368,6 @@
             {
                 "subject": "HIST",
                 "catalog": "372"
-            },
-            {
-                "subject": "HIST",
-                "catalog": "398"
-            },
-            {
-                "subject": "HIST",
-                "catalog": "398"
             },
             {
                 "subject": "HIST",
@@ -73895,10 +72547,6 @@
             {
                 "subject": "COMM",
                 "catalog": "215"
-            },
-            {
-                "subject": "COMM",
-                "catalog": "217"
             },
             {
                 "subject": "COMM",
@@ -74355,23 +73003,7 @@
             },
             {
                 "subject": "POLI",
-                "catalog": "209"
-            },
-            {
-                "subject": "POLI",
                 "catalog": "219"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "298"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "298"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "298"
             },
             {
                 "subject": "POLI",
@@ -74599,10 +73231,6 @@
             },
             {
                 "subject": "COMM",
-                "catalog": "308"
-            },
-            {
-                "subject": "COMM",
                 "catalog": "320"
             },
             {
@@ -74771,10 +73399,6 @@
             "Geography, Planning & Environmt"
         ],
         "courses": [
-            {
-                "subject": "GEOG",
-                "catalog": "375"
-            },
             {
                 "subject": "GEOG",
                 "catalog": "375"
@@ -75135,14 +73759,6 @@
             {
                 "subject": "POLI",
                 "catalog": "203"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "204"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "204"
             },
             {
                 "subject": "POLI",
@@ -75518,19 +74134,11 @@
             },
             {
                 "subject": "PHYS",
-                "catalog": "204"
-            },
-            {
-                "subject": "PHYS",
                 "catalog": "205"
             },
             {
                 "subject": "PHYS",
                 "catalog": "206"
-            },
-            {
-                "subject": "PHYS",
-                "catalog": "298"
             },
             {
                 "subject": "PHYS",
@@ -76062,15 +74670,7 @@
             },
             {
                 "subject": "MATH",
-                "catalog": "203"
-            },
-            {
-                "subject": "MATH",
                 "catalog": "205"
-            },
-            {
-                "subject": "MATH",
-                "catalog": "208"
             },
             {
                 "subject": "MATH",
@@ -77802,10 +76402,6 @@
             },
             {
                 "subject": "POLI",
-                "catalog": "490"
-            },
-            {
-                "subject": "POLI",
                 "catalog": "600"
             },
             {
@@ -77910,10 +76506,6 @@
             "Finance"
         ],
         "courses": [
-            {
-                "subject": "COMM",
-                "catalog": "308"
-            },
             {
                 "subject": "COMM",
                 "catalog": "308"
@@ -78087,14 +76679,6 @@
             {
                 "subject": "AHSC",
                 "catalog": "241"
-            },
-            {
-                "subject": "AHSC",
-                "catalog": "242"
-            },
-            {
-                "subject": "AHSC",
-                "catalog": "242"
             },
             {
                 "subject": "AHSC",
@@ -79055,10 +77639,6 @@
             {
                 "subject": "ARTH",
                 "catalog": "392"
-            },
-            {
-                "subject": "ARTH",
-                "catalog": "400"
             },
             {
                 "subject": "ARTH",
@@ -80170,10 +78750,6 @@
             },
             {
                 "subject": "POLI",
-                "catalog": "305"
-            },
-            {
-                "subject": "POLI",
                 "catalog": "315"
             },
             {
@@ -80568,10 +79144,6 @@
             {
                 "subject": "ITAL",
                 "catalog": "200"
-            },
-            {
-                "subject": "ITAL",
-                "catalog": "201"
             },
             {
                 "subject": "ITAL",
@@ -81063,10 +79635,6 @@
                 "catalog": "499"
             },
             {
-                "subject": "COMM",
-                "catalog": "499"
-            },
-            {
                 "subject": "INTE",
                 "catalog": "499"
             }
@@ -81543,28 +80111,8 @@
                 "catalog": "398"
             },
             {
-                "subject": "HIST",
-                "catalog": "398"
-            },
-            {
-                "subject": "HIST",
-                "catalog": "398"
-            },
-            {
-                "subject": "HIST",
-                "catalog": "398"
-            },
-            {
-                "subject": "HIST",
-                "catalog": "398"
-            },
-            {
                 "subject": "IRST",
                 "catalog": "203"
-            },
-            {
-                "subject": "IRST",
-                "catalog": "298"
             },
             {
                 "subject": "IRST",
@@ -81581,14 +80129,6 @@
             {
                 "subject": "IRST",
                 "catalog": "316"
-            },
-            {
-                "subject": "IRST",
-                "catalog": "398"
-            },
-            {
-                "subject": "IRST",
-                "catalog": "398"
             },
             {
                 "subject": "IRST",
@@ -81867,14 +80407,6 @@
             },
             {
                 "subject": "SOCI",
-                "catalog": "398"
-            },
-            {
-                "subject": "SOCI",
-                "catalog": "398"
-            },
-            {
-                "subject": "SOCI",
                 "catalog": "428"
             },
             {
@@ -81971,10 +80503,6 @@
             {
                 "subject": "POLI",
                 "catalog": "487"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "498"
             },
             {
                 "subject": "POLI",
@@ -82619,14 +81147,6 @@
             },
             {
                 "subject": "COEN",
-                "catalog": "243"
-            },
-            {
-                "subject": "COEN",
-                "catalog": "243"
-            },
-            {
-                "subject": "COEN",
                 "catalog": "244"
             },
             {
@@ -82891,10 +81411,6 @@
             {
                 "subject": "GEOG",
                 "catalog": "407"
-            },
-            {
-                "subject": "GEOG",
-                "catalog": "498"
             },
             {
                 "subject": "GEOG",
@@ -83634,14 +82150,6 @@
             },
             {
                 "subject": "PSYC",
-                "catalog": "242"
-            },
-            {
-                "subject": "PSYC",
-                "catalog": "242"
-            },
-            {
-                "subject": "PSYC",
                 "catalog": "243"
             },
             {
@@ -83902,10 +82410,6 @@
             },
             {
                 "subject": "CLAS",
-                "catalog": "320"
-            },
-            {
-                "subject": "CLAS",
                 "catalog": "322"
             },
             {
@@ -84007,10 +82511,6 @@
             "Fine Arts"
         ],
         "courses": [
-            {
-                "subject": "DRAW",
-                "catalog": "200"
-            },
             {
                 "subject": "DRAW",
                 "catalog": "200"
@@ -84300,10 +82800,6 @@
             "Psychology"
         ],
         "courses": [
-            {
-                "subject": "PSYC",
-                "catalog": "305"
-            },
             {
                 "subject": "PSYC",
                 "catalog": "305"
@@ -85431,10 +83927,6 @@
             },
             {
                 "subject": "LING",
-                "catalog": "200"
-            },
-            {
-                "subject": "LING",
                 "catalog": "330"
             },
             {
@@ -85692,10 +84184,6 @@
             },
             {
                 "subject": "PHYS",
-                "catalog": "204"
-            },
-            {
-                "subject": "PHYS",
                 "catalog": "205"
             },
             {
@@ -85750,10 +84238,6 @@
             {
                 "subject": "THEO",
                 "catalog": "226"
-            },
-            {
-                "subject": "THEO",
-                "catalog": "238"
             },
             {
                 "subject": "THEO",
@@ -85937,10 +84421,6 @@
             {
                 "subject": "MATH",
                 "catalog": "204"
-            },
-            {
-                "subject": "MATH",
-                "catalog": "204"
             }
         ],
         "tags": [
@@ -86102,10 +84582,6 @@
             },
             {
                 "subject": "PHIL",
-                "catalog": "232"
-            },
-            {
-                "subject": "PHIL",
                 "catalog": "241"
             },
             {
@@ -86220,14 +84696,6 @@
             {
                 "subject": "SOCI",
                 "catalog": "498"
-            },
-            {
-                "subject": "SOCI",
-                "catalog": "498"
-            },
-            {
-                "subject": "SOCI",
-                "catalog": "498"
             }
         ],
         "tags": [
@@ -86256,10 +84724,6 @@
             "Geography, Planning & Environmt"
         ],
         "courses": [
-            {
-                "subject": "GEOG",
-                "catalog": "333"
-            },
             {
                 "subject": "GEOG",
                 "catalog": "333"
@@ -86432,10 +84896,6 @@
             },
             {
                 "subject": "POLI",
-                "catalog": "206"
-            },
-            {
-                "subject": "POLI",
                 "catalog": "310"
             },
             {
@@ -86445,10 +84905,6 @@
             {
                 "subject": "POLI",
                 "catalog": "401"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "487"
             },
             {
                 "subject": "POLI",
@@ -88705,20 +87161,8 @@
                 "catalog": "4"
             },
             {
-                "subject": "EDUC",
-                "catalog": "4"
-            },
-            {
-                "subject": "EDUC",
-                "catalog": "4"
-            },
-            {
                 "subject": "SSDB",
                 "catalog": "220"
-            },
-            {
-                "subject": "WSDB",
-                "catalog": "398"
             },
             {
                 "subject": "WSDB",
@@ -88897,10 +87341,6 @@
             {
                 "subject": "COMM",
                 "catalog": "401"
-            },
-            {
-                "subject": "MANA",
-                "catalog": "341"
             },
             {
                 "subject": "MANA",
@@ -89091,10 +87531,6 @@
             {
                 "subject": "ECON",
                 "catalog": "301"
-            },
-            {
-                "subject": "ECON",
-                "catalog": "304"
             },
             {
                 "subject": "ECON",
@@ -89809,10 +88245,6 @@
             {
                 "subject": "ENGL",
                 "catalog": "381"
-            },
-            {
-                "subject": "ENGL",
-                "catalog": "394"
             },
             {
                 "subject": "ENGL",
@@ -90543,14 +88975,6 @@
             {
                 "subject": "SOCI",
                 "catalog": "398"
-            },
-            {
-                "subject": "SOCI",
-                "catalog": "398"
-            },
-            {
-                "subject": "SOCI",
-                "catalog": "398"
             }
         ],
         "tags": [
@@ -90634,10 +89058,6 @@
             },
             {
                 "subject": "PHIL",
-                "catalog": "298"
-            },
-            {
-                "subject": "PHIL",
                 "catalog": "398"
             },
             {
@@ -90653,20 +89073,12 @@
                 "catalog": "398"
             },
             {
-                "subject": "POLI",
-                "catalog": "398"
-            },
-            {
                 "subject": "SOCI",
                 "catalog": "375"
             },
             {
                 "subject": "WSDB",
                 "catalog": "290"
-            },
-            {
-                "subject": "WSDB",
-                "catalog": "291"
             },
             {
                 "subject": "WSDB",
@@ -91032,10 +89444,6 @@
             {
                 "subject": "ECON",
                 "catalog": "203"
-            },
-            {
-                "subject": "ECON",
-                "catalog": "221"
             },
             {
                 "subject": "ECON",
@@ -91469,10 +89877,6 @@
             "Business Administration"
         ],
         "courses": [
-            {
-                "subject": "COMM",
-                "catalog": "220"
-            },
             {
                 "subject": "COMM",
                 "catalog": "220"
@@ -91973,10 +90377,6 @@
             {
                 "subject": "SOCI",
                 "catalog": "498"
-            },
-            {
-                "subject": "SOCI",
-                "catalog": "498"
             }
         ],
         "tags": [
@@ -92092,19 +90492,7 @@
             },
             {
                 "subject": "ACCO",
-                "catalog": "340"
-            },
-            {
-                "subject": "ACCO",
                 "catalog": "440"
-            },
-            {
-                "subject": "ACCO",
-                "catalog": "440"
-            },
-            {
-                "subject": "ACCO",
-                "catalog": "695"
             },
             {
                 "subject": "ACCO",
@@ -92352,14 +90740,6 @@
             "Civil Engineering"
         ],
         "courses": [
-            {
-                "subject": "BCEE",
-                "catalog": "342"
-            },
-            {
-                "subject": "BCEE",
-                "catalog": "342"
-            },
             {
                 "subject": "BCEE",
                 "catalog": "342"
@@ -92997,10 +91377,6 @@
             "Classics, Mod Lang&Linguistics"
         ],
         "courses": [
-            {
-                "subject": "LING",
-                "catalog": "200"
-            },
             {
                 "subject": "LING",
                 "catalog": "200"
@@ -94433,10 +92809,6 @@
             },
             {
                 "subject": "MATH",
-                "catalog": "201"
-            },
-            {
-                "subject": "MATH",
                 "catalog": "203"
             },
             {
@@ -94639,10 +93011,6 @@
             },
             {
                 "subject": "MATH",
-                "catalog": "251"
-            },
-            {
-                "subject": "MATH",
                 "catalog": "252"
             },
             {
@@ -94732,10 +93100,6 @@
             "Economics"
         ],
         "courses": [
-            {
-                "subject": "ECON",
-                "catalog": "301"
-            },
             {
                 "subject": "ECON",
                 "catalog": "301"
@@ -95036,23 +93400,7 @@
             },
             {
                 "subject": "ECON",
-                "catalog": "302"
-            },
-            {
-                "subject": "ECON",
                 "catalog": "461"
-            },
-            {
-                "subject": "ECON",
-                "catalog": "461"
-            },
-            {
-                "subject": "ECON",
-                "catalog": "461"
-            },
-            {
-                "subject": "ECON",
-                "catalog": "463"
             },
             {
                 "subject": "ECON",
@@ -95244,10 +93592,6 @@
             },
             {
                 "subject": "POLI",
-                "catalog": "203"
-            },
-            {
-                "subject": "POLI",
                 "catalog": "204"
             },
             {
@@ -95321,10 +93665,6 @@
             "Mathematics and Statistics"
         ],
         "courses": [
-            {
-                "subject": "COMM",
-                "catalog": "215"
-            },
             {
                 "subject": "COMM",
                 "catalog": "215"
@@ -95433,10 +93773,6 @@
             },
             {
                 "subject": "COEN",
-                "catalog": "243"
-            },
-            {
-                "subject": "COEN",
                 "catalog": "244"
             },
             {
@@ -95450,10 +93786,6 @@
             {
                 "subject": "ELEC",
                 "catalog": "6141"
-            },
-            {
-                "subject": "ELEC",
-                "catalog": "6851"
             },
             {
                 "subject": "ELEC",
@@ -96572,10 +94904,6 @@
             },
             {
                 "subject": "HIST",
-                "catalog": "377"
-            },
-            {
-                "subject": "HIST",
                 "catalog": "378"
             },
             {
@@ -96832,10 +95160,6 @@
             {
                 "subject": "GEOG",
                 "catalog": "204"
-            },
-            {
-                "subject": "GEOG",
-                "catalog": "260"
             },
             {
                 "subject": "GEOG",
@@ -97262,10 +95586,6 @@
             },
             {
                 "subject": "PSYC",
-                "catalog": "310"
-            },
-            {
-                "subject": "PSYC",
                 "catalog": "315"
             },
             {
@@ -97382,10 +95702,6 @@
             "Political Science"
         ],
         "courses": [
-            {
-                "subject": "POLI",
-                "catalog": "204"
-            },
             {
                 "subject": "POLI",
                 "catalog": "204"
@@ -97634,10 +95950,6 @@
             {
                 "subject": "BIOL",
                 "catalog": "351"
-            },
-            {
-                "subject": "BIOL",
-                "catalog": "354"
             },
             {
                 "subject": "BIOL",
@@ -97961,10 +96273,6 @@
             },
             {
                 "subject": "RELI",
-                "catalog": "398"
-            },
-            {
-                "subject": "RELI",
                 "catalog": "610"
             },
             {
@@ -98008,10 +96316,6 @@
             {
                 "subject": "RELI",
                 "catalog": "231"
-            },
-            {
-                "subject": "RELI",
-                "catalog": "233"
             },
             {
                 "subject": "RELI",
@@ -98746,10 +97050,6 @@
             },
             {
                 "subject": "ECON",
-                "catalog": "201"
-            },
-            {
-                "subject": "ECON",
                 "catalog": "203"
             },
             {
@@ -98967,10 +97267,6 @@
             "Education"
         ],
         "courses": [
-            {
-                "subject": "ESL",
-                "catalog": "202"
-            },
             {
                 "subject": "ESL",
                 "catalog": "202"
@@ -99341,10 +97637,6 @@
             },
             {
                 "subject": "BIOL",
-                "catalog": "371"
-            },
-            {
-                "subject": "BIOL",
                 "catalog": "473"
             },
             {
@@ -99520,10 +97812,6 @@
                 "catalog": "299"
             },
             {
-                "subject": "COMM",
-                "catalog": "299"
-            },
-            {
                 "subject": "MARK",
                 "catalog": "453"
             },
@@ -99675,14 +97963,6 @@
             },
             {
                 "subject": "SOCI",
-                "catalog": "261"
-            },
-            {
-                "subject": "SOCI",
-                "catalog": "261"
-            },
-            {
-                "subject": "SOCI",
                 "catalog": "262"
             },
             {
@@ -99802,10 +98082,6 @@
             {
                 "subject": "ENGL",
                 "catalog": "398"
-            },
-            {
-                "subject": "ENGL",
-                "catalog": "398"
             }
         ],
         "tags": [
@@ -99836,19 +98112,11 @@
             },
             {
                 "subject": "POLI",
-                "catalog": "202"
-            },
-            {
-                "subject": "POLI",
                 "catalog": "203"
             },
             {
                 "subject": "POLI",
                 "catalog": "214"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "217"
             },
             {
                 "subject": "POLI",
@@ -99865,10 +98133,6 @@
             {
                 "subject": "POLI",
                 "catalog": "331"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "398"
             },
             {
                 "subject": "POLI",
@@ -100456,10 +98720,6 @@
             },
             {
                 "subject": "POLI",
-                "catalog": "392"
-            },
-            {
-                "subject": "POLI",
                 "catalog": "393"
             },
             {
@@ -100557,10 +98817,6 @@
             "School of Community&Public Affairs"
         ],
         "courses": [
-            {
-                "subject": "FFAR",
-                "catalog": "298"
-            },
             {
                 "subject": "FFAR",
                 "catalog": "298"
@@ -100955,10 +99211,6 @@
             {
                 "subject": "SOCI",
                 "catalog": "331"
-            },
-            {
-                "subject": "SOCI",
-                "catalog": "341"
             },
             {
                 "subject": "SOCI",
@@ -101959,10 +100211,6 @@
             },
             {
                 "subject": "PHIL",
-                "catalog": "260"
-            },
-            {
-                "subject": "PHIL",
                 "catalog": "261"
             },
             {
@@ -102013,10 +100261,6 @@
             {
                 "subject": "CLAS",
                 "catalog": "242"
-            },
-            {
-                "subject": "CLAS",
-                "catalog": "260"
             },
             {
                 "subject": "CLAS",
@@ -102168,18 +100412,6 @@
             {
                 "subject": "AHSC",
                 "catalog": "220"
-            },
-            {
-                "subject": "AHSC",
-                "catalog": "220"
-            },
-            {
-                "subject": "AHSC",
-                "catalog": "220"
-            },
-            {
-                "subject": "AHSC",
-                "catalog": "270"
             },
             {
                 "subject": "AHSC",
@@ -103732,10 +101964,6 @@
             },
             {
                 "subject": "URBS",
-                "catalog": "293"
-            },
-            {
-                "subject": "URBS",
                 "catalog": "300"
             },
             {
@@ -103869,14 +102097,6 @@
             {
                 "subject": "MCHI",
                 "catalog": "365"
-            },
-            {
-                "subject": "MCHI",
-                "catalog": "398"
-            },
-            {
-                "subject": "MCHI",
-                "catalog": "398"
             },
             {
                 "subject": "MCHI",
@@ -104287,10 +102507,6 @@
             },
             {
                 "subject": "FINA",
-                "catalog": "455"
-            },
-            {
-                "subject": "FINA",
                 "catalog": "470"
             },
             {
@@ -104556,10 +102772,6 @@
             {
                 "subject": "POLI",
                 "catalog": "428"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "488"
             },
             {
                 "subject": "POLI",
@@ -105423,14 +103635,6 @@
             },
             {
                 "subject": "SOCI",
-                "catalog": "212"
-            },
-            {
-                "subject": "SOCI",
-                "catalog": "212"
-            },
-            {
-                "subject": "SOCI",
                 "catalog": "213"
             }
         ],
@@ -105763,10 +103967,6 @@
             {
                 "subject": "POLI",
                 "catalog": "398"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "398"
             }
         ],
         "tags": [
@@ -105976,10 +104176,6 @@
             {
                 "subject": "SOCI",
                 "catalog": "375"
-            },
-            {
-                "subject": "SOCI",
-                "catalog": "398"
             },
             {
                 "subject": "SOCI",
@@ -107372,10 +105568,6 @@
                 "catalog": "298"
             },
             {
-                "subject": "ESL",
-                "catalog": "298"
-            },
-            {
                 "subject": "GERM",
                 "catalog": "200"
             },
@@ -107649,14 +105841,6 @@
             {
                 "subject": "COMM",
                 "catalog": "215"
-            },
-            {
-                "subject": "DESC",
-                "catalog": "695"
-            },
-            {
-                "subject": "DESC",
-                "catalog": "695"
             },
             {
                 "subject": "DESC",
@@ -108255,14 +106439,6 @@
             },
             {
                 "subject": "EXCI",
-                "catalog": "233"
-            },
-            {
-                "subject": "EXCI",
-                "catalog": "251"
-            },
-            {
-                "subject": "EXCI",
                 "catalog": "251"
             },
             {
@@ -108647,14 +106823,6 @@
             {
                 "subject": "FFAR",
                 "catalog": "298"
-            },
-            {
-                "subject": "FFAR",
-                "catalog": "398"
-            },
-            {
-                "subject": "FFAR",
-                "catalog": "398"
             },
             {
                 "subject": "FFAR",
@@ -110126,10 +108294,6 @@
             },
             {
                 "subject": "COMP",
-                "catalog": "348"
-            },
-            {
-                "subject": "COMP",
                 "catalog": "352"
             },
             {
@@ -110397,10 +108561,6 @@
             {
                 "subject": "COMM",
                 "catalog": "217"
-            },
-            {
-                "subject": "COMM",
-                "catalog": "220"
             },
             {
                 "subject": "COMM",
@@ -111314,10 +109474,6 @@
             },
             {
                 "subject": "PSYC",
-                "catalog": "355"
-            },
-            {
-                "subject": "PSYC",
                 "catalog": "445"
             },
             {
@@ -111551,14 +109707,6 @@
             },
             {
                 "subject": "EXCI",
-                "catalog": "253"
-            },
-            {
-                "subject": "EXCI",
-                "catalog": "253"
-            },
-            {
-                "subject": "EXCI",
                 "catalog": "254"
             },
             {
@@ -111681,10 +109829,6 @@
             {
                 "subject": "CHEM",
                 "catalog": "205"
-            },
-            {
-                "subject": "CHEM",
-                "catalog": "241"
             },
             {
                 "subject": "CHEM",
@@ -111823,14 +109967,6 @@
             },
             {
                 "subject": "ANTH",
-                "catalog": "202"
-            },
-            {
-                "subject": "ANTH",
-                "catalog": "202"
-            },
-            {
-                "subject": "ANTH",
                 "catalog": "203"
             },
             {
@@ -111840,14 +109976,6 @@
             {
                 "subject": "ANTH",
                 "catalog": "298"
-            },
-            {
-                "subject": "ANTH",
-                "catalog": "298"
-            },
-            {
-                "subject": "ANTH",
-                "catalog": "471"
             },
             {
                 "subject": "ANTH",
@@ -112158,14 +110286,6 @@
             },
             {
                 "subject": "INDU",
-                "catalog": "320"
-            },
-            {
-                "subject": "INDU",
-                "catalog": "321"
-            },
-            {
-                "subject": "INDU",
                 "catalog": "321"
             },
             {
@@ -112388,10 +110508,6 @@
             {
                 "subject": "BCEE",
                 "catalog": "343"
-            },
-            {
-                "subject": "BCEE",
-                "catalog": "343"
             }
         ],
         "tags": [
@@ -112455,18 +110571,6 @@
             {
                 "subject": "BCEE",
                 "catalog": "342"
-            },
-            {
-                "subject": "BCEE",
-                "catalog": "342"
-            },
-            {
-                "subject": "BCEE",
-                "catalog": "342"
-            },
-            {
-                "subject": "BCEE",
-                "catalog": "343"
             },
             {
                 "subject": "BCEE",
@@ -113142,10 +111246,6 @@
             "Chemistry and Biochemistry"
         ],
         "courses": [
-            {
-                "subject": "CHEM",
-                "catalog": "205"
-            },
             {
                 "subject": "CHEM",
                 "catalog": "205"
@@ -113926,14 +112026,6 @@
             },
             {
                 "subject": "PSYC",
-                "catalog": "315"
-            },
-            {
-                "subject": "PSYC",
-                "catalog": "316"
-            },
-            {
-                "subject": "PSYC",
                 "catalog": "316"
             },
             {
@@ -114359,19 +112451,7 @@
             },
             {
                 "subject": "EXCI",
-                "catalog": "204"
-            },
-            {
-                "subject": "EXCI",
-                "catalog": "204"
-            },
-            {
-                "subject": "EXCI",
                 "catalog": "218"
-            },
-            {
-                "subject": "EXCI",
-                "catalog": "233"
             },
             {
                 "subject": "EXCI",
@@ -114981,10 +113061,6 @@
             },
             {
                 "subject": "FMPR",
-                "catalog": "350"
-            },
-            {
-                "subject": "FMPR",
                 "catalog": "438"
             }
         ],
@@ -115026,10 +113102,6 @@
             {
                 "subject": "COMM",
                 "catalog": "217"
-            },
-            {
-                "subject": "COMM",
-                "catalog": "305"
             },
             {
                 "subject": "COMM",
@@ -115125,10 +113197,6 @@
             {
                 "subject": "MARK",
                 "catalog": "444"
-            },
-            {
-                "subject": "MARK",
-                "catalog": "491"
             },
             {
                 "subject": "MARK",
@@ -115368,10 +113436,6 @@
                 "catalog": "225"
             },
             {
-                "subject": "COMM",
-                "catalog": "225"
-            },
-            {
                 "subject": "MBA",
                 "catalog": "608"
             },
@@ -115477,10 +113541,6 @@
         "courses": [
             {
                 "subject": "EDUC",
-                "catalog": "250"
-            },
-            {
-                "subject": "INST",
                 "catalog": "250"
             },
             {
@@ -115759,22 +113819,6 @@
             },
             {
                 "subject": "POLI",
-                "catalog": "216"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "298"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "298"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "298"
-            },
-            {
-                "subject": "POLI",
                 "catalog": "298"
             },
             {
@@ -115799,23 +113843,11 @@
             },
             {
                 "subject": "POLI",
-                "catalog": "318"
-            },
-            {
-                "subject": "POLI",
                 "catalog": "319"
             },
             {
                 "subject": "POLI",
                 "catalog": "396"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "398"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "398"
             },
             {
                 "subject": "POLI",
@@ -115948,10 +113980,6 @@
             },
             {
                 "subject": "HIST",
-                "catalog": "398"
-            },
-            {
-                "subject": "HIST",
                 "catalog": "402"
             },
             {
@@ -116018,19 +114046,11 @@
             },
             {
                 "subject": "SPAN",
-                "catalog": "302"
-            },
-            {
-                "subject": "SPAN",
                 "catalog": "305"
             },
             {
                 "subject": "SPAN",
                 "catalog": "308"
-            },
-            {
-                "subject": "SPAN",
-                "catalog": "398"
             },
             {
                 "subject": "SPAN",
@@ -116328,22 +114348,6 @@
             },
             {
                 "subject": "FFAR",
-                "catalog": "298"
-            },
-            {
-                "subject": "FFAR",
-                "catalog": "298"
-            },
-            {
-                "subject": "FFAR",
-                "catalog": "298"
-            },
-            {
-                "subject": "FFAR",
-                "catalog": "398"
-            },
-            {
-                "subject": "FFAR",
                 "catalog": "398"
             }
         ],
@@ -116376,10 +114380,6 @@
             "History"
         ],
         "courses": [
-            {
-                "subject": "HIST",
-                "catalog": "205"
-            },
             {
                 "subject": "HIST",
                 "catalog": "205"
@@ -117340,10 +115340,6 @@
                 "catalog": "200"
             },
             {
-                "subject": "FINA",
-                "catalog": "200"
-            },
-            {
                 "subject": "GDBA",
                 "catalog": "505"
             }
@@ -117559,10 +115555,6 @@
             "Religions and Cultures"
         ],
         "courses": [
-            {
-                "subject": "POLI",
-                "catalog": "398"
-            },
             {
                 "subject": "POLI",
                 "catalog": "398"
@@ -117785,10 +115777,6 @@
             {
                 "subject": "FINA",
                 "catalog": "395"
-            },
-            {
-                "subject": "FINA",
-                "catalog": "402"
             },
             {
                 "subject": "FINA",
@@ -118050,10 +116038,6 @@
             },
             {
                 "subject": "COEN",
-                "catalog": "313"
-            },
-            {
-                "subject": "COEN",
                 "catalog": "315"
             },
             {
@@ -118281,14 +116265,6 @@
             },
             {
                 "subject": "RELI",
-                "catalog": "398"
-            },
-            {
-                "subject": "RELI",
-                "catalog": "398"
-            },
-            {
-                "subject": "RELI",
                 "catalog": "405"
             }
         ],
@@ -118316,10 +116292,6 @@
             "Education"
         ],
         "courses": [
-            {
-                "subject": "EDUC",
-                "catalog": "210"
-            },
             {
                 "subject": "EDUC",
                 "catalog": "210"
@@ -118527,16 +116499,8 @@
                 "catalog": "325"
             },
             {
-                "subject": "ECON",
-                "catalog": "325"
-            },
-            {
                 "subject": "MATH",
                 "catalog": "206"
-            },
-            {
-                "subject": "MATH",
-                "catalog": "208"
             },
             {
                 "subject": "MATH",
@@ -118711,10 +116675,6 @@
             },
             {
                 "subject": "MATH",
-                "catalog": "202"
-            },
-            {
-                "subject": "MATH",
                 "catalog": "203"
             },
             {
@@ -118724,10 +116684,6 @@
             {
                 "subject": "MATH",
                 "catalog": "205"
-            },
-            {
-                "subject": "MATH",
-                "catalog": "206"
             },
             {
                 "subject": "MATH",
@@ -119292,10 +117248,6 @@
             {
                 "subject": "EDUC",
                 "catalog": "4"
-            },
-            {
-                "subject": "EDUC",
-                "catalog": "4"
             }
         ],
         "tags": [
@@ -119421,10 +117373,6 @@
             },
             {
                 "subject": "GEOG",
-                "catalog": "318"
-            },
-            {
-                "subject": "GEOG",
                 "catalog": "330"
             },
             {
@@ -119438,10 +117386,6 @@
             {
                 "subject": "URBS",
                 "catalog": "298"
-            },
-            {
-                "subject": "URBS",
-                "catalog": "498"
             },
             {
                 "subject": "URBS",
@@ -119802,10 +117746,6 @@
             },
             {
                 "subject": "GERM",
-                "catalog": "200"
-            },
-            {
-                "subject": "GERM",
                 "catalog": "201"
             },
             {
@@ -119815,10 +117755,6 @@
             {
                 "subject": "GERM",
                 "catalog": "240"
-            },
-            {
-                "subject": "GERM",
-                "catalog": "241"
             },
             {
                 "subject": "GERM",
@@ -120190,10 +118126,6 @@
                 "catalog": "262"
             },
             {
-                "subject": "HIST",
-                "catalog": "262"
-            },
-            {
                 "subject": "POLI",
                 "catalog": "335"
             },
@@ -120342,10 +118274,6 @@
             {
                 "subject": "POLI",
                 "catalog": "486"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "487"
             },
             {
                 "subject": "POLI",
@@ -120530,10 +118458,6 @@
             },
             {
                 "subject": "EDUC",
-                "catalog": "360"
-            },
-            {
-                "subject": "EDUC",
                 "catalog": "380"
             },
             {
@@ -120686,10 +118610,6 @@
             },
             {
                 "subject": "SOCI",
-                "catalog": "298"
-            },
-            {
-                "subject": "SOCI",
                 "catalog": "310"
             },
             {
@@ -120793,10 +118713,6 @@
             {
                 "subject": "ENGR",
                 "catalog": "391"
-            },
-            {
-                "subject": "INDU",
-                "catalog": "311"
             },
             {
                 "subject": "INDU",
@@ -121094,10 +119010,6 @@
             },
             {
                 "subject": "BLDG",
-                "catalog": "6561"
-            },
-            {
-                "subject": "BLDG",
                 "catalog": "6571"
             },
             {
@@ -121107,10 +119019,6 @@
             {
                 "subject": "CIVI",
                 "catalog": "6501"
-            },
-            {
-                "subject": "CIVI",
-                "catalog": "691"
             },
             {
                 "subject": "CIVI",
@@ -121603,10 +119511,6 @@
             },
             {
                 "subject": "HIST",
-                "catalog": "298"
-            },
-            {
-                "subject": "HIST",
                 "catalog": "359"
             },
             {
@@ -121690,14 +119594,6 @@
             {
                 "subject": "MANA",
                 "catalog": "300"
-            },
-            {
-                "subject": "MARK",
-                "catalog": "201"
-            },
-            {
-                "subject": "MARK",
-                "catalog": "201"
             },
             {
                 "subject": "MARK",
@@ -122004,14 +119900,6 @@
             {
                 "subject": "SPAN",
                 "catalog": "306"
-            },
-            {
-                "subject": "SPAN",
-                "catalog": "306"
-            },
-            {
-                "subject": "SPAN",
-                "catalog": "362"
             },
             {
                 "subject": "SPAN",
@@ -122353,10 +120241,6 @@
             },
             {
                 "subject": "CIVI",
-                "catalog": "341"
-            },
-            {
-                "subject": "CIVI",
                 "catalog": "471"
             },
             {
@@ -122606,10 +120490,6 @@
             },
             {
                 "subject": "COMP",
-                "catalog": "248"
-            },
-            {
-                "subject": "COMP",
                 "catalog": "249"
             },
             {
@@ -122618,23 +120498,7 @@
             },
             {
                 "subject": "COMP",
-                "catalog": "345"
-            },
-            {
-                "subject": "COMP",
-                "catalog": "345"
-            },
-            {
-                "subject": "COMP",
                 "catalog": "348"
-            },
-            {
-                "subject": "COMP",
-                "catalog": "348"
-            },
-            {
-                "subject": "COMP",
-                "catalog": "352"
             },
             {
                 "subject": "COMP",
@@ -122696,10 +120560,6 @@
             {
                 "subject": "COMM",
                 "catalog": "220"
-            },
-            {
-                "subject": "ECON",
-                "catalog": "201"
             },
             {
                 "subject": "ECON",
@@ -123665,10 +121525,6 @@
             },
             {
                 "subject": "POLI",
-                "catalog": "487"
-            },
-            {
-                "subject": "POLI",
                 "catalog": "496"
             },
             {
@@ -124286,10 +122142,6 @@
             {
                 "subject": "POLI",
                 "catalog": "203"
-            },
-            {
-                "subject": "POLI",
-                "catalog": "206"
             },
             {
                 "subject": "POLI",
@@ -125851,10 +123703,6 @@
             {
                 "subject": "RELI",
                 "catalog": "214"
-            },
-            {
-                "subject": "RELI",
-                "catalog": "216"
             },
             {
                 "subject": "RELI",
@@ -131153,10 +129001,6 @@
             {
                 "subject": "SOEN",
                 "catalog": "345"
-            },
-            {
-                "subject": "SOEN",
-                "catalog": "345"
             }
         ],
         "tags": [],
@@ -132374,10 +130218,6 @@
                 "catalog": "205"
             },
             {
-                "subject": "COMM",
-                "catalog": "205"
-            },
-            {
                 "subject": "MARK",
                 "catalog": "305"
             }
@@ -133376,10 +131216,6 @@
             },
             {
                 "subject": "BTM",
-                "catalog": "380"
-            },
-            {
-                "subject": "BTM",
                 "catalog": "495"
             }
         ],
@@ -133419,10 +131255,6 @@
             "Bi-Discipline Programme"
         ],
         "courses": [
-            {
-                "subject": "BTM",
-                "catalog": "481"
-            },
             {
                 "subject": "BTM",
                 "catalog": "481"
@@ -133496,10 +131328,6 @@
             "Bi-Discipline Programme"
         ],
         "courses": [
-            {
-                "subject": "BTM",
-                "catalog": "496"
-            },
             {
                 "subject": "BTM",
                 "catalog": "496"
@@ -133704,10 +131532,6 @@
             {
                 "subject": "ACTT",
                 "catalog": "325"
-            },
-            {
-                "subject": "ACTT",
-                "catalog": "325"
             }
         ],
         "tags": [],
@@ -133902,10 +131726,6 @@
             {
                 "subject": "MTHY",
                 "catalog": "511"
-            },
-            {
-                "subject": "MTHY",
-                "catalog": "510"
             },
             {
                 "subject": "MTHY",
@@ -134760,10 +132580,6 @@
             "John Molson Executive Centre"
         ],
         "courses": [
-            {
-                "subject": "UNSS",
-                "catalog": "201"
-            },
             {
                 "subject": "UNSS",
                 "catalog": "201"
@@ -137192,10 +135008,6 @@
                 "catalog": "282"
             },
             {
-                "subject": "ENCS",
-                "catalog": "282"
-            },
-            {
                 "subject": "GPTK",
                 "catalog": "703"
             },
@@ -137530,10 +135342,6 @@
             "Chemistry and Biochemistry"
         ],
         "courses": [
-            {
-                "subject": "CHEM",
-                "catalog": "293"
-            },
             {
                 "subject": "CHEM",
                 "catalog": "293"
@@ -138570,10 +136378,6 @@
             {
                 "subject": "ENGR",
                 "catalog": "301"
-            },
-            {
-                "subject": "ENGR",
-                "catalog": "301"
             }
         ],
         "tags": [],
@@ -138607,10 +136411,6 @@
             "Marketing"
         ],
         "courses": [
-            {
-                "subject": "MARK",
-                "catalog": "301"
-            },
             {
                 "subject": "MARK",
                 "catalog": "301"
@@ -140057,10 +137857,6 @@
                 "catalog": "354"
             },
             {
-                "subject": "ARTE",
-                "catalog": "354"
-            },
-            {
                 "subject": "GPTK",
                 "catalog": "704"
             }
@@ -140693,10 +138489,6 @@
                 "catalog": "MOD6C"
             },
             {
-                "subject": "CEEN",
-                "catalog": "MOD6C"
-            },
-            {
                 "subject": "CEEI",
                 "catalog": "710"
             },
@@ -141179,10 +138971,6 @@
             {
                 "subject": "IMCA",
                 "catalog": "210"
-            },
-            {
-                "subject": "IMCA",
-                "catalog": "210"
             }
         ],
         "tags": [],
@@ -141237,10 +139025,6 @@
             {
                 "subject": "IMCA",
                 "catalog": "221"
-            },
-            {
-                "subject": "IMCA",
-                "catalog": "222"
             },
             {
                 "subject": "IMCA",
@@ -141432,10 +139216,6 @@
             {
                 "subject": "CHME",
                 "catalog": "6911"
-            },
-            {
-                "subject": "ENGR",
-                "catalog": "371"
             },
             {
                 "subject": "ENGR",
@@ -143371,10 +141151,6 @@
                 "catalog": "221"
             },
             {
-                "subject": "MIAE",
-                "catalog": "221"
-            },
-            {
                 "subject": "MECH",
                 "catalog": "6501"
             }
@@ -143800,10 +141576,6 @@
             "Civil Engineering"
         ],
         "courses": [
-            {
-                "subject": "ENCS",
-                "catalog": "282"
-            },
             {
                 "subject": "ENCS",
                 "catalog": "282"
@@ -146678,10 +144450,6 @@
             {
                 "subject": "PHYS",
                 "catalog": "226"
-            },
-            {
-                "subject": "PHYS",
-                "catalog": "226"
             }
         ],
         "tags": [],
@@ -146716,10 +144484,6 @@
             {
                 "subject": "PHYS",
                 "catalog": "226"
-            },
-            {
-                "subject": "PHYS",
-                "catalog": "226"
             }
         ],
         "tags": [],
@@ -146750,10 +144514,6 @@
             {
                 "subject": "PHYS",
                 "catalog": "225"
-            },
-            {
-                "subject": "PHYS",
-                "catalog": "226"
             },
             {
                 "subject": "PHYS",
@@ -148058,10 +145818,6 @@
             "Exercise Science"
         ],
         "courses": [
-            {
-                "subject": "CATA",
-                "catalog": "263"
-            },
             {
                 "subject": "CATA",
                 "catalog": "263"
@@ -149664,6 +147420,18 @@
             {
                 "subject": "SOCI",
                 "catalog": "320"
+            },
+            {
+                "subject": "SOCI",
+                "catalog": "323"
+            },
+            {
+                "subject": "SOCI",
+                "catalog": "321"
+            },
+            {
+                "subject": "SOCI",
+                "catalog": "333"
             }
         ],
         "tags": [],
@@ -152036,10 +149804,6 @@
             "Business Administration"
         ],
         "courses": [
-            {
-                "subject": "GDBA",
-                "catalog": "530"
-            },
             {
                 "subject": "GDBA",
                 "catalog": "530"
