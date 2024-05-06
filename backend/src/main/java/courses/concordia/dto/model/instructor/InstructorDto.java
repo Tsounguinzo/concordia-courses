@@ -19,7 +19,7 @@ public class InstructorDto {
     private String _id;
     private String firstName;
     private String lastName;
-    private Instructor.Department department;
+    private Set<Instructor.Department> departments;
     private Set<Instructor.Course> courses;
     private Set<Instructor.Tag> tags;
     @ToString.Exclude @EqualsAndHashCode.Exclude

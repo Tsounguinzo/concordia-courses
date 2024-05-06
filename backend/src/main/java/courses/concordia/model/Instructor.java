@@ -23,7 +23,7 @@ public class Instructor {
     private String _id;
     private String firstName;
     private String lastName;
-    private Department department;
+    private Set<Department> departments;
     private Set<Course> courses;
     private Set<Tag> tags;
     @ToString.Exclude @EqualsAndHashCode.Exclude

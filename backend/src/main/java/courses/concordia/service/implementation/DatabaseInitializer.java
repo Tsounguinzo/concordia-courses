@@ -1,7 +1,13 @@
 package courses.concordia.service.implementation;
 
+import com.google.gson.reflect.TypeToken;
 import courses.concordia.model.Course;
+import courses.concordia.model.Instructor;
+import courses.concordia.model.Review;
 import courses.concordia.repository.CourseRepository;
+import courses.concordia.repository.InstructorRepository;
+import courses.concordia.repository.ReviewRepository;
+import courses.concordia.util.JsonUtils;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,8 +26,9 @@ import java.util.List;
 @Slf4j
 public class DatabaseInitializer {
 
-    private final SeedServiceCourse seedServiceCourse;
+    private final ReviewRepository reviewRepository;
     private final CourseRepository courseRepository;
+    private final InstructorRepository instructorRepository;
     private final Environment environment;
 
     @Value("${app.init-db:false}")
@@ -61,7 +68,6 @@ public class DatabaseInitializer {
         Path seedDir = Paths.get(seedDirPath);
         try (var files = Files.walk(seedDir)) {
             files.filter(Files::isRegularFile)
-                    .filter(path -> path.toString().endsWith("courses-v2.json"))
                     .forEach(this::processSeedFile);
         } catch (IOException e) {
             log.error("Failed to access or process seed directory: {}", seedDirPath, e);
@@ -69,13 +75,45 @@ public class DatabaseInitializer {
     }
 
     private void processSeedFile(Path path) {
+        if (path.toString().endsWith("courses.json")) {
+            processCourseFile(path);
+        } else if (path.toString().endsWith("instructors.json")) {
+            processInstructorFile(path);
+        } else if (path.toString().endsWith("reviews.json")) {
+            processReviewFile(path);
+        }
+    }
+
+    private void processCourseFile(Path path) {
         try {
-            List<Course> courses = seedServiceCourse.readSeedFromFile(path);
+            List<Course> courses = JsonUtils.getData(path, new TypeToken<List<Course>>(){});
             courseRepository.deleteAll();
             courseRepository.saveAll(courses);
             log.info("Successfully loaded and saved {} courses from {}", courses.size(), path);
         } catch (Exception e) {
             log.error("Failed to load courses from {}: {}", path, e.getMessage(), e);
+        }
+    }
+
+    private void processInstructorFile(Path path) {
+        try {
+            List<Instructor> instructors = JsonUtils.getData(path, new TypeToken<List<Instructor>>(){});
+            instructorRepository.deleteAll();
+            instructorRepository.saveAll(instructors);
+            log.info("Successfully loaded and saved {} instructors from {}", instructors.size(), path);
+        } catch (Exception e) {
+            log.error("Failed to load instructors from {}: {}", path, e.getMessage(), e);
+        }
+    }
+
+    private void processReviewFile(Path path) {
+        try {
+            List<Review> reviews = JsonUtils.getData(path, new TypeToken<List<Review>>(){});
+            reviewRepository.deleteAll();
+            reviewRepository.saveAll(reviews);
+            log.info("Successfully loaded and saved {} reviews from {}", reviews.size(), path);
+        } catch (Exception e) {
+            log.error("Failed to load reviews from {}: {}", path, e.getMessage(), e);
         }
     }
 }

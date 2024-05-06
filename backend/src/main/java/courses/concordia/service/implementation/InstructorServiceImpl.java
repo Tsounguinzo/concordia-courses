@@ -192,7 +192,7 @@ public class InstructorServiceImpl implements InstructorService {
      */
     private void buildDepartmentCriteria(InstructorFilterDto filter, List<Criteria> criteriaList) {
         if (filter.getDepartments() != null && !filter.getDepartments().isEmpty()) {
-            criteriaList.add(Criteria.where("department").in(filter.getDepartments()));
+            criteriaList.add(Criteria.where("departments").in(filter.getDepartments()));
             log.info("Filtering by departments to include all specified: {}", filter.getDepartments());
         }
     }
