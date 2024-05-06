@@ -206,7 +206,9 @@ public class Instructor {
         MANAGEMENT("Management"),
         MARKETING("Marketing"),
         GRADUATE_PROFESSIONAL_SKILLS("Graduate and Professional Skills"),
-        SCHOOL_OF_GRADUATE_STUDIES("School of Graduate Studies");
+        SCHOOL_OF_GRADUATE_STUDIES("School of Graduate Studies"),
+        EXERCISE_SCIENCE("Exercise Science"),
+        FIRST_PEOPLES_STUDIES("First Peoples Studies");
 
         private final String description;
 
@@ -223,6 +225,10 @@ public class Instructor {
         public static Department fromString(String text) {
             if (text == null || text.isEmpty()) {
                 return null;
+            }
+
+            if (text.equalsIgnoreCase("Accounting")) {
+                return ACCOUNTANCY;
             }
 
             String normalizedText = text.toLowerCase().replaceAll("[^a-z0-9\\s]", "");

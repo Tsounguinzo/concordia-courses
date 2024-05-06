@@ -580,5 +580,17 @@
     "facultyDescription": "School of Graduate Studies",
     "deparmentCode": "SGSP",
     "deparmentDescription": "School of Graduate Studies"
+  },
+  {
+    "facultyCode": "",
+    "facultyDescription": "",
+    "deparmentCode": "",
+    "deparmentDescription": "Exercise Science"
+  },
+  {
+    "facultyCode": "",
+    "facultyDescription": "",
+    "deparmentCode": "",
+    "deparmentDescription": "First Peoples Studies"
   }
 ]
