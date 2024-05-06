@@ -76,7 +76,7 @@ public class ReviewServiceImpl implements ReviewService {
             @CacheEvict(value = "coursesCacheWithFilters", allEntries = true, condition = "#reviewDto.type.equals('course')"),
             @CacheEvict(value = "instructorsCacheWithFilters", allEntries = true, condition = "#reviewDto.type.equals('instructor')"),
             @CacheEvict(value = "reviewsCacheWithFilters", allEntries = true),
-            @CacheEvict(value = "instructorsCache", key = "#reviewDto.instructorId", condition = "#reviewDto.type.equals('instructor')"),
+            @CacheEvict(value = "instructorsCache", allEntries = true),
     })
     @Transactional
     @Override
@@ -133,16 +133,16 @@ public class ReviewServiceImpl implements ReviewService {
      * @param id The ID of the review.
      */
     @Caching(evict = {
-            @CacheEvict(value = "courseReviewsCache", key = "{#id, 'course'}"),
-            @CacheEvict(value = "instructorReviewsCache", key = "{#id, 'instructor'}"),
+            @CacheEvict(value = "courseReviewsCache", key = "{#courseId, 'course'}", condition = "#type.equals('course')"),
+            @CacheEvict(value = "instructorReviewsCache", key = "{#instructorId, 'instructor'}", condition = "#type.equals('instructor')"),
             @CacheEvict(value = "coursesCacheWithFilters", allEntries = true),
             @CacheEvict(value = "instructorsCacheWithFilters", allEntries = true),
             @CacheEvict(value = "reviewsCacheWithFilters", allEntries = true),
-            @CacheEvict(value = "instructorsCache", key = "#id"),
+            @CacheEvict(value = "instructorsCache", allEntries = true)
     })
     @Transactional
     @Override
-    public void deleteReview(String id) {
+    public void deleteReview(String id, String type, String courseId, String instructorId) {
         Optional<Review> review = reviewRepository.findById(id);
         if (review.isEmpty() || review.get().getType() == null) {
             throw exception(id);
@@ -265,7 +265,7 @@ public class ReviewServiceImpl implements ReviewService {
      * @param courseId The ID of the course.
      */
     private void updateCourseExperience(String courseId) {
-        List<Review> reviews = reviewRepository.findAllByCourseId(courseId);
+        List<Review> reviews = reviewRepository.findAllByCourseIdAndType(courseId, "course");
         double avgExperience = reviews.stream().mapToInt(Review::getExperience).average().orElse(0.0);
         double avgDifficulty = reviews.stream().mapToInt(Review::getDifficulty).average().orElse(0.0);
         int reviewsCount = reviews.size();
@@ -285,7 +285,7 @@ public class ReviewServiceImpl implements ReviewService {
      */
     private void updateInstructorRatingCoursesAndTags(Review review){
         String instructorId = review.getInstructorId();
-        List<Review> reviews = reviewRepository.findAllByInstructorId(instructorId);
+        List<Review> reviews = reviewRepository.findAllByInstructorIdAndType(instructorId, "instructor");
         double avgRating = reviews.stream().mapToInt(Review::getRating).average().orElse(0.0);
         double avgDifficulty = reviews.stream().mapToInt(Review::getDifficulty).average().orElse(0.0);
         int reviewsCount = reviews.size();

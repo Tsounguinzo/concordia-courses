@@ -27,9 +27,14 @@
             {/if}
 
         </div>
-        {#if instructor.department}
+        {#if instructor.departments}
         <h2 class='break-words font-semibold text-blue-800 dark:text-blue-200 my-3'>
-            {instructor.department.toLowerCase().includes("department") ? '' : 'Department of'} {instructor.department}
+            {#each instructor.departments as department}
+                {department.toLowerCase().includes("department") ? '' : 'Department of'} {department}
+                {#if department !== instructor.departments[instructor.departments.length - 1]}
+                    <br/>
+                {/if}
+            {/each}
         </h2>
             {/if}
         <InstructorTags {instructor} variant='small' {query}/>

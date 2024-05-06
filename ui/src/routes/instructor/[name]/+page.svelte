@@ -17,28 +17,7 @@
     import Seo from "$lib/components/common/Seo.svelte";
     import type {Instructor} from "$lib/model/Instructor";
     import CourseInfoStats from "$lib/components/course/stats/CourseInfoStats.svelte";
-    import type {GetInstructorWithReviewsPayload} from "$lib/model/GetInstructorWithReviewsPayload";
     import InstructorTags from "$lib/components/common/InstructorTags.svelte";
-    import {createFakeInstructor, createFakeReview} from "$lib/mockData";
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    function generateData(): GetInstructorWithReviewsPayload {
-        const instructor = createFakeInstructor();
-        const reviews = Array.from({ length: 10 }, () => createFakeReview());
-        return { instructor, reviews };
-    }
-
-    const examplePayload = generateData();
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
 
     $: params = $page.params.name;
 
@@ -63,7 +42,7 @@
 
         const inner = async () => {
             try {
-                const payload = examplePayload; //await repo.getInstructorWithReviews(id);
+                const payload = await repo.getInstructorWithReviews(id);
 
                 if (typeof payload === 'string') {
                     instructor.set(null);
@@ -112,7 +91,7 @@
     };
 
     const handleDelete = async (review: Review) => {
-        const res = await repo.deleteReview(review._id);
+        const res = await repo.deleteReview(review._id, review.type, review.courseId, review.instructorId);
 
         if (res.ok) {
             showingReviews.set($showingReviews?.filter((r) => r.userId !== review.userId));
@@ -197,9 +176,14 @@
                                 {$instructor.firstName} {$instructor.lastName}
                             </h1>
                         </div>
-                        {#if $instructor.department}
+                        {#if $instructor.departments}
                             <h2 class='break-words text-lg font-semibold text-blue-800 dark:text-blue-200 my-3'>
-                                {$instructor.department.toLowerCase().includes("department") ? '' : 'Department of'} {$instructor.department}
+                                {#each $instructor.departments as department}
+                                    {department.toLowerCase().includes("department") ? '' : 'Department of'} {department}
+                                    {#if department !== $instructor.departments[$instructor.departments.length - 1]}
+                                        <br/>
+                                    {/if}
+                                {/each}
                             </h2>
                         {/if}
                         <InstructorTags instructor={$instructor} variant='large'/>
@@ -248,7 +232,8 @@
 
                 {#if $allReviews.length > 0}
                     <div class='my-2'>
-                        <ReviewFilter on:sortChanged={handleSortChange} {showAllReviews} type="instructor" instructor={$instructor}/>
+                        <ReviewFilter on:sortChanged={handleSortChange} {showAllReviews} type="instructor"
+                                      instructor={$instructor}/>
                     </div>
                 {:else }
                     <ReviewEmptyPrompt className="max-sm:p-2" variant='course' isLogin={user !== null}/>
@@ -285,9 +270,9 @@
 
                 </div>
                 {#if !$showAllReviews && $showingReviews.length > numberOfReviewsToShow}
-                    <div class='flex justify-center text-gray-400 dark:text-neutral-500'>
+                    <div class='flex justify-center text-gray-800 dark:text-gray-300'>
                         <button
-                                class='h-full w-full border border-dashed border-neutral-400 py-2 dark:border-neutral-500'
+                                class='h-full w-full border border-dashed border-neutral-700 py-2 dark:border-neutral-500'
                                 on:click={() => showAllReviews.set(true)}
                         >
                             Show all {$showingReviews.length} review(s)

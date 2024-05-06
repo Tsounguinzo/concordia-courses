@@ -104,7 +104,7 @@
     };
 
     const handleDelete = async (review: Review) => {
-        const res = await repo.deleteReview(review._id);
+        const res = await repo.deleteReview(review._id, review.type, review.courseId, review.instructorId);
 
         if (res.ok) {
             showingReviews.set($showingReviews?.filter((r) => r.userId !== review.userId));
@@ -307,9 +307,9 @@
 
                     </div>
                     {#if !$showAllReviews && $showingReviews.length > numberOfReviewsToShow}
-                        <div class='flex justify-center text-gray-400 dark:text-neutral-500'>
+                        <div class='flex justify-center text-gray-800 dark:text-gray-300'>
                             <button
-                                    class='h-full w-full border border-dashed border-neutral-400 py-2 dark:border-neutral-500'
+                                    class='h-full w-full border border-dashed border-neutral-700 py-2 dark:border-neutral-500'
                                     on:click={() => showAllReviews.set(true)}
                             >
                                 Show all {$showingReviews.length} review(s)

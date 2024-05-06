@@ -118,8 +118,8 @@ export const repo = {
                 content: values.content,
                 timestamp: new Date(),
                 difficulty: values.difficulty,
-                courseId: values.course.replace(/[^a-zA-Z0-9]/g, '').toUpperCase() ?? courseId,
-                instructorId: values.instructor.replace(/\s+/g, '-').toLowerCase() ?? instructorId,
+                courseId: values.course !== '' ? values.course.replaceAll(/[^a-zA-Z0-9]/g, '').toUpperCase() : courseId,
+                instructorId: values.instructor !== '' ? values.instructor.replaceAll(/\s+/g, '-').toLowerCase() : instructorId,
                 experience: values.experience,
                 rating: values.rating,
                 tags: values.tags,
@@ -137,8 +137,8 @@ export const repo = {
                 content: values.content,
                 timestamp: new Date(),
                 difficulty: values.difficulty || review.difficulty,
-                courseId: values.course.replace(/[^a-zA-Z0-9]/g, '').toUpperCase() ?? review.courseId,
-                instructorId: values.instructor.replace(/\s+/g, '-').toLowerCase() ?? review.instructorId,
+                courseId: values.course.replaceAll(/[^a-zA-Z0-9]/g, '').toUpperCase() ?? review.courseId,
+                instructorId: values.instructor.replaceAll(/\s+/g, '-').toLowerCase() ?? review.instructorId,
                 experience: values.experience || review.experience,
                 rating: values.rating || review.rating,
                 tags: values.tags,
@@ -149,10 +149,10 @@ export const repo = {
         });
     },
 
-    async deleteReview(id: string): Promise<Response> {
+    async deleteReview(id: string, type: string, courseId: string, instructorId: string): Promise<Response> {
         return await client.delete('/reviews', {
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({id}),
+            body: JSON.stringify({id, type, courseId, instructorId}),
         });
     },
 

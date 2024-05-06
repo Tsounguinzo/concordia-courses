@@ -77,7 +77,7 @@ public class ReviewController {
         ReviewDto reviewDto = reviewService.getReviewById(reviewPayloadDto.getId());
         interactionService.deleteInteractions(reviewPayloadDto.getId(), user.get_id(), reviewDto.getType());
         notificationService.deleteNotification(user.get_id(), null, reviewDto.getCourseId());
-        reviewService.deleteReview(reviewPayloadDto.getId());
+        reviewService.deleteReview(reviewPayloadDto.getId(), reviewPayloadDto.getType(), reviewPayloadDto.getCourseId(), reviewPayloadDto.getInstructorId());
         return Response.ok().setPayload("Review was deleted successfully");
     }
 }

@@ -2,7 +2,7 @@ export type Instructor = {
     _id: string;
     firstName: string;
     lastName: string;
-    department: string;
+    departments: string[];
     courses: InstructorCourse[];
     tags: string[];
     avgDifficulty: number;

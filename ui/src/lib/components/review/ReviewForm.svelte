@@ -59,7 +59,7 @@
         {#if variant === 'course' || variant === 'instructor' }
             <div class='flex flex-col gap-y-1'>
                 <FieldLabel
-                        For={variant === 'course' ? 'experience' : 'rating'}>{variant === 'course' ? 'Experience' : 'Rating'}</FieldLabel>
+                        For={variant === 'course' ? 'experience' : 'rating'}>{variant === 'course' ? 'Experience' : 'Clarity Rating'}</FieldLabel>
                 <IconRatingInput
                         {setFieldValue}
                         on:blur={props.handleBlur}

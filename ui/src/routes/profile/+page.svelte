@@ -21,6 +21,7 @@
     import VerificationPrompt from "$lib/components/profile/VerificationPrompt.svelte";
     import {darkModeOn} from "$lib/darkmode";
     import Skeleton from "$lib/components/common/loader/Skeleton.svelte";
+    import {instructorIdToName} from "$lib/utils.js";
 
     const user = $page.data.user;
     let isMouseEntered = false;
@@ -168,10 +169,17 @@
                         {#if $userReviews.length}
                             {#each $userReviews.sort((a, b) => a.timestamp - b.timestamp) as review, i (i)}
                                 <div class='flex mt-10'>
-                                    <a href={`/course/${courseIdToUrlParam(review.courseId)}`}
-                                       class='text-xl font-bold text-gray-700 duration-200 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-500'>
-                                        {spliceCourseCode(review.courseId, ' ')}
-                                    </a>
+                                    {#if review.type === 'instructor'}
+                                        <a href={`/instructor/${review.instructorId}`}
+                                           class='text-xl font-bold text-gray-700 duration-200 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-500'>
+                                            {instructorIdToName(review.instructorId)}
+                                        </a>
+                                    {:else }
+                                        <a href={`/course/${courseIdToUrlParam(review.courseId)}`}
+                                           class='text-xl font-bold text-gray-700 duration-200 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-500'>
+                                            {spliceCourseCode(review.courseId, ' ')}
+                                        </a>
+                                    {/if}
                                 </div>
                                 <div class='my-2 rounded-lg border-gray-800 duration-300 ease-in-out'>
                                     <CourseReview

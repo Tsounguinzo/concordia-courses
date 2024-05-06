@@ -17,20 +17,6 @@
     import Seo from "$lib/components/common/Seo.svelte";
     import InstructorCard from "$lib/components/explore/InstructorCard.svelte";
     import type {Instructor} from "$lib/model/Instructor";
-    import {createFakeInstructor} from "$lib/mockData";
-
-    ///////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////
-    const fakeInstructors = [];
-    for (let i = 0; i < 20; i++) {
-        fakeInstructors.push(createFakeInstructor());
-    }
-    ///////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////
 
     type SortByType = (typeof allSortByOptions)[number];
 
@@ -218,9 +204,9 @@
                             </div>
                         </button>
                     </SearchBar>
-                {#if (!$instructorsModeOn && courses !== undefined) || ($instructorsModeOn && fakeInstructors !== undefined) }
+                {#if (!$instructorsModeOn && courses !== undefined) || ($instructorsModeOn && instructors !== undefined) }
                     {#if $instructorsModeOn}
-                        {#each fakeInstructors as instructor}
+                        {#each instructors as instructor}
                             <InstructorCard
                                     className='my-1.5'
                                     {instructor}

@@ -101,7 +101,7 @@ public class InstructorServiceImpl implements InstructorService {
         log.info("Retrieving instructor and reviews with id {}", id);
         InstructorDto instructor = getInstructorById(id);
 
-        Query query = new Query(Criteria.where("instructorId").is(id)).with(Sort.by(Sort.Direction.DESC, "timestamp"));
+        Query query = new Query(Criteria.where("instructorId").is(id).and("type").is("instructor")).with(Sort.by(Sort.Direction.DESC, "timestamp"));
         List<ReviewDto> reviews = mongoTemplate.find(query, Review.class)
                 .stream()
                 .map(review -> modelMapper.map(review, ReviewDto.class))

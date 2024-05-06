@@ -17,4 +17,7 @@ import lombok.experimental.Accessors;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ReviewPayloadDto {
     private String id;
+    private String type;
+    private String courseId;
+    private String instructorId;
 }
