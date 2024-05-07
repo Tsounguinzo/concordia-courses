@@ -15,6 +15,7 @@ import courses.concordia.repository.InstructorRepository;
 import courses.concordia.repository.ReviewRepository;
 import courses.concordia.service.ReviewService;
 import courses.concordia.util.JsonUtils;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -28,7 +29,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -43,23 +43,23 @@ public class ReviewServiceImpl implements ReviewService {
     private final InstructorRepository instructorRepository;
     private final MongoTemplate mongoTemplate;
     private final ModelMapper modelMapper;
-    private final static Map<String, Instructor.Course> courseMap = new HashMap<>();
+    private static final Map<String, Instructor.Course> courseMap = new HashMap<>();
 
-    static {
-        Path jsonFilePath;
+    @PostConstruct
+    public void init() {
         try {
-            jsonFilePath = Paths.get(ClassLoader.getSystemResource("subject-catalogs.json").toURI());
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-        Map<String, List<String>> coursesData = JsonUtils.getData(jsonFilePath, new TypeToken<Map<String, List<String>>>(){});
-
-        if (coursesData != null) {
-            coursesData.forEach((key, values) -> values.forEach(value -> {
-                String courseKey = key + value;
-                Instructor.Course course = new Instructor.Course(key, value);
-                courseMap.put(courseKey, course);
-            }));
+            Path jsonFilePath = Paths.get(ClassLoader.getSystemResource("subject-catalogs.json").toURI());
+            Map<String, List<String>> coursesData = JsonUtils.getData(jsonFilePath, new TypeToken<Map<String, List<String>>>() {});
+            if (coursesData != null) {
+                coursesData.forEach((key, values) -> values.forEach(value -> {
+                    String courseKey = key + value;
+                    Instructor.Course course = new Instructor.Course(key, value);
+                    courseMap.put(courseKey, course);
+                }));
+            }
+        } catch (Exception e) {
+            log.error("Failed to initialize course data", e);
+            throw new IllegalStateException("Failed to load course data", e);
         }
     }
 
