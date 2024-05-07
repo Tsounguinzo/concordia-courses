@@ -124,6 +124,7 @@ public class ReviewServiceImpl implements ReviewService {
      */
     private Review updateReviewFromDto(Review existingReview, ReviewDto reviewDto) {
         modelMapper.map(reviewDto, existingReview);
+        if (reviewDto.getTags().isEmpty()) existingReview.setTags(Collections.emptySet()); // By default, ModelMapper does not map empty collections
         return reviewRepository.save(existingReview);
     }
 

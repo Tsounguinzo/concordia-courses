@@ -6,11 +6,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.util.Date;
 import java.util.Set;
+import javax.persistence.Id;
 
 @Getter
 @Setter
@@ -21,7 +22,7 @@ import java.util.Set;
 @Document(collection = "reviews")
 public class Review {
     // common fields
-    @MongoId
+    @Id
     private String _id;
     private String type; // course, instructor, school
     private String content;

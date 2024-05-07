@@ -3,13 +3,13 @@ package courses.concordia.model;
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import javax.persistence.Id;
 
 @Getter
 @Setter
@@ -18,7 +18,7 @@ import java.util.List;
 @Accessors(chain = true)
 @Document(collection = "users")
 public class User implements UserDetails {
-    @MongoId
+    @Id
     private String _id;
     private String username;
     private String email;
