@@ -1,7 +1,7 @@
 package courses.concordia.service;
 
-import courses.concordia.dto.model.course.NotificationDto;
-import courses.concordia.dto.model.course.ReviewDto;
+import courses.concordia.dto.model.notification.NotificationDto;
+import courses.concordia.dto.model.review.ReviewDto;
 
 import java.util.List;
 

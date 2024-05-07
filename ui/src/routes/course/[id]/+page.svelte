@@ -1,6 +1,6 @@
 <script lang="ts">
     import {page} from "$app/stores";
-    import {addAcademicYear, getCurrentTerms} from "$lib/utils";
+    import {addAcademicYear, courseNameToId, getCurrentTerms, instructorNameToUrlParam} from "$lib/utils";
     import {derived, writable} from "svelte/store";
     import type {Review} from "$lib/model/Review";
     import type {Course} from "$lib/model/Course";
@@ -8,15 +8,15 @@
     import {toast} from "svelte-sonner";
     import Loading from "$lib/components/common/loader/Loading.svelte";
     import CourseInfo from "$lib/components/course/CourseInfo.svelte";
-    import CourseReviewPrompt from "$lib/components/course/CourseReviewPrompt.svelte";
-    import ReviewEmptyPrompt from "$lib/components/course/ReviewEmptyPrompt.svelte";
+    import CourseReviewPrompt from "$lib/components/common/ReviewPrompt.svelte";
+    import ReviewEmptyPrompt from "$lib/components/review/ReviewEmptyPrompt.svelte";
     import CourseRequirements from "$lib/components/course/CourseRequirements.svelte";
-    import ReviewFilter from "$lib/components/course/review/ReviewFilter.svelte";
+    import ReviewFilter from "$lib/components/review/ReviewFilter.svelte";
     import SchedulesDisplay from "$lib/components/course/schedule/SchedulesDisplay.svelte";
-    import CourseReview from "$lib/components/course/review/CourseReview.svelte";
-    import EditReviewForm from "$lib/components/course/review/EditReviewForm.svelte";
+    import CourseReview from "$lib/components/review/Review.svelte";
+    import EditReviewForm from "$lib/components/review/EditReviewForm.svelte";
     import type {Interaction} from "$lib/model/Interaction";
-    import AddReviewForm from "$lib/components/course/review/AddReviewForm.svelte";
+    import AddReviewForm from "$lib/components/review/AddReviewForm.svelte";
     import {goto} from "$app/navigation";
     import Seo from "$lib/components/common/Seo.svelte";
 
@@ -53,10 +53,10 @@
                       return;
                   }
 
-                  if (firstFetch) course.set(payload.course);
+                  if (firstFetch) course.set(payload?.course);
 
-                  showingReviews.set(payload.reviews);
-                  allReviews.set(payload.reviews);
+                  showingReviews.set(payload?.reviews);
+                  allReviews.set(payload?.reviews);
 
                   if (user && id) {
                       const courseInteractionsPayload =
@@ -104,7 +104,7 @@
     };
 
     const handleDelete = async (review: Review) => {
-        const res = await repo.deleteReview(review.courseId);
+        const res = await repo.deleteReview(review._id, review.type, review.courseId, review.instructorId);
 
         if (res.ok) {
             showingReviews.set($showingReviews?.filter((r) => r.userId !== review.userId));
@@ -139,17 +139,25 @@
         };
     };
 
-    let sortCriteria = writable('Most Recent');
+    let sortCriteria = writable(['Most Recent', '', '']); // [sortBy, selectedInstructor, selectedCourse]
     function handleSortChange(event) {
         sortCriteria.set(event.detail);
     }
 
     const sortedAndFilteredReviews = derived([allReviews, sortCriteria], ([$allReviews, $sortCriteria]) => {
         if (!$allReviews) return [];
-        return [...$allReviews].sort((a, b) => {
+        return [...$allReviews].filter(
+            (review: Review) =>
+                $sortCriteria[1] === '' ||
+                review.instructorId === instructorNameToUrlParam($sortCriteria[1])
+        ).filter(
+            (review: Review) =>
+                $sortCriteria[2] === '' ||
+                review.courseId === courseNameToId($sortCriteria[2])
+        ).sort((a, b) => {
             const aTime = new Date(a.timestamp).getTime()
             const bTime = new Date(b.timestamp).getTime()
-            switch ($sortCriteria) {
+            switch ($sortCriteria[0]) {
                 case 'Most Recent':
                     return bTime - aTime
                 case 'Least Recent':
@@ -203,7 +211,7 @@
 
                 {#if $allReviews && $allReviews?.length > 0}
                     <div class='mb-2 py-2'>
-                        <ReviewFilter on:sortChanged={handleSortChange} {showAllReviews}/>
+                        <ReviewFilter on:sortChanged={handleSortChange} {showAllReviews} course={$course}/>
                     </div>
                 {:else }
                     <ReviewEmptyPrompt variant='course' isLogin={user !== null}/>
@@ -270,7 +278,7 @@
 
                     {#if $allReviews.length > 0}
                         <div class='my-2'>
-                            <ReviewFilter on:sortChanged={handleSortChange} {showAllReviews}/>
+                            <ReviewFilter on:sortChanged={handleSortChange} {showAllReviews} course={$course}/>
                         </div>
                     {:else }
                         <ReviewEmptyPrompt className="max-sm:p-2" variant='course' isLogin={user !== null}/>
@@ -307,9 +315,9 @@
 
                     </div>
                     {#if !$showAllReviews && $showingReviews.length > numberOfReviewsToShow}
-                        <div class='flex justify-center text-gray-400 dark:text-neutral-500'>
+                        <div class='flex justify-center text-gray-800 dark:text-gray-300'>
                             <button
-                                    class='h-full w-full border border-dashed border-neutral-400 py-2 dark:border-neutral-500'
+                                    class='h-full w-full border border-dashed border-neutral-700 py-2 dark:border-neutral-500'
                                     on:click={() => showAllReviews.set(true)}
                             >
                                 Show all {$showingReviews.length} review(s)

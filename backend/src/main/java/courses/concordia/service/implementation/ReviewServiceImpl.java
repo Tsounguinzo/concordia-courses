@@ -1,13 +1,20 @@
 package courses.concordia.service.implementation;
 
+import com.google.gson.reflect.TypeToken;
 import courses.concordia.dto.mapper.ReviewMapper;
-import courses.concordia.dto.model.course.ReviewDto;
-import courses.concordia.dto.model.course.ReviewFilterDto;
+import courses.concordia.dto.model.review.ReviewDto;
+import courses.concordia.dto.model.review.ReviewFilterDto;
+import courses.concordia.exception.CustomExceptionFactory;
+import courses.concordia.exception.EntityType;
+import courses.concordia.exception.ExceptionType;
+import courses.concordia.model.Course;
+import courses.concordia.model.Instructor;
 import courses.concordia.model.Review;
 import courses.concordia.repository.CourseRepository;
+import courses.concordia.repository.InstructorRepository;
 import courses.concordia.repository.ReviewRepository;
 import courses.concordia.service.ReviewService;
-import courses.concordia.model.Course;
+import courses.concordia.util.JsonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -19,8 +26,12 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -29,8 +40,28 @@ import java.util.stream.Collectors;
 public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
     private final CourseRepository courseRepository;
+    private final InstructorRepository instructorRepository;
     private final MongoTemplate mongoTemplate;
     private final ModelMapper modelMapper;
+    private final static Map<String, Instructor.Course> courseMap = new HashMap<>();
+
+    static {
+        Path jsonFilePath;
+        try {
+            jsonFilePath = Paths.get(ClassLoader.getSystemResource("subject-catalogs.json").toURI());
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+        Map<String, List<String>> coursesData = JsonUtils.getData(jsonFilePath, new TypeToken<Map<String, List<String>>>(){});
+
+        if (coursesData != null) {
+            coursesData.forEach((key, values) -> values.forEach(value -> {
+                String courseKey = key + value;
+                Instructor.Course course = new Instructor.Course(key, value);
+                courseMap.put(courseKey, course);
+            }));
+        }
+    }
 
     /**
      * Adds or updates a review based on the provided ReviewDto.
@@ -40,21 +71,38 @@ public class ReviewServiceImpl implements ReviewService {
      * @return The added or updated review data transfer object.
      */
     @Caching(evict = {
-            @CacheEvict(value = "courseReviewsCache", key = "#reviewDto.courseId"),
-            @CacheEvict(value = "coursesCacheWithFilters", allEntries = true),
-            @CacheEvict(value = "reviewsCacheWithFilters", allEntries = true)
+            @CacheEvict(value = "courseReviewsCache", key = "{#reviewDto.courseId, #reviewDto.type}", condition = "#reviewDto.type.equals('course')"),
+            @CacheEvict(value = "instructorReviewsCache", key = "{#reviewDto.instructorId, #reviewDto.type}", condition = "#reviewDto.type.equals('instructor')"),
+            @CacheEvict(value = "coursesCacheWithFilters", allEntries = true, condition = "#reviewDto.type.equals('course')"),
+            @CacheEvict(value = "instructorsCacheWithFilters", allEntries = true, condition = "#reviewDto.type.equals('instructor')"),
+            @CacheEvict(value = "reviewsCacheWithFilters", allEntries = true),
+            @CacheEvict(value = "instructorsCache", allEntries = true),
     })
+    @Transactional
     @Override
     public ReviewDto addOrUpdateReview(ReviewDto reviewDto) {
-        Review review = reviewRepository
-                .findByCourseIdAndUserId(reviewDto.getCourseId(), reviewDto.getUserId())
-                .map(r -> updateReviewFromDto(r, reviewDto))
-                .orElseGet(() -> createReviewFromDto(reviewDto));
+        Review review;
+        if (reviewDto.getType() != null) {
+            if (reviewDto.getType().equals("instructor")) {
+                review = reviewRepository
+                        .findByInstructorIdAndUserIdAndType(reviewDto.getInstructorId(), reviewDto.getUserId(), reviewDto.getType())
+                        .map(r -> updateReviewFromDto(r, reviewDto))
+                        .orElseGet(() -> createReviewFromDto(reviewDto));
+                updateInstructorRatingCoursesAndTags(review);
+            } else {
+                review = reviewRepository
+                        .findByCourseIdAndUserIdAndType(reviewDto.getCourseId(), reviewDto.getUserId(), reviewDto.getType())
+                        .map(r -> updateReviewFromDto(r, reviewDto))
+                        .orElseGet(() -> createReviewFromDto(reviewDto));
+                updateCourseExperience(review.getCourseId());
+            }
 
-        review = reviewRepository.save(review);
-        updateCourseExperience(review.getCourseId());
+            review = reviewRepository.save(review);
 
-        return ReviewMapper.toDto(review);
+            return ReviewMapper.toDto(review);
+        } else {
+            throw exception();
+        }
     }
 
     /**
@@ -64,7 +112,7 @@ public class ReviewServiceImpl implements ReviewService {
      * @return A new Review entity.
      */
     private Review createReviewFromDto(ReviewDto reviewDto) {
-        return modelMapper.map(reviewDto, Review.class);
+        return reviewRepository.save(modelMapper.map(reviewDto, Review.class));
     }
 
     /**
@@ -76,24 +124,38 @@ public class ReviewServiceImpl implements ReviewService {
      */
     private Review updateReviewFromDto(Review existingReview, ReviewDto reviewDto) {
         modelMapper.map(reviewDto, existingReview);
-        return existingReview;
+        if (reviewDto.getTags().isEmpty()) existingReview.setTags(Collections.emptySet()); // By default, ModelMapper does not map empty collections
+        return reviewRepository.save(existingReview);
     }
 
     /**
      * Deletes a review identified by courseId and userId.
      *
-     * @param courseId The ID of the course.
-     * @param userId The ID of the user.
+     * @param id The ID of the review.
      */
     @Caching(evict = {
-            @CacheEvict(value = "courseReviewsCache", key = "#courseId"),
+            @CacheEvict(value = "courseReviewsCache", key = "{#courseId, 'course'}", condition = "#type.equals('course')"),
+            @CacheEvict(value = "instructorReviewsCache", key = "{#instructorId, 'instructor'}", condition = "#type.equals('instructor')"),
             @CacheEvict(value = "coursesCacheWithFilters", allEntries = true),
-            @CacheEvict(value = "reviewsCacheWithFilters", allEntries = true)
+            @CacheEvict(value = "instructorsCacheWithFilters", allEntries = true),
+            @CacheEvict(value = "reviewsCacheWithFilters", allEntries = true),
+            @CacheEvict(value = "instructorsCache", allEntries = true)
     })
+    @Transactional
     @Override
-    public void deleteReview(String courseId, String userId) {
-        reviewRepository.deleteByCourseIdAndUserId(courseId, userId);
-        updateCourseExperience(courseId);
+    public void deleteReview(String id, String type, String courseId, String instructorId) {
+        Optional<Review> review = reviewRepository.findById(id);
+        if (review.isEmpty() || review.get().getType() == null) {
+            throw exception(id);
+        } else {
+            if (review.get().getType().equals("instructor")){
+                reviewRepository.deleteById(id);
+                updateInstructorRatingCoursesAndTags(review.get());
+            } else {
+                reviewRepository.deleteById(id);
+                updateCourseExperience(review.get().getCourseId());
+            }
+        }
     }
 
     /**
@@ -130,6 +192,19 @@ public class ReviewServiceImpl implements ReviewService {
                 .stream()
                 .map(review -> modelMapper.map(review, ReviewDto.class))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Retrieves a review given its id.
+     *
+     * @param id The ID of the review.
+     * @return A ReviewDto objects representing the target reviews.
+     */
+    @Override
+    public ReviewDto getReviewById(String id) {
+        return reviewRepository.findById(id)
+                .map(ReviewMapper::toDto)
+                .orElseThrow(() -> exception(id));
     }
 
     /**
@@ -191,7 +266,7 @@ public class ReviewServiceImpl implements ReviewService {
      * @param courseId The ID of the course.
      */
     private void updateCourseExperience(String courseId) {
-        List<Review> reviews = reviewRepository.findAllByCourseId(courseId);
+        List<Review> reviews = reviewRepository.findAllByCourseIdAndType(courseId, "course");
         double avgExperience = reviews.stream().mapToInt(Review::getExperience).average().orElse(0.0);
         double avgDifficulty = reviews.stream().mapToInt(Review::getDifficulty).average().orElse(0.0);
         int reviewsCount = reviews.size();
@@ -202,5 +277,36 @@ public class ReviewServiceImpl implements ReviewService {
             course.setReviewCount(reviewsCount);
             courseRepository.save(course);
         }
+    }
+
+    /**
+     * Updates the average rating, difficulty and tags for a prof based on its reviews.
+     *
+     * @param review The review object.
+     */
+    private void updateInstructorRatingCoursesAndTags(Review review){
+        String instructorId = review.getInstructorId();
+        List<Review> reviews = reviewRepository.findAllByInstructorIdAndType(instructorId, "instructor");
+        double avgRating = reviews.stream().mapToInt(Review::getRating).average().orElse(0.0);
+        double avgDifficulty = reviews.stream().mapToInt(Review::getDifficulty).average().orElse(0.0);
+        int reviewsCount = reviews.size();
+        Set<Instructor.Tag> tags = reviews.stream().flatMap(r -> r.getTags().stream()).collect(Collectors.toSet());
+        Set<Instructor.Course> courses = reviews.stream()
+                .map(r -> courseMap.get(r.getCourseId()))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+        Instructor instructor = instructorRepository.findById(instructorId).orElse(null);
+        if (instructor != null) {
+            instructor.setTags(tags);
+            instructor.getCourses().addAll(courses);
+            instructor.setAvgRating(avgRating);
+            instructor.setAvgDifficulty(avgDifficulty);
+            instructor.setReviewCount(reviewsCount);
+            instructorRepository.save(instructor);
+        }
+    }
+
+    private RuntimeException exception(String... args) {
+        return CustomExceptionFactory.throwCustomException(EntityType.REVIEW, ExceptionType.ENTITY_NOT_FOUND, args);
     }
 }

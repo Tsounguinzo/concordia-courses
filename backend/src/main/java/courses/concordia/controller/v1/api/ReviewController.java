@@ -1,9 +1,14 @@
 package courses.concordia.controller.v1.api;
 
-import courses.concordia.dto.model.course.*;
+import courses.concordia.dto.model.review.ReviewDto;
+import courses.concordia.dto.model.review.ReviewFilterDto;
+import courses.concordia.dto.model.review.ReviewPayloadDto;
 import courses.concordia.dto.response.Response;
 import courses.concordia.model.User;
-import courses.concordia.service.*;
+import courses.concordia.service.InteractionService;
+import courses.concordia.service.NotificationService;
+import courses.concordia.service.ReviewService;
+import courses.concordia.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +27,12 @@ public class ReviewController {
     public Response<?> getReviews(@RequestParam String userId) {
         List<ReviewDto> reviews = reviewService.getUserReviews(userId);
         return Response.ok().setPayload(reviews);
+    }
+
+    @GetMapping("/shared")
+    public Response<?> getReview(@RequestParam String id) {
+        ReviewDto review = reviewService.getReviewById(id);
+        return Response.ok().setPayload(review);
     }
 
     @PostMapping("/filter")
@@ -63,9 +74,10 @@ public class ReviewController {
         if(user == null) {
             return Response.unauthorized();
         }
-        reviewService.deleteReview(reviewPayloadDto.getCourseId(), user.get_id());
-        interactionService.deleteInteractions(reviewPayloadDto.getCourseId(), user.get_id());
-        notificationService.deleteNotification(user.get_id(), null, reviewPayloadDto.getCourseId());
+        ReviewDto reviewDto = reviewService.getReviewById(reviewPayloadDto.getId());
+        interactionService.deleteInteractions(reviewPayloadDto.getId(), user.get_id(), reviewDto.getType());
+        notificationService.deleteNotification(user.get_id(), null, reviewDto.getCourseId());
+        reviewService.deleteReview(reviewPayloadDto.getId(), reviewPayloadDto.getType(), reviewPayloadDto.getCourseId(), reviewPayloadDto.getInstructorId());
         return Response.ok().setPayload("Review was deleted successfully");
     }
 }

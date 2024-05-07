@@ -1,7 +1,8 @@
 package courses.concordia.controller.v1.api;
 
-import courses.concordia.dto.model.course.InteractionDto;
-import courses.concordia.dto.model.course.UserInteractionsForCourseDto;
+import courses.concordia.dto.model.interaction.InteractionDto;
+import courses.concordia.dto.model.interaction.UserInteractionsForCourseDto;
+import courses.concordia.dto.model.interaction.UserInteractionsForInstructorDto;
 import courses.concordia.dto.response.Response;
 import courses.concordia.service.InteractionService;
 import lombok.RequiredArgsConstructor;
@@ -16,11 +17,6 @@ import java.util.List;
 @RequestMapping("/api/v1/interactions")
 public class InteractionController {
     private final InteractionService interactionService;
-    @GetMapping
-    public Response<?> getInteractionKind(@RequestParam String courseId, @RequestParam String userId, @RequestParam String referrer) {
-        String kind = interactionService.getInteractionKind(courseId, userId, referrer);
-        return Response.ok().setPayload(kind);
-    }
 
     @GetMapping("/referrer/{referrer}")
     public Response<?> getUserInteraction(@PathVariable String referrer) {
@@ -28,16 +24,16 @@ public class InteractionController {
         return Response.ok().setPayload(interactions);
     }
 
-    @GetMapping("/{courseId}/referrer/{referrer}")
-    public Response<?> getUserInteractionsForCourse(@PathVariable String courseId, @PathVariable String referrer) {
-        log.info("fetching review interactions from {} for course {}", referrer, courseId);
-        List<InteractionDto> interactions = interactionService.getUserInteractionsForCourse(courseId, referrer);
+    @GetMapping("/{id}/referrer/{referrer}")
+    public Response<?> getUserInteractionsForCourseOrInstructor(@PathVariable String id, @PathVariable String referrer, @RequestParam String type) {
+        log.info("fetching review interactions from {} for {}", referrer, id);
+        List<InteractionDto> interactions = interactionService.getUserInteractions(id, referrer, type);
+        Object payload = type.equals("course") ?
+                new UserInteractionsForCourseDto().setCourseId(id).setReferrer(referrer).setInteractions(interactions)
+                : new UserInteractionsForInstructorDto().setInstructorId(id).setReferrer(referrer).setInteractions(interactions);
         return Response
                 .ok()
-                .setPayload(new UserInteractionsForCourseDto()
-                        .setCourseId(courseId)
-                        .setReferrer(referrer)
-                        .setInteractions(interactions));
+                .setPayload(payload);
     }
 
     @PostMapping
@@ -48,7 +44,7 @@ public class InteractionController {
 
     @DeleteMapping
     public Response<?> deleteInteraction(@RequestBody InteractionDto interaction) {
-        interactionService.deleteInteraction(interaction.getCourseId(), interaction.getUserId(), interaction.getReferrer());
+        interactionService.deleteInteraction(interaction);
         return Response.ok().setPayload("Interaction was deleted successfully");
     }
 }

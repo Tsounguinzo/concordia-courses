@@ -1,19 +1,18 @@
 package courses.concordia.service;
 
-import courses.concordia.dto.model.course.InteractionDto;
+import courses.concordia.dto.model.interaction.InteractionDto;
 
 import java.util.List;
 
 public interface InteractionService {
-    String getInteractionKind(String courseId, String userId, String referrer);
-
-    List<InteractionDto> getUserInteractionsForCourse(String courseId, String referrer);
+    List<InteractionDto> getUserInteractions(String id, String referrer, String type);
 
     InteractionDto addOrUpdateInteraction(InteractionDto interactionDto);
 
-    void deleteInteraction(String courseId, String userId, String referrer);
+    void deleteInteraction(InteractionDto interactionDto);
 
-    void deleteInteractions(String courseId, String userId);
+    void deleteInteractions(String id, String userId, String type);
 
     List<InteractionDto> getUserInteractions(String referrer);
+
 }

@@ -1,10 +1,11 @@
 package courses.concordia.model;
 
+import javax.persistence.Id;
+
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 
 @Getter
 @Setter
@@ -12,10 +13,12 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 @Accessors(chain = true)
 @Document(collection = "interactions")
 public class Interaction {
-    @MongoId
+    @Id
     private String _id;
     private InteractionKind kind;
+    private String type;
     private String courseId;
+    private String instructorId;
     private String userId;
     private String referrer;
 

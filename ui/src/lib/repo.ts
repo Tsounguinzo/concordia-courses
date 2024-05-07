@@ -3,10 +3,13 @@ import type {GetCourseReviewsInteractionPayload} from './model/GetCourseReviewsI
 import type {GetCourseWithReviewsPayload} from './model/GetCourseWithReviewsPayload';
 import type {Interaction, InteractionKind} from './model/Interaction';
 import type {Notification} from './model/Notification';
-import type {Review} from './model/Review';
+import type {Review, ReviewType} from './model/Review';
 import type {Subscription} from './model/Subscription';
 import type {User} from './model/User';
 import {backendUrl} from "$lib/constants";
+import type {Instructor} from "$lib/model/Instructor";
+import type {GetInstructorWithReviewsPayload} from "$lib/model/GetInstructorWithReviewsPayload";
+import type {GetInstructorReviewsInteractionPayload} from "$lib/model/GetInstructorReviewsInteractionPayload";
 
 const prefix = '/api/v1';
 
@@ -97,13 +100,30 @@ export const repo = {
         return await client.deserialize<Review[]>('GET', `/reviews?userId=${userId}`);
     },
 
-    async addReview(courseId: string, values: any): Promise<Response> {
+    async getSharedReviews(id: string): Promise<{ review: Review, error: string }> {
+        const backendURL = `${backendUrl}/api/v1/reviews/shared?id=${id}`;
+        const response = await fetch(backendURL);
+        const body = await response.json()
+        return {
+            review: body.payload,
+            error: body.errors?.message
+        };
+    },
+
+    async addReview(courseId: string, instructorId: string, type: ReviewType, values: any): Promise<Response> {
         return await client.post('/reviews', {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-                courseId,
+                type: type,
+                content: values.content,
                 timestamp: new Date(),
-                ...values,
+                difficulty: values.difficulty,
+                courseId: values.course !== '' ? values.course.replaceAll(/[^a-zA-Z0-9]/g, '').toUpperCase() : courseId,
+                instructorId: values.instructor !== '' ? values.instructor.replaceAll(/\s+/g, '-').toLowerCase() : instructorId,
+                experience: values.experience,
+                rating: values.rating,
+                tags: values.tags,
+                schoolId: values.school,
             }),
         });
     },
@@ -113,34 +133,27 @@ export const repo = {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 _id: review._id,
+                type: review.type,
                 content: values.content,
-                courseId: review.courseId,
-                instructor: values.instructor,
-                experience: values.experience,
-                difficulty: values.difficulty,
                 timestamp: new Date(),
+                difficulty: values.difficulty || review.difficulty,
+                courseId: values.course.replaceAll(/[^a-zA-Z0-9]/g, '').toUpperCase() ?? review.courseId,
+                instructorId: values.instructor.replaceAll(/\s+/g, '-').toLowerCase() ?? review.instructorId,
+                experience: values.experience || review.experience,
+                rating: values.rating || review.rating,
+                tags: values.tags,
+                schoolId: values.school,
                 userId: review.userId,
                 likes: review.likes
             }),
         });
     },
 
-    async deleteReview(courseId: string): Promise<Response> {
+    async deleteReview(id: string, type: string, courseId: string, instructorId: string): Promise<Response> {
         return await client.delete('/reviews', {
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({courseId}),
+            body: JSON.stringify({id, type, courseId, instructorId}),
         });
-    },
-
-    async getInteractions(
-        courseId: string,
-        userId: string,
-        referrer: string | undefined
-    ): Promise<InteractionKind> {
-        return await client.deserialize<InteractionKind>(
-            'GET',
-            `/interactions?courseId=${courseId}&userId=${userId}&referrer=${referrer}`
-        );
     },
 
     async getUserInteractionsForCourse(
@@ -149,7 +162,17 @@ export const repo = {
     ): Promise<GetCourseReviewsInteractionPayload> {
         return await client.deserialize<GetCourseReviewsInteractionPayload>(
             'GET',
-            `/interactions/${courseId}/referrer/${referrer}`
+            `/interactions/${courseId}/referrer/${referrer}?type=course`
+        );
+    },
+
+    async getUserInteractionsForInstructor(
+        instructorId: string,
+        referrer: string
+    ): Promise<GetInstructorReviewsInteractionPayload> {
+        return await client.deserialize<GetInstructorReviewsInteractionPayload>(
+            'GET',
+            `/interactions/${instructorId}/referrer/${referrer}?type=instructor`
         );
     },
 
@@ -165,14 +188,18 @@ export const repo = {
     async addOrUpdateInteraction(
         kind: InteractionKind,
         courseId: string,
+        instructorId: string,
         userId: string,
-        referrer: string | undefined
+        referrer: string | undefined,
+        type: ReviewType
     ): Promise<Response> {
-        return await client.post('/interactions', {
+        return await client.post(`/interactions`, {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 kind,
+                type,
                 courseId,
+                instructorId,
                 userId,
                 referrer,
             }),
@@ -182,12 +209,16 @@ export const repo = {
     async removeInteraction(
         courseId: string,
         userId: string,
-        referrer: string | undefined
+        instructorId: string,
+        referrer: string | undefined,
+        type: ReviewType
     ): Promise<Response> {
-        return await client.delete('/interactions', {
+        return await client.delete(`/interactions`, {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
+                type,
                 courseId,
+                instructorId,
                 userId,
                 referrer,
             }),
@@ -232,6 +263,15 @@ export const repo = {
         );
     },
 
+    async getInstructorWithReviews(
+        id: string | undefined
+    ): Promise<GetInstructorWithReviewsPayload | null> {
+        return await client.deserialize<GetInstructorWithReviewsPayload | null>(
+            'GET',
+            `/instructors/${id}?with_reviews=true`
+        );
+    },
+
     async getCourses(
         limit: number,
         offset: number,
@@ -240,6 +280,23 @@ export const repo = {
         return await client.deserialize<Course[]>(
             'POST',
             `/courses/filter?limit=${limit}&offset=${offset}`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(filters),
+            }
+        );
+    },
+
+    async getInstructors(
+        limit: number,
+        offset: number,
+        filters: any
+    ): Promise<Instructor[]> {
+        return await client.deserialize<Instructor[]>(
+            'POST',
+            `/instructors/filter?limit=${limit}&offset=${offset}`,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -325,7 +382,7 @@ export const repo = {
         const body = await response.json()
         return {
             username: body.payload,
-            error: body.errors
+            error: body.errors?.message
         };
     },
 

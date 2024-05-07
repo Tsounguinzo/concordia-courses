@@ -1,8 +1,8 @@
 package courses.concordia.controller.v1.api;
 
-import courses.concordia.dto.model.course.DeleteNotificationDto;
-import courses.concordia.dto.model.course.NotificationDto;
-import courses.concordia.dto.model.course.UpdateNotificationDto;
+import courses.concordia.dto.model.notification.DeleteNotificationDto;
+import courses.concordia.dto.model.notification.NotificationDto;
+import courses.concordia.dto.model.notification.UpdateNotificationDto;
 import courses.concordia.dto.response.Response;
 import courses.concordia.model.User;
 import courses.concordia.service.NotificationService;

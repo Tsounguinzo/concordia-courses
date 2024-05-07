@@ -1,6 +1,7 @@
 import type {Schedule} from './model/Schedule';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import type {Review} from "$lib/model/Review";
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
@@ -52,7 +53,22 @@ export const sortSchedulesByBlocks = (schedules: Schedule[]) => {
 };
 
 export const courseIdToUrlParam = (courseId: string) =>
-    `${courseId.slice(0, 4)}-${courseId.slice(4)}`.toLowerCase();
+    `${courseId?.slice(0, 4)}-${courseId?.slice(4)}`.toLowerCase();
+
+export const instructorIdToUrlParam = (firstName: string, lastName: string) =>
+    `${firstName}-${lastName}`.replaceAll(' ', '-').toLowerCase();
+
+export const instructorNameToUrlParam = (name: string) =>
+    name.replaceAll(' ', '-').toLowerCase();
+
+export const instructorIdToName = (id: string) =>
+    id?.split('-').map(capitalize).join(' ');
+
+export const courseNameToId = (name: string) =>
+    name.replaceAll(/[^a-zA-Z0-9]/g, '').toUpperCase();
+
+export const schoolIdToName = (id: string) =>
+    id?.split('-').map(capitalize).join(' ');
 
 export const capitalize = (s: string): string =>
     s.charAt(0).toUpperCase() + s.slice(1);
@@ -60,15 +76,12 @@ export const capitalize = (s: string): string =>
 export const punctuate = (s: string): string =>
     s.charAt(s.length - 1) === '.' ? s : `${s}.`;
 
-export const isValidCourseCode = (s: string) =>
-    /^(([A-Z0-9]){4} [0-9]{3,4})$/.test(s);
-
 export const spliceCourseCode = (courseCode: string, delimiter: string) => {
-    const firstIntIndex = courseCode.search(/\d/);
-    if (firstIntIndex === -1) {
+    const firstIntIndex = courseCode?.search(/\d/);
+    if (firstIntIndex === undefined || firstIntIndex === -1) {
         return courseCode;
     }
-    return courseCode.slice(0, firstIntIndex) + delimiter + courseCode.slice(firstIntIndex);
+    return courseCode?.slice(0, firstIntIndex) + delimiter + courseCode?.slice(firstIntIndex);
 }
 
 export const round2Decimals = (n: number) => Math.round(n * 100) / 100;
@@ -141,3 +154,37 @@ export const experienceToIcon = (experience: number): [string, string] => {
         return ['text-blue-500', '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-loader"><line x1="12" x2="12" y1="2" y2="6"/><line x1="12" x2="12" y1="18" y2="22"/><line x1="4.93" x2="7.76" y1="4.93" y2="7.76"/><line x1="16.24" x2="19.07" y1="16.24" y2="19.07"/><line x1="2" x2="6" y1="12" y2="12"/><line x1="18" x2="22" y1="12" y2="12"/><line x1="4.93" x2="7.76" y1="19.07" y2="16.24"/><line x1="16.24" x2="19.07" y1="7.76" y2="4.93"/></svg>']
     }
 }
+
+export function determineReviewFor(review: Review) {
+    switch (review.type) {
+        case 'course':
+            return spliceCourseCode(review.courseId, ' ');
+        case 'instructor':
+            return instructorIdToName(review.instructorId);
+        case 'school':
+            return schoolIdToName(review.schoolId);
+        default:
+            return 'Unknown';
+    }
+}
+
+export const timeFrame = (date: Date) => {
+    const seconds = Math.floor((new Date().valueOf() - date.valueOf()) / 1000);
+
+    let interval = Math.floor(seconds / 31536000);
+    if (interval > 1) return interval + ' years ago';
+
+    interval = Math.floor(seconds / 2592000);
+    if (interval > 1) return interval + ' months ago';
+
+    interval = Math.floor(seconds / 86400);
+    if (interval > 1) return interval + ' days ago';
+
+    interval = Math.floor(seconds / 3600);
+    if (interval > 1) return interval + ' hours ago';
+
+    interval = Math.floor(seconds / 60);
+    if (interval > 1) return interval + ' minutes ago';
+
+    return seconds === 0 ? 'now' : Math.floor(seconds) + ' seconds ago';
+};

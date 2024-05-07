@@ -1,7 +1,7 @@
 package courses.concordia.service.implementation;
 
 import courses.concordia.dto.mapper.SubscriptionMapper;
-import courses.concordia.dto.model.course.SubscriptionDto;
+import courses.concordia.dto.model.subscription.SubscriptionDto;
 import courses.concordia.exception.CustomExceptionFactory;
 import courses.concordia.exception.EntityType;
 import courses.concordia.exception.ExceptionType;

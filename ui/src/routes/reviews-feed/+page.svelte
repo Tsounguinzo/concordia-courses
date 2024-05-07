@@ -12,10 +12,11 @@
     import {onMount} from "svelte";
     import FeedFilter from "$lib/components/common/filter/FeedFilter.svelte";
     import type {Review} from "$lib/model/Review";
-    import CourseReview from "$lib/components/course/review/CourseReview.svelte";
+    import CourseReview from "$lib/components/review/Review.svelte";
     import {type Interaction} from "$lib/model/Interaction";
     import {page} from "$app/stores";
     import {spliceCourseCode} from "$lib/utils";
+    import {instructorIdToName} from "$lib/utils.js";
 
     type SortByType = (typeof feedSortByOptions)[number];
 
@@ -39,7 +40,7 @@
     let reviews: Review[];
     let hasMore = true;
     let offset = limit;
-    const sortBy = writable<SortByType>('');
+    const sortBy = writable<SortByType>('New');
     let isMounted = false;
     let previousState = '';
     const userInteractions = writable<Interaction[] | undefined>([]);
@@ -126,7 +127,7 @@
                 <FeedFilter {sortBy}/>
                 {#each reviews as review (review._id)}
                     <CourseReview
-                            courseName={spliceCourseCode(review?.courseId, " ")}
+                            title={review?.type === 'instructor' ? instructorIdToName(review?.instructorId) : spliceCourseCode(review?.courseId, " ")}
                             interactions={$userInteractions}
                             updateLikes={updateLikes(review)}
                             className='rounded-md my-1.5'

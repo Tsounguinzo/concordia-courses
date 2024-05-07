@@ -2,7 +2,7 @@ import type {Course} from "$lib/model/Course";
 
 export type CourseData = Pick<
   Course,
-  '_id' | 'subject' | 'title' | 'catalog'
+  '_id' | 'subject' | 'title' | 'catalog' | 'instructors'
 >;
 
 export interface RequestOptions {
@@ -11,15 +11,32 @@ export interface RequestOptions {
         body?: string;
 }
 
-export const sortByOptions = [
+export const allSortByOptions = [
         '',
         'Best Experience',
+        'Best Rating',
         'Worst Experience',
+        'Worst Rating',
         'Easiest',
         'Hardest',
         'Most Reviews',
         'Least Reviews',
     ] as const;
+
+export const getSortByOptions = (instructorsModeOn: boolean) => {
+        const sortOptions: { [key: string]: boolean } = {
+                'Best Rating': instructorsModeOn,
+                'Worst Rating': instructorsModeOn,
+                'Best Experience': !instructorsModeOn,
+                'Worst Experience': !instructorsModeOn,
+                'Easiest': true,
+                'Hardest': true,
+                'Most Reviews': true,
+                'Least Reviews': true,
+        };
+
+        return ['', ...Object.keys(sortOptions).filter(option => sortOptions[option])];
+};
 
 export const feedSortByOptions = [
         '',

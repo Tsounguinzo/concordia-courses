@@ -1,6 +1,6 @@
 package courses.concordia.dto.mapper;
 
-import courses.concordia.dto.model.course.NotificationDto;
+import courses.concordia.dto.model.notification.NotificationDto;
 import courses.concordia.model.Notification;
 
 public class NotificationMapper {

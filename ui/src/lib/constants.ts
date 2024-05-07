@@ -3,8 +3,8 @@ export const highlightResultStyle = 'bg-blue-50 border-l-blue-500 border-l-4 dar
 export const navigationItems = [
   { name: 'Home', href: '/' },
   { name: 'Explore', href: '/explore' },
-  { name: 'About', href: '/about' },
   { name: 'Reviews', href: '/reviews-feed' },
+  { name: 'About', href: '/about' },
 ];
 
 export const backendUrl = import.meta.env.VITE_BACKEND_URL ?? 'http://localhost:8080';

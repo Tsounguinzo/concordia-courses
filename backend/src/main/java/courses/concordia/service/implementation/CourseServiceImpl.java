@@ -2,7 +2,7 @@ package courses.concordia.service.implementation;
 
 import courses.concordia.dto.model.course.CourseDto;
 import courses.concordia.dto.model.course.CourseReviewsDto;
-import courses.concordia.dto.model.course.ReviewDto;
+import courses.concordia.dto.model.review.ReviewDto;
 import courses.concordia.exception.CustomExceptionFactory;
 import courses.concordia.exception.EntityType;
 import courses.concordia.exception.ExceptionType;
@@ -96,13 +96,13 @@ public class CourseServiceImpl implements CourseService {
      * @param id The unique identifier for the course.
      * @return A {@link CourseReviewsDto} object containing the course and its reviews.
      */
-    @Cacheable(value = "courseReviewsCache", key = "#id")
+    @Cacheable(value = "courseReviewsCache", key = "{#id, 'course'}")
     @Override
     public CourseReviewsDto getCourseAndReviewsById(String id) {
         log.info("Retrieving course and reviews with ID {}", id);
         CourseDto course = getCourseById(id);
 
-        Query query = new Query(Criteria.where("courseId").is(id)).with(Sort.by(Sort.Direction.DESC, "timestamp"));
+        Query query = new Query(Criteria.where("courseId").is(id).and("type").is("course")).with(Sort.by(Sort.Direction.DESC, "timestamp"));
         List<ReviewDto> reviews = mongoTemplate.find(query, Review.class)
                 .stream()
                 .map(review -> modelMapper.map(review, ReviewDto.class))

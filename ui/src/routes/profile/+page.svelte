@@ -1,6 +1,6 @@
 <script lang="ts">
-    import DeleteButton from "$lib/components/course/review/DeleteButton.svelte";
-    import CourseReview from "$lib/components/course/review/CourseReview.svelte";
+    import DeleteButton from "$lib/components/review/DeleteButton.svelte";
+    import CourseReview from "$lib/components/review/Review.svelte";
     import JumpToTopButton from "$lib/components/common/JumpToTopButton.svelte";
     import {Bell, FileText, Info, User} from "lucide-svelte";
     import {writable} from "svelte/store";
@@ -21,6 +21,7 @@
     import VerificationPrompt from "$lib/components/profile/VerificationPrompt.svelte";
     import {darkModeOn} from "$lib/darkmode";
     import Skeleton from "$lib/components/common/loader/Skeleton.svelte";
+    import {instructorIdToName} from "$lib/utils.js";
 
     const user = $page.data.user;
     let isMouseEntered = false;
@@ -114,7 +115,7 @@
                             translateZ="50"
                             className="text-gray-700 dark:text-gray-300"
                     >
-                        {`${$userReviews?.length} review${$userReviews?.length === 1 ? '' : 's'}`}
+                        {`${$userReviews?.length ?? 'No'} review${$userReviews?.length === 1 ? '' : 's'}`}
                     </CardItem>
                 </div>
                 <div class='flex items-center gap-x-1'>
@@ -130,7 +131,7 @@
                             translateZ="50"
                             className="text-gray-700 dark:text-gray-300"
                     >
-                        {`${$userSubscriptions?.length} subscription${$userSubscriptions?.length === 1 ? '' : 's'}`}
+                        {`${$userSubscriptions?.length ?? 'No'} subscription${$userSubscriptions?.length === 1 ? '' : 's'}`}
                     </CardItem>
                 </div>
             </CardBody>
@@ -168,10 +169,17 @@
                         {#if $userReviews.length}
                             {#each $userReviews.sort((a, b) => a.timestamp - b.timestamp) as review, i (i)}
                                 <div class='flex mt-10'>
-                                    <a href={`/course/${courseIdToUrlParam(review.courseId)}`}
-                                       class='text-xl font-bold text-gray-700 duration-200 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-500'>
-                                        {spliceCourseCode(review.courseId, ' ')}
-                                    </a>
+                                    {#if review.type === 'instructor'}
+                                        <a href={`/instructor/${review.instructorId}`}
+                                           class='text-xl font-bold text-gray-700 duration-200 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-500'>
+                                            {instructorIdToName(review.instructorId)}
+                                        </a>
+                                    {:else }
+                                        <a href={`/course/${courseIdToUrlParam(review.courseId)}`}
+                                           class='text-xl font-bold text-gray-700 duration-200 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-500'>
+                                            {spliceCourseCode(review.courseId, ' ')}
+                                        </a>
+                                    {/if}
                                 </div>
                                 <div class='my-2 rounded-lg border-gray-800 duration-300 ease-in-out'>
                                     <CourseReview
@@ -187,7 +195,7 @@
                                 <div class='text-center text-sm text-gray-600 dark:text-gray-500'>
                                     No reviews in sight! <a href="/explore"
                                                             class="underline text-blue-400 font-semibold">Find a
-                                    course</a> and leave your feedback.
+                                    course or instructor</a> and leave your feedback.
                                 </div>
                             </div>
                         {/if}
