@@ -5,7 +5,7 @@
     import {toast} from "svelte-sonner";
     import {Bell, BellOff} from "lucide-svelte";
     import CourseTerms from "$lib/components/common/CourseTerms.svelte";
-    import CourseInfoStats from "$lib/components/course/stats/CourseInfoStats.svelte";
+    import CourseInfoStats from "$lib/components/common/stats/InfoStats.svelte";
     import {onMount} from "svelte";
     import {page} from "$app/stores";
     import {experienceToIcon} from "$lib/utils";

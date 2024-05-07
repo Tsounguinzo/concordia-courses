@@ -3,7 +3,7 @@
     import Highlight from "$lib/components/common/Highlight.svelte";
     import {twMerge} from "tailwind-merge";
     import type {Instructor} from "$lib/model/Instructor";
-    import InstructorTags from "$lib/components/common/InstructorTags.svelte";
+    import InstructorTags from "$lib/components/instructor/InstructorTags.svelte";
 
     export let instructor: Instructor;
     export let className: string;

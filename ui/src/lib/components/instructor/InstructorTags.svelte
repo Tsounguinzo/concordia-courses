@@ -4,7 +4,7 @@
     } from "$lib/utils";
     import {X} from "lucide-svelte";
     import {twMerge} from "tailwind-merge";
-    import Highlight from "./Highlight.svelte";
+    import Highlight from "../common/Highlight.svelte";
     import type {Instructor} from "$lib/model/Instructor";
 
     export let instructor: Instructor;

@@ -40,7 +40,7 @@
     let reviews: Review[];
     let hasMore = true;
     let offset = limit;
-    const sortBy = writable<SortByType>('');
+    const sortBy = writable<SortByType>('New');
     let isMounted = false;
     let previousState = '';
     const userInteractions = writable<Interaction[] | undefined>([]);

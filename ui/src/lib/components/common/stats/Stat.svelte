@@ -1,5 +1,4 @@
 <script lang="ts">
-    import {twMerge} from "tailwind-merge";
     import FillBar from "./FillBar.svelte";
     import {Flame, Star} from "lucide-svelte";
 
