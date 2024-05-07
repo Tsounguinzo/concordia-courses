@@ -186,5 +186,5 @@ export const timeFrame = (date: Date) => {
     interval = Math.floor(seconds / 60);
     if (interval > 1) return interval + ' minutes ago';
 
-    return Math.floor(seconds) + ' seconds ago';
+    return seconds === 0 ? 'now' : Math.floor(seconds) + ' seconds ago';
 };

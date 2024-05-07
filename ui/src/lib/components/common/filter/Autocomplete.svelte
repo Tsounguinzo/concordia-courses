@@ -54,7 +54,7 @@
                     on:after-leave={() => combobox.reset()}
             >
                 <ul use:combobox.items
-                    class='autocomplete absolute max-h-80 w-full max-w-[240px] overflow-scroll rounded-md text-sm shadow-md'>
+                    class='scrollbar-hide autocomplete absolute max-h-80 w-full max-w-[240px] overflow-scroll rounded-md text-sm shadow-md'>
                     {#each filtered as value}
                         {@const active = $combobox.active === value}
                         <li use:combobox.item={{ value }}

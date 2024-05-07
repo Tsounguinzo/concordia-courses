@@ -72,7 +72,7 @@
                     leaveTo='transform scale-95 opacity-0'
             >
                 <ul use:combobox.items
-                    class='autocomplete absolute max-h-80 w-full max-w-[240px] overflow-scroll rounded-md text-sm shadow-md'>
+                    class='scrollbar-hide autocomplete absolute max-h-80 w-full max-w-[240px] overflow-scroll rounded-md text-sm shadow-md'>
                     {#each filtered as value, i (i)}
                         {@const active = $combobox.active === value}
                         {@const selected = $combobox.selected.includes(value)}

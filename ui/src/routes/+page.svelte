@@ -39,14 +39,14 @@
         <div class='hidden sm:mb-8 sm:flex sm:justify-center'></div>
         <div class='text-center'>
             <h1 class='mb-6 py-3 text-left text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-200 md:text-5xl'>
-                Share and explore student insights on courses and instructors @ Concordia.
+                Give, Share and explore reviews on instructors and courses @ Concordia.
             </h1>
             <div class='flex flex-col gap-6 text-center'>
             <CourseSearchBar
                     results={$searchResults}
                     handleInputChange={handleInputChange}
             />
-                <a href="/reviews-feed" class='mx-auto cursor-pointer text-sm text-gray-500 underline underline-offset-4 hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-500 md:text-base'>
+                <a href="/reviews-feed" class='mx-auto cursor-pointer text-sm text-gray-800 underline underline-offset-4 hover:text-gray-500 dark:text-gray-400 dark:hover:text-gray-500 md:text-base'>
                     Explore reviews feed <span aria-hidden='true'>&rarr;</span>
                 </a>
             </div>

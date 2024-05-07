@@ -297,7 +297,7 @@ public class ReviewServiceImpl implements ReviewService {
         Instructor instructor = instructorRepository.findById(instructorId).orElse(null);
         if (instructor != null) {
             instructor.setTags(tags);
-            instructor.setCourses(courses);
+            instructor.getCourses().addAll(courses);
             instructor.setAvgRating(avgRating);
             instructor.setAvgDifficulty(avgDifficulty);
             instructor.setReviewCount(reviewsCount);

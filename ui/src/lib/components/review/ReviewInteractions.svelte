@@ -23,10 +23,15 @@
     let {courseId, instructorId, userId, likes} = review;
     $: ({courseId, instructorId, userId, likes} = review);
 
-    let promptAccountVerification = false;
-    const displayAccountVerificationPrompt = () => {
-        promptAccountVerification = true;
-        setTimeout(() => promptAccountVerification = false, 3000);
+    let prompt = false;
+    let promptMessage = '';
+    const displayPrompt = (message: string) => {
+        promptMessage = message;
+        prompt = true;
+        setTimeout(() => {
+            prompt = false;
+            promptMessage  = '';
+        }, 3000);
     };
 
     const getUserInteractionKind = (interactions: Interaction[]): InteractionKind | undefined => {
@@ -54,7 +59,12 @@
         }
 
         if (!user?.verified) {
-            displayAccountVerificationPrompt();
+            displayPrompt("Verify your account");
+            return;
+        }
+
+        if (user?.id === userId) {
+            displayPrompt("you cant like your review");
             return;
         }
 
@@ -88,7 +98,7 @@
 </script>
 
 <div class='mb-0.5 flex items-center'>
-    <Tooltip text="Verify your account" show={promptAccountVerification} offset={{x: 0, y: -15}}/>
+    <Tooltip text={promptMessage} show={prompt} offset={{x: 0, y: -15}}/>
     <button on:click={handleLike} class='flex h-8 w-8 items-center justify-center rounded-md text-gray-700 focus:outline-none dark:text-white'>
         <ThumbsUp
                 class={twMerge(

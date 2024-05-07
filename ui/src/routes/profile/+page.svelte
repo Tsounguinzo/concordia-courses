@@ -195,7 +195,7 @@
                                 <div class='text-center text-sm text-gray-600 dark:text-gray-500'>
                                     No reviews in sight! <a href="/explore"
                                                             class="underline text-blue-400 font-semibold">Find a
-                                    course</a> and leave your feedback.
+                                    course or instructor</a> and leave your feedback.
                                 </div>
                             </div>
                         {/if}
