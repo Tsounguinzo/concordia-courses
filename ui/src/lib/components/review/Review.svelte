@@ -5,7 +5,13 @@
     import DeleteButton from "./DeleteButton.svelte";
     import {Edit, Pin} from "lucide-svelte";
     import LoginPrompt from "./LoginPrompt.svelte";
-    import {courseIdToUrlParam, determineReviewFor, instructorIdToName, spliceCourseCode} from "$lib/utils.js";
+    import {
+        courseIdToUrlParam,
+        determineReviewFor,
+        instructorIdToName,
+        spliceCourseCode,
+        timeFrame
+    } from "$lib/utils.js";
     import type {Review} from "$lib/model/Review";
     import type {Writable} from "svelte/store";
     import {writable} from "svelte/store";
@@ -52,11 +58,16 @@
                             </div>
                         {/if}
                         <Tooltip {show} text={longDate}>
-                            <p class='cursor-default text-xs font-medium text-gray-700 dark:text-gray-300'
-                               on:mouseenter={() => show = true}
-                               on:mouseleave={() => show = false}>
-                                {shortDate}
-                            </p>
+                            <div class="flex flex-col gap-y-1">
+                                <p class='cursor-default text-xs font-medium text-gray-700 dark:text-gray-300'
+                                   on:mouseenter={() => show = true}
+                                   on:mouseleave={() => show = false}>
+                                    {shortDate}
+                                </p>
+                                <p class='cursor-default text-xs font-medium text-gray-700 dark:text-gray-300'>
+                                    {timeFrame(new Date(review.timestamp ?? Date.now()))}
+                                </p>
+                            </div>
                         </Tooltip>
                     </div>
                     {#if canModify}

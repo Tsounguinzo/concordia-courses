@@ -1,6 +1,6 @@
 <script lang="ts">
     import {page} from "$app/stores";
-    import {courseIdToUrlParam, instructorIdToName} from "$lib/utils";
+    import {courseIdToUrlParam, courseNameToId, instructorIdToName, instructorNameToUrlParam} from "$lib/utils";
     import {derived, writable} from "svelte/store";
     import type {Review} from "$lib/model/Review";
     import {repo} from "$lib/repo";
@@ -124,7 +124,7 @@
         };
     };
 
-    let sortCriteria = writable('Most Recent');
+    let sortCriteria = writable(['Most Recent', '', '']); // [sortBy, selectedInstructor, selectedCourse]
 
     function handleSortChange(event) {
         sortCriteria.set(event.detail);
@@ -132,10 +132,18 @@
 
     const sortedAndFilteredReviews = derived([allReviews, sortCriteria], ([$allReviews, $sortCriteria]) => {
         if (!$allReviews) return [];
-        return [...$allReviews].sort((a, b) => {
+        return [...$allReviews].filter(
+            (review: Review) =>
+                $sortCriteria[1] === '' ||
+                review.instructorId === instructorNameToUrlParam($sortCriteria[1])
+        ).filter(
+            (review: Review) =>
+                $sortCriteria[2] === '' ||
+                review.courseId === courseNameToId($sortCriteria[2])
+        ).sort((a, b) => {
             const aTime = new Date(a.timestamp).getTime()
             const bTime = new Date(b.timestamp).getTime()
-            switch ($sortCriteria) {
+            switch ($sortCriteria[0]) {
                 case 'Most Recent':
                     return bTime - aTime
                 case 'Least Recent':

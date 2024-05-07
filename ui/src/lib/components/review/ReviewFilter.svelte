@@ -32,13 +32,12 @@
 
     const dispatch = createEventDispatcher();
 
-    $: if (sortBy) {
+    $: if (sortBy || selectedInstructor || selectedCourse) {
         showAllReviews.set(false);
-        dispatch('sortChanged', $sortBy);
+        dispatch('sortChanged', [$sortBy, $selectedInstructor, $selectedCourse]);
     }
 
     function resetFilters() {
-        sortBy.set('Most Recent')
         reset = true;
 
         setTimeout(() => {
@@ -73,7 +72,8 @@
                                 </h2>
                                 <div class='relative z-10'>
                                     <Autocomplete
-                                            options={course?.instructors}
+                                            {reset}
+                                            options={['', ...course?.instructors]}
                                             storeValue={selectedInstructor}
                                     />
                                 </div>
@@ -87,7 +87,8 @@
                                 </h2>
                                 <div class='relative z-10'>
                                     <Autocomplete
-                                            options={instructor?.courses.map(c => c.subject + ' ' + c.catalog)}
+                                            {reset}
+                                            options={['', ...instructor?.courses.map(c => c.subject + ' ' + c.catalog)]}
                                             storeValue={selectedCourse}
                                     />
                                 </div>

@@ -10,6 +10,7 @@
     import {spliceCourseCode} from "$lib/utils";
     import {page} from "$app/stores";
     import {instructorIdToName} from "$lib/utils.js";
+    import Tooltip from "$lib/components/common/Tooltip.svelte";
 
     export let review: Review;
     export let interactions: Interaction[];
@@ -22,8 +23,15 @@
     let {courseId, instructorId, userId, likes} = review;
     $: ({courseId, instructorId, userId, likes} = review);
 
+    let promptAccountVerification = false;
+    const displayAccountVerificationPrompt = () => {
+        promptAccountVerification = true;
+        setTimeout(() => promptAccountVerification = false, 3000);
+    };
+
     const getUserInteractionKind = (interactions: Interaction[]): InteractionKind | undefined => {
-        const interaction = interactions.find((interaction: Interaction) => interaction.userId === userId && interaction.courseId === courseId);
+        const interaction = review.type === 'course'? interactions.find((interaction: Interaction) => interaction.userId === userId && interaction.courseId === courseId && interaction.type === 'course') :
+            interactions.find((interaction: Interaction) => interaction.userId === userId && interaction.instructorId === instructorId && interaction.type === 'instructor')
         return interaction?.kind;
     };
 
@@ -42,6 +50,11 @@
     const updateInteraction = async (interactionKind: InteractionKind | 'remove') => {
         if (!user) {
             displayLoginPrompt();
+            return;
+        }
+
+        if (!user?.verified) {
+            displayAccountVerificationPrompt();
             return;
         }
 
@@ -75,6 +88,7 @@
 </script>
 
 <div class='mb-0.5 flex items-center'>
+    <Tooltip text="Verify your account" show={promptAccountVerification} offset={{x: 0, y: -15}}/>
     <button on:click={handleLike} class='flex h-8 w-8 items-center justify-center rounded-md text-gray-700 focus:outline-none dark:text-white'>
         <ThumbsUp
                 class={twMerge(

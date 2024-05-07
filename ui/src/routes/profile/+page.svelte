@@ -115,7 +115,7 @@
                             translateZ="50"
                             className="text-gray-700 dark:text-gray-300"
                     >
-                        {`${$userReviews?.length} review${$userReviews?.length === 1 ? '' : 's'}`}
+                        {`${$userReviews?.length ?? 'No'} review${$userReviews?.length === 1 ? '' : 's'}`}
                     </CardItem>
                 </div>
                 <div class='flex items-center gap-x-1'>
@@ -131,7 +131,7 @@
                             translateZ="50"
                             className="text-gray-700 dark:text-gray-300"
                     >
-                        {`${$userSubscriptions?.length} subscription${$userSubscriptions?.length === 1 ? '' : 's'}`}
+                        {`${$userSubscriptions?.length ?? 'No'} subscription${$userSubscriptions?.length === 1 ? '' : 's'}`}
                     </CardItem>
                 </div>
             </CardBody>
