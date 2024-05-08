@@ -140,7 +140,7 @@ The MongoDB database is hosted on an M0 tier AWS cluster via [MongoDB Atlas](htt
 
 #### Spring Boot Backend Hosting on Railway
 
-The Spring Boot backend application is hosted on [Railway](https://railway.app). This setup provides the flexibility needed for server-side operations and allows for custom configurations as required. The server runs the Spring Boot JAR file, with environment variables configured for database and Redis connections.
+The spring boot backend application is hosted on [Railway](https://railway.app). This setup provides the flexibility needed for server-side operations and allows for custom configurations as required. The server runs the Spring Boot JAR file, with environment variables configured for database and Redis connections.
 
 #### Redis Hosting on Redis Cloud
 
