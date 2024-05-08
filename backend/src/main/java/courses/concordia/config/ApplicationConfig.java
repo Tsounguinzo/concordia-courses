@@ -1,6 +1,7 @@
 package courses.concordia.config;
 
 
+import courses.concordia.json.IsoOffsetDateTimeToDateConverter;
 import courses.concordia.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -53,6 +54,7 @@ public class ApplicationConfig {
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
+        modelMapper.addConverter(new IsoOffsetDateTimeToDateConverter());
         modelMapper.getConfiguration()
                 .setFieldMatchingEnabled(true)
                 .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE)
