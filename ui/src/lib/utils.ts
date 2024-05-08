@@ -64,10 +64,10 @@ export const courseIdToUrlParam = (courseId: string) =>
     `${courseId?.slice(0, 4)}-${courseId?.slice(4)}`.toLowerCase();
 
 export const instructorIdToUrlParam = (firstName: string, lastName: string) =>
-    `${firstName}-${lastName}`.replaceAll(' ', '-').toLowerCase();
+    `${firstName}-${lastName}`.replaceAll(/\s+/g, '-').toLowerCase();
 
 export const instructorNameToUrlParam = (name: string) =>
-    name.replaceAll(' ', '-').toLowerCase();
+    name.replaceAll(/\s+/g, '-').toLowerCase();
 
 export const instructorIdToName = (id: string) =>
     id?.split('-').map(capitalize).join(' ');

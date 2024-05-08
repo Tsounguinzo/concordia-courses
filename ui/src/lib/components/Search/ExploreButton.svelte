@@ -17,6 +17,6 @@
         )}
     >
         <Layers class='dark:text-gray-200'/>
-        <div class='z-50 ml-2 dark:text-gray-200'>Explore all courses</div>
+        <div class='z-50 ml-2 dark:text-gray-200'>Explore all courses and instructors</div>
     </div>
 </a>
