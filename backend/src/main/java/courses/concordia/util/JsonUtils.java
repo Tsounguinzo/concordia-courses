@@ -1,17 +1,23 @@
 package courses.concordia.util;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+
+import courses.concordia.json.LocalDateTimeTypeAdapter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
 import java.lang.reflect.Type;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
 
 @Slf4j
 public class JsonUtils {
-    private static final Gson gson = new Gson();
+    private static final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter())
+            .create();
 
     public static <T> T getData(Path jsonFilePath, TypeToken<T> typeToken) {
         try (Reader reader = new FileReader(jsonFilePath.toFile())) {
