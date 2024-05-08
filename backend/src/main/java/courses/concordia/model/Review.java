@@ -14,6 +14,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import javax.persistence.Id;
 import java.util.Set;
@@ -29,7 +30,7 @@ import java.time.LocalDateTime;
 @Document(collection = "reviews")
 public class Review {
     // common fields
-    @Id
+    @MongoId
     private String _id;
     private String type; // course, instructor, school
     private String content;

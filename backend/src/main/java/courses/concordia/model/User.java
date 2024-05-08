@@ -3,6 +3,7 @@ package courses.concordia.model;
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +19,7 @@ import javax.persistence.Id;
 @Accessors(chain = true)
 @Document(collection = "users")
 public class User implements UserDetails {
-    @Id
+    @MongoId
     private String _id;
     private String username;
     private String email;

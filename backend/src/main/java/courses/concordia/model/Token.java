@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.time.LocalDateTime;
 import javax.persistence.Id;
@@ -18,7 +19,7 @@ import javax.persistence.Id;
 @Accessors(chain = true)
 @Document(collection = "tokens")
 public class Token {
-    @Id
+    @MongoId
     private String _id;
     private String userId;
     private String token;
