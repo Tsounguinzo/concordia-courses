@@ -7,11 +7,11 @@ import courses.concordia.json.serialization.InstructorTagDeserializer;
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import javax.persistence.Id;
 
 @Getter
 @Setter
@@ -19,7 +19,7 @@ import javax.persistence.Id;
 @Accessors(chain = true)
 @Document(collection = "instructors")
 public class Instructor {
-    @Id
+    @MongoId
     private String _id;
     private String firstName;
     private String lastName;

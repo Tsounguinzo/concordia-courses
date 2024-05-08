@@ -2,6 +2,14 @@ import type {Schedule} from './model/Schedule';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import type {Review} from "$lib/model/Review";
+import { format } from 'date-fns';
+import {toZonedTime } from 'date-fns-tz';
+
+export const ISOFormattedDateUTC4 = (date: string | number | Date) => {
+    const timeZone = 'America/New_York';
+    const zonedDate = toZonedTime(date, timeZone);
+    return format(zonedDate, "yyyy-MM-dd'T'HH:mm:ss.SSS").replace('Z', '');
+};
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));

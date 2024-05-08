@@ -8,6 +8,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
+import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
+
+import java.util.List;
 
 @Configuration
 @Slf4j
@@ -29,4 +32,5 @@ public class MongoClientConfig extends AbstractMongoClientConfiguration {
         log.info("=> Creating the MongoClientSettings for MongoClient & MongoTemplate.");
         return MongoClientSettings.builder().applyConnectionString(new ConnectionString(connectionString)).build();
     }
+
 }

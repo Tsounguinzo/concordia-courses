@@ -3,9 +3,9 @@ package courses.concordia.model;
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.util.List;
-import javax.persistence.Id;
 
 @Getter
 @Setter
@@ -13,7 +13,7 @@ import javax.persistence.Id;
 @Accessors(chain = true)
 @Document(collection = "courses")
 public class Course {
-    @Id
+    @MongoId
     private String _id;
     private List<String> terms;
     private List<String> instructors;
