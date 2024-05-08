@@ -4,6 +4,7 @@ package courses.concordia.config;
 import courses.concordia.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.modelmapper.convention.NamingConventions;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -55,8 +56,9 @@ public class ApplicationConfig {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration()
                 .setFieldMatchingEnabled(true)
-                .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE)
-                .setSourceNamingConvention(NamingConventions.JAVABEANS_MUTATOR);
+                .setMatchingStrategy(MatchingStrategies.STRICT)
+                .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PUBLIC)
+                .setMethodAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PUBLIC);
         return modelMapper;
         //https://github.com/modelmapper/modelmapper/issues/212
     }
