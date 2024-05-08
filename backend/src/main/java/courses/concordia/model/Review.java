@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Id;
 import java.util.Date;
@@ -26,9 +25,7 @@ public class Review {
     private String _id;
     private String type; // course, instructor, school
     private String content;
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private Date timestamp;
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private Date adminReviewedAt;
     private boolean flagged;
     private int likes;

@@ -1,23 +1,17 @@
 package courses.concordia.json;
 
-import org.modelmapper.Converter;
-import org.modelmapper.spi.MappingContext;
+import org.modelmapper.AbstractConverter;
 
 import java.time.OffsetDateTime;
 import java.util.Date;
 
-public class IsoOffsetDateTimeToDateConverter implements Converter<String, Date> {
+public class IsoOffsetDateTimeToDateConverter extends AbstractConverter<String, Date> {
     @Override
-    public Date convert(MappingContext<String, Date> mappingContext) {
-        String source = mappingContext.getSource();
-        if (source == null) {
-            return null;
+    public Date convert(String value) {
+        if (value != null && !value.isEmpty()) {
+            OffsetDateTime odt = OffsetDateTime.parse(value);
+            return Date.from(odt.toInstant());
         }
-        return convertIsoOffsetDateTimeToDate(source);
-    }
-
-    private Date convertIsoOffsetDateTimeToDate(String isoDateTime) {
-        OffsetDateTime odt = OffsetDateTime.parse(isoDateTime);
-        return Date.from(odt.toInstant());
+        return null;
     }
 }

@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.Set;
@@ -24,9 +23,7 @@ public class ReviewDto {
     private String _id;
     private String type; // course, instructor, school
     private String content;
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private Date timestamp;
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private Date adminReviewedAt;
     private boolean flagged;
     private int likes;
