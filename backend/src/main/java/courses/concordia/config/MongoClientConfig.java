@@ -33,10 +33,4 @@ public class MongoClientConfig extends AbstractMongoClientConfiguration {
         return MongoClientSettings.builder().applyConnectionString(new ConnectionString(connectionString)).build();
     }
 
-    @Bean
-    public MongoCustomConversions mongoCustomConversions() {
-        return new MongoCustomConversions(List.of(
-                new StringToDateConverter()
-        ));
-    }
 }

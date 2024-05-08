@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.persistence.Id;
 import java.util.Date;
 import java.util.Set;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -25,8 +26,8 @@ public class Review {
     private String _id;
     private String type; // course, instructor, school
     private String content;
-    private Date timestamp;
-    private Date adminReviewedAt;
+    private LocalDateTime timestamp;
+    private LocalDateTime adminReviewedAt;
     private boolean flagged;
     private int likes;
     private String userId;
