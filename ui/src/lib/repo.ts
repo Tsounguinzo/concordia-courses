@@ -10,6 +10,7 @@ import {backendUrl} from "$lib/constants";
 import type {Instructor} from "$lib/model/Instructor";
 import type {GetInstructorWithReviewsPayload} from "$lib/model/GetInstructorWithReviewsPayload";
 import type {GetInstructorReviewsInteractionPayload} from "$lib/model/GetInstructorReviewsInteractionPayload";
+import {ISOFormattedDateUTC4} from "$lib/utils";
 
 const prefix = '/api/v1';
 
@@ -116,7 +117,7 @@ export const repo = {
             body: JSON.stringify({
                 type: type,
                 content: values.content,
-                timestamp: new Date(),
+                timestamp: ISOFormattedDateUTC4(new Date()),
                 difficulty: values.difficulty,
                 courseId: values.course !== '' ? values.course.replaceAll(/[^a-zA-Z0-9]/g, '').toUpperCase() : courseId,
                 instructorId: values.instructor !== '' ? values.instructor.replaceAll(/\s+/g, '-').toLowerCase() : instructorId,
@@ -135,7 +136,7 @@ export const repo = {
                 _id: review._id,
                 type: review.type,
                 content: values.content,
-                timestamp: new Date(),
+                timestamp: ISOFormattedDateUTC4(new Date()),
                 difficulty: values.difficulty || review.difficulty,
                 courseId: values.course.replaceAll(/[^a-zA-Z0-9]/g, '').toUpperCase() ?? review.courseId,
                 instructorId: values.instructor.replaceAll(/\s+/g, '-').toLowerCase() ?? review.instructorId,
