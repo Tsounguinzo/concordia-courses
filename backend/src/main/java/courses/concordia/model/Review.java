@@ -6,12 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Date;
-import java.util.Set;
 import javax.persistence.Id;
+import java.time.LocalDateTime;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -26,8 +25,8 @@ public class Review {
     private String _id;
     private String type; // course, instructor, school
     private String content;
-    private Date timestamp;
-    private Date adminReviewedAt;
+    private LocalDateTime timestamp;
+    private LocalDateTime adminReviewedAt;
     private boolean flagged;
     private int likes;
     private String userId;
