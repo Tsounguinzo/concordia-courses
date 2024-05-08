@@ -5,10 +5,7 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.Reader;
+import java.io.*;
 import java.lang.reflect.Type;
 import java.nio.file.Path;
 
@@ -26,6 +23,18 @@ public class JsonUtils {
             log.error("Failed to parse JSON from {}: {}", jsonFilePath, e.getMessage());
         } catch (Exception e) {
             log.error("Unexpected error reading JSON from {}: {}", jsonFilePath, e.getMessage());
+        }
+        return null;
+    }
+
+    public static <T> T getData(InputStream inputStream, TypeToken<T> typeToken) {
+        try (Reader reader = new InputStreamReader(inputStream)) {
+            Type dataType = typeToken.getType();
+            return gson.fromJson(reader, dataType);
+        } catch (JsonSyntaxException e) {
+            log.error("Failed to parse JSON from input stream", e);
+        } catch (Exception e) {
+            log.error("Unexpected error reading JSON from input stream", e);
         }
         return null;
     }

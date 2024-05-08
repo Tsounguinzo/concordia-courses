@@ -29,8 +29,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -48,8 +47,11 @@ public class ReviewServiceImpl implements ReviewService {
     @PostConstruct
     public void init() {
         try {
-            Path jsonFilePath = Paths.get(ClassLoader.getSystemResource("subject-catalogs.json").toURI());
-            Map<String, List<String>> coursesData = JsonUtils.getData(jsonFilePath, new TypeToken<Map<String, List<String>>>() {});
+            InputStream is = getClass().getResourceAsStream("/subject-catalogs.json");
+            if (is == null) {
+                throw new IllegalStateException("Resource subject-catalogs.json not found");
+            }
+            Map<String, List<String>> coursesData = JsonUtils.getData(is, new TypeToken<Map<String, List<String>>>() {});
             if (coursesData != null) {
                 coursesData.forEach((key, values) -> values.forEach(value -> {
                     String courseKey = key + value;
@@ -59,7 +61,7 @@ public class ReviewServiceImpl implements ReviewService {
             }
         } catch (Exception e) {
             log.error("Failed to initialize course data", e);
-            throw new IllegalStateException("Failed to load course data", e);
+            throw new RuntimeException("Failed to initialize course data", e);
         }
     }
 
