@@ -204,9 +204,13 @@ public class ReviewServiceImpl implements ReviewService {
      */
     @Override
     public ReviewDto getReviewById(String id) {
-        return reviewRepository.findById(id)
-                .map(ReviewMapper::toDto)
-                .orElseThrow(() -> exception(id));
+        Optional<Review> review = reviewRepository.findById(id);
+        if (review.isPresent()) {
+            return ReviewMapper.toDto(review.get());
+        } else {
+            log.error("Review not found with ID: {}", id);
+            throw exception(id);
+        }
     }
 
     /**
