@@ -12,7 +12,6 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import javax.persistence.Id;
 
 @Getter
 @Setter

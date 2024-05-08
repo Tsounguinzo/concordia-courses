@@ -208,9 +208,6 @@ public class ReviewServiceImpl implements ReviewService {
         if (review.isPresent()) {
             return ReviewMapper.toDto(review.get());
         } else {
-            List<Review> reviews = reviewRepository.findAll();
-            log.info("{} Reviews found", reviews.size());
-            log.info("Review not found with ID: {} is {}", id, reviews.stream().filter(review1 -> review1.get_id().equals(id)).collect(Collectors.toList()));
             log.error("Review not found with ID: {}", id);
             throw exception(id);
         }

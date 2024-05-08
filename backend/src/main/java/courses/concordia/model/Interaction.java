@@ -1,7 +1,5 @@
 package courses.concordia.model;
 
-import javax.persistence.Id;
-
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.*;
 import lombok.experimental.Accessors;
