@@ -9,7 +9,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Getter
@@ -23,8 +23,8 @@ public class ReviewDto {
     private String _id;
     private String type; // course, instructor, school
     private String content;
-    private Date timestamp;
-    private Date adminReviewedAt;
+    private LocalDateTime timestamp;
+    private LocalDateTime adminReviewedAt;
     private boolean flagged;
     private int likes;
     private String userId;
