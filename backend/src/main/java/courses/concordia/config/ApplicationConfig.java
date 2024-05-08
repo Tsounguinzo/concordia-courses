@@ -58,6 +58,7 @@ public class ApplicationConfig {
         modelMapper.getConfiguration()
                 .setFieldMatchingEnabled(true)
                 .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE)
+                .setMethodAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PUBLIC)
                 .setSourceNamingConvention(NamingConventions.JAVABEANS_MUTATOR);
         return modelMapper;
         //https://github.com/modelmapper/modelmapper/issues/212
