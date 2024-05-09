@@ -76,7 +76,7 @@
                     <div class='grow'/>
                     <div class='flex w-64 flex-col items-end rounded-lg p-2'>
                         <div class='flex items-center gap-x-2'>
-                            <div class='text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
+                            <div class='text-nowrap text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
                                 {(review.type ?? 'course') === 'course' ? 'Experience' : 'Clarity Rating'}
                             </div>
                             <IconRating rating={(review.type ?? 'course') === 'course' ? review.experience : review.rating} icon="star"/>
@@ -87,6 +87,11 @@
                             </div>
                             <IconRating rating={review.difficulty} icon="flame"/>
                         </div>
+                        {#if review.userId.startsWith("rate_my_professor")}
+                            <div class='mt-2 px-2 bg-blue-400 rounded-lg w-fit'>
+                                from rate my professor
+                            </div>
+                        {/if}
                     </div>
                 </div>
                 {#if review.content?.length < 300 || readMore}

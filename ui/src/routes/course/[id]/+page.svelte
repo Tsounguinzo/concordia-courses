@@ -205,9 +205,8 @@
                 <h2 class='text-center mt-10 text-xl font-bold leading-none text-gray-700 dark:text-gray-200'>
                     Reviews
                 </h2>
-                {#if canReview}
-                    <CourseReviewPrompt openAddReview={addReviewOpen}/>
-                {/if}
+
+                <CourseReviewPrompt openAddReview={addReviewOpen}/>
 
                 {#if $allReviews && $allReviews?.length > 0}
                     <div class='mb-2 py-2'>
@@ -272,9 +271,8 @@
                     <h2 class='text-center mt-10 text-xl font-bold leading-none text-gray-700 dark:text-gray-200'>
                         Reviews
                     </h2>
-                    {#if canReview}
-                        <CourseReviewPrompt openAddReview={addReviewOpen}/>
-                    {/if}
+
+                    <CourseReviewPrompt openAddReview={addReviewOpen}/>
 
                     {#if $allReviews.length > 0}
                         <div class='my-2'>

@@ -1,12 +1,12 @@
 <script lang="ts">
     import {page} from "$app/stores";
-    import {courseIdToUrlParam, courseNameToId, instructorIdToName, instructorNameToUrlParam} from "$lib/utils";
+    import { courseNameToId, instructorIdToName, instructorNameToUrlParam} from "$lib/utils";
     import {derived, writable} from "svelte/store";
     import type {Review} from "$lib/model/Review";
     import {repo} from "$lib/repo";
     import {toast} from "svelte-sonner";
     import Loading from "$lib/components/common/loader/Loading.svelte";
-    import CourseReviewPrompt from "$lib/components/common/ReviewPrompt.svelte";
+    import InstructorReviewPrompt from "$lib/components/common/ReviewPrompt.svelte";
     import ReviewEmptyPrompt from "$lib/components/review/ReviewEmptyPrompt.svelte";
     import ReviewFilter from "$lib/components/review/ReviewFilter.svelte";
     import InstructorReview from "$lib/components/review/Review.svelte";
@@ -182,9 +182,8 @@
                 <h2 class='text-center mt-10 text-xl font-bold leading-none text-gray-700 dark:text-gray-200'>
                     Reviews
                 </h2>
-                {#if canReview}
-                    <CourseReviewPrompt openAddReview={addReviewOpen} type="instructor"/>
-                {/if}
+
+                <InstructorReviewPrompt openAddReview={addReviewOpen} type="instructor"/>
 
                 {#if $allReviews.length > 0}
                     <div class='my-2'>
