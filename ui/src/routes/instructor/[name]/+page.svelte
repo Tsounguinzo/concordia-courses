@@ -75,7 +75,7 @@
     }
 
     $: userReview = $showingReviews?.find((r) => user && r.userId === user?.id);
-    $: canReview = Boolean(user && !$allReviews?.find((r) => r.userId === user?.id));
+    $: hasNotReviewed = user ? user && !$allReviews?.some(r => r.userId === user.id) : true;
 
     const handleSubmit = (successMessage: string) => {
         return (res: Response) => {
@@ -184,7 +184,9 @@
                     Reviews
                 </h2>
 
-                <InstructorReviewPrompt openAddReview={addReviewOpen} type="instructor"/>
+                {#if hasNotReviewed}
+                    <InstructorReviewPrompt openAddReview={addReviewOpen} type="instructor"/>
+                {/if}
 
                 {#if $allReviews.length > 0}
                     <div class='my-2'>

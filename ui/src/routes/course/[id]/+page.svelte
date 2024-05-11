@@ -90,6 +90,7 @@
 
     $: userReview = $showingReviews?.find((r) => user && r.userId === user?.id);
     $: canReview = Boolean(user && !$allReviews?.find((r) => r.userId === user?.id));
+    $: hasNotReviewed = user ? user && !$allReviews?.some(r => r.userId === user.id) : true;
 
     const handleSubmit = (successMessage: string) => {
         return (res: Response) => {
@@ -206,7 +207,9 @@
                     Reviews
                 </h2>
 
-                <CourseReviewPrompt openAddReview={addReviewOpen}/>
+                {#if hasNotReviewed}
+                    <CourseReviewPrompt openAddReview={addReviewOpen}/>
+                {/if}
 
                 {#if $allReviews && $allReviews?.length > 0}
                     <div class='mb-2 py-2'>
@@ -272,7 +275,9 @@
                         Reviews
                     </h2>
 
-                    <CourseReviewPrompt openAddReview={addReviewOpen}/>
+                    {#if hasNotReviewed}
+                        <CourseReviewPrompt openAddReview={addReviewOpen}/>
+                    {/if}
 
                     {#if $allReviews.length > 0}
                         <div class='my-2'>
