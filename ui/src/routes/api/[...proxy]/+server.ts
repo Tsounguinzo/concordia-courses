@@ -14,7 +14,17 @@ const sendRequest = async ({ request, url, method, requestBody = null }) => {
         }
 
         const response = await fetch(query, options);
-        const responseData = await response.json();
+
+        let responseData;
+        try {
+            responseData = await response.json();
+        } catch (e) {
+            // Handle non-JSON response
+            if (!response.ok) {
+                return new Response("Error: Response is not in JSON format", { status: response.status });
+            }
+            responseData = { payload: "Response received, but not in JSON format" };
+        }
 
         if (!response.ok) {
             //console.error(`Request to ${query.replace(/[\n\r]/g, "")} failed with status: ${response.status}`);
