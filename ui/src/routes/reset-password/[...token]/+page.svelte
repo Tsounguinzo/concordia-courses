@@ -45,7 +45,7 @@
 
 </script>
 
-<Seo title="Reset Password" description="Reset your password securely"/>
+<Seo title="Reset Password" description="Reset your password securely" ogTitle="Reset Password | Concordia.courses" ogDescription="Reset your password securely"/>
 {#if passwordChanged}
     <div class="flex w-full justify-center items-center min-h-[calc(100vh-22vh)]">
         <div class="flex items-center justify-center text-md font-medium text-gray-800 dark:text-gray-200">

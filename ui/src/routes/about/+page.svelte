@@ -4,5 +4,5 @@
     import Seo from "$lib/components/common/Seo.svelte";
 </script>
 
-<Seo title="About" description="Learn about concordia.courses" />
+<Seo title="About" description="Learn about concordia.courses" ogImage="og-image-about" ogImageAlt="concordia.courses About page Snapshot" ogDescription="Learn about concordia.courses" ogTitle="About | Concordia.courses"/>
 <MarkDown {source}/>

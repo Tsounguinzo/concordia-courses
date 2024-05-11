@@ -71,7 +71,7 @@
     const keys = ['Reviews', 'Subscriptions'];
     const tabs = createTabs({selected: 'Reviews'})
 </script>
-<Seo title="Profile" description="Profile on concordia.courses"/>
+<Seo title="Profile" description="Profile on concordia.courses" ogTitle="Profile | Concordia.courses" ogDescription="Profile on concordia.courses"/>
 
 <div class='mx-auto max-w-2xl'>
     {#if user === undefined || user === null}

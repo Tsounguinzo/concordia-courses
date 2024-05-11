@@ -160,7 +160,7 @@
         }
     };
 </script>
-<Seo title="Explore" description="Explore courses and instructors at concordia.courses"/>
+<Seo title="Explore" description="Explore courses and instructors at concordia.courses" ogDescription="Explore courses and instructors at concordia.courses" ogTitle="Explore | Concordia.courses" ogImage="og-image-explore.png" ogImageAlt="concordia.courses Explore page Snapshot"/>
 <div class='flex flex-col items-center py-8'>
     <h1 class='mb-16 text-center text-5xl font-bold tracking-tight text-gray-900 dark:text-gray-200 sm:text-5xl'>
         Explore all {$instructorsModeOn ? 'instructors' : 'courses'}

@@ -26,7 +26,17 @@ export async function GET() {
 			<priority>0.9</priority>
 		</url>
 		<url>
+			<loc>https://concordia.courses/reviews-feed</loc>
+			<changefreq>daily</changefreq>
+			<priority>1.0</priority>
+		</url>
+		<url>
 			<loc>https://concordia.courses/course</loc>
+			<changefreq>monthly</changefreq>
+			<priority>0.9</priority>
+		</url>
+		<url>
+			<loc>https://concordia.courses/instructor</loc>
 			<changefreq>monthly</changefreq>
 			<priority>0.9</priority>
 		</url>

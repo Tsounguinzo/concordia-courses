@@ -116,7 +116,7 @@
     };
 </script>
 
-<Seo title="Reviews Feed" description="Reviews feed for courses at concordia.courses"/>
+<Seo title="Reviews Feed" description="Reviews feed for courses at concordia.courses" ogTitle="Reviews Feed | Concordia.courses" ogDescription="Reviews feed for courses at concordia.courses" ogImageAlt="concordia.courses Reviews page Snapshot" ogImage="og-image-feed.png"/>
 <div class='flex flex-col items-center py-8'>
     <h1 class='mb-16 text-center text-5xl font-bold tracking-tight text-gray-900 dark:text-gray-200 sm:text-5xl'>
         What Students Think

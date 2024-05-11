@@ -182,7 +182,7 @@
 
     $: showingReviews.set($sortedAndFilteredReviews);
 </script>
-<Seo title={params?.replace('-', ' ').toUpperCase()} description="{'Give and see reviews of ' + params?.replace('-', ' ').toUpperCase() + ' on concordia.courses'}" />
+<Seo title={params?.replace('-', ' ').toUpperCase()} description="{params?.replace('-', ' ').toUpperCase() + ' Reviews at Concordia.courses'}" ogDescription={params?.replace('-', ' ').toUpperCase() + ' Reviews at Concordia.courses'} ogTitle={`${params?.replace('-', ' ').toUpperCase()} | Concordia.courses`}/>
 
 {#if $course === undefined || $course === null || $showingReviews === undefined}
     <Loading/>

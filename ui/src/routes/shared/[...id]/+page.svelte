@@ -15,7 +15,7 @@
 
 </script>
 
-<Seo title="Shared review" description="Shared review from concordia.courses"/>
+<Seo title="Shared review" description="Shared review from concordia.courses" ogTitle="Shared review | Concordia.courses" ogDescription="Shared review from concordia.courses"/>
 
 {#if error}
     <div class="flex w-full justify-center items-center min-h-[calc(100vh-22vh)]">

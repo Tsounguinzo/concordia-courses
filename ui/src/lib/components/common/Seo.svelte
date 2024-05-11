@@ -5,6 +5,10 @@
     export let title: string;
     export let description: string;
     export let type: string = "WebPage";
+    export let ogDescription: string = 'Student Insights on Instructors and Rigor of Courses at Concordia University';
+    export let ogTitle: string = "Reviews of Concordia Courses and Instructors";
+    export let ogImage: string = "og-image.png";
+    export let ogImageAlt: string = 'concordia.courses Home page Snapshot';
 
     $: url = $page.url.href;
 </script>
@@ -18,14 +22,14 @@
             type: 'website',
             url: `${url}`,
             locale: 'en_CA',
-            title: 'Concordia Course Reviews',
-            description: 'Student-led reviews of Concordia University courses. Get insights into classes, and course demands.',
+            title: ogTitle,
+            description: ogDescription,
             images: [
                 {
-                    url: 'https://concordia.courses/og-image.png',
+                    url: `https://concordia.courses/${ogImage}`,
                     width: 800,
                     height: 600,
-                    alt: 'Concordia Course Explore Snapshot'
+                    alt: ogImageAlt,
                 },
             ],
             siteName: 'Concordia Courses'
@@ -34,10 +38,10 @@
             handle: '@ConcordiaCourses',
             site: '@ConcordiaCourses',
             cardType: 'summary_large_image',
-            title: 'Concordia Course Reviews',
-            description: 'Student perspectives on courses.',
-            image: 'https://concordia.courses/og-image.pngg',
-            imageAlt: 'Concordia Course Explore Snapshot'
+            title: ogTitle,
+            description: ogDescription,
+            image: `https://concordia.courses/${ogImage}`,
+            imageAlt: ogImageAlt,
         }}
 />
 
