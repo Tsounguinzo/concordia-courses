@@ -176,8 +176,8 @@ export function determineReviewFor(review: Review) {
     }
 }
 
-export const timeFrame = (date: Date) => {
-    const seconds = Math.floor((new Date().valueOf() - date.valueOf()) / 1000);
+export const timeFrame = (date: Date, now: Date) => {
+    const seconds = Math.floor((now.valueOf() - date.valueOf()) / 1000);
 
     let interval = Math.floor(seconds / 31536000);
     if (interval >= 1) return interval + ` year${interval > 1 ? 's' : ''} ago`;

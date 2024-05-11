@@ -20,6 +20,7 @@
     import ReviewInteractions from "./ReviewInteractions.svelte";
     import type {Interaction} from "$lib/model/Interaction";
     import Share from "$lib/components/common/Share.svelte";
+    import {onMount} from "svelte";
 
     export let canModify: boolean;
     export let title: string = '';
@@ -34,9 +35,22 @@
     let readMore = false;
     let show = false;
     const promptLogin = writable(false);
+    let now: Date = new Date();
+    let displayTime: string;
 
     $: shortDate = format(review.timestamp ?? Date.now(), 'P');
     $: longDate = format(review.timestamp ?? Date.now(), 'EEEE, MMMM d, yyyy');
+    $: displayTime = timeFrame(new Date(review.timestamp), now);
+
+    onMount(() => {
+        const interval = setInterval(() => {
+            now = new Date();
+        }, 1000); // Update every second
+
+        return () => {
+            clearInterval(interval);
+        };
+    });
 
 </script>
 
@@ -65,7 +79,7 @@
                                     {shortDate}
                                 </p>
                                 <p class='cursor-default text-xs font-medium text-gray-700 dark:text-gray-300'>
-                                    {timeFrame(new Date(review.timestamp ?? Date.now()))}
+                                    {displayTime}
                                 </p>
                             </div>
                         </Tooltip>
