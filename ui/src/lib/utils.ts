@@ -4,7 +4,7 @@ import { twMerge } from 'tailwind-merge';
 import type {Review} from "$lib/model/Review";
 import { format } from 'date-fns';
 import {toZonedTime } from 'date-fns-tz';
-import {capitalize} from "lodash";
+import capitalize from "lodash/capitalize.js";
 
 export const ISOFormattedDateUTC4 = (date: string | number | Date) => {
     const timeZone = 'America/New_York';
