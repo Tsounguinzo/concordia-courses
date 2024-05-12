@@ -115,7 +115,7 @@ export const repo = {
         return await client.post('/reviews', {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-                type: type,
+                type,
                 content: values.content,
                 timestamp: ISOFormattedDateUTC4(new Date()),
                 difficulty: values.difficulty,
@@ -194,7 +194,7 @@ export const repo = {
         referrer: string | undefined,
         type: ReviewType
     ): Promise<Response> {
-        return await client.post(`/interactions`, {
+        return await client.post('/interactions', {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 kind,
@@ -214,7 +214,7 @@ export const repo = {
         referrer: string | undefined,
         type: ReviewType
     ): Promise<Response> {
-        return await client.delete(`/interactions`, {
+        return await client.delete('/interactions', {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 type,

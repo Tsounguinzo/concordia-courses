@@ -4,6 +4,7 @@ import { twMerge } from 'tailwind-merge';
 import type {Review} from "$lib/model/Review";
 import { format } from 'date-fns';
 import {toZonedTime } from 'date-fns-tz';
+import {capitalize} from "lodash";
 
 export const ISOFormattedDateUTC4 = (date: string | number | Date) => {
     const timeZone = 'America/New_York';
@@ -78,12 +79,6 @@ export const courseNameToId = (name: string) =>
 export const schoolIdToName = (id: string) =>
     id?.split('-').map(capitalize).join(' ');
 
-export const capitalize = (s: string): string =>
-    s.charAt(0).toUpperCase() + s.slice(1);
-
-export const punctuate = (s: string): string =>
-    s.charAt(s.length - 1) === '.' ? s : `${s}.`;
-
 export const spliceCourseCode = (courseCode: string, delimiter: string) => {
     const firstIntIndex = courseCode?.search(/\d/);
     if (firstIntIndex === undefined || firstIntIndex === -1) {
@@ -93,8 +88,6 @@ export const spliceCourseCode = (courseCode: string, delimiter: string) => {
 }
 
 export const round2Decimals = (n: number) => Math.round(n * 100) / 100;
-
-export const mod = (n: number, m: number) => ((n % m) + m) % m;
 
 export function multiplySvgPoints(pointsString: string, iconSize: number, width: number, height: number) {
   const iconMaxSize = Math.min(width, height) * 0.5;
@@ -180,19 +173,19 @@ export const timeFrame = (date: Date, now: Date) => {
     const seconds = Math.floor((now.valueOf() - date.valueOf()) / 1000);
 
     let interval = Math.floor(seconds / 31536000);
-    if (interval >= 1) return interval + ` year${interval > 1 ? 's' : ''} ago`;
+    if (interval >= 1) return `${interval} year${interval > 1 ? 's' : ''} ago`;
 
     interval = Math.floor(seconds / 2592000);
-    if (interval >= 1) return interval + ` month${interval > 1 ? 's' : ''} ago`;
+    if (interval >= 1) return `${interval} month${interval > 1 ? 's' : ''} ago`;
 
     interval = Math.floor(seconds / 86400);
-    if (interval >= 1) return interval + ` day${interval > 1 ? 's' : ''} ago`;
+    if (interval >= 1) return `${interval} day${interval > 1 ? 's' : ''} ago`;
 
     interval = Math.floor(seconds / 3600);
-    if (interval >= 1) return interval + ` hour${interval > 1 ? 's' : ''} ago`;
+    if (interval >= 1) return `${interval} hour${interval > 1 ? 's' : ''} ago`;
 
     interval = Math.floor(seconds / 60);
-    if (interval >= 1) return interval + ` minute${interval > 1 ? 's' : ''} ago`;
+    if (interval >= 1) return `${interval} minute${interval > 1 ? 's' : ''} ago`;
 
-    return seconds === 0 ? 'now' : Math.floor(seconds) + ` second${seconds > 1 ? 's' : ''} ago`;
+    return seconds === 0 ? 'now' : `${Math.floor(seconds)} second${seconds > 1 ? 's' : ''} ago`;
 };
