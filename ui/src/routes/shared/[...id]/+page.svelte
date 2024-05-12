@@ -40,7 +40,7 @@
                 </div>
                 <div class="z-10">
                     <SharedReview
-                            className="bg-transparent dark:bg-transparent"
+                            class="bg-transparent dark:bg-transparent"
                             canModify={false}
                             handleDelete={() => {}}
                             review={review}

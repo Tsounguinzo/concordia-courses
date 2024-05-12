@@ -208,7 +208,7 @@
                     {#if $instructorsModeOn}
                         {#each instructors as instructor}
                             <InstructorCard
-                                    className='my-1.5'
+                                    class='my-1.5'
                                     {instructor}
                                     {query}
                             />
@@ -216,7 +216,7 @@
                     {:else}
                         {#each courses as course}
                             <CourseCard
-                                    className='my-1.5'
+                                    class='my-1.5'
                                     {course}
                                     {query}
                             />
@@ -228,7 +228,7 @@
                                     on:loadMore={() => fetchMore()}/>
                 {:else }
                     <div class='mx-2 text-gray-50'>
-                        <Skeleton className='mb-2 rounded-lg first:mt-2'
+                        <Skeleton class='mb-2 rounded-lg first:mt-2'
                                   color={$darkModeOn ? 'rgb(38 38 38)' : 'rgb(226 232 240)'}/>
                     </div>
                 {/if}

@@ -3,7 +3,6 @@
     import {twMerge} from "tailwind-merge";
 
     export let icon: string = "";
-    export let className: string = "";
     export let selectedClass: string;
     export let isSelected: boolean;
     export let name: string;
@@ -19,7 +18,7 @@
 <button class={twMerge(
         'rounded-full px-2 py-1 text-sm font-medium tracking-wider transition duration-150 ease-in-out',
         selected ? selectedColor : unselectedColor,
-        className
+        $$props.class
       )}
         on:click={() => {
         selected = !selected

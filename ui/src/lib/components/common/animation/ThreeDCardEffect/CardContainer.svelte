@@ -1,7 +1,6 @@
 <script lang="ts">
     import { cn } from '$lib/utils';
 
-    export let className: string | undefined = undefined;
     export let containerClassName: string | undefined = undefined;
     export let isMouseEntered = false;
 
@@ -38,7 +37,7 @@
             on:mouseleave={handleMouseLeave}
             class={cn(
 			'relative flex items-center justify-center transition-all duration-200 ease-linear',
-			className
+			$$props.class
 		)}
             style="transform-style: preserve-3d;"
     >

@@ -46,7 +46,7 @@
         variant === 'mobile' ? 'w-full' : 'w-[340px]',
         'relative flex h-fit flex-col flex-wrap rounded-lg bg-slate-50 px-8 py-6 dark:bg-neutral-800 dark:text-gray-200'
       )}>
-    <ResetButton className='absolute right-4 top-4'>
+    <ResetButton class='absolute right-4 top-4'>
         <button on:click={resetFilters} class:erase-effect={reset}>
             <Eraser class={'h-5 w-5 text-gray-500 dark:text-neutral-400'}/>
         </button>

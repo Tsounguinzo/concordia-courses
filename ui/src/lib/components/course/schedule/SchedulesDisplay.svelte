@@ -7,7 +7,6 @@
     import uniq from "lodash/uniq";
 
     export let course: Course;
-    export let className: string = '';
 
     $: schedules = course?.schedules ?? [];
     $: offeredTerms = sortTerms(
@@ -19,7 +18,7 @@
 
 </script>
 {#if schedules?.length && (selectedTerm || blocks?.length)}
-    <div class={twMerge('flex flex-col text-gray-800 shadow-sm lg:border-t-0',className)}>
+    <div class={twMerge('flex flex-col text-gray-800 shadow-sm lg:border-t-0',$$props.class)}>
         <div class='flex'>
             {#each offeredTerms as term, i (i)}
                 <button

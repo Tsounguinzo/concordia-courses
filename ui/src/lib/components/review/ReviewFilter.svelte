@@ -97,7 +97,7 @@
                     {/if}
                 </div>
             </div>
-            <ResetButton className='absolute -top-4 right-2 ml-auto'>
+            <ResetButton class='absolute -top-4 right-2 ml-auto'>
                 <button on:click={resetFilters} class:erase-effect={reset}>
                     <Eraser class='h-5 w-5 text-gray-500 dark:text-neutral-400'/>
                 </button>

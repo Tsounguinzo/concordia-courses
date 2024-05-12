@@ -11,7 +11,6 @@
     export let title: string;
     export let text: string;
     export let size: number;
-    export let className: string = '';
 
     let value = ''
     const error = writable<string | null>(null);
@@ -43,7 +42,7 @@
     const dialog = createDialog({label: 'Success'})
 </script>
 
-<button type='button' class={twMerge('h-fit', className)} on:click={dialog.open}>
+<button type='button' class={twMerge('h-fit', $$props.class)} on:click={dialog.open}>
     <ShieldQuestion
             class='stroke-gray-500 transition duration-200 hover:stroke-blue-600 dark:stroke-gray-400 dark:hover:stroke-blue-600'
             size={size}/>

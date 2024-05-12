@@ -115,9 +115,9 @@
             {course.description}
         </p>
         <div class='grow py-3'/>
-        <CourseInfoStats className='mb-4 sm:hidden' allReviews={reviews}/>
+        <CourseInfoStats class='mb-4 sm:hidden' allReviews={reviews}/>
         <CourseInfoStats
-                className='hidden gap-x-6 sm:mb-6 sm:flex md:mb-0 md:hidden'
+                class='hidden gap-x-6 sm:mb-6 sm:flex md:mb-0 md:hidden'
                 variant='medium'
                 allReviews={reviews}
         />
@@ -129,7 +129,7 @@
         <CourseInfoStats
                 variant='large'
                 allReviews={reviews}
-                className='lg:mr-8'
+                class='lg:mr-8'
         />
     </div>
     <div class={twMerge("absolute top-4 right-4", color)}>

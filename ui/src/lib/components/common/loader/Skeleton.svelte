@@ -11,7 +11,6 @@
     export let effect: 'fade' | 'pulse' | 'blink' | 'wave' = 'wave';
     export let borderRadius: string;
 
-    export let className: string;
     export let count: number = 10;
 
     let rest = {};
@@ -32,7 +31,7 @@
     $: skeletonClassName = [
         'skeleton-image',
         effect && `skeleton-effect-${effect}`,
-        className
+      $$props.class
     ]
         .filter(c => !!c)
         .join(' ');

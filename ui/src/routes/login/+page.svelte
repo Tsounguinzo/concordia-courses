@@ -148,7 +148,7 @@
                         {#if $tabs.selected === "SignIn"}
                             <ForgotPassword size={25} title="Forgot password ?"
                                             text="Enter your username to get a reset link in your Concordia email."
-                                            className="z-10 w-fit"/>
+                                            class="z-10 w-fit"/>
                         {/if}
                         <BackgroundBeams/>
                     </div>

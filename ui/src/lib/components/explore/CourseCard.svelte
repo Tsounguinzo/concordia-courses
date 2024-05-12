@@ -6,7 +6,6 @@
     import {twMerge} from "tailwind-merge";
 
     export let course: Course;
-    export let className: string;
     export let query: string;
 
     const courseDescriptionShortened =
@@ -18,7 +17,7 @@
 </script>
 
 <a href={`/course/${courseIdToUrlParam(course._id)}`}
-        class={twMerge("relative", className)}
+        class={twMerge("relative", $$props.class)}
 >
     <div class='max-w-xl rounded-lg bg-slate-50 p-5 duration-150 hover:bg-gray-50 dark:bg-neutral-800'>
         <div class='mb-2 font-bold dark:text-gray-200'>

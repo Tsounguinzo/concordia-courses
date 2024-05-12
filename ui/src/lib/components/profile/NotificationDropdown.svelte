@@ -108,7 +108,7 @@
                                     </button>
                                 </div>
                                 <CourseReview
-                                        className='rounded-md'
+                                        class='rounded-md'
                                         review={notification.review}
                                         canModify={false}
                                         handleDelete={() => undefined}

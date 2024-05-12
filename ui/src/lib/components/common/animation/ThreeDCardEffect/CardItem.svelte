@@ -1,7 +1,6 @@
 <script lang="ts">
     import { cn } from '$lib/utils';
 
-    export let className: string | undefined = undefined;
     export let translateX: number | string | undefined = 0;
     export let translateY: number | string | undefined = 0;
     export let translateZ: number | string | undefined = 0;
@@ -26,7 +25,7 @@
 
 <div
         bind:this={ref}
-        class={cn('w-fit transition duration-200 ease-linear', className)}
+        class={cn('w-fit transition duration-200 ease-linear', $$props.class)}
         {...$$props}
 >
     <slot />

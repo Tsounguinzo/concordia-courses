@@ -9,13 +9,12 @@
     export let text: string;
     export let onConfirm: () => void;
     export let size: number;
-    export let className : string = '';
 
 
     const dialog = createDialog({ label: 'Success' })
 </script>
 
-<button type='button' class={twMerge('h-fit', className)} on:click={dialog.open}>
+<button type='button' class={twMerge('h-fit', $$props.class)} on:click={dialog.open}>
     <Trash2 class='stroke-gray-500 transition duration-200 hover:stroke-red-600 dark:stroke-gray-400 dark:hover:stroke-red-600' size={size}/>
 </button>
 <Transition show={$dialog.expanded}>

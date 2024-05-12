@@ -6,14 +6,13 @@
     import InstructorTags from "$lib/components/instructor/InstructorTags.svelte";
 
     export let instructor: Instructor;
-    export let className: string;
     export let query: string;
 
     $: [color, icon] = experienceToIcon(instructor.avgRating);
 </script>
 
 <a href={`/instructor/${instructorIdToUrlParam(instructor.firstName, instructor.lastName)}`}
-   class={twMerge("relative", className)}
+   class={twMerge("relative", $$props.class)}
 >
     <div class='max-w-xl rounded-lg bg-slate-50 p-5 duration-150 hover:bg-gray-50 dark:bg-neutral-800'>
         <div class='mb-2 font-bold dark:text-gray-200'>

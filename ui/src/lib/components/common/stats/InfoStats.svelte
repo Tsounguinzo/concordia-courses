@@ -9,7 +9,6 @@
     import Histogram from "./Histogram.svelte";
 
     export let allReviews: Review[];
-    export let className: string = '';
     export let variant: 'small' | 'medium' | 'large' = 'small';
     export let type: 'course' | 'instructor' = 'course';
 
@@ -39,7 +38,7 @@
 
 {#if allReviews.length}
     {#key allReviews}
-        <div class={twMerge('flex gap-x-4 bg-transparent' ,className,
+        <div class={twMerge('flex gap-x-4 bg-transparent' ,$$props.class,
         variant === 'large'
           ? 'flex-col gap-y-1 lg:flex-row lg:gap-x-2'
           : 'flex-row'
@@ -59,7 +58,7 @@
                         data={type === 'course' ? experience : rating}
                         max={5}
                         gap={10}
-                        className='mx-auto hidden sm:block'
+                        class='mx-auto hidden sm:block'
                         caption={`${type === 'course' ? 'Experience' : 'Clarity Rating'} Distribution`}
                 />
             </div>
@@ -78,7 +77,7 @@
                         data={difficulties}
                         max={5}
                         gap={10}
-                        className='mx-auto hidden sm:block'
+                        class='mx-auto hidden sm:block'
                         caption="Difficulty Distribution"
                 />
             </div>

@@ -86,13 +86,13 @@ export function createFakeReview(): Review {
         content: faker.lorem.sentence(100),
         timestamp: faker.date.recent(),
         likes: Math.floor(Math.random() * 40),
-        thumbsDownTotal: Math.floor(Math.random() * 20),
-        thumbsUpTotal: Math.floor(Math.random() * 20),
         difficulty: parseFloat((Math.random() * 5).toFixed(1)),
         userId: faker.string.uuid(),
         courseId: getRandomSubarray(coursesmock, 1)[0].subject + getRandomSubarray(coursesmock, 1)[0].catalog,
         instructorId: `${faker.person.firstName()}-${faker.person.lastName()}`.toLowerCase(),
         rating:  parseFloat((Math.random() * 5).toFixed(1)),
         tags: getRandomSubarray(tags, Math.floor(Math.random() * 5)),
+        experience: parseFloat((Math.random() * 5).toFixed(1)),
+        schoolId: "",
     };
 }

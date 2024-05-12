@@ -201,7 +201,7 @@
                 </h2>
                 <SchedulesDisplay
                         course={$course}
-                        className={canReview ? 'mb-4' : ''}
+                        class={canReview ? 'mb-4' : ''}
                 />
                 <h2 class='text-center mt-10 text-xl font-bold leading-none text-gray-700 dark:text-gray-200'>
                     Reviews
@@ -284,7 +284,7 @@
                             <ReviewFilter on:sortChanged={handleSortChange} {showAllReviews} course={$course}/>
                         </div>
                     {:else }
-                        <ReviewEmptyPrompt className="max-sm:p-2" variant='course' isLogin={user !== null}/>
+                        <ReviewEmptyPrompt class="max-sm:p-2" variant='course' isLogin={user !== null}/>
                     {/if}
 
                     <div class='w-full shadow-sm'>

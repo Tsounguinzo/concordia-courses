@@ -8,7 +8,6 @@
 
     export let options: string[];
     export let values: Writable<string[]>;
-    export let className: string = '';
     export let reset: boolean = false;
     export let inputClassName: string = '';
 
@@ -45,7 +44,7 @@
 
     let combobox = createCombobox({label: 'multiselect', selected: []})
 </script>
-<div class={className}>
+<div class={$$props.class}>
     <div>
         <div class='w-full'>
             <div class='relative max-w-[240px] rounded-md border bg-slate-200 p-2 dark:border-neutral-600 dark:bg-neutral-700'>

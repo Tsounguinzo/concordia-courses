@@ -29,7 +29,6 @@
     export let interactions: Interaction[];
     export let updateLikes: (likes: number) => void;
     export let review: Review;
-    export let className: string = '';
     export let shareable: boolean = true;
 
     let readMore = false;
@@ -56,7 +55,7 @@
 
 <div class={twMerge(
         'relative flex w-full flex-col gap-4 border-b-[1px] border-b-gray-300 bg-slate-50 px-6 py-3 first:rounded-t-md last:rounded-b-md last:border-b-0 dark:border-b-gray-600 dark:bg-neutral-800',
-        className
+        $$props.class
       )}
 >
     <div class='flex flex-col'>

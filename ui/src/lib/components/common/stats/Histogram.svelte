@@ -10,7 +10,6 @@
     export let width: number;
     export let height: number;
     export let gap: number = 0;
-    export let className: string = '';
     export let caption: string = 'Distribution';
 
     const loaded = writable(false);
@@ -25,7 +24,7 @@
     }, Array(max).fill(0))
 </script>
 
-<div class={twMerge('relative w-fit', className)}>
+<div class={twMerge('relative w-fit', $$props.class)}>
     <div class='flex items-end' style={`width: ${width}px; height: ${height}px;`}>
         {#each distribution as count, index (index)}
             <div class='flex flex-col items-center text-xs'>
@@ -43,6 +42,6 @@
     </div>
     <div class='absolute bottom-4 h-[1px] w-full bg-gray-300 dark:bg-gray-600'/>
 </div>
-<div class={twMerge('text-center my-4 text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-gray-400', className)}>
+<div class={twMerge('text-center my-4 text-xs font-medium uppercase tracking-wider text-gray-600 dark:text-gray-400', $$props.class)}>
     {caption}
 </div>

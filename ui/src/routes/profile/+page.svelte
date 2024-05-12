@@ -1,6 +1,6 @@
 <script lang="ts">
     import DeleteButton from "$lib/components/review/DeleteButton.svelte";
-    import CourseReview from "$lib/components/review/Review.svelte";
+    import InstructorOrCourseReview from "$lib/components/review/Review.svelte";
     import JumpToTopButton from "$lib/components/common/JumpToTopButton.svelte";
     import {Bell, FileText, Info, User} from "lucide-svelte";
     import {writable} from "svelte/store";
@@ -75,30 +75,30 @@
 
 <div class='mx-auto max-w-2xl'>
     {#if user === undefined || user === null}
-        <Skeleton className='mb-2 rounded-lg mt-4' width={800} height={300} count={1}
+        <Skeleton class='mb-2 rounded-lg mt-4' width={800} height={300} count={1}
                   color={$darkModeOn ? 'rgb(38 38 38)' : 'rgb(226 232 240)'}/>
 
-        <Skeleton className='mb-8 rounded-lg mt-4' width={800} height={80} count={1}
+        <Skeleton class='mb-8 rounded-lg mt-4' width={800} height={80} count={1}
                   color={$darkModeOn ? 'rgb(38 38 38)' : 'rgb(226 232 240)'}/>
 
-        <Skeleton className='mb-2 rounded-lg mt-2' width={800} height={200} count={5}
+        <Skeleton class='mb-2 rounded-lg mt-2' width={800} height={200} count={5}
                   color={$darkModeOn ? 'rgb(38 38 38)' : 'rgb(226 232 240)'}/>
     {:else }
         <JumpToTopButton/>
         <CardContainer bind:isMouseEntered
-                       className="flex w-full flex-row bg-slate-50 p-6 dark:bg-neutral-800 dark:hover:shadow-2xl dark:hover:shadow-blue-800/[0.1] rounded-xl">
-            <CardBody className="flex w-fit h-full flex-col items-center space-y-3 md:m-4">
+                       class="flex w-full flex-row bg-slate-50 p-6 dark:bg-neutral-800 dark:hover:shadow-2xl dark:hover:shadow-blue-800/[0.1] rounded-xl">
+            <CardBody class="flex w-fit h-full flex-col items-center space-y-3 md:m-4">
                 <CardItem
                         {isMouseEntered}
                         translateZ="50"
-                        className="-ml-3 text-gray-500"
+                        class="-ml-3 text-gray-500"
                 >
                     <User size={64}/>
                 </CardItem>
                 <CardItem
                         {isMouseEntered}
                         translateZ="50"
-                        className="text-lg font-medium text-gray-700 dark:text-gray-300 md:text-xl"
+                        class="text-lg font-medium text-gray-700 dark:text-gray-300 md:text-xl"
                 >
                     {great(user?.username, new Date().getHours())}
                 </CardItem>
@@ -106,14 +106,14 @@
                     <CardItem
                             {isMouseEntered}
                             translateZ="50"
-                            className="text-neutral-500 dark:text-gray-400"
+                            class="text-neutral-500 dark:text-gray-400"
                     >
                         <FileText aria-hidden='true' size={20}/>
                     </CardItem>
                     <CardItem
                             {isMouseEntered}
                             translateZ="50"
-                            className="text-gray-700 dark:text-gray-300"
+                            class="text-gray-700 dark:text-gray-300"
                     >
                         {`${$userReviews?.length ?? 'No'} review${$userReviews?.length === 1 ? '' : 's'}`}
                     </CardItem>
@@ -122,14 +122,14 @@
                     <CardItem
                             {isMouseEntered}
                             translateZ="50"
-                            className="text-neutral-500 dark:text-gray-400"
+                            class="text-neutral-500 dark:text-gray-400"
                     >
                         <Bell aria-hidden='true' size={20}/>
                     </CardItem>
                     <CardItem
                             {isMouseEntered}
                             translateZ="50"
-                            className="text-gray-700 dark:text-gray-300"
+                            class="text-gray-700 dark:text-gray-300"
                     >
                         {`${$userSubscriptions?.length ?? 'No'} subscription${$userSubscriptions?.length === 1 ? '' : 's'}`}
                     </CardItem>
@@ -163,7 +163,7 @@
             <div use:tabs.panel>
                 {#if $tabs.selected === "Reviews"}
                     {#if $userReviews === undefined}
-                        <Skeleton className='mb-2 rounded-lg mt-2' width={800} height={200} count={5}
+                        <Skeleton class='mb-2 rounded-lg mt-2' width={800} height={200} count={5}
                                   color={$darkModeOn ? 'rgb(38 38 38)' : 'rgb(226 232 240)'}/>
                     {:else }
                         {#if $userReviews.length}
@@ -182,7 +182,7 @@
                                     {/if}
                                 </div>
                                 <div class='my-2 rounded-lg border-gray-800 duration-300 ease-in-out'>
-                                    <CourseReview
+                                    <InstructorOrCourseReview
                                             canModify={false}
                                             handleDelete={() => null}
                                             {review}
@@ -203,7 +203,7 @@
                 {:else }
                     <div class='m-4'>
                         {#if $userSubscriptions === undefined }
-                            <Skeleton className='mb-2 rounded-lg mt-2' width={700} height={60} count={5}
+                            <Skeleton class='mb-2 rounded-lg mt-2' width={700} height={60} count={5}
                                       color={$darkModeOn ? 'rgb(38 38 38)' : 'rgb(226 232 240)'}/>
                         {:else }
                             {#if $userSubscriptions.length !== 0}
@@ -215,7 +215,7 @@
                                         </a>
                                         <DeleteButton
                                                 title='Delete Subscription'
-                                                className='ml-auto'
+                                                class='ml-auto'
                                                 text={`Are you sure you want to delete your subscription for ${subscription.courseId}? `}
                                                 onConfirm={() => removeSubscription(subscription.courseId)}
                                                 size={20}

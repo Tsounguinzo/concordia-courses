@@ -12,7 +12,7 @@
     import {onMount} from "svelte";
     import FeedFilter from "$lib/components/common/filter/FeedFilter.svelte";
     import type {Review} from "$lib/model/Review";
-    import CourseReview from "$lib/components/review/Review.svelte";
+    import InstructorOrCourseReview from "$lib/components/review/Review.svelte";
     import {type Interaction} from "$lib/model/Interaction";
     import {page} from "$app/stores";
     import {spliceCourseCode} from "$lib/utils";
@@ -126,11 +126,11 @@
             {#if reviews !== undefined}
                 <FeedFilter {sortBy}/>
                 {#each reviews as review (review._id)}
-                    <CourseReview
+                    <InstructorOrCourseReview
                             title={review?.type === 'instructor' ? instructorIdToName(review?.instructorId) : spliceCourseCode(review?.courseId, " ")}
                             interactions={$userInteractions}
                             updateLikes={updateLikes(review)}
-                            className='rounded-md my-1.5'
+                            class='rounded-md my-1.5'
                             review={review}
                             canModify={false}
                             handleDelete={() => undefined}
@@ -141,7 +141,7 @@
                                 on:loadMore={() => fetchMore()}/>
             {:else }
                 <div class='mx-2 text-gray-50'>
-                    <Skeleton className='mb-2 rounded-lg first:mt-2'
+                    <Skeleton class='mb-2 rounded-lg first:mt-2'
                               color={$darkModeOn ? 'rgb(38 38 38)' : 'rgb(226 232 240)'}/>
                 </div>
             {/if}
