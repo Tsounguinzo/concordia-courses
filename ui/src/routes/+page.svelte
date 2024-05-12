@@ -1,26 +1,10 @@
 <script lang="ts">
     import CourseSearchBar from "$lib/components/Search/CourseSearchBar.svelte";
     import {getSearchIndex, updateSearchResults} from "$lib/searchIndex";
-    import {page} from "$app/stores";
-    import {onMount} from "svelte";
-    import {toast} from "svelte-sonner";
     import {searchResults} from "$lib/store";
     import Seo from "$lib/components/common/Seo.svelte";
 
-
-    const alerts: Map<string, string> = new Map([
-        ['invalidMail', 'Please use a Concordia email address to authenticate.'],
-    ]);
-
     const { courses, instructors, coursesIndex, instructorsIndex } = getSearchIndex();
-
-    const searchParams = $page.url.searchParams;
-
-    onMount(() => {
-        const err = searchParams.get('err');
-        if (err === null) return;
-        toast.error(alerts.get(err) ?? '');
-    });
 
     const handleInputChange = (query: string) => {
         updateSearchResults(

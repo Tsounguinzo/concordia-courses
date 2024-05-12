@@ -1,6 +1,6 @@
 <script lang="ts">
 
-    import {courseIdToUrlParam, instructorIdToUrlParam, instructorNameToUrlParam, spliceCourseCode} from "$lib/utils";
+    import {courseIdToUrlParam, instructorNameToUrlParam, spliceCourseCode} from "$lib/utils";
     import {writable} from "svelte/store";
     import {goto} from "$app/navigation";
     import type {SearchResults} from "$lib/model/SearchResults";
