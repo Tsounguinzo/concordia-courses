@@ -18,10 +18,13 @@ public class SignupRequest {
         @NotNull
         @NotEmpty(message = "Username cannot be empty")
         private String username;
+
         @NotNull
         @NotEmpty(message = "Email cannot be empty")
         @Email(message = "Email should be valid")
+        @ConcordiaEmail(message = "Email must be a Concordia email address")
         private String email;
+
         @NotNull
         @NotEmpty(message = "Password cannot be empty")
         private String password;

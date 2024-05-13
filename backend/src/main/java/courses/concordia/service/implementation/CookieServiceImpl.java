@@ -4,6 +4,7 @@ import courses.concordia.config.CookieConfigProperties;
 import courses.concordia.config.JwtConfigProperties;
 import courses.concordia.config.RtConfigProperties;
 import courses.concordia.config.TokenType;
+import courses.concordia.dto.response.AuthenticationResponse;
 import courses.concordia.service.CookieService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -80,5 +81,22 @@ public class CookieServiceImpl implements CookieService {
                 .maxAge(maxAge)
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+    }
+
+    @Override
+    public void addTokenCookies(HttpServletResponse response, AuthenticationResponse res) {
+        addTokenCookie(response, res.getToken(), TokenType.ACCESS_TOKEN);
+        addTokenCookie(response, res.getRefreshToken(), TokenType.REFRESH_TOKEN);
+    }
+
+    /**
+     * Clears all token cookies by setting their max age to 0.
+     *
+     * @param response The outgoing HTTP response.
+     */
+    @Override
+    public void clearTokenCookies(HttpServletResponse response) {
+        clearTokenCookie(response, TokenType.ACCESS_TOKEN);
+        clearTokenCookie(response, TokenType.REFRESH_TOKEN);
     }
 }

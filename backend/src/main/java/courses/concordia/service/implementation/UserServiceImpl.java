@@ -1,5 +1,7 @@
 package courses.concordia.service.implementation;
 
+import courses.concordia.config.JwtConfigProperties;
+import courses.concordia.config.RtConfigProperties;
 import courses.concordia.config.TokenType;
 import courses.concordia.controller.v1.request.LoginRequest;
 import courses.concordia.dto.mapper.UserMapper;
@@ -12,11 +14,10 @@ import courses.concordia.model.Token;
 import courses.concordia.model.User;
 import courses.concordia.repository.TokenRepository;
 import courses.concordia.repository.UserRepository;
-import courses.concordia.service.EmailService;
-import courses.concordia.service.JwtService;
-import courses.concordia.service.TokenGenerator;
-import courses.concordia.service.UserService;
+import courses.concordia.service.*;
 import courses.concordia.service.implementation.token.UUIDTokenGenerator;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,11 +25,12 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 
 import static courses.concordia.exception.EntityType.TOKEN;
 import static courses.concordia.exception.EntityType.USER;
@@ -44,6 +46,10 @@ public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final CookieService cookieService;
+    private final TokenBlacklistService tokenBlacklistService;
+    private final JwtConfigProperties jwtConfigProperties;
+    private final RtConfigProperties rtConfigProperties;
 
 
     /**
@@ -57,62 +63,16 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public AuthenticationResponse signup(UserDto userDto) {
-        log.info("Attempting to signup user: {}", userDto.getUsername());
+        log.info("Signing up user: {}", userDto.getUsername());
+
         checkUserExistence(userDto.getUsername(), userDto.getEmail());
+        User user = createUserFromDto(userDto);
+        Token token = createAndSaveTokenForUser(user);
 
-        User user = new User()
-                .setUsername(userDto.getUsername())
-                .setEmail(userDto.getEmail())
-                .setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()))
-                .setVerified(userDto.isVerified());
-
-        user = userRepository.save(user);
-
-        Token token = createAndSaveNewToken(user);
         emailService.sendSimpleMailMessage(user.getUsername(), user.getEmail(), token.getToken());
-
         authenticate(userDto.getUsername(), userDto.getPassword());
 
-        var jwtToken = jwtService.generateToken(user, TokenType.ACCESS_TOKEN);
-        var refreshToken = jwtService.generateToken(user, TokenType.REFRESH_TOKEN);
-
-        return new AuthenticationResponse(jwtToken, refreshToken);
-    }
-
-    /**
-     * Authenticates a user with the provided login credentials.
-     *
-     * @param loginRequest Contains the username and password for authentication.
-     * @return AuthenticationResponse containing JWT and refresh tokens upon successful authentication.
-     */
-    @Override
-    public AuthenticationResponse authenticate(LoginRequest loginRequest) {
-
-        try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            loginRequest.getUsername(),
-                            loginRequest.getPassword()));
-
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            User user = (User) authentication.getPrincipal();
-            String jwtToken = jwtService.generateToken(user, TokenType.ACCESS_TOKEN);
-            String refreshToken = jwtService.generateToken(user, TokenType.REFRESH_TOKEN);
-
-
-            log.info("Authentication successful for user: {}", loginRequest.getUsername());
-            return new AuthenticationResponse(jwtToken, refreshToken);
-        } catch (BadCredentialsException e) {
-            log.error("Authentication failed for user: {}", loginRequest.getUsername(), e);
-            throw exception(USER, CUSTOM_EXCEPTION, "wrong username or password.");
-        } catch (DisabledException e) {
-            log.error("Authentication failed, account is disabled: {}", loginRequest.getUsername(), e);
-            throw exception(USER, CUSTOM_EXCEPTION, "Account is disabled.");
-        } catch (Exception e) {
-            log.error("Authentication failed for user: {}", loginRequest.getUsername(), e);
-            throw exception(USER, CUSTOM_EXCEPTION, "Authentication failed.");
-        }
+        return generateAuthenticationResponse(user);
     }
 
     /**
@@ -123,9 +83,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public boolean verifyToken(String token) {
-        log.info("Verifying token: {}", token);
-        Token foundToken = tokenRepository.findByToken(token)
-                .orElseThrow(() -> exception(TOKEN, CUSTOM_EXCEPTION, "Invalid or expired token."));
+        Token foundToken = fetchToken(token);
         return verifyAndActivateUser(foundToken);
     }
 
@@ -137,9 +95,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void resendToken(String username) {
         log.info("Resending token to user: {}", username);
-
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> exception(USER, ENTITY_NOT_FOUND));
+        User user = getUser(username);
 
         if (user.isVerified()) {
             throw exception(USER, CUSTOM_EXCEPTION, username + " is already verified.");
@@ -147,7 +103,7 @@ public class UserServiceImpl implements UserService {
 
         Token token = tokenRepository.findByUserId(user.get_id())
                 .filter(t -> !t.isExpired())
-                .orElseGet(() -> createAndSaveNewToken(user));
+                .orElseGet(() -> createAndSaveTokenForUser(user));
 
         emailService.sendNewTokenMailMessage(user.getUsername(), user.getEmail(), token.getToken());
     }
@@ -186,10 +142,7 @@ public class UserServiceImpl implements UserService {
         log.info("Changing password for user: {}", username);
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> exception(USER, ENTITY_NOT_FOUND));
-
-        String encodedPassword = bCryptPasswordEncoder.encode(newPassword);
-        user.setPassword(encodedPassword);
-        userRepository.save(user);
+        updateUserPassword(user, newPassword);
         tokenRepository.delete(token);
         emailService.sendResetPasswordConfirmationMailMessage(user.getUsername(), user.getEmail());
     }
@@ -244,6 +197,52 @@ public class UserServiceImpl implements UserService {
         emailService.sendResetPasswordMailMessage(user.getUsername(), user.getEmail(), token.getToken());
     }
 
+    /**
+     * Signs out the currently authenticated user by clearing the token cookies.
+     *
+     * @param request  The incoming HTTP request.
+     * @param response The outgoing HTTP response.
+     */
+    @Override
+    public void signOut(HttpServletRequest request, HttpServletResponse response) {
+        String accessToken = cookieService.getTokenFromCookie(request, jwtConfigProperties.getTokenName());
+        String refreshToken = cookieService.getTokenFromCookie(request, rtConfigProperties.getTokenName());
+
+        if (accessToken == null && refreshToken == null) {
+            // If both tokens are missing, there's nothing to do. User might already be signed out.
+            throw exception(USER, CUSTOM_EXCEPTION, "No active session found or already signed out.");
+        }
+
+        blacklistTokenIfNeeded(accessToken, TokenType.ACCESS_TOKEN);
+        blacklistTokenIfNeeded(refreshToken, TokenType.REFRESH_TOKEN);
+
+        cookieService.clearTokenCookies(response);
+    }
+
+    /**
+     * Signs in a user with the provided login credentials, generating and setting token cookies.
+     *
+     * @param loginRequest The login credentials for the user.
+     * @param response     The outgoing HTTP response.
+     */
+    @Override
+    public void signIn(LoginRequest loginRequest, HttpServletResponse response) {
+        authenticate(loginRequest.getUsername(), loginRequest.getPassword());
+        User user = getAuthenticatedUser();
+        AuthenticationResponse res = generateAuthenticationResponse(user);
+        cookieService.addTokenCookies(response, res);
+    }
+
+    private void blacklistTokenIfNeeded(String token, TokenType tokenType) {
+        if (token != null && !tokenBlacklistService.isTokenBlacklisted(token)) {
+            Date tokenExpiration = jwtService.extractExpiration(token, tokenType);
+            long tokenDurationInSeconds = Math.max(0, (tokenExpiration.getTime() - System.currentTimeMillis()) / 1000);
+            if (tokenDurationInSeconds > 0) { // Only blacklist if token is not already expired
+                tokenBlacklistService.blacklistToken(token, tokenDurationInSeconds);
+            }
+        }
+    }
+
     private RuntimeException exception(EntityType entityType, ExceptionType exceptionType, String... args) {
         return CustomExceptionFactory.throwCustomException(entityType, exceptionType, args);
     }
@@ -252,38 +251,76 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUsername(username).isPresent();
     }
 
+    private User createUserFromDto(UserDto userDto) {
+        User user = new User()
+                .setUsername(userDto.getUsername())
+                .setEmail(userDto.getEmail())
+                .setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()))
+                .setVerified(false);
+        return userRepository.save(user);
+    }
+
+    private AuthenticationResponse generateAuthenticationResponse(User user) {
+        String jwtToken = jwtService.generateToken(user, TokenType.ACCESS_TOKEN);
+        String refreshToken = jwtService.generateToken(user, TokenType.REFRESH_TOKEN);
+        return new AuthenticationResponse(jwtToken, refreshToken);
+    }
+
     private void authenticate(String username, String password) {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        } catch (AuthenticationException e) {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(username, password));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        } catch (BadCredentialsException e) {
+            log.error("Invalid credentials for user: {}", username, e);
+            throw exception(USER, CUSTOM_EXCEPTION, "Wrong credentials.");
+        } catch (DisabledException e) {
+            log.error("Authentication failed, account is disabled: {}", username, e);
+            throw exception(USER, CUSTOM_EXCEPTION, "Account is disabled.");
+        } catch (Exception e) {
             log.error("Authentication failed for user: {}", username, e);
-            throw exception(USER, CUSTOM_EXCEPTION, "Authentication failed");
+            throw exception(USER, CUSTOM_EXCEPTION, "Authentication failed.");
         }
     }
 
-    private boolean verifyAndActivateUser(Token token) {
-        String userId = token.getUserId();
-        User user = userRepository.findById(userId)
+    private Token fetchToken(String token) {
+        return tokenRepository.findByToken(token)
+                .orElseThrow(() -> exception(TOKEN, CUSTOM_EXCEPTION, "Invalid or expired token."));
+    }
+
+    private User getUserById(String userId) {
+        return userRepository.findById(userId)
                 .orElseThrow(() -> exception(USER, ENTITY_NOT_FOUND));
+    }
+
+    private User getUser(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> exception(USER, ENTITY_NOT_FOUND));
+    }
+
+    private void updateUserPassword(User user, String newPassword) {
+        user.setPassword(bCryptPasswordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
+
+    private boolean verifyAndActivateUser(Token token) {
+        User user = getUserById(token.getUserId());
         if (!user.isVerified()) {
             user.setVerified(true);
             userRepository.save(user);
             tokenRepository.delete(token);
-            log.info("User verified: {}", user.getUsername());
             return true;
         }
-        log.info("User already verified: {}", user.getUsername());
         return false;
     }
 
-    private Token createAndSaveNewToken(User user) {
+    private Token createAndSaveTokenForUser(User user) {
         Token t = tokenRepository.findByUserId(user.get_id()).orElse(null);
         if(t != null && t.isExpired()) {
             tokenRepository.delete(t);
         }
         Token newToken = new Token(user);
-        tokenRepository.save(newToken);
-        return newToken;
+        return tokenRepository.save(newToken);
     }
 
     private Token createAndSaveNewToken(User user, TokenGenerator tokenGenerator) {

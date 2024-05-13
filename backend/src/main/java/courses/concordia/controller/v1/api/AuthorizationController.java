@@ -1,7 +1,5 @@
 package courses.concordia.controller.v1.api;
 
-import courses.concordia.config.JwtConfigProperties;
-import courses.concordia.config.TokenType;
 import courses.concordia.controller.v1.request.AuthenticationRequest;
 import courses.concordia.controller.v1.request.LoginRequest;
 import courses.concordia.controller.v1.request.PasswordChangeRequest;
@@ -14,8 +12,6 @@ import courses.concordia.model.Token;
 import courses.concordia.model.User;
 import courses.concordia.repository.TokenRepository;
 import courses.concordia.service.CookieService;
-import courses.concordia.service.JwtService;
-import courses.concordia.service.TokenBlacklistService;
 import courses.concordia.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,74 +19,41 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
 public class AuthorizationController {
     private final UserService userService;
-    private final JwtService jwtService;
     private final CookieService cookieService;
     private final TokenRepository tokenRepository;
-    private final TokenBlacklistService tokenBlacklistService;
-    private final JwtConfigProperties jwtConfigProperties;
 
 
     @GetMapping("/user")
     @CrossOrigin(origins = "*")
     public Response<?> getUser() {
-        User user = userService.getAuthenticatedUser();
-        if(user == null) {
-            return Response.unauthorized();
-        }
-        return Response.ok().setPayload(UserResponseDto.fromEntity(user));
+        return Optional.ofNullable(userService.getAuthenticatedUser())
+                .map(UserResponseDto::fromEntity)
+                .map(Response.ok()::setPayload)
+                .orElseGet(Response::unauthorized);
     }
 
     @PostMapping("/signin")
     public Response<?> signIn(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
-        AuthenticationResponse res = userService.authenticate(loginRequest);
-        cookieService.addTokenCookie(response, res.getToken(),TokenType.ACCESS_TOKEN);
-        cookieService.addTokenCookie(response, res.getRefreshToken(),TokenType.REFRESH_TOKEN);
+        userService.signIn(loginRequest, response);
         return Response.ok().setPayload("Boom! You're in");
     }
 
     @GetMapping("/signout")
     public Response<?> signOut(HttpServletRequest request, HttpServletResponse response) {
-        String accessToken = cookieService.getTokenFromCookie(request, jwtConfigProperties.getTokenName());
-        String refreshToken = cookieService.getTokenFromCookie(request, jwtConfigProperties.getTokenName());
-
-        if (accessToken == null && refreshToken == null) {
-            // If both tokens are missing, there's nothing to do. User might already be signed out.
-            return Response.ok().setPayload("No active session found or already signed out.");
-        }
-
-        if (accessToken != null && !tokenBlacklistService.isTokenBlacklisted(accessToken)) {
-            Date accessTokenExpiration = jwtService.extractExpiration(accessToken, TokenType.ACCESS_TOKEN);
-            long accessTokenDurationInSeconds = Math.max(0, (accessTokenExpiration.getTime() - System.currentTimeMillis()) / 1000);
-            tokenBlacklistService.blacklistToken(accessToken, accessTokenDurationInSeconds);
-        }
-
-        if (refreshToken != null && !tokenBlacklistService.isTokenBlacklisted(refreshToken)) {
-            Date refreshTokenExpiration = jwtService.extractExpiration(refreshToken, TokenType.REFRESH_TOKEN);
-            long refreshTokenDurationInSeconds = Math.max(0, (refreshTokenExpiration.getTime() - System.currentTimeMillis()) / 1000);
-            tokenBlacklistService.blacklistToken(refreshToken, refreshTokenDurationInSeconds);
-        }
-
-        cookieService.clearTokenCookie(response, TokenType.ACCESS_TOKEN);
-        cookieService.clearTokenCookie(response, TokenType.REFRESH_TOKEN);
-
+        userService.signOut(request, response);
         return Response.ok().setPayload("And you're out! Come back soon!");
     }
 
     @PostMapping("/signup")
     public Response<?> signUp(@Valid @RequestBody SignupRequest signupRequest, HttpServletResponse response) {
 
-        if (!userService.checkIfUserExist(signupRequest.getUsername())) {
-            if(!signupRequest.getEmail().endsWith("concordia.ca")){
-                return Response.badRequest().setErrors("Email must be a Concordia email address");
-            }
-        }
         UserDto userDto = new UserDto(
                 signupRequest.getUsername(),
                 signupRequest.getEmail(),
@@ -99,8 +62,7 @@ public class AuthorizationController {
         );
         AuthenticationResponse res = userService.signup(userDto);
 
-        cookieService.addTokenCookie(response, res.getToken(),TokenType.ACCESS_TOKEN);
-        cookieService.addTokenCookie(response, res.getRefreshToken(),TokenType.REFRESH_TOKEN);
+        cookieService.addTokenCookies(response, res);
 
         return Response.ok().setPayload("Almost there! Just need to verify your email to make sure it's really you.");
     }
@@ -126,13 +88,14 @@ public class AuthorizationController {
 
     @GetMapping("/resend_token")
     public Response<?> resendVerificationToken() {
-        User user = userService.getAuthenticatedUser();
-        if(user == null) {
-            return Response.unauthorized();
-        }
+        Optional<User> optionalUser = Optional.ofNullable(userService.getAuthenticatedUser());
 
-        userService.resendToken(user.getUsername());
-        return Response.ok().setPayload("Your new code is in your inbox!");
+        return optionalUser.map(User::getUsername)
+                .map(username -> {
+                    userService.resendToken(username);
+                    return Response.ok().setPayload("Verification token resent to your email.");
+                })
+                .orElseGet(Response::unauthorized);
     }
 
     @GetMapping("/forgot_password")
