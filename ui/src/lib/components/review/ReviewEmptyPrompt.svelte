@@ -17,7 +17,7 @@
         <div>
             No reviews have been left for this {variant} yet,
             {#if !isLogin}
-                <a href="/login" class="underline text-blue-400 text-lg">Login</a> to
+                <a href="/login" class="underline text-primary-400 text-lg">Login</a> to
             {/if}
             be the first!
         </div>

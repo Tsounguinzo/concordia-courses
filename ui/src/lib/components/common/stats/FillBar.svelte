@@ -27,7 +27,7 @@
     >
       <div
         class={twMerge(
-          'bg-blue-500 transition-all duration-1000 ease-in-out',
+          'bg-primary transition-all duration-1000 ease-in-out',
           variant === 'large' ? 'h-5' : 'h-4'
         )}
         style={`width: ${!$loaded ? 0 : (dynamicPercentage / 100) * width}px; `}

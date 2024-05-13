@@ -22,7 +22,7 @@
         position: absolute;
         left: 0;
         top: 0;
-        color: #2377ab;
+        color: #ca3448;
         width: 100%;
         height: 100%;
         overflow: hidden;

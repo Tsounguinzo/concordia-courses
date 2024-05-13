@@ -22,7 +22,7 @@
                 </h1>
             </div>
             {#if instructor.departments}
-                <h2 class='break-words text-lg font-semibold text-blue-800 dark:text-blue-200 my-3'>
+                <h2 class='break-words text-lg font-semibold text-primary-800 dark:text-primary-200 my-3'>
                     {#each instructor.departments as department}
                         {department.toLowerCase().includes("department") ? '' : 'Department of'} {department}
                         {#if department !== instructor.departments[instructor.departments.length - 1]}
@@ -39,7 +39,7 @@
                         <div class='max-w-sm flex flex-wrap'>
                             {#each instructor.courses as course, index}
                                 <div class="mt-1 ml-1">
-                                    <a class='font-medium transition hover:text-blue-600'
+                                    <a class='font-medium transition hover:text-primary-600'
                                        href={`/course/${courseIdToUrlParam(course.subject + course.catalog)}`}>
                                         {`${course.subject} ${course.catalog}`}
                                     </a>

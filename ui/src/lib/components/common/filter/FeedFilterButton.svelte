@@ -8,7 +8,7 @@
 
     $: selected = $sortBy === name;
 
-    const selectedColor = selectedClass ?? 'text-blue-600 bg-gray-300 dark:bg-neutral-700';
+    const selectedColor = selectedClass ?? 'text-primary-600 bg-gray-300 dark:bg-neutral-700';
 
     const unselectedColor = 'hover:bg-gray-200 hover:dark:bg-neutral-600 text-gray-600 dark:text-gray-300';
 </script>

@@ -196,7 +196,7 @@
                         >
                             <div class="relative flex ">
                                 <div class="w-12 h-6 flex border border-gray-400 items-center rounded-full p-1 duration-300 ease-in-out"
-                                     class:bg-blue-500={$instructorsModeOn}>
+                                     class:bg-primary={$instructorsModeOn}>
                                     <div class="dark:bg-white bg-neutral-400 w-4 h-4 rounded-full shadow-md transform duration-300 ease-in-out"
                                          class:translate-x-6={$instructorsModeOn}></div>
                                 </div>

@@ -1,4 +1,4 @@
-export const highlightResultStyle = 'bg-blue-50 border-l-blue-500 border-l-4 dark:bg-blue-100 dark:border-l-blue-600 dark:bg-neutral-600';
+export const highlightResultStyle = 'bg-primary-50 border-l-primary border-l-4 dark:bg-primary-100 dark:border-l-primary-600 dark:bg-neutral-600';
 
 export const navigationItems = [
   { name: 'Home', href: '/' },
