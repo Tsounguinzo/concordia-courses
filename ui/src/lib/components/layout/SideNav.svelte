@@ -54,7 +54,7 @@
                                 on:click|preventDefault={() => mobileMenuOpen.set(false)}
                         >
                             <span class='sr-only'>Close menu</span>
-                            <X className='h-6 w-6' aria-hidden='true'/>
+                            <X class='h-6 w-6' aria-hidden='true'/>
                         </button>
                     </div>
                     <div class='mt-6 flow-root'>

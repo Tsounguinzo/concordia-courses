@@ -54,7 +54,7 @@
             </p>
             {#if instructor.reviewCount}
                 <div class='grow py-3'/>
-                <InstructorInfoStats className='md:hidden' {allReviews} type="instructor"/>
+                <InstructorInfoStats class='md:hidden' {allReviews} type="instructor"/>
                 <p class='mt-4 text-sm text-gray-500 dark:text-gray-400'>
                     {instructor.reviewCount} review(s)
                 </p>
