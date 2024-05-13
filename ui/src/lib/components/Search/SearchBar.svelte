@@ -19,7 +19,7 @@
     <div class={twMerge('pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3', outerIconStyle)}>
         <Search size={20} aria-hidden='true' class={twMerge(
             'transition duration-200',
-            $searchSelected ? 'stroke-blue-500' : 'stroke-gray-400',
+            $searchSelected ? 'stroke-primary' : 'stroke-gray-400',
             iconStyle
           )}/>
     </div>

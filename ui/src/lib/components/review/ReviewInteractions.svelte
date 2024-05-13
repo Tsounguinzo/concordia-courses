@@ -103,7 +103,7 @@
         <ThumbsUp
                 class={twMerge(
               'h-4 w-4 cursor-pointer stroke-gray-500',
-              $kind === 'like' ? 'stroke-blue-600' : ''
+              $kind === 'like' ? 'stroke-primary-600' : ''
             )}
         />
     </button>
@@ -114,7 +114,7 @@
         <ThumbsDown
                 class={twMerge(
               'h-4 w-4 cursor-pointer stroke-gray-500',
-              $kind === 'dislike' ? 'stroke-blue-600' : ''
+              $kind === 'dislike' ? 'stroke-primary-600' : ''
             )}
         />
     </button>

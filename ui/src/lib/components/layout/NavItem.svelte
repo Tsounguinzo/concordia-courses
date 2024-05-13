@@ -6,7 +6,7 @@
     export let name: string;
 
     const blueUnderlineStyle =
-        'before:content before:absolute before:block before:w-full before:h-[2px] before:bottom-0 before:left-0 before:top-5 before:bg-blue-600';
+        'before:content before:absolute before:block before:w-full before:h-[2px] before:bottom-0 before:left-0 before:top-5 before:bg-primary-600';
 </script>
 
 <a

@@ -84,7 +84,7 @@
                         </Tooltip>
                     </div>
                     {#if canModify}
-                        <Pin class='ml-2 mt-2 text-blue-600'/>
+                        <Pin class='ml-2 mt-2 text-primary-600'/>
                     {/if}
                     <div class='grow'/>
                     <div class='flex w-64 flex-col items-end rounded-lg p-2'>
@@ -101,7 +101,7 @@
                             <IconRating rating={review.difficulty} icon="flame"/>
                         </div>
                         {#if review.userId.startsWith("rate_my_professor")}
-                            <div class='mt-2 px-2 bg-blue-400 rounded-lg w-fit'>
+                            <div class='mt-2 px-2 bg-primary-400 rounded-lg w-fit'>
                                 from rate my professor
                             </div>
                         {/if}
@@ -114,7 +114,7 @@
                 {:else }
                     <div class='ml-1 mr-4 mt-2 hyphens-auto text-left text-gray-800 dark:text-gray-300'>
                         {review.content?.substring(0, 300) + '...'}
-                        <button class='ml-1 mr-auto pt-1 text-gray-700 underline transition duration-300 ease-in-out hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-500'
+                        <button class='ml-1 mr-auto pt-1 text-gray-700 underline transition duration-300 ease-in-out hover:text-primary dark:text-gray-300 dark:hover:text-primary'
                                 on:click={() => readMore = true}>
                             Show more
                         </button>
@@ -137,13 +137,13 @@
             {#if (review.type ?? 'course') === 'course'}
                 Taught by{' '}
                 <a href={`/instructor/${review.instructorId}`}
-                   class='font-medium transition hover:text-blue-600'>
+                   class='font-medium transition hover:text-primary-600'>
                     {instructorIdToName(review.instructorId)}
                 </a>
             {:else }
                 Written for{' '}
                 <a href={`/course/${courseIdToUrlParam(review.courseId)}`}
-                   class='font-medium transition hover:text-blue-600'>
+                   class='font-medium transition hover:text-primary-600'>
                     {spliceCourseCode(review.courseId, ' ')}
                 </a>
             {/if}

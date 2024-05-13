@@ -86,7 +86,7 @@
     {:else }
         <JumpToTopButton/>
         <CardContainer bind:isMouseEntered
-                       class="flex w-full flex-row bg-slate-50 p-6 dark:bg-neutral-800 dark:hover:shadow-2xl dark:hover:shadow-blue-800/[0.1] rounded-xl">
+                       class="flex w-full flex-row bg-slate-50 p-6 dark:bg-neutral-800 dark:hover:shadow-2xl dark:hover:shadow-primary-800/[0.1] rounded-xl">
             <CardBody class="flex w-fit h-full flex-col items-center space-y-3 md:m-4">
                 <CardItem
                         {isMouseEntered}
@@ -138,7 +138,7 @@
         </CardContainer>
         {#if !user?.verified}
             <div class="flex items-center justify-center text-md font-medium text-gray-800 dark:text-gray-200">
-                <div class="dark:bg-blue-900 bg-blue-400 rounded-md p-3 flex gap-x-4 items-center justify-center">
+                <div class="dark:bg-primary-900 bg-primary-400 rounded-md p-3 flex gap-x-4 items-center justify-center">
                     <Info class="min-w-6 min-h-6"/>
                     Check your Concordia email for your code.
                 </div>
@@ -171,12 +171,12 @@
                                 <div class='flex mt-10'>
                                     {#if review.type === 'instructor'}
                                         <a href={`/instructor/${review.instructorId}`}
-                                           class='text-xl font-bold text-gray-700 duration-200 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-500'>
+                                           class='text-xl font-bold text-gray-700 duration-200 hover:text-primary dark:text-gray-300 dark:hover:text-primary'>
                                             {instructorIdToName(review.instructorId)}
                                         </a>
                                     {:else }
                                         <a href={`/course/${courseIdToUrlParam(review.courseId)}`}
-                                           class='text-xl font-bold text-gray-700 duration-200 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-500'>
+                                           class='text-xl font-bold text-gray-700 duration-200 hover:text-primary dark:text-gray-300 dark:hover:text-primary'>
                                             {spliceCourseCode(review.courseId, ' ')}
                                         </a>
                                     {/if}
@@ -194,7 +194,7 @@
                                 <FileText class='stroke-[1.25] text-gray-400 dark:text-gray-600' size={40}/>
                                 <div class='text-center text-sm text-gray-600 dark:text-gray-500'>
                                     No reviews in sight! <a href="/explore"
-                                                            class="underline text-blue-400 font-semibold">Find a
+                                                            class="underline text-primary-400 font-semibold">Find a
                                     course or instructor</a> and leave your feedback.
                                 </div>
                             </div>

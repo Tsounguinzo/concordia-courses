@@ -44,7 +44,7 @@
 
 <button type='button' class={twMerge('h-fit', $$props.class)} on:click={dialog.open}>
     <ShieldQuestion
-            class='stroke-gray-500 transition duration-200 hover:stroke-blue-600 dark:stroke-gray-400 dark:hover:stroke-blue-600'
+            class='stroke-gray-500 transition duration-200 hover:stroke-primary-600 dark:stroke-gray-400 dark:hover:stroke-primary-600'
             size={size}/>
 </button>
 <Transition show={$dialog.expanded}>
@@ -107,7 +107,7 @@
                             </button>
                             <button
                                     type='button' on:click={handleClick}
-                                    class='rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-600 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 dark:bg-blue-500 dark:text-gray-200 dark:hover:bg-blue-600'
+                                    class='rounded-md border border-transparent bg-primary-100 px-4 py-2 text-sm font-medium text-primary-600 hover:bg-primary-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 dark:bg-primary dark:text-gray-200 dark:hover:bg-primary-600'
 
                             >
                                 Send link

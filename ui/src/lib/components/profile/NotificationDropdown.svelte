@@ -89,12 +89,12 @@
                                  class='m-2'>
                                 <div class='mb-2 flex items-center dark:bg-neutral-700'>
                                     <div class='flex items-center gap-x-1'>
-                                        <a class='font-semibold text-gray-800 dark:text-gray-200 dark:hover:text-blue-400 hover:text-blue-400'
+                                        <a class='font-semibold text-gray-800 dark:text-gray-200 dark:hover:text-primary-400 hover:text-primary-400'
                                            href={`/course/${courseIdToUrlParam(notification.review.courseId)}`}>
                                             {spliceCourseCode(notification.review.courseId, ' ')}
                                         </a>
                                         {#if !notification.seen}
-                                            <Dot class='text-blue-400'/>
+                                            <Dot class='text-primary-400'/>
                                         {/if}
                                     </div>
                                     <button class='ml-auto text-right text-gray-700 hover:text-red-600 dark:text-gray-300 dark:hover:text-red-600'

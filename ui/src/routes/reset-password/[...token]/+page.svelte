@@ -51,7 +51,7 @@
         <div class="flex items-center justify-center text-md font-medium text-gray-800 dark:text-gray-200">
             <div class="dark:bg-green-900 bg-green-400 rounded-md p-3 flex gap-x-4 items-center justify-center">
                 <Info class="min-w-6 min-h-6"/>
-                Your password has been reset successfully. You can now <a href="/login" class="text-blue-500 dark:text-blue-400 underline">login</a> with your new password.
+                Your password has been reset successfully. You can now <a href="/login" class="text-primary-500 dark:text-primary-400 underline">login</a> with your new password.
             </div>
         </div>
     </div>

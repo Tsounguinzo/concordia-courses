@@ -46,7 +46,7 @@
 								'h-6 w-6 ',
 								cn(
 									'text-black dark:text-white',
-									value === index && 'text-black opacity-100 dark:text-blue-500'
+									value === index && 'text-black opacity-100 dark:text-primary'
 								)
 							)}
                         >
@@ -61,7 +61,7 @@
                 <span
                         class={cn(
 						'text-black dark:text-white',
-						value === index && 'text-black opacity-100 dark:text-blue-500'
+						value === index && 'text-black opacity-100 dark:text-primary'
 					)}
                 >
 					{loadingState.text}

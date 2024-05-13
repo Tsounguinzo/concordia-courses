@@ -85,7 +85,7 @@
                             <div class='flex items-center justify-between'>
                                 <div>{value}</div>
                                 {#if selected}
-                                    <Check class='stroke-blue-600' size={18}/>
+                                    <Check class='stroke-primary-600' size={18}/>
                                 {/if}
                             </div>
                         </li>
@@ -97,7 +97,7 @@
                         <div class='max-w-60 flex space-x-1 rounded-3xl bg-gray-100 px-2.5 py-1 text-sm font-medium text-gray-800 dark:bg-neutral-700 dark:text-gray-200'>
                             <div class="text-xs">{selected}</div>
                             <button type='button' use:combobox.deselect={selected}>
-                                <X size={18} class='transition duration-75 hover:stroke-blue-600'/>
+                                <X size={18} class='transition duration-75 hover:stroke-primary-600'/>
                             </button>
                         </div>
                     {/each}

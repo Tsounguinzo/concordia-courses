@@ -10,7 +10,7 @@
 
     $: selected = isSelected;
 
-    const selectedColor = selectedClass ?? 'bg-blue-200 text-blue-900';
+    const selectedColor = selectedClass ?? 'bg-primary-200 text-primary-900';
 
     const unselectedColor = 'bg-gray-200 dark:bg-neutral-700 text-gray-600 dark:text-gray-300';
 </script>

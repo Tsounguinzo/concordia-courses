@@ -13,7 +13,7 @@
 </script>
 
 <Tooltip {show} text={count.toString()} offset={{ x: 4, y: -8 }}>
-    <p class='ml-0.5 rounded-t-sm bg-blue-500 transition-all duration-700 ease-in-out'
+    <p class='ml-0.5 rounded-t-sm bg-primary transition-all duration-700 ease-in-out'
          style={`width: ${width}px; height: ${dynamicHeight}px; margin-left: ${gap / 2}px; margin-right: ${gap / 2}px;`}
          on:mouseenter={() => show = true}
          on:mouseleave={() => show = false}

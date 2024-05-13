@@ -10,7 +10,7 @@
 
     const selections = writable<string[]>(selectedTags);
 
-    const selectedColor = 'bg-blue-200 text-blue-900';
+    const selectedColor = 'bg-primary-200 text-primary-900';
     const unselectedColor = 'bg-gray-200 dark:bg-neutral-700 text-gray-600 dark:text-gray-300';
 
     function updateSelections(tagName: string) {
