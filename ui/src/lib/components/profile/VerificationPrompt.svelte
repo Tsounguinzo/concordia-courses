@@ -30,6 +30,7 @@
     }
 
     const handleSendNewToken = async () => {
+        toast.loading("Sending new code")
         const promise = repo.getNewToken().then(response => response.json());
 
         toast.promise(promise, {
@@ -69,7 +70,7 @@
                 <Check/>
             </button>
         </div>
-        <button type="button" on:click={handleSendNewToken} class="text-gray-600 dark:text-gray-400 text-sm sm:text-base underline dark:hover:text-blue-400 hover:text-blue-600">Resend
+        <button type="button" on:click={handleSendNewToken} class="text-gray-600 dark:text-gray-400 text-sm sm:text-base underline dark:hover:text-primary-400 hover:text-primary-600">Resend
             verification code
         </button>
     </div>

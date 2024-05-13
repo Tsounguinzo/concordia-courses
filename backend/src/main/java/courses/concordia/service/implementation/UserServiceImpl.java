@@ -247,10 +247,6 @@ public class UserServiceImpl implements UserService {
         return CustomExceptionFactory.throwCustomException(entityType, exceptionType, args);
     }
 
-    public boolean checkIfUserExist(String username){
-        return userRepository.findByUsername(username).isPresent();
-    }
-
     private User createUserFromDto(UserDto userDto) {
         User user = new User()
                 .setUsername(userDto.getUsername())

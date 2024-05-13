@@ -15,7 +15,6 @@ public interface UserService {
     boolean verifyToken(String token);
     User getAuthenticatedUser();
     void resendToken(String username);
-    boolean checkIfUserExist(String username);
     String verifyPasswordResetToken(String token);
     void forgotPassword(String username);
     void signOut(HttpServletRequest request, HttpServletResponse response);
