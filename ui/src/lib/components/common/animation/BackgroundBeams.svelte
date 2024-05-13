@@ -115,8 +115,8 @@
                             y1="100%"
                             y2="100%"
                     >
-                        <stop stop-color="#18CCFC" stop-opacity="0"></stop>
-                        <stop stop-color="#18CCFC"></stop>
+                        <stop stop-color="#CA3448" stop-opacity="0"></stop>
+                        <stop stop-color="#CA3448"></stop>
                         <stop offset="32.5%" stop-color="#6344F5"></stop>
                         <stop offset="100%" stop-color="#AE48FF" stop-opacity="0"></stop>
                     </linearGradient>
