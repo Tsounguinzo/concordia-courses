@@ -7,6 +7,7 @@
     import {type Instructor} from "$lib/model/Instructor";
     import TagsInput from "$lib/components/review/TagsInput.svelte";
     import AutocompleteInput from "$lib/components/review/AutocompleteInput.svelte";
+    import Submit from "$lib/components/common/form/Submit.svelte";
 
     export let props;
     export let course: Course | null = null;
@@ -14,6 +15,7 @@
     export let setFieldValue: (name: string, value: any) => void;
     export let resetButton: boolean = false;
     export let variant: 'course' | 'instructor' | 'school' = 'course';
+    export let isSubmitting: boolean;
 
 </script>
 <div style="max-width: calc(100vw - 10rem); max-height: calc(100vh - 10rem);" class='overflow-auto scrollbar-hide'>
@@ -115,10 +117,7 @@
             >
                 {resetButton ? "Reset" : "Discard"}
             </button>
-            <button type='submit'
-                    class='ml-auto w-fit rounded-md bg-primary-600 px-4 py-2 font-medium text-white transition duration-300 hover:bg-primary-800'>
-                Submit
-            </button>
+            <Submit {isSubmitting}/>
         </div>
     </div>
 </div>

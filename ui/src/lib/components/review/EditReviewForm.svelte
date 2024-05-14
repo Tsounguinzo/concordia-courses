@@ -114,16 +114,18 @@
                                     {validate}
                                     {initialValues}
                                     onSubmit={async (values, actions) => {
-                                        const res = await repo.updateReview(review, values);
-                                        actions.setSubmitting(false);
-                                        open.set(false);
+                                        const res = await repo.updateReview(review, values).finally(() => {
+                                            actions.setSubmitting(false)
+                                            open.set(false)
+                                        });
                                         handleSubmit(res);
                                     }}
                                     let:props
                                     let:setFieldValue
+                                    let:isSubmitting
                             >
                                 <Form storageKey="review-form">
-                                    <ReviewForm {setFieldValue} {props} {course} {instructor} {resetButton} {variant}/>
+                                    <ReviewForm {isSubmitting} {setFieldValue} {props} {course} {instructor} {resetButton} {variant}/>
                                 </Form>
                             </Sveltik>
                         </div>
