@@ -6,9 +6,18 @@
     export let block: Block
 
     const timeToDisplay = (time: string) => {
-        const [hour, minute] = time.split('.', 2)
+        const parts = time.split('.');
 
-        return `${hour.toLocaleString()}:${minute.toLocaleString()}`;
+        let hour = parts[0];
+        let minute = parts[1];
+
+        if (!hour || hour.length === 0) hour = '00';
+        if (!minute || minute.length === 0) minute = '00';
+
+        hour = hour.toLocaleString()
+        minute = minute.toLocaleString()
+
+        return `${hour}:${minute}`;
     };
 </script>
 
