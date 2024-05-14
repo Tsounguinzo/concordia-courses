@@ -12,7 +12,7 @@
     export let query: string = '';
 </script>
 
-{#if instructor.tags.length === 0}
+{#if !instructor.tags || instructor.tags.length === 0}
     <div class='my-1.5 w-fit text-sm'>
         <div class='rounded-xl bg-gray-200 p-1 dark:bg-neutral-700'>
             <div class='flex items-center space-x-1'>
