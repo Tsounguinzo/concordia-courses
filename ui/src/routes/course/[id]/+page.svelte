@@ -19,6 +19,7 @@
     import AddReviewForm from "$lib/components/review/AddReviewForm.svelte";
     import {goto} from "$app/navigation";
     import Seo from "$lib/components/common/Seo.svelte";
+    import Confetti from "$lib/components/common/animation/Confetti.svelte";
 
     $: params = $page.params.id;
 
@@ -34,6 +35,7 @@
     const showAllReviews = writable(false);
     const showingReviews = writable<Review[]>([]);
     const userInteractions = writable<Interaction[] | undefined>([]);
+    let triggerConfetti = writable(false);
 
     $: if(params) {
         firstFetch = true;
@@ -98,6 +100,9 @@
                 toast.success(successMessage);
                 addReviewOpen.set(false);
                 refetch();
+                if ( (successMessage.includes('added') || successMessage.includes('edited')) && Math.random() < 0.7) {
+                    triggerConfetti.set(true);
+                }
             } else {
                 toast.error('An error occurred.');
             }
@@ -188,6 +193,7 @@
 {#if $course === undefined || $course === null || $showingReviews === undefined}
     <Loading/>
 {:else }
+    <Confetti bind:trigger={triggerConfetti}/>
     <div class='mx-auto mt-10 max-w-6xl md:mt-0'>
         <CourseInfo
                 course={$course}

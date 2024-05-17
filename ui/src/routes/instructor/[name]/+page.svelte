@@ -1,6 +1,6 @@
 <script lang="ts">
     import {page} from "$app/stores";
-    import { courseNameToId, instructorIdToName, instructorNameToUrlParam} from "$lib/utils";
+    import {courseNameToId, instructorIdToName, instructorNameToUrlParam} from "$lib/utils";
     import {derived, writable} from "svelte/store";
     import type {Review} from "$lib/model/Review";
     import {repo} from "$lib/repo";
@@ -17,6 +17,7 @@
     import Seo from "$lib/components/common/Seo.svelte";
     import type {Instructor} from "$lib/model/Instructor";
     import InstructorInfo from "$lib/components/instructor/InstructorInfo.svelte";
+    import Confetti from "$lib/components/common/animation/Confetti.svelte";
 
     $: params = $page.params.name;
 
@@ -30,6 +31,7 @@
     const showAllReviews = writable(false);
     const showingReviews = writable<Review[]>([]);
     const userInteractions = writable<Interaction[] | undefined>([]);
+    let triggerConfetti = writable(false);
 
     $: if (params) {
         showAllReviews.set(false);
@@ -83,6 +85,9 @@
                 toast.success(successMessage);
                 addReviewOpen.set(false);
                 refetch();
+                if ( (successMessage.includes('added') || successMessage.includes('edited')) && Math.random() < 0.7) {
+                    triggerConfetti.set(true);
+                }
             } else {
                 toast.error('An error occurred.');
             }
@@ -174,9 +179,10 @@
 {#if $instructor === undefined || $instructor === null || $showingReviews === undefined}
     <Loading/>
 {:else }
+    <Confetti bind:trigger={triggerConfetti}/>
     <div class="mx-auto mt-10 max-w-5xl md:mt-0">
         <div class='mx-auto flex max-w-5xl overflow-hidden'>
-            <InstructorInfo instructor={$instructor} allReviews={$allReviews} />
+            <InstructorInfo instructor={$instructor} allReviews={$allReviews}/>
         </div>
         <div class='mx-auto mt-4 max-w-5xl'>
             <div class='w-full'>
