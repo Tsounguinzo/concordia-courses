@@ -1,47 +1,52 @@
 <script lang="ts">
-    import {courseIdToUrlParam, experienceToIcon, instructorIdToUrlParam} from "$lib/utils.js";
+    import { courseIdToUrlParam, experienceToIcon, instructorIdToUrlParam } from "$lib/utils.js";
     import Highlight from "$lib/components/common/Highlight.svelte";
-    import {twMerge} from "tailwind-merge";
-    import type {Instructor} from "$lib/model/Instructor";
+    import { twMerge } from "tailwind-merge";
+    import type { Instructor } from "$lib/model/Instructor";
     import InstructorTags from "$lib/components/instructor/InstructorTags.svelte";
 
     export let instructor: Instructor;
     export let query: string;
 
-    $: [color, icon] = experienceToIcon(instructor.avgRating);
+    // Fallback for undefined properties
+    const firstName = instructor?.firstName || "Unknown";
+    const lastName = instructor?.lastName || "Instructor";
+    const departments = instructor?.departments || [];
+    const courses = Array.isArray(instructor?.courses) ? instructor.courses : [];
+
+    $: [color, icon] = experienceToIcon(instructor?.avgRating || 0);
 </script>
 
-<a href={`/instructor/${instructorIdToUrlParam(instructor.firstName, instructor.lastName)}`}
+<a href={`/instructor/${instructorIdToUrlParam(firstName, lastName)}`}
    class={twMerge("relative", $$props.class)}
 >
     <div class='max-w-xl rounded-lg bg-slate-50 p-5 duration-150 hover:bg-gray-50 dark:bg-neutral-800'>
         <div class='mb-2 font-bold dark:text-gray-200'>
             {#if query}
                 <Highlight
-                        text={`${instructor.firstName} ${instructor.lastName}`}
+                        text={`${firstName} ${lastName}`}
                         {query}
                 />
-            {:else }
-                {`${instructor.firstName} ${instructor.lastName}`}
+            {:else}
+                {`${firstName} ${lastName}`}
             {/if}
-
         </div>
-        {#if instructor.departments}
-        <h2 class='break-words font-semibold text-primary-800 dark:text-primary-200 my-3'>
-            {#each instructor.departments as department}
-                {department.toLowerCase().includes("department") ? '' : 'Department of'} {department}
-                {#if department !== instructor.departments[instructor.departments.length - 1]}
-                    <br/>
-                {/if}
-            {/each}
-        </h2>
-            {/if}
+        {#if departments.length}
+            <h2 class='break-words font-semibold text-primary-800 dark:text-primary-200 my-3'>
+                {#each departments as department}
+                    {department.toLowerCase().includes("department") ? '' : 'Department of'} {department}
+                    {#if department !== departments[departments.length - 1]}
+                        <br/>
+                    {/if}
+                {/each}
+            </h2>
+        {/if}
         <InstructorTags {instructor} variant='small' {query}/>
         <div class='mt-2 mb-10 text-gray-600 dark:text-gray-400'>
-            {#if instructor.courses.length}
+            {#if courses.length}
                 <div>Teaches or has taught the following course(s):</div>
                 <div class='max-w-sm flex flex-wrap'>
-                    {#each instructor.courses as course, index}
+                    {#each courses as course, index}
                         <div class="mt-1 ml-1">
                             <a class='font-medium transition hover:text-primary-600'
                                href={`/course/${courseIdToUrlParam(course.subject + course.catalog)}`}>
@@ -51,7 +56,7 @@
                                     {`${course.subject} ${course.catalog}`}
                                 {/if}
                             </a>
-                            {index < instructor.courses.length - 1 ? "," : ""}
+                            {index < courses.length - 1 ? "," : ""}
                         </div>
                     {/each}
                 </div>

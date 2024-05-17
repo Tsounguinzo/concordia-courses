@@ -86,7 +86,11 @@
     const instructorsModeOn = writable<boolean>(false);
 
     function toggle() {
-        instructorsModeOn.update(state => !state);
+        instructorsModeOn.update(state => {
+            const newState = !state;
+            localStorage.setItem('instructorsModeOn', JSON.stringify(newState));
+            return newState;
+        });
         fetchData(true);
     }
 
@@ -124,6 +128,16 @@
     };
 
     onMount(() => {
+        const savedState = localStorage.getItem('instructorsModeOn');
+        if (savedState !== null) {
+            const parsedState = JSON.parse(savedState);
+            if (typeof parsedState === 'boolean') {
+                instructorsModeOn.set(parsedState);
+            } else {
+                // Fall back to default
+                instructorsModeOn.set(false);
+            }
+        }
         fetchData(true);
         isMounted = true;
     });

@@ -16,7 +16,7 @@
           $hovering ? highlightResultStyle : 'bg-gray-100 dark:bg-neutral-800'
         )}
     >
-        <Layers class='dark:text-gray-200'/>
-        <div class='z-50 ml-2 dark:text-gray-200'>Explore all courses and instructors</div>
+        <Layers class='dark:text-gray-200 w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6'/>
+        <div class='z-50 ml-2 dark:text-gray-200 text-xs sm:text-sm md:text-base'>Explore all courses and instructors</div>
     </div>
 </a>

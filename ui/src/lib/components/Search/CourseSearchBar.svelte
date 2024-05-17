@@ -1,18 +1,16 @@
 <script lang="ts">
-
-    import {courseIdToUrlParam, instructorNameToUrlParam, spliceCourseCode} from "$lib/utils";
-    import {writable} from "svelte/store";
-    import {goto} from "$app/navigation";
-    import type {SearchResults} from "$lib/model/SearchResults";
+    import { courseIdToUrlParam, instructorNameToUrlParam, spliceCourseCode } from "$lib/utils";
+    import { writable } from "svelte/store";
+    import { goto } from "$app/navigation";
+    import type { SearchResults } from "$lib/model/SearchResults";
     import SearchBar from "./SearchBar.svelte";
-    import {twMerge} from "tailwind-merge";
+    import { twMerge } from "tailwind-merge";
     import SearchResult from "./SearchResult.svelte";
     import ExploreButton from "./ExploreButton.svelte";
 
     export let results: SearchResults;
     export let handleInputChange: (query: string) => void;
-    export let onResultClick: () => void = () => {
-    };
+    export let onResultClick: () => void = () => {};
 
     const searchSelected = writable(false);
     const selectedIndex = writable(0);
@@ -40,11 +38,10 @@
             );
             if (onResultClick) {
                 onResultClick();
-                event.currentTarget?.blur()
+                event.currentTarget?.blur();
             }
         }
     };
-
 </script>
 
 <div class='relative'>
@@ -52,8 +49,8 @@
             bind:value={results.query}
             handleInputChange={handleInputChange}
             inputStyle={twMerge(
-          'block w-full bg-gray-100 border border-gray-300 shadow-sm p-3 pl-10 text-sm text-black outline-none dark:border-neutral-50 dark:bg-neutral-800 dark:text-gray-200 dark:placeholder:text-neutral-500 lg:min-w-[570px] dark:border-gray-700 rounded-sm',
-          $searchSelected ? 'border-b-1' : ''
+            'block w-full bg-gray-100 border border-gray-300 shadow-sm p-3 pl-10 text-sm text-black outline-none dark:border-neutral-50 dark:bg-neutral-800 dark:text-gray-200 dark:placeholder:text-neutral-500 lg:min-w-[570px] dark:border-gray-700 rounded-sm',
+            $searchSelected ? 'border-b-1' : ''
         )}
             on:keydown={handleKeyDown}
             placeholder='Search for courses, subjects or instructors'
@@ -83,7 +80,7 @@
                         on:click={onResultClick}
                 />
             {/each}
-            <ExploreButton/>
+            <ExploreButton />
         </div>
     {/if}
 </div>
