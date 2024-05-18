@@ -100,7 +100,7 @@
                 toast.success(successMessage);
                 addReviewOpen.set(false);
                 refetch();
-                if ( (successMessage.includes('added') || successMessage.includes('edited')) && Math.random() < 0.7) {
+                if ( successMessage.includes('added') ) {
                     triggerConfetti.set(true);
                 }
             } else {
