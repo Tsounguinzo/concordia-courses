@@ -6,6 +6,7 @@ import courses.concordia.repository.InstructorRepository;
 import courses.concordia.repository.ReviewRepository;
 import courses.concordia.service.AISummaryGenerator;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SummaryService {
 
     private final InstructorRepository instructorRepository;
@@ -29,6 +31,7 @@ public class SummaryService {
     }
     @Scheduled(cron = "0 0 0 * * ?")  // Run daily at midnight
     public void updateSummaries() {
+        log.info("Starting to update summaries for instructors");
         List<Instructor> instructors = instructorRepository.findAll();
         for (Instructor instructor : instructors) {
             if (instructor.getReviewCount() >= REVIEW_THRESHOLD && instructor.getReviewCount() != instructor.getLastReviewCount()) {
@@ -41,6 +44,7 @@ public class SummaryService {
                 instructorRepository.save(instructor);
             }
         }
+        log.info("Finished updating summaries for instructors");
     }
 }
 
