@@ -4,7 +4,6 @@
     import { twMerge } from "tailwind-merge";
     import Highlight from "$lib/components/common/Highlight.svelte";
     import { highlightResultStyle } from "$lib/constants";
-    import {goto} from "$app/navigation";
 
     export let index: number;
     export let query: string = '';
@@ -16,23 +15,17 @@
     const hovering = writable(false);
     $: toHighlight = $hovering || selectedIndex === index;
 
-    function handleClick() {
-        goto(url);
-    }
-
     function handleKeydown(event: KeyboardEvent) {
         if (event.key === 'Enter' || event.key === ' ') {
-            handleClick();
+            window.location.href = url;
         }
     }
 </script>
 
-<button
-        type="button"
+<a href={url}
         class='w-full text-left cursor-pointer'
         on:mouseenter={() => hovering.set(true)}
         on:mouseleave={() => hovering.set(false)}
-        on:click={handleClick}
         on:keydown={handleKeydown}
 >
     <div class={twMerge(
@@ -55,4 +48,4 @@
         </div>
         <CornerDownLeft class="text-gray-500 flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6"/>
     </div>
-</button>
+</a>

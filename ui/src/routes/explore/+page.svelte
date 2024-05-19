@@ -17,6 +17,7 @@
     import Seo from "$lib/components/common/Seo.svelte";
     import InstructorCard from "$lib/components/explore/InstructorCard.svelte";
     import type {Instructor} from "$lib/model/Instructor";
+    import { v4 as uuidv4 } from "uuid";
 
     type SortByType = (typeof allSortByOptions)[number];
 
@@ -220,7 +221,7 @@
                     </SearchBar>
                 {#if (!$instructorsModeOn && courses !== undefined) || ($instructorsModeOn && instructors !== undefined) }
                     {#if $instructorsModeOn}
-                        {#each instructors as instructor}
+                        {#each instructors as instructor (uuidv4())}
                             <InstructorCard
                                     class='my-1.5'
                                     {instructor}
@@ -228,7 +229,7 @@
                             />
                         {/each}
                     {:else}
-                        {#each courses as course}
+                        {#each courses as course (uuidv4())}
                             <CourseCard
                                     class='my-1.5'
                                     {course}

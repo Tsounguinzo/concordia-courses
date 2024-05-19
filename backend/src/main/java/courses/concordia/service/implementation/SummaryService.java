@@ -42,11 +42,8 @@ public class SummaryService {
                 instructor.setAiSummary(summary);
                 instructor.setLastReviewCount(instructor.getReviewCount());
                 instructor.setLastSummaryUpdate(getLocalDateTime());
-            } else {
-                instructor.setLastSummaryUpdate(getLocalDateTime());
+                instructorRepository.save(instructor);
             }
-
-            instructorRepository.save(instructor);
         }
         log.info("Finished updating summaries for instructors");
     }
