@@ -7,19 +7,22 @@ import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.ChatRequestMessage;
 import com.azure.ai.openai.models.ChatRequestUserMessage;
 import com.azure.core.credential.KeyCredential;
+import com.azure.core.exception.HttpResponseException;
 import courses.concordia.model.Review;
 import courses.concordia.service.AISummaryGenerator;
 import io.github.resilience4j.core.functions.CheckedSupplier;
 import io.github.resilience4j.ratelimiter.RateLimiter;
 import io.github.resilience4j.ratelimiter.RateLimiterConfig;
 import io.github.resilience4j.ratelimiter.RateLimiterRegistry;
+import io.github.resilience4j.retry.Retry;
+import io.github.resilience4j.retry.RetryConfig;
+import io.github.resilience4j.retry.RetryRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,24 +33,28 @@ public class AISummaryGeneratorImpl implements AISummaryGenerator {
     private String apiKey;
     @Value("${openai.modelName}")
     private String modelName;
-    private static final int CHUNK_SIZE = 50;
-    private static final Random random = new Random();
 
-    private static final RateLimiterConfig config = RateLimiterConfig.custom()
+    private static final RateLimiterConfig rateLimiterConfig = RateLimiterConfig.custom()
             .limitForPeriod(500) // Requests per minute (RPM)
             .limitRefreshPeriod(Duration.ofMinutes(1))
             .timeoutDuration(Duration.ofSeconds(5))
             .build();
 
-    private static final RateLimiterRegistry registry = RateLimiterRegistry.of(config);
-    private static final RateLimiter rateLimiter = registry.rateLimiter("openai");
+    private static final RateLimiterRegistry rateLimiterRegistry = RateLimiterRegistry.of(rateLimiterConfig);
+    private static final RateLimiter rateLimiter = rateLimiterRegistry.rateLimiter("openai");
+
+    private static final RetryConfig retryConfig = RetryConfig.custom()
+            .maxAttempts(3)
+            .waitDuration(Duration.ofSeconds(10))
+            .retryExceptions(HttpResponseException.class)
+            .build();
+
+    private static final RetryRegistry retryRegistry = RetryRegistry.of(retryConfig);
+    private static final Retry retry = retryRegistry.retry("openai");
 
     @Override
     public String generateSummary(List<Review> reviews, double avgClarityRating, double avgDifficultyRating) {
-        int reviewCount = reviews.size();
-        int startIndex = reviewCount > CHUNK_SIZE ? random.nextInt(reviewCount - CHUNK_SIZE + 1) : 0;
-
-        String reviewsText = reviews.subList(startIndex, Math.min(startIndex + CHUNK_SIZE, reviewCount)).stream()
+        String reviewsText = reviews.stream()
                 .map(review -> String.format(
                         "Review: \"%s\" (Clarity: %d/5, Difficulty: %d/5)",
                         review.getContent(),
@@ -76,7 +83,7 @@ public class AISummaryGeneratorImpl implements AISummaryGenerator {
                         .getContent()
                         .trim();
             };
-            return RateLimiter.decorateCheckedSupplier(rateLimiter, summarySupplier).get();
+            return RateLimiter.decorateCheckedSupplier(rateLimiter, Retry.decorateCheckedSupplier(retry, summarySupplier)).get();
 
         } catch (Throwable e) {
             log.error("Failed to generate summary for {}", reviews.get(0).getInstructorId(), e);
