@@ -18,6 +18,7 @@
     import type {Instructor} from "$lib/model/Instructor";
     import InstructorInfo from "$lib/components/instructor/InstructorInfo.svelte";
     import Confetti from "$lib/components/common/animation/Confetti.svelte";
+    import AiSummary from "$lib/components/review/AiSummary.svelte";
 
     $: params = $page.params.name;
 
@@ -204,6 +205,10 @@
                 {/if}
 
                 <div class='w-full shadow-sm'>
+                    {#if $instructor?.aiSummary}
+                        <AiSummary instructor={$instructor}/>
+                    {/if}
+
                     {#if userReview}
                         <InstructorReview
                                 canModify={Boolean(user && userReview.userId === user?.id)}

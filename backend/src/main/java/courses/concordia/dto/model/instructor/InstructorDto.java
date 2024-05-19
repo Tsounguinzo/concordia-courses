@@ -1,11 +1,17 @@
 package courses.concordia.dto.model.instructor;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import courses.concordia.model.Instructor;
 import lombok.*;
 import lombok.experimental.Accessors;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Getter
@@ -28,4 +34,11 @@ public class InstructorDto {
     private double avgRating = 0.0;
     @ToString.Exclude @EqualsAndHashCode.Exclude
     private int reviewCount = 0;
+    @ToString.Exclude @EqualsAndHashCode.Exclude
+    private int lastReviewCount = 0;
+    private String aiSummary;
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    private LocalDateTime lastSummaryUpdate;
 }

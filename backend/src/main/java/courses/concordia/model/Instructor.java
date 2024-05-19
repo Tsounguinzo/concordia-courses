@@ -1,6 +1,11 @@
 package courses.concordia.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.google.gson.annotations.JsonAdapter;
 import courses.concordia.json.serialization.InstructorDepartmentDeserializer;
 import courses.concordia.json.serialization.InstructorTagDeserializer;
@@ -9,6 +14,7 @@ import lombok.experimental.Accessors;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -32,6 +38,14 @@ public class Instructor {
     private double avgRating = 0.0;
     @ToString.Exclude @EqualsAndHashCode.Exclude
     private int reviewCount = 0;
+    @ToString.Exclude @EqualsAndHashCode.Exclude
+    private int lastReviewCount = 0;
+    private String aiSummary;
+
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    private LocalDateTime lastSummaryUpdate;
 
     @Data
     @AllArgsConstructor

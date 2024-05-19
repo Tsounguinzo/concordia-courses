@@ -38,6 +38,10 @@ rt:
   secret: ${REFRESH_SECRET}
   exp: ${REFRESH_EXP:2592000} # 30 days default
 
+openai:
+  apiKey: ${AI_APIKEY}
+  modelName: ${AI_MODELNAME}
+
 cookie:
   secure: true
   httpOnly: true

@@ -8,6 +8,8 @@ export type Instructor = {
     avgDifficulty: number;
     avgRating: number;
     reviewCount: number;
+    aiSummary: string;
+    lastSummaryUpdate: Date;
 }
 
 type InstructorCourse = {

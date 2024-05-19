@@ -13,6 +13,7 @@
 
 ### UI ###
 /ui/node_modules
+/ui/.vercel
 /ui/build
 /ui/.svelte-kit
 /ui/package
