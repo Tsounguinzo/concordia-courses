@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,6 +30,8 @@ public class AISummaryGeneratorImpl implements AISummaryGenerator {
     private String apiKey;
     @Value("${openai.modelName}")
     private String modelName;
+    private static final int CHUNK_SIZE = 50;
+    private static final Random random = new Random();
 
     private static final RateLimiterConfig config = RateLimiterConfig.custom()
             .limitForPeriod(500) // Requests per minute (RPM)
@@ -41,7 +44,10 @@ public class AISummaryGeneratorImpl implements AISummaryGenerator {
 
     @Override
     public String generateSummary(List<Review> reviews, double avgClarityRating, double avgDifficultyRating) {
-        String reviewsText = reviews.stream()
+        int reviewCount = reviews.size();
+        int startIndex = reviewCount > CHUNK_SIZE ? random.nextInt(reviewCount - CHUNK_SIZE + 1) : 0;
+
+        String reviewsText = reviews.subList(startIndex, Math.min(startIndex + CHUNK_SIZE, reviewCount)).stream()
                 .map(review -> String.format(
                         "Review: \"%s\" (Clarity: %d/5, Difficulty: %d/5)",
                         review.getContent(),

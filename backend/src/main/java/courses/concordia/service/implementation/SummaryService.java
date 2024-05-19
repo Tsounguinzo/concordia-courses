@@ -12,8 +12,9 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
+
+import static courses.concordia.util.DateUtils.getLocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -40,9 +41,12 @@ public class SummaryService {
                 if (summary == null) continue;
                 instructor.setAiSummary(summary);
                 instructor.setLastReviewCount(instructor.getReviewCount());
-                instructor.setLastSummaryUpdate(LocalDateTime.now());
-                instructorRepository.save(instructor);
+                instructor.setLastSummaryUpdate(getLocalDateTime());
+            } else {
+                instructor.setLastSummaryUpdate(getLocalDateTime());
             }
+
+            instructorRepository.save(instructor);
         }
         log.info("Finished updating summaries for instructors");
     }

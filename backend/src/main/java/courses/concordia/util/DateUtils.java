@@ -1,38 +1,30 @@
 package courses.concordia.util;
 
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class DateUtils {
 
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-    /**
-     * Returns today's date as java.util.Date object
-     *
-     * @return today's date as java.util.Date object
-     */
     public static Date today() {
         return new Date();
     }
 
-    /**
-     * Returns today's date as yyyy-MM-dd format
-     *
-     * @return today's date as yyyy-MM-dd format
-     */
-    public static String todayStr() {
-        return sdf.format(today());
-    }
+    public static LocalDateTime getLocalDateTime() {
+        // Define the timezone
+        ZoneId zoneId = ZoneId.of("America/New_York");
 
-    /**
-     * Returns the formatted String date for the passed java.util.Date object
-     *
-     * @param date
-     * @return
-     */
-    public static String formattedDate(Date date) {
-        return date != null ? sdf.format(date) : todayStr();
+        // Get the current time in the specified timezone
+        ZonedDateTime zonedDateTime = ZonedDateTime.now(zoneId);
+
+        // Format the time to the desired format
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        String formattedTime = zonedDateTime.format(formatter);
+
+        // Parse the formatted time to LocalDateTime
+        return LocalDateTime.parse(formattedTime, formatter);
     }
 
 }
