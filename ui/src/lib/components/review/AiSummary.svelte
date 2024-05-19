@@ -36,7 +36,7 @@
                     AI Summary
                 </div>
                 <div class="text-gray-600 dark:text-gray-400 text-center">
-                    Based on {instructor.reviewCount <= 50 ? instructor.reviewCount : '50 random'} reviews
+                    Based on {instructor.reviewCount} reviews
                 </div>
             </div>
         </div>
