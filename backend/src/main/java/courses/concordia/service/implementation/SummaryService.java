@@ -25,6 +25,7 @@ public class SummaryService {
     private final AISummaryGenerator aiSummaryGenerator;
     private final ReviewRepository reviewRepository;
     private static final int REVIEW_THRESHOLD = 10;
+    private static final int REVIEW_CEILING = 500;
 
     @EventListener(ContextRefreshedEvent.class)
     public void onApplicationEvent() {
@@ -37,6 +38,9 @@ public class SummaryService {
         for (Instructor instructor : instructors) {
             if (instructor.getReviewCount() >= REVIEW_THRESHOLD && instructor.getReviewCount() != instructor.getLastReviewCount()) {
                 List<Review> instructorReviews = reviewRepository.findAllByInstructorIdAndType(instructor.get_id(), "instructor");
+                if (instructorReviews.size() > REVIEW_CEILING) {
+                    instructorReviews = instructorReviews.subList(0, REVIEW_CEILING);
+                }
                 String summary = aiSummaryGenerator.generateSummary(instructorReviews, instructor.getAvgRating(), instructor.getAvgDifficulty());
                 if (summary == null) continue;
                 instructor.setAiSummary(summary);
