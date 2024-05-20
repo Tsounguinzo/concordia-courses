@@ -25,7 +25,8 @@
     });
 </script>
 
-<div class={twMerge(
+<button on:click={() => showSummary = !showSummary}
+        class={twMerge(
   'relative flex w-full flex-col gap-4 bg-slate-50 px-6 py-3 mb-3 rounded-md dark:border-b-gray-600 dark:bg-neutral-800',
   $$props.class
 )}>
@@ -42,7 +43,7 @@
         </div>
         <button
                 class="w-8 h-8 rounded-full flex items-center justify-center bg-slate-200 dark:bg-neutral-700 text-gray-800 dark:text-gray-200"
-                on:click={() => showSummary = !showSummary}
+                on:click|stopPropagation={() => showSummary = !showSummary}
         >
       <span class="summary-toggle" class:open={showSummary}>
         {#if showSummary}
@@ -64,7 +65,7 @@
             <MarkDown source={instructor.aiSummary}/>
         </div>
     </div>
-</div>
+</button>
 
 <style>
     .summary-toggle {
