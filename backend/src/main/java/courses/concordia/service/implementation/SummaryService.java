@@ -25,7 +25,7 @@ public class SummaryService {
     private final AISummaryGenerator aiSummaryGenerator;
     private final ReviewRepository reviewRepository;
     private static final int REVIEW_THRESHOLD = 10;
-    private static final int REVIEW_CEILING = 500;
+    private static final int REVIEW_CEILING = 450;
 
     @EventListener(ContextRefreshedEvent.class)
     public void onApplicationEvent() {
