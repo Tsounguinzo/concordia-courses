@@ -28,7 +28,9 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -210,6 +212,28 @@ public class ReviewServiceImpl implements ReviewService {
         } else {
             log.error("Review not found with ID: {}", id);
             throw exception(id);
+        }
+    }
+
+    /**
+     * Uploads reviews from a file.
+     *
+     * @param file The file containing reviews.
+     */
+    @Override
+    public void uploadReviews(MultipartFile file) {
+        log.info("Uploading reviews from file: {}", file.getOriginalFilename());
+        List<ReviewDto> reviewDtos = processReviewFile(file);
+        reviewDtos.forEach(this::addOrUpdateReview);
+        log.info("{} reviews processed successfully", reviewDtos.size());
+    }
+
+    private List<ReviewDto> processReviewFile(MultipartFile file) {
+        try (InputStream inputStream = file.getInputStream()) {
+            return JsonUtils.getData(inputStream, new TypeToken<List<ReviewDto>>() {});
+        } catch (IOException e) {
+            log.error("Failed to process review file", e);
+            throw new RuntimeException("Failed to process review file", e);
         }
     }
 

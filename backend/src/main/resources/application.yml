@@ -46,6 +46,9 @@ cookie:
   secure: true
   httpOnly: true
 
+beaudelaire:
+  uploadKey: ${UPLOAD_KEY}
+
 server:
   port: 8080
   forward-headers-strategy: native
