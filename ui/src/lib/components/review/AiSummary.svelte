@@ -25,7 +25,7 @@
     });
 </script>
 
-<button on:click={() => showSummary = !showSummary}
+<div on:click={() => showSummary = !showSummary}
         class={twMerge(
   'relative flex w-full flex-col gap-4 bg-slate-50 px-6 py-3 mb-3 rounded-md dark:border-b-gray-600 dark:bg-neutral-800',
   $$props.class
@@ -65,7 +65,7 @@
             <MarkDown source={instructor.aiSummary}/>
         </div>
     </div>
-</button>
+</div>
 
 <style>
     .summary-toggle {
