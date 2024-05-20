@@ -43,6 +43,7 @@ public class SummaryService {
                 instructor.setLastReviewCount(instructor.getReviewCount());
                 instructor.setLastSummaryUpdate(getLocalDateTime());
                 instructorRepository.save(instructor);
+                log.info("Updated summary for instructor {}", instructor.get_id());
             }
         }
         log.info("Finished updating summaries for instructors");
