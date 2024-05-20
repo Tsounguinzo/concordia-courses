@@ -8,7 +8,7 @@
 
     export let instructor: Instructor;
 
-    let showSummary = false;
+    let showSummary = true;
     let now: Date = new Date();
     let displayTime: string;
 
