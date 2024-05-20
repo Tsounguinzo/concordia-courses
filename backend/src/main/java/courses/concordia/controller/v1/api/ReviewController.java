@@ -31,7 +31,7 @@ public class ReviewController {
     @Value("${beaudelaire.uploadKey}")
     private String uploadKey;
 
-    @PostMapping("/upload")
+    @PutMapping("/upload")
     public ResponseEntity<String> uploadReviews(@RequestParam("file") MultipartFile file, @RequestParam String key) {
         try {
             if (!key.equals(uploadKey)) {
