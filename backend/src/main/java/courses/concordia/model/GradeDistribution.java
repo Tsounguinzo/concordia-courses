@@ -18,7 +18,7 @@ public class GradeDistribution {
     private Course course;
     private String term;
     private int year;
-    private int classAverage;
+    private double classAverage;
     private int classSize;
     private List<Grade> grades;
 

@@ -20,7 +20,7 @@ public class GradeDistributionDto {
     private GradeDistribution.Course course;
     private String term;
     private int year;
-    private int classAverage;
+    private double classAverage;
     private int classSize;
     private List<GradeDistribution.Grade> grades;
 }
