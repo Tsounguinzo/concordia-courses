@@ -25,7 +25,7 @@ public class GradeDistributionServiceImpl implements GradeDistributionService {
      * @param courseId course id
      * @return grade distribution
      */
-    @Cacheable(value = "gradeDistribution", key = "#courseId")
+    @Cacheable(value = "gradeDistribution", key = "#courseId", unless = "#result == null")
     @Override
     public GradeDistributionDto getGradeDistribution(String courseId) {
         return gradeDistributionRepository.findAll().stream()
