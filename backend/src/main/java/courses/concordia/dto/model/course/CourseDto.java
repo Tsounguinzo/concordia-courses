@@ -23,6 +23,7 @@ public class CourseDto {
     private String description;
     private String catalog;
     private String title;
+    private String notes;
     @ToString.Exclude @EqualsAndHashCode.Exclude
     private double avgDifficulty = 0.0f;
     @ToString.Exclude @EqualsAndHashCode.Exclude

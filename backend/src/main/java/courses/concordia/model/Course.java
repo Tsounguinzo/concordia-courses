@@ -22,6 +22,7 @@ public class Course {
     private String description;
     private String catalog;
     private String title;
+    private String notes;
     @ToString.Exclude @EqualsAndHashCode.Exclude
     private double avgDifficulty = 0.0;
     @ToString.Exclude @EqualsAndHashCode.Exclude

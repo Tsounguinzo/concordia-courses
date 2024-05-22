@@ -20,6 +20,8 @@
     import {goto} from "$app/navigation";
     import Seo from "$lib/components/common/Seo.svelte";
     import Confetti from "$lib/components/common/animation/Confetti.svelte";
+    import CourseDistributionAndNotes from "$lib/components/course/CourseDistributionAndNotes.svelte";
+    import type {GradeDistribution} from "$lib/model/GradeDistribution";
 
     $: params = $page.params.id;
 
@@ -36,51 +38,68 @@
     const showingReviews = writable<Review[]>([]);
     const userInteractions = writable<Interaction[] | undefined>([]);
     let triggerConfetti = writable(false);
+    const gradeDistribution = writable<GradeDistribution | undefined | null>(undefined);
 
-    $: if(params) {
+    $: if (params) {
         firstFetch = true;
         showAllReviews.set(false);
+        fetchGradeDistribution();
         refetch()
     }
 
-      const refetch = () => {
-          const id = params?.replace('-', '').toUpperCase();
+    function fetchGradeDistribution() {
+        if ($course) {
+            repo.getGradeDistribution($course._id).then(async (res) => {
+                if (res.ok) {
+                    const grades = await res.json();
+                    if (typeof grades === 'string') {
+                        gradeDistribution.set(null);
+                        return;
+                    }
+                    gradeDistribution.set(grades);
+                }
+            });
+        }
+    }
 
-          const inner = async () => {
-              try {
-                  const payload = await repo.getCourseWithReviews(id);
+    const refetch = () => {
+        const id = params?.replace('-', '').toUpperCase();
 
-                  if (typeof payload === 'string') {
-                      course.set(null);
-                      return;
-                  }
+        const inner = async () => {
+            try {
+                const payload = await repo.getCourseWithReviews(id);
 
-                  if (firstFetch) course.set(payload?.course);
+                if (typeof payload === 'string') {
+                    course.set(null);
+                    return;
+                }
 
-                  showingReviews.set(payload?.reviews);
-                  allReviews.set(payload?.reviews);
+                if (firstFetch) course.set(payload?.course);
 
-                  if (user && id) {
-                      const courseInteractionsPayload =
-                          await repo.getUserInteractionsForCourse(id, user?.id);
+                showingReviews.set(payload?.reviews);
+                allReviews.set(payload?.reviews);
 
-                      userInteractions.set(courseInteractionsPayload.interactions);
-                  }
+                if (user && id) {
+                    const courseInteractionsPayload =
+                        await repo.getUserInteractionsForCourse(id, user?.id);
 
-                  firstFetch = false;
-              } catch (err) {
-                  toast.error(
-                      'An error occurred while trying to fetch course information.'
-                  );
-              }
-          };
+                    userInteractions.set(courseInteractionsPayload.interactions);
+                }
 
-          inner();
-      };
+                firstFetch = false;
+            } catch (err) {
+                toast.error(
+                    'An error occurred while trying to fetch course information.'
+                );
+            }
+        };
 
-     $: if ($course === null) {
-             goto("/explore")
-         }
+        inner();
+    };
+
+    $: if ($course === null) {
+        goto("/explore")
+    }
 
     if ($course?.terms.some((term) => !currentTerms.includes(addAcademicYear(term)))) {
         course.set({
@@ -100,7 +119,7 @@
                 toast.success(successMessage);
                 addReviewOpen.set(false);
                 refetch();
-                if ( successMessage.includes('added') ) {
+                if (successMessage.includes('added')) {
                     triggerConfetti.set(true);
                 }
             } else {
@@ -188,7 +207,10 @@
 
     $: showingReviews.set($sortedAndFilteredReviews);
 </script>
-<Seo title={params?.replace('-', ' ').toUpperCase()} description="{params?.replace('-', ' ').toUpperCase() + ' Reviews at Concordia.courses'}" ogDescription={params?.replace('-', ' ').toUpperCase() + ' Reviews at Concordia.courses'} ogTitle={`${params?.replace('-', ' ').toUpperCase()} | Concordia.courses`}/>
+<Seo title={params?.replace('-', ' ').toUpperCase()}
+     description="{params?.replace('-', ' ').toUpperCase() + ' Reviews at Concordia.courses'}"
+     ogDescription={params?.replace('-', ' ').toUpperCase() + ' Reviews at Concordia.courses'}
+     ogTitle={`${params?.replace('-', ' ').toUpperCase()} | Concordia.courses`}/>
 
 {#if $course === undefined || $course === null || $showingReviews === undefined}
     <Loading/>
@@ -202,7 +224,14 @@
         <div class='py-2.5'/>
         <div class='hidden gap-x-6 lg:grid lg:grid-cols-5'>
             <div class='col-span-3'>
-                <h2 class:hidden={!$course?.schedules?.length} class='text-center mb-2 text-xl font-bold leading-none text-gray-700 dark:text-gray-200'>
+                {#if $gradeDistribution}
+                    <h2 class='text-center mb-2 text-xl font-bold leading-none text-gray-700 dark:text-gray-200'>
+                        Grades Distribution {$course?.notes ? 'and Notes' : ''}
+                    </h2>
+                    <CourseDistributionAndNotes class="mb-4" notesUrl={$course?.notes} gradeDistribution={$gradeDistribution}/>
+                {/if}
+                <h2 class:hidden={!$course?.schedules?.length}
+                    class='text-center mb-2 text-xl font-bold leading-none text-gray-700 dark:text-gray-200'>
                     Course Schedule
                 </h2>
                 <SchedulesDisplay
@@ -271,7 +300,15 @@
             <div class='mb-4 flex'>
                 <CourseRequirements course={$course}/>
             </div>
-            <h2 class:hidden={!$course?.schedules?.length} class='text-center mb-2 text-xl font-bold leading-none text-gray-700 dark:text-gray-200'>
+            {#if $gradeDistribution}
+                <h2 class='text-center mb-2 text-xl font-bold leading-none text-gray-700 dark:text-gray-200'>
+                    Grades Distribution {$course?.notes ? 'and Notes' : ''}
+                </h2>
+                <CourseDistributionAndNotes notesUrl={$course?.notes} gradeDistribution={$gradeDistribution}/>
+            {/if}
+            <div class='py-2.5'/>
+            <h2 class:hidden={!$course?.schedules?.length}
+                class='text-center mb-2 text-xl font-bold leading-none text-gray-700 dark:text-gray-200'>
                 Course Schedule
             </h2>
             <SchedulesDisplay course={$course}/>

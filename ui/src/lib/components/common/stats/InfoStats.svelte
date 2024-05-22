@@ -54,7 +54,7 @@
                 <div class='py-2'/>
                 <Histogram
                         width={180}
-                        height={lg ? 132 : 80}
+                        height={$lg ? 132 : 80}
                         data={type === 'course' ? experience : rating}
                         max={5}
                         gap={10}
@@ -73,7 +73,7 @@
                 <div class='py-2'/>
                 <Histogram
                         width={180}
-                        height={lg ? 132 : 80}
+                        height={$lg ? 132 : 80}
                         data={difficulties}
                         max={5}
                         gap={10}

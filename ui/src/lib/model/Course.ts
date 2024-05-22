@@ -12,5 +12,6 @@ export type Course = {
     avgDifficulty: number;
     avgExperience: number;
     reviewCount: number;
+    notes: string;
     schedules: Schedule[];
 };

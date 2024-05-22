@@ -3,7 +3,7 @@ export type Instructor = {
     firstName: string;
     lastName: string;
     departments: string[];
-    courses: InstructorCourse[];
+    courses: Course[];
     tags: string[];
     avgDifficulty: number;
     avgRating: number;
@@ -12,7 +12,7 @@ export type Instructor = {
     lastSummaryUpdate: Date;
 }
 
-type InstructorCourse = {
+export type Course = {
     subject: string;
     catalog: string;
 }

@@ -398,5 +398,11 @@ export const repo = {
             },
             body: JSON.stringify({newPassword}),
         });
-    }
+    },
+
+    async getGradeDistribution(
+        id: string
+    ): Promise<Response> {
+        return await client.get(`/grades/distribution?course_id=${id}`);
+    },
 };
