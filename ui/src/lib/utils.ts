@@ -189,3 +189,33 @@ export const timeFrame = (date: Date, now: Date) => {
 
     return seconds === 0 ? 'now' : `${Math.floor(seconds)} second${seconds > 1 ? 's' : ''} ago`;
 };
+
+export function convertGradePointsToLetter(gradePoints: number): string {
+    if (gradePoints >= 4.3) {
+        return 'A+';
+    } else if (gradePoints >= 4.0) {
+        return 'A';
+    } else if (gradePoints >= 3.7) {
+        return 'A-';
+    } else if (gradePoints >= 3.3) {
+        return 'B+';
+    } else if (gradePoints >= 3.0) {
+        return 'B';
+    } else if (gradePoints >= 2.7) {
+        return 'B-';
+    } else if (gradePoints >= 2.3) {
+        return 'C+';
+    } else if (gradePoints >= 2.0) {
+        return 'C';
+    } else if (gradePoints >= 1.7) {
+        return 'C-';
+    } else if (gradePoints >= 1.3) {
+        return 'D+';
+    } else if (gradePoints >= 1.0) {
+        return 'D';
+    } else if (gradePoints >= 0.7) {
+        return 'D-';
+    } else {
+        return 'F';
+    }
+}

@@ -226,11 +226,17 @@
         <div class='py-2.5'/>
         <div class='hidden gap-x-6 lg:grid lg:grid-cols-5'>
             <div class='col-span-3'>
-                {#if $gradeDistribution}
+                {#if $gradeDistribution || $course?.notes}
                     <h2 class='text-center mb-2 text-xl font-bold leading-none text-gray-700 dark:text-gray-200'>
-                        Grades Distribution {$course?.notes ? 'and Notes' : ''}
+                        {#if $gradeDistribution && $course?.notes}
+                            Grades Distribution and Notes
+                        {:else if $gradeDistribution}
+                            Grades Distribution
+                        {:else if $course?.notes}
+                            Notes
+                        {/if}
                     </h2>
-                    <CourseDistributionAndNotes class="mb-4" notesUrl={$course?.notes} gradeDistribution={$gradeDistribution}/>
+                    <CourseDistributionAndNotes class="mb-4" notesUrl={$course?.notes} gradeDistribution={$gradeDistribution} courseCode={$course?._id}/>
                 {/if}
                 <h2 class:hidden={!$course?.schedules?.length}
                     class='text-center mb-2 text-xl font-bold leading-none text-gray-700 dark:text-gray-200'>
@@ -302,11 +308,17 @@
             <div class='mb-4 flex'>
                 <CourseRequirements course={$course}/>
             </div>
-            {#if $gradeDistribution}
+            {#if $gradeDistribution || $course?.notes}
                 <h2 class='text-center mb-2 text-xl font-bold leading-none text-gray-700 dark:text-gray-200'>
-                    Grades Distribution {$course?.notes ? 'and Notes' : ''}
+                    {#if $gradeDistribution && $course?.notes}
+                        Grades Distribution and Notes
+                    {:else if $gradeDistribution}
+                        Grades Distribution
+                    {:else if $course?.notes}
+                        Notes
+                    {/if}
                 </h2>
-                <CourseDistributionAndNotes notesUrl={$course?.notes} gradeDistribution={$gradeDistribution}/>
+                <CourseDistributionAndNotes notesUrl={$course?.notes} gradeDistribution={$gradeDistribution} courseCode={$course?._id}/>
             {/if}
             <div class='py-2.5'/>
             <h2 class:hidden={!$course?.schedules?.length}
