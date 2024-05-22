@@ -45,7 +45,7 @@
                 data={gradeDistribution}
                 gap={10}
                 class='mx-auto'
-                caption={`${gradeDistribution.term} ${gradeDistribution.year} -> Class Avg: ${convertGradePointsToLetter(gradeDistribution.classAverage)} Class Size: ${gradeDistribution.classSize}`}
+                caption={`${gradeDistribution.term} ${gradeDistribution.year}:  Class Avg - ${convertGradePointsToLetter(gradeDistribution.classAverage)}, Size - ${gradeDistribution.classSize}`}
         />
     {/if}
     {#if notesUrl}
