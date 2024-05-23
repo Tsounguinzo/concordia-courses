@@ -5,6 +5,53 @@ export const validateFieldPresence = (fieldValue: string, fieldName: string) => 
     return '';
 };
 
+export function validateYear(year: string) {
+    const currentYear = new Date().getFullYear();
+    if (!year) {
+        return "Year is required.";
+    } else if (!/^\d{4}$/.test(year)) {
+        return "Year must be a four-digit number.";
+    } else if (Number(year) < 1974 || Number(year) > currentYear) {
+        return `Year must be between 1974 and ${currentYear}.`;
+    }
+    return "";
+}
+
+export function validateFromOptions(fieldValue: string, fieldName: string, options: string[]) {
+    if (!fieldValue) {
+        return `${fieldName} is required.`;
+    }
+    const isValid = options.some(option => option.toLowerCase() === fieldValue.toLowerCase());
+    if (!isValid) {
+        return `${fieldValue} is not a valid option.`;
+    }
+    return "";
+}
+
+export type FileValidationOptions = {
+    allowedTypes?: string[];
+    maxSizeMB?: number;
+};
+
+export function validateFile(file: File | null, fieldName: string, options: FileValidationOptions = {}): string {
+    if (!file) {
+        return `${fieldName} is required.`;
+    }
+
+    const { allowedTypes, maxSizeMB } = options;
+
+    if (allowedTypes && !allowedTypes.includes(file.type)) {
+        const acceptedFormats = allowedTypes.map(type => type.split('/').pop()).join(", ");
+        return `Accepted formats: ${acceptedFormats}`;
+    }
+
+    if (maxSizeMB !== undefined && file.size > maxSizeMB * 1024 * 1024) {
+        return `${fieldName} must be smaller than ${maxSizeMB} MB.`;
+    }
+
+    return '';
+}
+
 export const validateNumericRange = (fieldValue: number, fieldName: string, min: number, max: number) => {
     if (fieldValue === 0) {
         return `${fieldName} is required`;

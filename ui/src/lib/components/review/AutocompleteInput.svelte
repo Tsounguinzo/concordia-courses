@@ -65,7 +65,7 @@
             >
                 <div class="relative">
                 <ul use:combobox.items
-                    class='scrollbar-hide autocomplete absolute w-full max-h-80 overflow-scroll rounded-md text-sm shadow-md'>
+                    class='scrollbar-hide autocomplete absolute w-full max-h-80 overflow-scroll rounded-md text-sm shadow-md z-50'>
                     {#each filtered as value}
                         {@const active = $combobox.active === value}
                         <li use:combobox.item={{ value }}

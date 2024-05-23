@@ -36,4 +36,9 @@
             </div>
         </div>
     </div>
+    <div class="flex items-center mt-10">
+        <a href="/grades" class='mx-auto cursor-pointer text-sm text-gray-800 underline underline-offset-4 hover:text-gray-500 dark:text-gray-400 dark:hover:text-gray-500 md:text-base'>
+            Share your grades distribution <span aria-hidden='true'>&rarr;</span>
+        </a>
+    </div>
 </div>
