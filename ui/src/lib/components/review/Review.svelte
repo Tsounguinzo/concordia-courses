@@ -104,6 +104,10 @@
                             <div class='mt-2 px-2 bg-primary-400 rounded-lg w-fit'>
                                 from rate my professor
                             </div>
+                        {:else if review.userId.startsWith("reddit")}
+                            <div class='mt-2 px-2 bg-primary-400 rounded-lg w-fit'>
+                                from reddit
+                            </div>
                         {/if}
                     </div>
                 </div>
