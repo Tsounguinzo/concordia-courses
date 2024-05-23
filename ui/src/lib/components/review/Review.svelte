@@ -111,19 +111,17 @@
                         {/if}
                     </div>
                 </div>
-                {#if review.content?.length < 300 || readMore}
-                    <div class='ml-1 mr-4 mt-2 hyphens-auto text-left text-gray-800 dark:text-gray-300'>
+                <div class='ml-1 mr-4 mt-2 hyphens-auto text-left text-gray-800 dark:text-gray-300'>
+                    {#if review.content?.length < 300 || readMore}
                         {@html review.content.replace(/\n/g, '<br>')}
-                    </div>
-                {:else }
-                    <div class='ml-1 mr-4 mt-2 hyphens-auto text-left text-gray-800 dark:text-gray-300'>
+                    {:else }
                         {@html review.content.substring(0, 300).replace(/\n/g, '<br>') + '...'}
-                        <button class='ml-1 mr-auto pt-1 text-gray-700 underline transition duration-300 ease-in-out hover:text-primary dark:text-gray-300 dark:hover:text-primary'
-                                on:click={() => readMore = !readMore}>
-                            Show {readMore ? 'less' : 'more'}
-                        </button>
-                    </div>
-                {/if}
+                    {/if}
+                    <button class='ml-1 mr-auto pt-1 text-gray-700 underline transition duration-300 ease-in-out hover:text-primary dark:text-gray-300 dark:hover:text-primary'
+                            on:click={() => readMore = !readMore}>
+                        Show {readMore ? 'less' : 'more'}
+                    </button>
+                </div>
                 {#if review?.tags}
                     <div class='flex flex-wrap gap-1 mt-1'>
                         {#each review.tags as tag}
