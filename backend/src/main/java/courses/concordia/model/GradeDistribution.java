@@ -24,6 +24,7 @@ public class GradeDistribution {
 
     @Data
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class Grade {
         private String grade;
         private int count;

@@ -15,9 +15,10 @@ public class GradeController {
     private final GradeDistributionService gradeDistributionService;
 
     @GetMapping("/distribution")
-    public Response<?> getGradeDistribution(@RequestParam(name = "course_id") String courseId) {
+    public Response<?> getGradeDistribution(@RequestParam(name = "course") String course) {
+        String[] courseInfo = course.split("-");
         return Response
                 .ok()
-                .setPayload(gradeDistributionService.getGradeDistribution(courseId));
+                .setPayload(gradeDistributionService.getGradeDistribution(courseInfo[0], courseInfo[1]));
     }
 }

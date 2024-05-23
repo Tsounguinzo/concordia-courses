@@ -10,8 +10,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-
 @RequiredArgsConstructor
 @Slf4j
 @Service
@@ -22,15 +20,20 @@ public class GradeDistributionServiceImpl implements GradeDistributionService {
 
     /**
      * Get grade distribution of the most recent year
-     * @param courseId course id
+     * @param courseSubject course subject
+     * @param courseCatalog course catalog
      * @return grade distribution
      */
-    @Cacheable(value = "gradeDistribution", key = "#courseId", unless = "#result == null")
+    @Cacheable(value = "gradeDistribution", key = "{#courseSubject, #courseCatalog}", unless = "#result == null")
     @Override
-    public GradeDistributionDto getGradeDistribution(String courseId) {
-        return gradeDistributionRepository.findAll().stream()
-                .max(Comparator.comparingInt(GradeDistribution::getYear))
-                .map(gradeDistribution -> modelMapper.map(gradeDistribution, GradeDistributionDto.class))
-                .orElse(null);
+    public GradeDistributionDto getGradeDistribution(String courseSubject, String courseCatalog) {
+        log.info("Fetching grade distribution for course: {}", courseSubject + courseCatalog);
+        GradeDistribution gradeDistribution = gradeDistributionRepository.findTopByCourseSubjectAndCourseCatalogOrderByYearDesc(courseSubject, courseCatalog);
+
+        if (gradeDistribution != null) {
+            return modelMapper.map(gradeDistribution, GradeDistributionDto.class);
+        } else {
+            return null;
+        }
     }
 }

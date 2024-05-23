@@ -401,8 +401,8 @@ export const repo = {
     },
 
     async getGradeDistribution(
-        id: string
+        subject: string, catalog: string,
     ): Promise<Response> {
-        return await client.get(`/grades/distribution?course_id=${id}`);
+        return await client.get(`/grades/distribution?course=${subject}-${catalog}`);
     },
 };

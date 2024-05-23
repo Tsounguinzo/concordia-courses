@@ -5,4 +5,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface GradeDistributionRepository extends MongoRepository<GradeDistribution, String> {}
+public interface GradeDistributionRepository extends MongoRepository<GradeDistribution, String> {
+    GradeDistribution findTopByCourseSubjectAndCourseCatalogOrderByYearDesc(String courseSubject, String courseCatalog);
+}

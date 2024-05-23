@@ -2,9 +2,11 @@ package courses.concordia.service.implementation;
 
 import com.google.gson.reflect.TypeToken;
 import courses.concordia.model.Course;
+import courses.concordia.model.GradeDistribution;
 import courses.concordia.model.Instructor;
 import courses.concordia.model.Review;
 import courses.concordia.repository.CourseRepository;
+import courses.concordia.repository.GradeDistributionRepository;
 import courses.concordia.repository.InstructorRepository;
 import courses.concordia.repository.ReviewRepository;
 import courses.concordia.util.JsonUtils;
@@ -29,6 +31,7 @@ public class DatabaseInitializer {
     private final ReviewRepository reviewRepository;
     private final CourseRepository courseRepository;
     private final InstructorRepository instructorRepository;
+    private final GradeDistributionRepository gradeDistributionRepository;
     private final Environment environment;
 
     @Value("${app.init-db:false}")
@@ -81,6 +84,19 @@ public class DatabaseInitializer {
             processInstructorFile(path);
         } else if (path.toString().endsWith("reviews.json")) {
             processReviewFile(path);
+        } else if (path.toString().endsWith("distribution.json")) {
+            gradesDistributionFile(path);
+        }
+    }
+
+    private void gradesDistributionFile(Path path) {
+        try {
+            List<GradeDistribution> gradeDistributions = JsonUtils.getData(path, new TypeToken<List<GradeDistribution>>(){});
+            gradeDistributionRepository.deleteAll();
+            gradeDistributionRepository.saveAll(gradeDistributions);
+            log.info("Successfully loaded and saved {} grade distributions from {}", gradeDistributions.size(), path);
+        } catch (Exception e) {
+            log.error("Failed to load grade distributions from {}: {}", path, e.getMessage(), e);
         }
     }
 

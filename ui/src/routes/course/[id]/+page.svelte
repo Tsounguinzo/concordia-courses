@@ -46,9 +46,9 @@
         refetch()
     }
 
-    function fetchGradeDistribution(courseId: string | undefined) {
-        if (courseId) {
-            repo.getGradeDistribution(courseId).then(async (res) => {
+    function fetchGradeDistribution(subject: string | undefined, catalog: string | undefined) {
+        if (subject && catalog) {
+            repo.getGradeDistribution(subject, catalog).then(async (res) => {
                 if (res.ok) {
                     const grades = await res.json();
                     if (typeof grades === 'string') {
@@ -75,9 +75,9 @@
 
                 if (firstFetch) {
                     course.set(payload?.course);
-                    fetchGradeDistribution(payload?.course?._id);
                 }
 
+                fetchGradeDistribution(payload?.course?.subject, payload?.course?.catalog);
                 showingReviews.set(payload?.reviews);
                 allReviews.set(payload?.reviews);
 
