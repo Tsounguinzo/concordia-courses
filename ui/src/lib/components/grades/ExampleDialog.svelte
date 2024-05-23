@@ -11,7 +11,7 @@
 <button on:click={dialog.open}
         type="button" class="text-primary underline italic capitalize cursor-pointer text-lg">Example</button>
 
-<div class="relative z-10">
+<div class="relative z-[100]">
     <Transition show={$dialog.expanded}>
         <Transition
                 enter="ease-out duration-300"
