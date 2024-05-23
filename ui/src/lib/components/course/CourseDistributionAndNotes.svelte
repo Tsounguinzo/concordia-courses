@@ -41,7 +41,7 @@
     <div class={twMerge('relative w-full rounded-md bg-slate-50 shadow-sm dark:bg-neutral-800 flex-row items-center justify-center p-6',$$props.class)}>
         {#if gradeDistribution}
             <GradeHistogram
-                    width={$isXSmallScreen ? 300 : $isSmallScreen ? 400 : 600}
+                    width={$isXSmallScreen ? 300 : $isSmallScreen ? 400 : 500}
                     height={200}
                     data={gradeDistribution}
                     gap={10}
