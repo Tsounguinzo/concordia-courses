@@ -19,14 +19,19 @@
         document.body.removeChild(link);
     };
 
-    export const useMediaQuery = (query: string) => {
-
+     const useMediaQuery = (query: string) => {
         const matches = writable(false);
 
         onMount(() => {
-            window
-                .matchMedia(query)
-                .addEventListener('change', (e) => matches.set(e.matches));
+            const mediaQueryList = window.matchMedia(query);
+            matches.set(mediaQueryList.matches);
+
+            const handler = (e) => matches.set(e.matches);
+            mediaQueryList.addEventListener('change', handler);
+
+            return () => {
+                mediaQueryList.removeEventListener('change', handler);
+            };
         });
 
         return matches;
