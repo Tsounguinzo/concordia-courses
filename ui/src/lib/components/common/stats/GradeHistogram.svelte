@@ -34,7 +34,7 @@
 </script>
 
 <div class={twMerge('relative w-fit', $$props.class)}>
-    <div class='flex items-end' style={`width: ${width}px; height: ${height <= 100 ? height : 100}px;`}>
+    <div class='flex items-end h-[{height <= 100 ? height : 100}px]'>
         {#each distribution as count, index (index)}
             <div class='flex flex-col items-center text-xs'>
                 <HistogramBar
