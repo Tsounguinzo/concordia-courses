@@ -117,10 +117,12 @@
                     {:else }
                         {@html review.content.substring(0, 300).replace(/\n/g, '<br>') + '...'}
                     {/if}
-                    <button class='ml-1 mr-auto pt-1 text-gray-700 underline transition duration-300 ease-in-out hover:text-primary dark:text-gray-300 dark:hover:text-primary'
-                            on:click={() => readMore = !readMore}>
-                        Show {readMore ? 'less' : 'more'}
-                    </button>
+                    {#if review.content?.length >= 300}
+                        <button class='ml-1 mr-auto pt-1 text-gray-700 underline transition duration-300 ease-in-out hover:text-primary dark:text-gray-300 dark:hover:text-primary'
+                                on:click={() => readMore = !readMore}>
+                            Show {readMore ? 'less' : 'more'}
+                        </button>
+                    {/if}
                 </div>
                 {#if review?.tags}
                     <div class='flex flex-wrap gap-1 mt-1'>
