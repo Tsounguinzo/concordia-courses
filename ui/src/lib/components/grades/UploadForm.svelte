@@ -19,7 +19,6 @@
         term: '',
         year: '',
         gradeDistribution: null,
-        classAverages: null
     };
 
     let gradeDistributionExample = {
@@ -38,27 +37,11 @@
         image: '/grades.png'
     };
 
-    let classAveragesExample = {
-        title: 'Getting your Class Averages',
-        content: `
-       <h3 class="text-base">Instructions</h3>
-       <p class="text-sm ">
-           Step 1: Log in to the student portal.<br>
-           Step 2: Navigate to the 'View Unofficial Transcript'.<br>
-           Step 3: Click on your record.<br>
-           Step 4: Find the target term.<br>
-           Step 5: Take a screenshot as shown below.<br>
-       </p>
-       `,
-        image: '/classAvg.png'
-    };
-
     const validate = (values, actions) => {
         const errors = {
             term: '',
             year: '',
             gradeDistribution: '',
-            classAverages: ''
         };
 
         const options: FileValidationOptions = {
@@ -68,7 +51,6 @@
         errors.term = validateFromOptions(values.term, "Term", ['Fall', 'Winter', 'Spring', 'Summer', 'Fall/Winter']);
         errors.year = validateYear(values.year);
         errors.gradeDistribution = validateFile(values.gradeDistribution, "Grade Distribution", options);
-        errors.classAverages = validateFile(values.classAverages, "Class Averages", options);
 
         return errors;
     };
@@ -84,7 +66,6 @@
         formData.append('term', values.term);
         formData.append('year', values.year);
         formData.append('gradeDistribution', values.gradeDistribution);
-        formData.append('classAverages', values.classAverages);
 
         try {
             toast.promise(fetch('?/upload', {
@@ -160,23 +141,6 @@
                         onChange={(file) => handleFileChange(file, setFieldValue, 'gradeDistribution')}
                 />
                 <FieldError name='gradeDistribution'/>
-            </div>
-            <div class='flex flex-col'>
-                <div class="flex gap-x-3">
-                    <FieldLabel For='classAverages'>
-                        Class Averages
-                    </FieldLabel>
-                    <ExampleDialog {...classAveragesExample}/>
-                </div>
-                <FileInput
-                        id="classAverages"
-                        name="classAverages"
-                        accept="image/jpeg,image/png,application/pdf"
-                        class='capitalize resize-none rounded-md border bg-gray-50 p-3 outline-none dark:border-neutral-600 dark:bg-neutral-700 dark:text-gray-200 dark:caret-white'
-                        file={props.values.classAverages}
-                        onChange={(file) => handleFileChange(file, setFieldValue, 'classAverages')}
-                />
-                <FieldError name='classAverages'/>
             </div>
             <div class='mt-8 flex justify-end space-x-4'>
                 <button type="reset"
