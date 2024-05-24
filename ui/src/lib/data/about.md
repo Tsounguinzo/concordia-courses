@@ -15,9 +15,10 @@
   </div>
   <div class="ml-2">
     <h4 class="font-bold text-lg">Beaudelaire T.N. | SOEN concordia</h4>
-    <a href="https://github.com/Tsounguinzo" class="text-blue-500 hover:text-blue-600">Github</a>
+    <p class="font-bold">Full Stack</p>
+    <a href="https://beaudelaire.ca" class="text-blue-500 hover:text-blue-600">Website</a>
     <span> • </span>
-    <a href="https://www.linkedin.com/in/beaudelaire-tsoungui-nzodoumkouo-223810299/" class="text-blue-500 hover:text-blue-600">Linkedin</a>
+    <a href="https://flymile.pro/" class="text-blue-500 hover:text-blue-600">Business</a>
   </div>
 </div>
 
@@ -27,9 +28,23 @@
   </div>
   <div class="ml-2">
     <h4 class="font-bold text-lg">Zhengxuan zhao | SOEN mcgill</h4>
+    <p class="font-bold">Backend</p>
     <a href="https://github.com/RENOLEVES" class="text-blue-500 hover:text-blue-600">Github</a>
     <span> • </span>
     <a href="https://www.linkedin.com/in/zhengxuan-zhao-978802128/" class="text-blue-500 hover:text-blue-600">Linkedin</a>
+  </div>
+</div>
+
+<div class="flex gap-x-4">
+  <div class="flex-shrink-0">
+    <img src="https://avatars.githubusercontent.com/u/157557258?v=4" alt="Github picture" class="rounded-full w-16 h-16">
+  </div>
+  <div class="ml-2">
+    <h4 class="font-bold text-lg">Russ Aulakh | CS concordia</h4>
+    <p class="font-bold">Data Mining</p>
+    <a href="https://www.russ-aulakh.com/" class="text-blue-500 hover:text-blue-600">Website</a>
+    <span> • </span>
+    <a href="https://flymile.pro/" class="text-blue-500 hover:text-blue-600">Business</a>
   </div>
 </div>
 
