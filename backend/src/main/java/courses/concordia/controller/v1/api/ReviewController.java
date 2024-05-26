@@ -65,12 +65,16 @@ public class ReviewController {
 
     @PostMapping
     public Response<?> addReview(@RequestBody ReviewDto reviewDto) {
-
         User user = userService.getAuthenticatedUser();
-        if(user == null) {
+
+        if (user == null && reviewDto.getUserId() == null) {
             return Response.unauthorized();
         }
-        reviewDto = reviewDto.setUserId(user.get_id());
+
+        if (user != null) {
+            reviewDto.setUserId(user.get_id());
+        }
+
         ReviewDto addedReview = reviewService.addOrUpdateReview(reviewDto);
         notificationService.addNotifications(reviewDto);
         return Response.ok().setPayload(addedReview);
@@ -78,27 +82,16 @@ public class ReviewController {
 
     @PutMapping
     public Response<?> updateReview(@RequestBody ReviewDto reviewDto) {
-
-        User user = userService.getAuthenticatedUser();
-        if(user == null) {
-            return Response.unauthorized();
-        }
-        reviewDto = reviewDto.setUserId(user.get_id());
         ReviewDto addedReview = reviewService.addOrUpdateReview(reviewDto);
-        notificationService.updateNotifications(user.get_id(), reviewDto.getCourseId(), reviewDto);
+        notificationService.updateNotifications(reviewDto.get_id(), reviewDto.getCourseId(), reviewDto);
         return Response.ok().setPayload(addedReview);
     }
 
     @DeleteMapping
     public Response<?> deleteReview(@RequestBody ReviewPayloadDto reviewPayloadDto) {
-
-        User user = userService.getAuthenticatedUser();
-        if(user == null) {
-            return Response.unauthorized();
-        }
         ReviewDto reviewDto = reviewService.getReviewById(reviewPayloadDto.getId());
-        interactionService.deleteInteractions(reviewPayloadDto.getId(), user.get_id(), reviewDto.getType());
-        notificationService.deleteNotification(user.get_id(), null, reviewDto.getCourseId());
+        interactionService.deleteInteractions(reviewPayloadDto.getId(), reviewPayloadDto.getUserId(), reviewDto.getType());
+        notificationService.deleteNotification(reviewPayloadDto.getUserId(), null, reviewDto.getCourseId());
         reviewService.deleteReview(reviewPayloadDto.getId(), reviewPayloadDto.getType(), reviewPayloadDto.getCourseId(), reviewPayloadDto.getInstructorId());
         return Response.ok().setPayload("Review was deleted successfully");
     }

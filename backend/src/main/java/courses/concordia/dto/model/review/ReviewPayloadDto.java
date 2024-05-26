@@ -20,4 +20,5 @@ public class ReviewPayloadDto {
     private String type;
     private String courseId;
     private String instructorId;
+    private String userId;
 }
