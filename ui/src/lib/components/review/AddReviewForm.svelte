@@ -12,6 +12,7 @@
     import Form from "$lib/components/common/form/Form.svelte";
     import type {Instructor} from "$lib/model/Instructor";
     import {validateReviewContent, validateFieldPresence, validateNumericRange, validateTags} from "$lib/validators";
+    import {visitorId} from "$lib/store";
 
     export let course: Course | null = null;
     export let instructor: Instructor | null = null;
@@ -107,7 +108,7 @@
                                     {validate}
                                     {initialValues}
                                     onSubmit={async (values, actions) => {
-                                    const res = await repo.addReview(course?._id, instructor?._id, variant, values).finally(() => {
+                                    const res = await repo.addReview(course?._id, instructor?._id, variant, values, $visitorId).finally(() => {
                                         actions.setSubmitting(false)
                                         open.set(false)
                                     });

@@ -19,10 +19,12 @@
     import InstructorInfo from "$lib/components/instructor/InstructorInfo.svelte";
     import Confetti from "$lib/components/common/animation/Confetti.svelte";
     import AiSummary from "$lib/components/review/AiSummary.svelte";
+    import {visitorId} from "$lib/store";
 
     $: params = $page.params.name;
 
     const user = $page.data.user;
+    $: visitor = $visitorId;
 
     const numberOfReviewsToShow = 5;
     const addReviewOpen = writable(false);
@@ -56,11 +58,12 @@
                 showingReviews.set(payload?.reviews);
                 allReviews.set(payload?.reviews);
 
-                if (user && id) {
-                    const instructorInteractionsPayload =
-                        await repo.getUserInteractionsForInstructor(id, user?.id);
-
-                    userInteractions.set(instructorInteractionsPayload.interactions);
+                if (id) {
+                    const userId = user?.id ?? visitor;
+                    if (userId) {
+                        const instructorInteractionsPayload = await repo.getUserInteractionsForInstructor(id, userId);
+                        userInteractions.set(instructorInteractionsPayload.interactions);
+                    }
                 }
 
             } catch (err) {
@@ -77,8 +80,12 @@
         goto("/explore")
     }
 
-    $: userReview = $showingReviews?.find((r) => user && r.userId === user?.id);
-    $: hasNotReviewed = user ? user && !$allReviews?.some(r => r.userId === user.id) : true;
+    $: userReview = $showingReviews?.find((r) => r.userId === (user?.id ?? visitor));
+    $: hasNotReviewed = user
+        ? !$allReviews?.some(r => r.userId === user?.id)
+        : visitor
+            ? !$allReviews?.some(r => r.userId === visitor)
+            : true;
 
     const handleSubmit = (successMessage: string) => {
         return (res: Response) => {
@@ -96,7 +103,8 @@
     };
 
     const handleDelete = async (review: Review) => {
-        const res = await repo.deleteReview(review._id, review.type, review.courseId, review.instructorId);
+        const userId = user?.id ?? visitor;
+        const res = await repo.deleteReview(review._id, review.type, review.courseId, review.instructorId, userId);
 
         if (res.ok) {
             showingReviews.set($showingReviews?.filter((r) => r.userId !== review.userId));
@@ -211,7 +219,7 @@
 
                     {#if userReview}
                         <InstructorReview
-                                canModify={Boolean(user && userReview.userId === user?.id)}
+                                canModify={Boolean((user && userReview?.userId === user?.id) || (visitor && userReview?.userId === visitor))}
                                 handleDelete={() => handleDelete(userReview)}
                                 editReview={editReviewOpen}
                                 review={userReview}
@@ -223,11 +231,11 @@
                     {#if $showingReviews}
                         {#each $showingReviews
                             .filter((review) =>
-                                user ? review.userId !== user?.id : true
+                                user ? review.userId !== user?.id : visitor ? review.userId !== visitor : true
                             )
                             .slice(0, $showAllReviews ? $showingReviews.length : numberOfReviewsToShow) as review, i (i)}
                             <InstructorReview
-                                    canModify={Boolean(user && review.userId === user?.id)}
+                                    canModify={Boolean((user && review?.userId === user?.id) || (visitor && review?.userId === visitor))}
                                     handleDelete={() => handleDelete(review)}
                                     editReview={editReviewOpen}
                                     review={review}

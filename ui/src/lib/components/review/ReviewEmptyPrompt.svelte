@@ -15,11 +15,11 @@
     <div class='mx-4 flex items-center gap-x-2 text-center text-sm sm:text-base'>
         <FileText class='stroke-gray-400 stroke-[1px]' size={40}/>
         <div>
-            No reviews have been left for this {variant} yet,
+            No reviews have been left for this {variant} yet, be the first! <br/>
             {#if !isLogin}
-                <a href="/login" class="underline text-primary-400 text-lg">Login</a> to
+                <a href="/login" class="underline text-primary-400 text-lg">Login</a> if u want to
             {/if}
-            be the first!
+            keep track of all your reviews.
         </div>
     </div>
 </div>

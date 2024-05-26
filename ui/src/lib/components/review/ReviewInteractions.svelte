@@ -11,6 +11,7 @@
     import {page} from "$app/stores";
     import {instructorIdToName} from "$lib/utils.js";
     import Tooltip from "$lib/components/common/Tooltip.svelte";
+    import {visitorId} from "$lib/store";
 
     export let review: Review;
     export let interactions: Interaction[];
@@ -19,6 +20,7 @@
     export let updateLikes: (likes: number) => void;
 
     const user =  $page.data.user;
+    $: visitor = $visitorId;
     const kind = writable<InteractionKind | undefined | null>(undefined);
     let {courseId, instructorId, userId, likes} = review;
     $: ({courseId, instructorId, userId, likes} = review);
@@ -35,8 +37,9 @@
     };
 
     const getUserInteractionKind = (interactions: Interaction[]): InteractionKind | undefined => {
-        const interaction = review.type === 'course'? interactions.find((interaction: Interaction) => interaction.userId === userId && interaction.courseId === courseId && interaction.type === 'course') :
-            interactions.find((interaction: Interaction) => interaction.userId === userId && interaction.instructorId === instructorId && interaction.type === 'instructor')
+        const interaction = review.type === 'course'
+            ? interactions.find((interaction: Interaction) => interaction.userId === userId && interaction.courseId === courseId && interaction.type === 'course')
+            : interactions.find((interaction: Interaction) => interaction.userId === userId && interaction.instructorId === instructorId && interaction.type === 'instructor')
         return interaction?.kind;
     };
 
@@ -53,17 +56,18 @@
 
     // Update interaction and handle likes/dislikes accordingly
     const updateInteraction = async (interactionKind: InteractionKind | 'remove') => {
-        if (!user) {
+        const currentUser = user?.id || visitor;
+        if (!currentUser) {
             displayLoginPrompt();
             return;
         }
 
-        if (!user?.verified) {
+        if (user && !user?.verified) {
             displayPrompt("Verify your account");
             return;
         }
 
-        if (user?.id === userId) {
+        if (currentUser === userId) {
             displayPrompt("you cant like your review");
             return;
         }
@@ -71,9 +75,9 @@
         const change = getLikeChange($kind, interactionKind);
         try {
             if (interactionKind === 'remove') {
-                await repo.removeInteraction(courseId, userId, instructorId, user?.id, type);
+                await repo.removeInteraction(courseId, userId, instructorId, currentUser, type);
             } else {
-                await repo.addOrUpdateInteraction(interactionKind, courseId, instructorId, userId, user?.id, type);
+                await repo.addOrUpdateInteraction(interactionKind, courseId, instructorId, userId, currentUser, type);
             }
             updateLikes(review.likes + change);
             likes += change;

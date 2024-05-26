@@ -17,6 +17,7 @@
     import {page} from "$app/stores";
     import {spliceCourseCode} from "$lib/utils";
     import {instructorIdToName} from "$lib/utils.js";
+    import {visitorId} from "$lib/store";
 
     type SortByType = (typeof feedSortByOptions)[number];
 
@@ -68,9 +69,10 @@
     onMount(async () => {
         await fetchCourses(true);
         isMounted = true;
-        if (user) {
+        const userId = user?.id ?? $visitorId;
+        if (userId) {
             const userInteractionsPayload =
-                await repo.getUserInteractions(user?.id);
+                await repo.getUserInteractions(userId);
 
             userInteractions.set(userInteractionsPayload);
         }

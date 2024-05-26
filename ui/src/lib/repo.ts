@@ -111,11 +111,12 @@ export const repo = {
         };
     },
 
-    async addReview(courseId: string, instructorId: string, type: ReviewType, values: any): Promise<Response> {
+    async addReview(courseId: string, instructorId: string, type: ReviewType, values: any, visitorId: string | null): Promise<Response> {
         return await client.post('/reviews', {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 type,
+                userId: visitorId,
                 content: values.content,
                 timestamp: ISOFormattedDateUTC4(new Date()),
                 difficulty: values.difficulty,
@@ -150,10 +151,10 @@ export const repo = {
         });
     },
 
-    async deleteReview(id: string, type: string, courseId: string, instructorId: string): Promise<Response> {
+    async deleteReview(id: string, type: string, courseId: string, instructorId: string, userId: string): Promise<Response> {
         return await client.delete('/reviews', {
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({id, type, courseId, instructorId}),
+            body: JSON.stringify({id, type, courseId, instructorId, userId}),
         });
     },
 
