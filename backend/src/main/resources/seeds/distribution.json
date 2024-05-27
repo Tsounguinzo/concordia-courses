@@ -5742,5 +5742,725 @@
         "count": 7
       }
     ]
+  },
+  {
+    "course": {
+      "subject": "COMP",
+      "catalog": "345"
+    },
+    "term": "Winter",
+    "year": 2024,
+    "classSize": 107,
+    "classAverage": 2.96,
+    "grades": [
+      {
+        "grade": "A+",
+        "count": 4
+      },
+      {
+        "grade": "A",
+        "count": 5
+      },
+      {
+        "grade": "A-",
+        "count": 8
+      },
+      {
+        "grade": "B+",
+        "count": 26
+      },
+      {
+        "grade": "B",
+        "count": 24
+      },
+      {
+        "grade": "B-",
+        "count": 17
+      },
+      {
+        "grade": "C+",
+        "count": 8
+      },
+      {
+        "grade": "C",
+        "count": 8
+      },
+      {
+        "grade": "C-",
+        "count": 7
+      },
+      {
+        "grade": "D+",
+        "count": 0
+      },
+      {
+        "grade": "D",
+        "count": 0
+      },
+      {
+        "grade": "D-",
+        "count": 0
+      },
+      {
+        "grade": "F",
+        "count": 0
+      },
+      {
+        "grade": "FNS",
+        "count": 0
+      },
+      {
+        "grade": "NR",
+        "count": 0
+      }
+    ]
+  },
+  {
+    "course": {
+      "subject": "COMP",
+      "catalog": "346"
+    },
+    "term": "Winter",
+    "year": 2024,
+    "classSize": 126,
+    "classAverage": 3.00,
+    "grades": [
+      {
+        "grade": "A+",
+        "count": 7
+      },
+      {
+        "grade": "A",
+        "count": 25
+      },
+      {
+        "grade": "A-",
+        "count": 15
+      },
+      {
+        "grade": "B+",
+        "count": 25
+      },
+      {
+        "grade": "B",
+        "count": 13
+      },
+      {
+        "grade": "B-",
+        "count": 11
+      },
+      {
+        "grade": "C+",
+        "count": 11
+      },
+      {
+        "grade": "C",
+        "count": 6
+      },
+      {
+        "grade": "C-",
+        "count": 0
+      },
+      {
+        "grade": "D+",
+        "count": 7
+      },
+      {
+        "grade": "D",
+        "count": 2
+      },
+      {
+        "grade": "D-",
+        "count": 3
+      },
+      {
+        "grade": "F",
+        "count": 0
+      },
+      {
+        "grade": "FNS",
+        "count": 1
+      },
+      {
+        "grade": "NR",
+        "count": 0
+      }
+    ]
+  },
+  {
+    "course": {
+      "subject": "COMP",
+      "catalog": "353"
+    },
+    "term": "Winter",
+    "year": 2024,
+    "classSize": 108,
+    "classAverage": 2.79,
+    "grades": [
+      {
+        "grade": "A+",
+        "count": 8
+      },
+      {
+        "grade": "A",
+        "count": 7
+      },
+      {
+        "grade": "A-",
+        "count": 9
+      },
+      {
+        "grade": "B+",
+        "count": 19
+      },
+      {
+        "grade": "B",
+        "count": 11
+      },
+      {
+        "grade": "B-",
+        "count": 14
+      },
+      {
+        "grade": "C+",
+        "count": 11
+      },
+      {
+        "grade": "C",
+        "count": 13
+      },
+      {
+        "grade": "C-",
+        "count": 10
+      },
+      {
+        "grade": "D+",
+        "count": 1
+      },
+      {
+        "grade": "D",
+        "count": 3
+      },
+      {
+        "grade": "D-",
+        "count": 0
+      },
+      {
+        "grade": "F",
+        "count": 2
+      },
+      {
+        "grade": "FNS",
+        "count": 0
+      },
+      {
+        "grade": "NR",
+        "count": 0
+      }
+    ]
+  },
+  {
+    "course": {
+      "subject": "COMP",
+      "catalog": "354"
+    },
+    "term": "Winter",
+    "year": 2024,
+    "classSize": 133,
+    "classAverage": 2.95,
+    "grades": [
+      {
+        "grade": "A+",
+        "count": 3
+      },
+      {
+        "grade": "A",
+        "count": 9
+      },
+      {
+        "grade": "A-",
+        "count": 28
+      },
+      {
+        "grade": "B+",
+        "count": 16
+      },
+      {
+        "grade": "B",
+        "count": 18
+      },
+      {
+        "grade": "B-",
+        "count": 23
+      },
+      {
+        "grade": "C+",
+        "count": 14
+      },
+      {
+        "grade": "C",
+        "count": 9
+      },
+      {
+        "grade": "C-",
+        "count": 10
+      },
+      {
+        "grade": "D+",
+        "count": 2
+      },
+      {
+        "grade": "D",
+        "count": 1
+      },
+      {
+        "grade": "D-",
+        "count": 0
+      },
+      {
+        "grade": "F",
+        "count": 0
+      },
+      {
+        "grade": "FNS",
+        "count": 0
+      },
+      {
+        "grade": "NR",
+        "count": 0
+      }
+    ]
+  },
+  {
+    "course": {
+      "subject": "ENCS",
+      "catalog": "393"
+    },
+    "term": "Winter",
+    "year": 2024,
+    "classSize": 52,
+    "classAverage": 3.39,
+    "grades": [
+      {
+        "grade": "A+",
+        "count": 2
+      },
+      {
+        "grade": "A",
+        "count": 18
+      },
+      {
+        "grade": "A-",
+        "count": 14
+      },
+      {
+        "grade": "B+",
+        "count": 4
+      },
+      {
+        "grade": "B",
+        "count": 6
+      },
+      {
+        "grade": "B-",
+        "count": 0
+      },
+      {
+        "grade": "C+",
+        "count": 3
+      },
+      {
+        "grade": "C",
+        "count": 4
+      },
+      {
+        "grade": "C-",
+        "count": 0
+      },
+      {
+        "grade": "D+",
+        "count": 0
+      },
+      {
+        "grade": "D",
+        "count": 1
+      },
+      {
+        "grade": "D-",
+        "count": 0
+      },
+      {
+        "grade": "F",
+        "count": 0
+      },
+      {
+        "grade": "FNS",
+        "count": 0
+      },
+      {
+        "grade": "NR",
+        "count": 0
+      }
+    ]
+  },
+  {
+    "course": {
+      "subject": "COMP",
+      "catalog": "335"
+    },
+    "term": "Fall",
+    "year": 2023,
+    "classSize": 108,
+    "classAverage": 2.77,
+    "grades": [
+      {
+        "grade": "A+",
+        "count": 10
+      },
+      {
+        "grade": "A",
+        "count": 12
+      },
+      {
+        "grade": "A-",
+        "count": 5
+      },
+      {
+        "grade": "B+",
+        "count": 24
+      },
+      {
+        "grade": "B",
+        "count": 12
+      },
+      {
+        "grade": "B-",
+        "count": 11
+      },
+      {
+        "grade": "C+",
+        "count": 6
+      },
+      {
+        "grade": "C",
+        "count": 8
+      },
+      {
+        "grade": "C-",
+        "count": 7
+      },
+      {
+        "grade": "D+",
+        "count": 4
+      },
+      {
+        "grade": "D",
+        "count": 2
+      },
+      {
+        "grade": "D-",
+        "count": 0
+      },
+      {
+        "grade": "F",
+        "count": 2
+      },
+      {
+        "grade": "FNS",
+        "count": 5
+      },
+      {
+        "grade": "NR",
+        "count": 0
+      }
+    ]
+  },
+  {
+    "course": {
+      "subject": "INST",
+      "catalog": "250"
+    },
+    "term": "Fall",
+    "year": 2023,
+    "classSize": 308,
+    "classAverage": 3.47,
+    "grades": [
+      {
+        "grade": "A+",
+        "count": 39
+      },
+      {
+        "grade": "A",
+        "count": 41
+      },
+      {
+        "grade": "A-",
+        "count": 58
+      },
+      {
+        "grade": "B+",
+        "count": 69
+      },
+      {
+        "grade": "B",
+        "count": 46
+      },
+      {
+        "grade": "B-",
+        "count": 13
+      },
+      {
+        "grade": "C+",
+        "count": 13
+      },
+      {
+        "grade": "C",
+        "count": 16
+      },
+      {
+        "grade": "C-",
+        "count": 5
+      },
+      {
+        "grade": "D+",
+        "count": 7
+      },
+      {
+        "grade": "D",
+        "count": 1
+      },
+      {
+        "grade": "D-",
+        "count": 0
+      },
+      {
+        "grade": "F",
+        "count": 6
+      },
+      {
+        "grade": "FNS",
+        "count": 0
+      },
+      {
+        "grade": "NR",
+        "count": 0
+      }
+    ]
+  },
+  {
+    "course": {
+      "subject": "MANA",
+      "catalog": "202"
+    },
+    "term": "Fall",
+    "year": 2023,
+    "classSize": 98,
+    "classAverage": 2.52,
+    "grades": [
+      {
+        "grade": "A+",
+        "count": 2
+      },
+      {
+        "grade": "A",
+        "count": 3
+      },
+      {
+        "grade": "A-",
+        "count": 14
+      },
+      {
+        "grade": "B+",
+        "count": 11
+      },
+      {
+        "grade": "B",
+        "count": 11
+      },
+      {
+        "grade": "B-",
+        "count": 16
+      },
+      {
+        "grade": "C+",
+        "count": 12
+      },
+      {
+        "grade": "C",
+        "count": 21
+      },
+      {
+        "grade": "C-",
+        "count": 8
+      },
+      {
+        "grade": "D+",
+        "count": 6
+      },
+      {
+        "grade": "D",
+        "count": 2
+      },
+      {
+        "grade": "D-",
+        "count": 4
+      },
+      {
+        "grade": "F",
+        "count": 0
+      },
+      {
+        "grade": "FNS",
+        "count": 0
+      },
+      {
+        "grade": "NR",
+        "count": 0
+      }
+    ]
+  },
+  {
+    "course": {
+      "subject": "MARK",
+      "catalog": "201"
+    },
+    "term": "Summer",
+    "year": 2023,
+    "classSize": 67,
+    "classAverage": 3.12,
+    "grades": [
+      {
+        "grade": "A+",
+        "count": 4
+      },
+      {
+        "grade": "A",
+        "count": 8
+      },
+      {
+        "grade": "A-",
+        "count": 7
+      },
+      {
+        "grade": "B+",
+        "count": 17
+      },
+      {
+        "grade": "B",
+        "count": 16
+      },
+      {
+        "grade": "B-",
+        "count": 7
+      },
+      {
+        "grade": "C+",
+        "count": 3
+      },
+      {
+        "grade": "C",
+        "count": 2
+      },
+      {
+        "grade": "C-",
+        "count": 0
+      },
+      {
+        "grade": "D+",
+        "count": 0
+      },
+      {
+        "grade": "D",
+        "count": 0
+      },
+      {
+        "grade": "D-",
+        "count": 0
+      },
+      {
+        "grade": "F",
+        "count": 1
+      },
+      {
+        "grade": "FNS",
+        "count": 0
+      },
+      {
+        "grade": "NR",
+        "count": 2
+      }
+    ]
+  },
+  {
+    "course": {
+      "subject": "SOCI",
+      "catalog": "203"
+    },
+    "term": "Fall",
+    "year": 2022,
+    "classSize": 62,
+    "classAverage": 2.76,
+    "grades": [
+      {
+        "grade": "A+",
+        "count": 3
+      },
+      {
+        "grade": "A",
+        "count": 4
+      },
+      {
+        "grade": "A-",
+        "count": 10
+      },
+      {
+        "grade": "B+",
+        "count": 8
+      },
+      {
+        "grade": "B",
+        "count": 8
+      },
+      {
+        "grade": "B-",
+        "count": 6
+      },
+      {
+        "grade": "C+",
+        "count": 5
+      },
+      {
+        "grade": "C",
+        "count": 8
+      },
+      {
+        "grade": "C-",
+        "count": 3
+      },
+      {
+        "grade": "D+",
+        "count": 3
+      },
+      {
+        "grade": "D",
+        "count": 2
+      },
+      {
+        "grade": "D-",
+        "count": 0
+      },
+      {
+        "grade": "F",
+        "count": 0
+      },
+      {
+        "grade": "FNS",
+        "count": 0
+      },
+      {
+        "grade": "NR",
+        "count": 2
+      }
+    ]
   }
 ]
