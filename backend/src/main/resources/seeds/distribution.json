@@ -6462,5 +6462,509 @@
         "count": 2
       }
     ]
+  },
+  {
+    "course": {
+      "subject": "COMP",
+      "catalog": "248"
+    },
+    "term": "Winter",
+    "year": 2023,
+    "classAverage": 2.60,
+    "classSize": 140,
+    "grades": [
+      {
+        "grade": "A+",
+        "count": 19
+      },
+      {
+        "grade": "A",
+        "count": 17
+      },
+      {
+        "grade": "A-",
+        "count": 13
+      },
+      {
+        "grade": "B+",
+        "count": 13
+      },
+      {
+        "grade": "B",
+        "count": 11
+      },
+      {
+        "grade": "B-",
+        "count": 8
+      },
+      {
+        "grade": "C+",
+        "count": 5
+      },
+      {
+        "grade": "C",
+        "count": 13
+      },
+      {
+        "grade": "C-",
+        "count": 10
+      },
+      {
+        "grade": "D+",
+        "count": 4
+      },
+      {
+        "grade": "D",
+        "count": 7
+      },
+      {
+        "grade": "D-",
+        "count": 2
+      },
+      {
+        "grade": "F",
+        "count": 0
+      },
+      {
+        "grade": "FNS",
+        "count": 17
+      },
+      {
+        "grade": "NR",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "course": {
+      "subject": "THEO",
+      "catalog": "202"
+    },
+    "term": "Winter",
+    "year": 2023,
+    "classAverage": 3.53,
+    "classSize": 270,
+    "grades": [
+      {
+        "grade": "A+",
+        "count": 7
+      },
+      {
+        "grade": "A",
+        "count": 62
+      },
+      {
+        "grade": "A-",
+        "count": 73
+      },
+      {
+        "grade": "B+",
+        "count": 63
+      },
+      {
+        "grade": "B",
+        "count": 27
+      },
+      {
+        "grade": "B-",
+        "count": 18
+      },
+      {
+        "grade": "C+",
+        "count": 11
+      },
+      {
+        "grade": "C",
+        "count": 5
+      },
+      {
+        "grade": "C-",
+        "count": 2
+      },
+      {
+        "grade": "D+",
+        "count": 1
+      },
+      {
+        "grade": "D",
+        "count": 1
+      },
+      {
+        "grade": "D-",
+        "count": 0
+      },
+      {
+        "grade": "F",
+        "count": 3
+      },
+      {
+        "grade": "FNS",
+        "count": 0
+      },
+      {
+        "grade": "NR",
+        "count": 0
+      }
+    ]
+  },
+  {
+    "course": {
+      "subject": "COMP",
+      "catalog": "432"
+    },
+    "term": "Winter",
+    "year": 2024,
+    "classAverage": 2.74,
+    "classSize": 72,
+    "grades": [
+      {
+        "grade": "A+",
+        "count": 14
+      },
+      {
+        "grade": "A",
+        "count": 10
+      },
+      {
+        "grade": "A-",
+        "count": 5
+      },
+      {
+        "grade": "B+",
+        "count": 12
+      },
+      {
+        "grade": "B",
+        "count": 3
+      },
+      {
+        "grade": "B-",
+        "count": 6
+      },
+      {
+        "grade": "C+",
+        "count": 4
+      },
+      {
+        "grade": "C",
+        "count": 3
+      },
+      {
+        "grade": "C-",
+        "count": 1
+      },
+      {
+        "grade": "D+",
+        "count": 5
+      },
+      {
+        "grade": "D",
+        "count": 3
+      },
+      {
+        "grade": "D-",
+        "count": 4
+      },
+      {
+        "grade": "F",
+        "count": 0
+      },
+      {
+        "grade": "FNS",
+        "count": 0
+      },
+      {
+        "grade": "NR",
+        "count": 0
+      }
+    ]
+  },
+  {
+    "course": {
+      "subject": "SOEN",
+      "catalog": "363"
+    },
+    "term": "Winter",
+    "year": 2024,
+    "classAverage": 2.42,
+    "classSize": 144,
+    "grades": [
+      {
+        "grade": "A+",
+        "count": 4
+      },
+      {
+        "grade": "A",
+        "count": 13
+      },
+      {
+        "grade": "A-",
+        "count": 20
+      },
+      {
+        "grade": "B+",
+        "count": 22
+      },
+      {
+        "grade": "B",
+        "count": 23
+      },
+      {
+        "grade": "B-",
+        "count": 24
+      },
+      {
+        "grade": "C+",
+        "count": 10
+      },
+      {
+        "grade": "C",
+        "count": 3
+      },
+      {
+        "grade": "C-",
+        "count": 1
+      },
+      {
+        "grade": "D+",
+        "count": 0
+      },
+      {
+        "grade": "D",
+        "count": 1
+      },
+      {
+        "grade": "D-",
+        "count": 0
+      },
+      {
+        "grade": "F",
+        "count": 0
+      },
+      {
+        "grade": "FNS",
+        "count": 0
+      },
+      {
+        "grade": "NR",
+        "count": 0
+      }
+    ]
+  },
+  {
+    "course": {
+      "subject": "SOEN",
+      "catalog": "471"
+    },
+    "term": "Winter",
+    "year": 2024,
+    "classAverage": 2.97,
+    "classSize": 110,
+    "grades": [
+      {
+        "grade": "A+",
+        "count": 11
+      },
+      {
+        "grade": "A",
+        "count": 16
+      },
+      {
+        "grade": "A-",
+        "count": 20
+      },
+      {
+        "grade": "B+",
+        "count": 16
+      },
+      {
+        "grade": "B",
+        "count": 17
+      },
+      {
+        "grade": "B-",
+        "count": 5
+      },
+      {
+        "grade": "C+",
+        "count": 9
+      },
+      {
+        "grade": "C",
+        "count": 10
+      },
+      {
+        "grade": "C-",
+        "count": 1
+      },
+      {
+        "grade": "D+",
+        "count": 3
+      },
+      {
+        "grade": "D",
+        "count": 1
+      },
+      {
+        "grade": "D-",
+        "count": 1
+      },
+      {
+        "grade": "F",
+        "count": 1
+      },
+      {
+        "grade": "FNS",
+        "count": 0
+      },
+      {
+        "grade": "NR",
+        "count": 0
+      }
+    ]
+  },
+  {
+    "course": {
+      "subject": "SOEN",
+      "catalog": "491"
+    },
+    "term": "Winter",
+    "year": 2024,
+    "classAverage": 2.29,
+    "classSize": 32,
+    "grades": [
+      {
+        "grade": "A+",
+        "count": 4
+      },
+      {
+        "grade": "A",
+        "count": 1
+      },
+      {
+        "grade": "A-",
+        "count": 19
+      },
+      {
+        "grade": "B+",
+        "count": 0
+      },
+      {
+        "grade": "B",
+        "count": 0
+      },
+      {
+        "grade": "B-",
+        "count": 0
+      },
+      {
+        "grade": "C+",
+        "count": 7
+      },
+      {
+        "grade": "C",
+        "count": 0
+      },
+      {
+        "grade": "C-",
+        "count": 0
+      },
+      {
+        "grade": "D+",
+        "count": 1
+      },
+      {
+        "grade": "D",
+        "count": 0
+      },
+      {
+        "grade": "D-",
+        "count": 0
+      },
+      {
+        "grade": "F",
+        "count": 0
+      },
+      {
+        "grade": "FNS",
+        "count": 0
+      },
+      {
+        "grade": "NR",
+        "count": 0
+      }
+    ]
+  },
+  {
+    "course": {
+      "subject": "COMP",
+      "catalog": "249"
+    },
+    "term": "Winter",
+    "year": 2024,
+    "classAverage": 2.52,
+    "classSize": 85,
+    "grades": [
+      {
+        "grade": "A+",
+        "count": 5
+      },
+      {
+        "grade": "A",
+        "count": 5
+      },
+      {
+        "grade": "A-",
+        "count": 7
+      },
+      {
+        "grade": "B+",
+        "count": 17
+      },
+      {
+        "grade": "B",
+        "count": 9
+      },
+      {
+        "grade": "B-",
+        "count": 9
+      },
+      {
+        "grade": "C+",
+        "count": 25
+      },
+      {
+        "grade": "C",
+        "count": 4
+      },
+      {
+        "grade": "C-",
+        "count": 2
+      },
+      {
+        "grade": "D+",
+        "count": 1
+      },
+      {
+        "grade": "D",
+        "count": 0
+      },
+      {
+        "grade": "D-",
+        "count": 0
+      },
+      {
+        "grade": "F",
+        "count": 0
+      },
+      {
+        "grade": "FNS",
+        "count": 1
+      },
+      {
+        "grade": "NR",
+        "count": 0
+      }
+    ]
   }
 ]
