@@ -109,12 +109,12 @@
 
     const saveFiltersToSessionStorage = () => {
         sessionStorage.setItem('filters', JSON.stringify({
-            selectedSubjects: $selectedSubjects,
-            selectedLevels: $selectedLevels,
-            selectedTerms: $selectedTerms,
-            selectedDepartments: $selectedDepartments,
-            selectedTags: $selectedTags,
-            sortBy: $sortBy,
+            savedSelectedSubjects: $selectedSubjects,
+            savedSelectedLevels: $selectedLevels,
+            savedSelectedTerms: $selectedTerms,
+            savedSelectedDepartments: $selectedDepartments,
+            savedSelectedTags: $selectedTags,
+            savedSortBy: $sortBy,
         }));
     };
 
@@ -130,11 +130,11 @@
                 savedSortBy
             } = JSON.parse(savedFilters);
 
-            savedSelectedSubjects.forEach((subject: string) => selectedSubjects.update(items => [...items, subject]));
-            savedSelectedLevels.forEach((level: string) => selectedLevels.update(items => [...items, level]));
-            savedSelectedTerms.forEach((term: string) => selectedTerms.update(items => [...items, term]));
-            savedSelectedDepartments.forEach((department: string) => selectedDepartments.update(items => [...items, department]));
-            savedSelectedTags.forEach((tag: string) => selectedTags.update(items => [...items, tag]));
+            savedSelectedSubjects?.forEach((subject: string) => selectedSubjects.update(items => [...items, subject]));
+            savedSelectedLevels?.forEach((level: string) => selectedLevels.update(items => [...items, level]));
+            savedSelectedTerms?.forEach((term: string) => selectedTerms.update(items => [...items, term]));
+            savedSelectedDepartments?.forEach((department: string) => selectedDepartments.update(items => [...items, department]));
+            savedSelectedTags?.forEach((tag: string) => selectedTags.update(items => [...items, tag]));
             sortBy.set(savedSortBy);
         }
     };
