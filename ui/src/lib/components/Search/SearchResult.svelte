@@ -20,12 +20,17 @@
             window.location.href = url;
         }
     }
+
+    function handleClick() {
+        window.location.href = url;
+    }
 </script>
 
-<a href={url}
+<button
         class='w-full text-left cursor-pointer'
         on:mouseenter={() => hovering.set(true)}
         on:mouseleave={() => hovering.set(false)}
+        on:click={handleClick}
         on:keydown={handleKeydown}
 >
     <div class={twMerge(
@@ -48,4 +53,4 @@
         </div>
         <CornerDownLeft class="text-gray-500 flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6"/>
     </div>
-</a>
+</button>

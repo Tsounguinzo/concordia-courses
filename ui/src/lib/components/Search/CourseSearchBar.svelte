@@ -7,6 +7,7 @@
     import { twMerge } from "tailwind-merge";
     import SearchResult from "./SearchResult.svelte";
     import ExploreButton from "./ExploreButton.svelte";
+    import { v4 as uuidv4 } from "uuid";
 
     export let results: SearchResults;
     export let handleInputChange: (query: string) => void;
@@ -58,7 +59,7 @@
     />
     {#if $searchSelected}
         <div class="absolute top-full z-50 w-full overflow-hidden bg-white shadow-md dark:bg-neutral-800">
-            {#each results.courses as result, index}
+            {#each results.courses as result, index (uuidv4())}
                 <SearchResult
                         {index}
                         query={results.query}
@@ -69,7 +70,7 @@
                         on:click={onResultClick}
                 />
             {/each}
-            {#each results.instructors as result, index}
+            {#each results.instructors as result, index (uuidv4())}
                 <SearchResult
                         index={results.courses.length + index}
                         query={results.query}
