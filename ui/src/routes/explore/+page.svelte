@@ -107,6 +107,8 @@
         sortBy: makeSortPayload($sortBy),
     };
 
+    /*
+
     const saveFiltersToSessionStorage = () => {
         sessionStorage.setItem('filters', JSON.stringify({
             savedSelectedSubjects: $selectedSubjects,
@@ -138,6 +140,8 @@
             sortBy.set(savedSortBy);
         }
     };
+
+     */
 
     const fetchData = async (reset = false) => {
         try {
@@ -171,7 +175,7 @@
                 instructorsModeOn.set(false);
             }
         }
-        loadFiltersFromSessionStorage();
+        // loadFiltersFromSessionStorage();
         fetchData(true);
         isMounted = true;
     });
@@ -184,7 +188,7 @@
             previousState = currentState;
         }
 
-        saveFiltersToSessionStorage();
+        //saveFiltersToSessionStorage();
     }
 
     const fetchMore = async () => {
