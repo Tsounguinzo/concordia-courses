@@ -107,6 +107,38 @@
         sortBy: makeSortPayload($sortBy),
     };
 
+    const saveFiltersToSessionStorage = () => {
+        sessionStorage.setItem('filters', JSON.stringify({
+            selectedSubjects: $selectedSubjects,
+            selectedLevels: $selectedLevels,
+            selectedTerms: $selectedTerms,
+            selectedDepartments: $selectedDepartments,
+            selectedTags: $selectedTags,
+            sortBy: $sortBy,
+        }));
+    };
+
+    const loadFiltersFromSessionStorage = () => {
+        const savedFilters = sessionStorage.getItem('filters');
+        if (savedFilters) {
+            const {
+                savedSelectedSubjects,
+                savedSelectedLevels,
+                savedSelectedTerms,
+                savedSelectedDepartments,
+                savedSelectedTags,
+                savedSortBy
+            } = JSON.parse(savedFilters);
+
+            savedSelectedSubjects.forEach((subject: string) => selectedSubjects.update(items => [...items, subject]));
+            savedSelectedLevels.forEach((level: string) => selectedLevels.update(items => [...items, level]));
+            savedSelectedTerms.forEach((term: string) => selectedTerms.update(items => [...items, term]));
+            savedSelectedDepartments.forEach((department: string) => selectedDepartments.update(items => [...items, department]));
+            savedSelectedTags.forEach((tag: string) => selectedTags.update(items => [...items, tag]));
+            sortBy.set(savedSortBy);
+        }
+    };
+
     const fetchData = async (reset = false) => {
         try {
             let data;
@@ -139,6 +171,7 @@
                 instructorsModeOn.set(false);
             }
         }
+        loadFiltersFromSessionStorage();
         fetchData(true);
         isMounted = true;
     });
@@ -150,6 +183,8 @@
             fetchData(true);
             previousState = currentState;
         }
+
+        saveFiltersToSessionStorage();
     }
 
     const fetchMore = async () => {
