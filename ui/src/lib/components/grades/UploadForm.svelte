@@ -21,6 +21,8 @@
         gradeDistribution: null,
     };
 
+    let reset: boolean = false;
+
     let gradeDistributionExample = {
         title: 'Getting your Grade Distribution',
        content: `
@@ -78,6 +80,8 @@
             });
 
             actions.resetForm();
+            reset = true;
+            setTimeout(() => reset = false, 100);
         } catch (error) {
             toast.error(error.message);
         } finally {
@@ -103,6 +107,7 @@
                     <FieldLabel For='term'>Term</FieldLabel>
                     <AutocompleteInput
                             {setFieldValue}
+                            {reset}
                             value={props.values.term}
                             options={['Fall', 'Winter', 'Spring', 'Summer', 'Fall/Winter']}
                             name='term'
