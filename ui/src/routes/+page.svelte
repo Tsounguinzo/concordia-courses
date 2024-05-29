@@ -41,9 +41,4 @@
             Share your grades distribution <span aria-hidden='true'>&rarr;</span>
         </a>
     </div>
-    <div class="flex items-center mt-10">
-        <p class='mx-auto text-lg font-bold text-gray-800 dark:text-gray-400 md:text-base'>
-            You can now give reviews without signing up. However, if you want to keep track of your reviews, feel free to <a href="/login" class="underline hover:text-gray-500 dark:hover:text-gray-500">sign up</a>.
-        </p>
-    </div>
 </div>

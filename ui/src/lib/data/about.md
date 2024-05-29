@@ -1,11 +1,16 @@
-# Welcome to Concordia.Courses!
-
-## Your Ultimate Course Guide at Concordia University
+# Welcome to Concordia.Courses a Concordia course and instructor Review platform for the Nexus project!
 
 ### 📚 **Why Concordia.Courses?**
 
-1. **Open-Source & Student-Driven:** Straight from the student's desk—get the real deal on courses.
-2. **Simple & Fun:** Getting courses reviews shouldn't be a maze. We make it a breeze!
+Concordia.Courses was born out of a shared frustration with traditional course review platforms like Rate My Professor.
+As students from Concordia and McGill, we found these platforms cumbersome and lacking the depth and authenticity we 
+needed to make informed decisions about our courses and professors.
+
+Our goal is to provide a safe, straightforward, reliable, and engaging platform where Concordia students can share 
+their real experiences and insights. We believe in the power of student-driven content, ensuring that the reviews 
+you read are genuine and reflective of the actual classroom experience. By updating course information every semester 
+and allowing users to upload grade distributions and study notes, we aim to create a comprehensive resource that evolves 
+with the needs of our community.
 
 ### 🚀 **Dream Team**
 
@@ -52,22 +57,15 @@
 
 <div class="custom-dropdown">
 <details>
-<summary class="bg-gray-200 dark:bg-neutral-700 dark:text-gray-300 dark:hover:bg-neutral-600 cursor-pointer" >Are my reviews more incognito than a chameleon in a rainbow?</summary>
-<p>Camouflage level: Master! When you drop a review, your identity is more mysterious than a yeti in a snowstorm. Go ahead, share your wisdom — no detective work will unveil your cloak of invisibility!</p>
-</details>
-</div>
-
-<div class="custom-dropdown">
-<details>
-<summary class="bg-gray-200 dark:bg-neutral-700 dark:text-gray-300 dark:hover:bg-neutral-600 cursor-pointer" >Real Talk: How legit are the reviews?</summary>
-<p>Only Concordia champs can chip in. That's right—real reviews by students, vetted through the Concordia email check-in. No outsiders!</p>
+<summary class="bg-gray-200 dark:bg-neutral-700 dark:text-gray-300 dark:hover:bg-neutral-600 cursor-pointer" >Are my reviews anonymous?</summary>
+<p>Yes, your reviews are completely anonymous. Feel free to share your honest opinion without worrying about your identity being revealed.</p>
 </details>
 </div>
 
 <div class="custom-dropdown">
 <details>
 <summary class="bg-gray-200 dark:bg-neutral-700 dark:text-gray-300 dark:hover:bg-neutral-600 cursor-pointer" >How often is course information updated?</summary>
-<p>We're like clockwork! Course details are refreshed every semester to keep you in the know.</p>
+<p>Course details are updated every semester to ensure you have the most current information</p>
 </details>
 </div>
 
@@ -80,29 +78,24 @@
 
 <div class="custom-dropdown">
 <details>
-<summary class="bg-gray-200 dark:bg-neutral-700 dark:text-gray-300 dark:hover:bg-neutral-600 cursor-pointer" >What if I spot a mistake? Do I get a cookie if I report it?</summary>
-<p>Spot something off? Tell us, and we'll jump on it faster than a cat on a laser pointer! Cookies? Let's talk.</p>
+<summary class="bg-gray-200 dark:bg-neutral-700 dark:text-gray-300 dark:hover:bg-neutral-600 cursor-pointer" >What other tools are available for course reviews?</summary>
+<p>While Concordia.Courses is unique, there are other platforms out there. We encourage you to explore and find what works best for you.</p>
 </details>
 </div>
 
 <div class="custom-dropdown">
 <details>
-<summary class="bg-gray-200 dark:bg-neutral-700 dark:text-gray-300 dark:hover:bg-neutral-600 cursor-pointer" >Got More Tools? Anything like concordia.courses?</summary>
-<p>Sure thing! There's a whole toolbox out there. While we've got our own flavor, feel free to scout around. Diversity's the spice of life!</p>
+<summary class="bg-gray-200 dark:bg-neutral-700 dark:text-gray-300 dark:hover:bg-neutral-600 cursor-pointer" >Where did the initial reviews come from?</summary>
+<p>We got our initial batch of reviews from Rate My Professor.</p>
 </details>
 </div>
 
 <div class="custom-dropdown">
 <details>
-<summary class="bg-gray-200 dark:bg-neutral-700 dark:text-gray-300 dark:hover:bg-neutral-600 cursor-pointer" >Is the code behind Concordia.Courses available for everyone?</summary>
-<p>Absolutely! We're open source and proud of it. Find us on GitHub and feel free to dive in, contribute, or just take a look around. Sharing is caring, after all!</p>
+<summary class="bg-gray-200 dark:bg-neutral-700 dark:text-gray-300 dark:hover:bg-neutral-600 cursor-pointer" >Can I keep track of my reviews?</summary>
+<p>Yes, you can sign up to keep track of your reviews and manage them </p>
 </details>
 </div>
-
-### 📣 **Get in Touch**
-
-Got questions or ideas? [Toss it here](https://github.com/Tsounguinzo/concordia-courses/issues) on GitHub
-or [shoot us an email](mailto:Beaudelaire@tutamail.com). Together, we’re on a roll! 🚀
 
 <style>
 .custom-dropdown {
