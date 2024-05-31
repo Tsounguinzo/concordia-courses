@@ -6,37 +6,25 @@ Concordia.Courses was born out of a shared frustration with traditional course r
 As students from Concordia and McGill, we found these platforms cumbersome and lacking the depth and authenticity we 
 needed to make informed decisions about our courses and professors.
 
-Our goal is to provide a safe, straightforward, reliable, and engaging platform where Concordia students can share 
+Our goal is to provide an open-source, safe, straightforward, reliable, and engaging platform where Concordia students can share 
 their real experiences and insights. We believe in the power of student-driven content, ensuring that the reviews 
 you read are genuine and reflective of the actual classroom experience. By updating course information every semester 
 and allowing users to upload grade distributions and study notes, we aim to create a comprehensive resource that evolves 
 with the needs of our community.
 
-### 🚀 **Dream Team**
+### 🚀 **How to Contribute**
 
-<div class="flex gap-x-4">
-  <div class="flex-shrink-0">
-    <img src="https://avatars.githubusercontent.com/u/63948003?s=400&u=a55dc44d1bfa5fde18e9d28bedcc8f92e34f7e39&v=4" alt="Github picture" class="rounded-full w-16 h-16">
-  </div>
-  <div class="ml-2">
-    <h4 class="font-bold text-lg">Beaudelaire T.N. | SOEN concordia</h4>
-    <p class="font-bold">Full Stack</p>
-    <a href="https://beaudelaire.ca" class="text-blue-500 hover:text-blue-600">Website</a>
-  </div>
-</div>
+#### 🗣️ Non-Technical Contributions
 
-<div class="flex gap-x-4">
-  <div class="flex-shrink-0">
-    <img src="https://avatars.githubusercontent.com/u/23270868?v=4" alt="Github picture" class="rounded-full w-16 h-16">
-  </div>
-  <div class="ml-2">
-    <h4 class="font-bold text-lg">Zhengxuan zhao | SOEN mcgill</h4>
-    <p class="font-bold">Backend</p>
-    <a href="https://github.com/RENOLEVES" class="text-blue-500 hover:text-blue-600">Github</a>
-    <span> • </span>
-    <a href="https://www.linkedin.com/in/zhengxuan-zhao-978802128/" class="text-blue-500 hover:text-blue-600">Linkedin</a>
-  </div>
-</div>
+- **Upload Your Grade Distributions:** Share your grade distributions to help other students make informed decisions. [Upload here](https://concordia.courses/grades).
+- **Spread the Word:** Talk about concordia.courses with your friends and classmates to increase awareness and usage.
+- **Write Reviews:** Share your experiences by writing reviews for courses and instructors. Your insights can help guide other students.
+
+#### 📊 Technical Contributions
+
+- **Contribute to the Codebase:** If you're a developer, check out our GitHub repository and contribute to the project. [Explore the repo](https://github.com/Tsounguinzo/concordia-courses).
+- **Fix Bugs and Add Features:** Help us improve the platform by fixing bugs or adding new features. You can find or create issues to work on in our GitHub repo.
+- **Develop Study Tools:** Create and integrate new study tools or features that can benefit the student community.
 
 
 ### 💡 **FAQs**
