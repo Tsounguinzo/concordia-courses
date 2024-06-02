@@ -8,21 +8,12 @@
     import {page} from "$app/stores";
     import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
     import { inject } from '@vercel/analytics'
-    import posthog from "posthog-js";
-    import {dev, browser} from "$app/environment";
+    import {dev} from "$app/environment";
     import {visitorId} from "$lib/store";
 
     injectSpeedInsights();
     inject({ mode: dev ? 'development' : 'production' });
     onMount(() => darkModeOn.set(localStorage.getItem('theme') === 'dark'))
-    export const load = async () => {
-        if (browser) {
-            posthog.init(
-                "phc_FxMKJ384BItqvSCo0d6AzRBnEvVQ9qolWYIaKnputvH",
-                { api_host: "https://us.i.posthog.com"}
-            );
-        }
-    }
 
     let saveVisitorId = false;
 
