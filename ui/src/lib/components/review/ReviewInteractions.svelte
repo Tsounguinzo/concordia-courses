@@ -6,10 +6,7 @@
     import type {Interaction, InteractionKind} from "$lib/model/Interaction";
     import type {Review} from "$lib/model/Review";
     import {repo} from "$lib/repo";
-    import {toast} from "svelte-sonner";
-    import {spliceCourseCode} from "$lib/utils";
     import {page} from "$app/stores";
-    import {instructorIdToName} from "$lib/utils.js";
     import Tooltip from "$lib/components/common/Tooltip.svelte";
     import {visitorId} from "$lib/store";
 
@@ -24,6 +21,7 @@
     const kind = writable<InteractionKind | undefined | null>(undefined);
     let {courseId, instructorId, userId, likes} = review;
     $: ({courseId, instructorId, userId, likes} = review);
+    let isProcessing = writable(false);
 
     let prompt = false;
     let promptMessage = '';
@@ -73,6 +71,7 @@
         }
 
         const change = getLikeChange($kind, interactionKind);
+        isProcessing.set(true);
         try {
             if (interactionKind === 'remove') {
                 await repo.removeInteraction(courseId, userId, instructorId, currentUser, type);
@@ -83,11 +82,10 @@
             likes += change;
 
             kind.set(interactionKind === 'remove' ? null : interactionKind);
-
-            const actionWord = interactionKind === 'remove' ? 'Removed' : `Successfully ${interactionKind}d`;
-            toast.success(`${actionWord} review for ${type === 'instructor' ? instructorIdToName(instructorId) : spliceCourseCode(courseId, ' ')}.`);
         } catch (err) {
-            toast.error(err?.toString());
+            console.error(err);
+        } finally {
+            isProcessing.set(false);
         }
     };
 
@@ -96,9 +94,16 @@
         setTimeout(() => promptLogin.set(false), 3000);
     };
 
-    // Handlers for like and dislike actions
-    const handleLike = () => $kind === 'like' ? updateInteraction('remove') : updateInteraction('like');
-    const handleDislike = () => $kind === 'dislike' ? updateInteraction('remove') : updateInteraction('dislike');
+    const handleLike = async () => {
+        if (!$isProcessing) {
+            $kind === 'like' ? await updateInteraction('remove') : await updateInteraction('like');
+        }
+    };
+    const handleDislike = async () => {
+        if (!$isProcessing) {
+            $kind === 'dislike' ? await updateInteraction('remove') : await updateInteraction('dislike');
+        }
+    };
 </script>
 
 <div class='mb-0.5 flex items-center'>
