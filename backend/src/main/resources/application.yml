@@ -49,6 +49,9 @@ cookie:
 beaudelaire:
   uploadKey: ${UPLOAD_KEY}
 
+allowed:
+  host:  ${ALLOWED_HOST}
+
 server:
   port: 8080
   forward-headers-strategy: native
