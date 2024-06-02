@@ -28,7 +28,8 @@
         rating: 0,
         tags: [],
         school: '',
-        course: ''
+        course: '',
+        honeypot: ''
     };
 
     const handleClose = () => {
@@ -52,7 +53,7 @@
 
         errors.content = validateReviewContent(values.content) || '';
         errors.difficulty = validateNumericRange(values.difficulty, "Difficulty", 1, 5);
-        if (variant === 'course'){
+        if (variant === 'course') {
             errors.instructor = validateFieldPresence(values.instructor, "Instructor's name");
             errors.experience = validateNumericRange(values.experience, "Experience", 1, 5);
         } else if (variant === 'instructor') {
@@ -108,6 +109,12 @@
                                     {validate}
                                     {initialValues}
                                     onSubmit={async (values, actions) => {
+                                    if (values.honeypot) {
+                                        actions.setSubmitting(false);
+                                        open.set(false);
+                                        toast.error('Invalid submission detected.');
+                                        return;
+                                    }
                                     const res = await repo.addReview(course?._id, instructor?._id, variant, values, $visitorId).finally(() => {
                                         actions.setSubmitting(false)
                                         open.set(false)
@@ -119,6 +126,7 @@
                                     let:isSubmitting
                             >
                                 <Form storageKey="review-form">
+                                    <input type="text" name="honeypot" style="display:none"/>
                                     <ReviewForm {setFieldValue} {props} {instructor} {course} {variant} {isSubmitting}/>
                                 </Form>
                             </Sveltik>
