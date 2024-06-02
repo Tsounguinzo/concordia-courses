@@ -108,7 +108,7 @@
 
 <div class='mb-0.5 flex items-center'>
     <Tooltip text={promptMessage} show={prompt} offset={{x: 0, y: -15}}/>
-    <button on:click={handleLike} class='flex h-8 w-8 items-center justify-center rounded-md text-gray-700 focus:outline-none dark:text-white'>
+    <button on:click={handleLike} disabled={$isProcessing} class='flex h-8 w-8 items-center justify-center rounded-md text-gray-700 focus:outline-none dark:text-white'>
         <ThumbsUp
                 class={twMerge(
               'h-4 w-4 cursor-pointer stroke-gray-500',
@@ -119,7 +119,7 @@
     <span class='text-sm font-bold text-gray-700 dark:text-white'>
           {likes}
     </span>
-    <button on:click={handleDislike} class='flex h-8 w-8 items-center justify-center rounded-md text-gray-700 focus:outline-none dark:text-white'>
+    <button on:click={handleDislike} disabled={$isProcessing} class='flex h-8 w-8 items-center justify-center rounded-md text-gray-700 focus:outline-none dark:text-white'>
         <ThumbsDown
                 class={twMerge(
               'h-4 w-4 cursor-pointer stroke-gray-500',
