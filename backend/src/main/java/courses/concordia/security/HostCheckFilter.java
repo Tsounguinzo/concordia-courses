@@ -4,12 +4,14 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
 @Component
+@Slf4j
 public class HostCheckFilter extends OncePerRequestFilter {
 
     private static final String ALLOWED_HOST = "concordia.courses";
@@ -19,6 +21,7 @@ public class HostCheckFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         String host = request.getHeader("Host");
 
+        log.info("Host: {}", host);
         if (ALLOWED_HOST.equals(host)) {
             filterChain.doFilter(request, response);
         } else {
