@@ -1,7 +1,7 @@
 <script lang="ts">
     import Transition from "svelte-transition";
     import {twMerge} from "tailwind-merge";
-    import {Sveltik} from "sveltik/src";
+    import {Field, Sveltik} from "sveltik/src";
     import {repo} from "$lib/repo.js";
     import ReviewForm from "./ReviewForm.svelte";
     import {toast} from "svelte-sonner";
@@ -126,7 +126,12 @@
                                     let:isSubmitting
                             >
                                 <Form storageKey="review-form">
-                                    <input type="text" name="honeypot" style="display:none"/>
+                                    <Field
+                                            on:input={(e) => props.values.honeypot = e.target.value}
+                                            value={props.values.honeypot}
+                                            name='honeypot'
+                                            class='hidden'
+                                    />
                                     <ReviewForm {setFieldValue} {props} {instructor} {course} {variant} {isSubmitting}/>
                                 </Form>
                             </Sveltik>

@@ -17,7 +17,6 @@
     export let updateLikes: (likes: number) => void;
 
     const user =  $page.data.user;
-    $: visitor = $visitorId;
     const kind = writable<InteractionKind | undefined | null>(undefined);
     let {courseId, instructorId, userId, likes} = review;
     $: ({courseId, instructorId, userId, likes} = review);
@@ -54,7 +53,7 @@
 
     // Update interaction and handle likes/dislikes accordingly
     const updateInteraction = async (interactionKind: InteractionKind | 'remove') => {
-        const currentUser = user?.id || visitor;
+        const currentUser = user?.id || $visitorId;
         if (!currentUser) {
             displayLoginPrompt();
             return;
@@ -70,7 +69,12 @@
             return;
         }
 
-        const change = getLikeChange($kind, interactionKind);
+        const previousKind = $kind;
+        const change = getLikeChange(previousKind, interactionKind);
+        kind.set(interactionKind === 'remove' ? null : interactionKind);
+        updateLikes(review.likes + change);
+        likes += change;
+
         isProcessing.set(true);
         try {
             if (interactionKind === 'remove') {
@@ -78,11 +82,11 @@
             } else {
                 await repo.addOrUpdateInteraction(interactionKind, courseId, instructorId, userId, currentUser, type);
             }
-            updateLikes(review.likes + change);
-            likes += change;
-
-            kind.set(interactionKind === 'remove' ? null : interactionKind);
         } catch (err) {
+            // Revert the optimistic update if there's an error
+            kind.set(previousKind);
+            updateLikes(review.likes - change);
+            likes -= change;
             console.error(err);
         } finally {
             isProcessing.set(false);
