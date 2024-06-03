@@ -14,6 +14,7 @@ import courses.concordia.repository.CourseRepository;
 import courses.concordia.repository.InstructorRepository;
 import courses.concordia.repository.ReviewRepository;
 import courses.concordia.service.ReviewService;
+import courses.concordia.service.TokenBlacklistService;
 import courses.concordia.util.JsonUtils;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +46,7 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
     private final CourseRepository courseRepository;
     private final InstructorRepository instructorRepository;
+    private final TokenBlacklistService blacklistService;
     private final MongoTemplate mongoTemplate;
     private final ModelMapper modelMapper;
     private static final Map<String, Instructor.Course> courseMap = new HashMap<>();
@@ -89,6 +91,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public ReviewDto addOrUpdateReview(ReviewDto reviewDto) {
         validateTimestamp(reviewDto.getTimestamp());
+        checkBlacklistedUser(reviewDto.getUserId());
 
         Review review;
         if (reviewDto.getType() != null) {
@@ -354,6 +357,18 @@ public class ReviewServiceImpl implements ReviewService {
             throw CustomException("Timestamp cannot be more than 30 seconds in the past");
         }
     }
+
+    /**
+     * Checks if the user ID is blacklisted.
+     *
+     * @param userId The user ID to check.
+     */
+    private void checkBlacklistedUser(String userId) {
+        if (blacklistService.isTokenBlacklisted(userId)) {
+            throw CustomException("User is blacklisted and cannot add or update reviews");
+        }
+    }
+
     private RuntimeException exception(String... args) {
         return CustomExceptionFactory.throwCustomException(EntityType.REVIEW, ExceptionType.ENTITY_NOT_FOUND, args);
     }
