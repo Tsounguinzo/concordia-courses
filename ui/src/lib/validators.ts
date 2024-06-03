@@ -66,10 +66,18 @@ export function validateReviewContent(content: string) {
         return 'Review content is required';
     }
 
-    const wordCount = (content.match(/\b\w+\b/g) || []).length;
+    const maxRepetitions = 5;
+    const words = content.match(/\b\w+\b/g) || [];
+    const wordCount = words.length;
 
     if (wordCount < 10) {
         return 'Review must contain at least 10 words';
+    }
+
+    for (let i = 0; i <= words.length - maxRepetitions; i++) {
+        if (words.slice(i, i + maxRepetitions).every(word => word === words[i])) {
+            return 'Spamming content detected.';
+        }
     }
 
     return null;

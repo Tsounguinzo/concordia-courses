@@ -1,6 +1,6 @@
 <script lang="ts">
     import { writable } from "svelte/store";
-    import { CornerDownLeft, Layers, User } from "lucide-svelte";
+    import { CornerDownLeft, Book, User } from "lucide-svelte";
     import { twMerge } from "tailwind-merge";
     import Highlight from "$lib/components/common/Highlight.svelte";
     import { highlightResultStyle } from "$lib/constants";
@@ -40,7 +40,7 @@
         <div class="flex items-center">
             <div class='mr-2'>
                 {#if type === 'course'}
-                    <Layers class='dark:text-gray-200 w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6'/>
+                    <Book class='dark:text-gray-200 w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6'/>
                 {:else}
                     <User class='dark:text-gray-200 w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6'/>
                 {/if}
