@@ -20,7 +20,7 @@ public class RateLimitFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        if ("POST".equalsIgnoreCase(request.getMethod()) && request.getRequestURI().startsWith(REVIEW_SUBMISSION_ENDPOINT)) {
+        if ("POST".equalsIgnoreCase(request.getMethod()) && request.getRequestURI().endsWith(REVIEW_SUBMISSION_ENDPOINT)) {
             String clientIP = request.getRemoteAddr();
             long currentTime = System.currentTimeMillis();
             requestCounts.merge(clientIP, currentTime, (oldTime, newTime) -> {
