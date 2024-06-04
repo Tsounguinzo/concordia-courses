@@ -131,7 +131,7 @@
                     triggerConfetti.set(true);
                 }
             } else {
-                toast.error('An error occurred.');
+                toast.error('An error occurred. Please try again');
             }
         };
     };

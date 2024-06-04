@@ -90,7 +90,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Transactional
     @Override
     public ReviewDto addOrUpdateReview(ReviewDto reviewDto) {
-        validateTimestamp(reviewDto.getTimestamp());
+        //validateTimestamp(reviewDto.getTimestamp());
         checkBlacklistedUser(reviewDto.getUserId());
 
         Review review;
