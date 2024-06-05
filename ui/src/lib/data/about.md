@@ -46,7 +46,7 @@ with the needs of our community.
 <div class="custom-dropdown">
 <details>
 <summary class="bg-gray-200 dark:bg-neutral-700 dark:text-gray-300 dark:hover:bg-neutral-600 cursor-pointer" >What other tools are available for course reviews?</summary>
-<p>Check on [Concordia Nexus](https://concordia.nexus).</p>
+<p>Check on <a href="https://concordia.nexus">Concordia Nexus.</a></p>
 </details>
 </div>
 
@@ -59,8 +59,8 @@ with the needs of our community.
 
 <div class="custom-dropdown">
 <details>
-<summary class="bg-gray-200 dark:bg-neutral-700 dark:text-gray-300 dark:hover:bg-neutral-600 cursor-pointer" >Can I keep track of my reviews?</summary>
-<p>Yes, you can sign up to keep track of your reviews and manage them </p>
+<summary class="bg-gray-200 dark:bg-neutral-700 dark:text-gray-300 dark:hover:bg-neutral-600 cursor-pointer" >Can I keep track of my reviews while staying anonymous?</summary>
+<p>Yes, you can sign up to keep track of your reviews and manage them while staying anonymous.</p>
 </details>
 </div>
 

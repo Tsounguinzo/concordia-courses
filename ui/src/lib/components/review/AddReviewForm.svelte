@@ -66,6 +66,16 @@
 
         return errors;
     };
+
+    function botDetected(values) {
+        if (values.variant === 'course') {
+            return Boolean(values.rating || values.tags?.length);
+        } else if (values.variant === 'instructor') {
+            return Boolean(values.experience);
+        } else {
+            return false;
+        }
+    }
 </script>
 
 {#if $open}
@@ -109,7 +119,7 @@
                                     {validate}
                                     {initialValues}
                                     onSubmit={async (values, actions) => {
-                                    if (values.honeypot) {
+                                    if (values.honeypot || botDetected(values)) {
                                         actions.setSubmitting(false);
                                         open.set(false);
                                         toast.error('Invalid submission detected.');
