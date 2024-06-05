@@ -100,6 +100,7 @@
                             </div>
                             <IconRating rating={review.difficulty} icon="flame"/>
                         </div>
+                        <!--
                         {#if review.userId.startsWith("rate_my_professor")}
                             <div class='mt-2 px-2 bg-primary-400 rounded-lg w-fit'>
                                 from rate my professor
@@ -109,6 +110,7 @@
                                 from reddit
                             </div>
                         {/if}
+                        -->
                     </div>
                 </div>
                 <div class='ml-1 mr-4 mt-2 hyphens-auto text-left text-gray-800 dark:text-gray-300'>
