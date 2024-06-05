@@ -46,7 +46,7 @@ with the needs of our community.
 <div class="custom-dropdown">
 <details>
 <summary class="bg-gray-200 dark:bg-neutral-700 dark:text-gray-300 dark:hover:bg-neutral-600 cursor-pointer" >What other tools are available for course reviews?</summary>
-<p>While Concordia.Courses is unique, there are other platforms out there. We encourage you to explore and find what works best for you.</p>
+<p>Check on [Concordia Nexus](https://concordia.nexus).</p>
 </details>
 </div>
 
