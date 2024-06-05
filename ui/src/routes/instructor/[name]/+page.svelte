@@ -233,7 +233,7 @@
                             .filter((review) =>
                                 user ? review.userId !== user?.id : visitor ? review.userId !== visitor : true
                             )
-                            .slice(0, $showAllReviews ? $showingReviews.length : numberOfReviewsToShow) as review, i (i)}
+                            .slice(0, $showAllReviews ? $showingReviews.length : numberOfReviewsToShow) as review (review._id)}
                             <InstructorReview
                                     canModify={Boolean((user && review?.userId === user?.id) || (visitor && review?.userId === visitor))}
                                     handleDelete={() => handleDelete(review)}

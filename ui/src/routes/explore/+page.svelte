@@ -109,34 +109,38 @@
     /*
 
     const saveFiltersToSessionStorage = () => {
-        sessionStorage.setItem('filters', JSON.stringify({
-            savedSelectedSubjects: $selectedSubjects,
-            savedSelectedLevels: $selectedLevels,
-            savedSelectedTerms: $selectedTerms,
-            savedSelectedDepartments: $selectedDepartments,
-            savedSelectedTags: $selectedTags,
-            savedSortBy: $sortBy,
-        }));
+        if (typeof sessionStorage !== 'undefined') {
+            sessionStorage.setItem('filters', JSON.stringify({
+                savedSelectedSubjects: $selectedSubjects,
+                savedSelectedLevels: $selectedLevels,
+                savedSelectedTerms: $selectedTerms,
+                savedSelectedDepartments: $selectedDepartments,
+                savedSelectedTags: $selectedTags,
+                savedSortBy: $sortBy,
+            }));
+        }
     };
 
     const loadFiltersFromSessionStorage = () => {
-        const savedFilters = sessionStorage.getItem('filters');
-        if (savedFilters) {
-            const {
-                savedSelectedSubjects,
-                savedSelectedLevels,
-                savedSelectedTerms,
-                savedSelectedDepartments,
-                savedSelectedTags,
-                savedSortBy
-            } = JSON.parse(savedFilters);
+        if (typeof sessionStorage !== 'undefined') {
+            const savedFilters = sessionStorage.getItem('filters');
+            if (savedFilters) {
+                const {
+                    savedSelectedSubjects,
+                    savedSelectedLevels,
+                    savedSelectedTerms,
+                    savedSelectedDepartments,
+                    savedSelectedTags,
+                    savedSortBy
+                } = JSON.parse(savedFilters);
 
-            savedSelectedSubjects?.forEach((subject: string) => selectedSubjects.update(items => [...items, subject]));
-            savedSelectedLevels?.forEach((level: string) => selectedLevels.update(items => [...items, level]));
-            savedSelectedTerms?.forEach((term: string) => selectedTerms.update(items => [...items, term]));
-            savedSelectedDepartments?.forEach((department: string) => selectedDepartments.update(items => [...items, department]));
-            savedSelectedTags?.forEach((tag: string) => selectedTags.update(items => [...items, tag]));
-            sortBy.set(savedSortBy);
+                savedSelectedSubjects?.forEach((subject: string) => selectedSubjects.update(items => [...items, subject]));
+                savedSelectedLevels?.forEach((level: string) => selectedLevels.update(items => [...items, level]));
+                savedSelectedTerms?.forEach((term: string) => selectedTerms.update(items => [...items, term]));
+                savedSelectedDepartments?.forEach((department: string) => selectedDepartments.update(items => [...items, department]));
+                savedSelectedTags?.forEach((tag: string) => selectedTags.update(items => [...items, tag]));
+                sortBy.set(savedSortBy);
+            }
         }
     };
 
@@ -213,7 +217,9 @@
         }
     };
 </script>
-<Seo title="Explore" description="Explore courses and instructors at concordia.courses" ogDescription="Explore courses and instructors at concordia.courses" ogTitle="Explore | Concordia.courses" ogImage="og-image-explore.png" ogImageAlt="concordia.courses Explore page Snapshot"/>
+<Seo title="Explore" description="Explore courses and instructors at concordia.courses"
+     ogDescription="Explore courses and instructors at concordia.courses" ogTitle="Explore | Concordia.courses"
+     ogImage="og-image-explore.png" ogImageAlt="concordia.courses Explore page Snapshot"/>
 <div class='flex flex-col items-center py-8'>
     <h1 class='mb-16 text-center text-5xl font-bold tracking-tight text-gray-900 dark:text-gray-200 sm:text-5xl'>
         Explore all {$instructorsModeOn ? 'instructors' : 'courses'}
@@ -235,31 +241,31 @@
         </div>
         <div class='lg:flex-1'>
             <div class='ml-auto flex w-full max-w-xl flex-col overflow-y-hidden'>
-                    <SearchBar
-                            handleInputChange={(value) => query = value}
-                            iconStyle='mt-2 lg:mt-0 absolute top-1/3 transform -translate-y-1/2'
-                            inputStyle='block rounded-lg w-full bg-slate-50 p-3 pr-5 pl-10 text-md text-black outline-none dark:border-neutral-50 dark:bg-neutral-800 dark:text-gray-200 dark:placeholder:text-neutral-500'
-                            outerInputStyle='my-2 mt-4 lg:mt-2 flex flex-col h-20 rounded-lg bg-slate-50 dark:border-neutral-50 dark:bg-neutral-800 dark:text-gray-200 rounded-lg'
-                            placeholder={`Search by ${$instructorsModeOn ? "instructor's name, department or course code" : 'course code, title or description'}`}
-                            searchSelected={searchSelected}
+                <SearchBar
+                        handleInputChange={(value) => query = value}
+                        iconStyle='mt-2 lg:mt-0 absolute top-1/3 transform -translate-y-1/2'
+                        inputStyle='block rounded-lg w-full bg-slate-50 p-3 pr-5 pl-10 text-md text-black outline-none dark:border-neutral-50 dark:bg-neutral-800 dark:text-gray-200 dark:placeholder:text-neutral-500'
+                        outerInputStyle='my-2 mt-4 lg:mt-2 flex flex-col h-20 rounded-lg bg-slate-50 dark:border-neutral-50 dark:bg-neutral-800 dark:text-gray-200 rounded-lg'
+                        placeholder={`Search by ${$instructorsModeOn ? "instructor's name, department or course code" : 'course code, title or description'}`}
+                        searchSelected={searchSelected}
+                >
+                    <button
+                            on:click={toggle}
+                            class="absolute bottom-4 right-0 mr-3 flex items-center"
                     >
-                        <button
-                                on:click={toggle}
-                                class="absolute bottom-4 right-0 mr-3 flex items-center"
-                        >
-                            <div class="relative flex ">
-                                <div class="w-12 h-6 flex border border-gray-400 items-center rounded-full p-1 duration-300 ease-in-out"
-                                     class:bg-primary={$instructorsModeOn}>
-                                    <div class="dark:bg-white bg-neutral-400 w-4 h-4 rounded-full shadow-md transform duration-300 ease-in-out"
-                                         class:translate-x-6={$instructorsModeOn}></div>
-                                </div>
-                                <span class="ml-2 font-semibold text-gray-600 dark:text-gray-400">Instructors</span>
+                        <div class="relative flex ">
+                            <div class="w-12 h-6 flex border border-gray-400 items-center rounded-full p-1 duration-300 ease-in-out"
+                                 class:bg-primary={$instructorsModeOn}>
+                                <div class="dark:bg-white bg-neutral-400 w-4 h-4 rounded-full shadow-md transform duration-300 ease-in-out"
+                                     class:translate-x-6={$instructorsModeOn}></div>
                             </div>
-                        </button>
-                    </SearchBar>
+                            <span class="ml-2 font-semibold text-gray-600 dark:text-gray-400">Instructors</span>
+                        </div>
+                    </button>
+                </SearchBar>
                 {#if (!$instructorsModeOn && courses !== undefined) || ($instructorsModeOn && instructors !== undefined) }
                     {#if $instructorsModeOn}
-                        {#each instructors as instructor}
+                        {#each instructors as instructor (instructor._id)}
                             <InstructorCard
                                     class='my-1.5'
                                     {instructor}
@@ -267,7 +273,7 @@
                             />
                         {/each}
                     {:else}
-                        {#each courses as course}
+                        {#each courses as course (course._id)}
                             <CourseCard
                                     class='my-1.5'
                                     {course}

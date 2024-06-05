@@ -33,11 +33,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static courses.concordia.util.DateUtils.getLocalDateTime;
 
 @RequiredArgsConstructor
 @Service
@@ -90,7 +87,6 @@ public class ReviewServiceImpl implements ReviewService {
     @Transactional
     @Override
     public ReviewDto addOrUpdateReview(ReviewDto reviewDto) {
-        //validateTimestamp(reviewDto.getTimestamp());
         checkBlacklistedUser(reviewDto.getUserId());
 
         Review review;
@@ -341,20 +337,6 @@ public class ReviewServiceImpl implements ReviewService {
             instructor.setAvgDifficulty(avgDifficulty);
             instructor.setReviewCount(reviewsCount);
             instructorRepository.save(instructor);
-        }
-    }
-    /**
-     * Validates the timestamp to ensure it is not in the future or too far in the past.
-     *
-     * @param timestamp The timestamp to validate.
-     */
-    private void validateTimestamp(LocalDateTime timestamp) {
-        LocalDateTime now = getLocalDateTime();
-        if (timestamp.isAfter(now)) {
-            throw CustomException("Timestamp cannot be in the future");
-        }
-        if (timestamp.isBefore(now.minusSeconds(30))) {
-            throw CustomException("Timestamp cannot be more than 30 seconds in the past");
         }
     }
 

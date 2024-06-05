@@ -167,7 +167,7 @@
                                   color={$darkModeOn ? 'rgb(38 38 38)' : 'rgb(226 232 240)'}/>
                     {:else }
                         {#if $userReviews.length}
-                            {#each $userReviews.sort((a, b) => a.timestamp - b.timestamp) as review, i (i)}
+                            {#each $userReviews.sort((a, b) => a.timestamp - b.timestamp) as review (review._id)}
                                 <div class='flex mt-10'>
                                     {#if review.type === 'instructor'}
                                         <a href={`/instructor/${review.instructorId}`}
