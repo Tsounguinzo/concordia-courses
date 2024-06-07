@@ -28,6 +28,10 @@ spring:
           starttls:
             enable: true
 
+  servlet:
+    multipart:
+      max-file-size: 10MB
+
 jwt:
   tokenName: "accessToken"
   secret: ${JWT_SECRET}
