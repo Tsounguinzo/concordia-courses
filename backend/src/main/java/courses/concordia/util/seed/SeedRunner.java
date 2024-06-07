@@ -85,7 +85,7 @@ public class SeedRunner {
                 for (String term : terms) {
                     var blocks = new LinkedHashSet<Course.Block>();
                     for (CourseWithDetails blockDetails : coursesBlock) {
-                        if (blockDetails.getTermCode().equals(CODE_TERM_MAPPING.get(term)) || (term.startsWith("Summer") && (blockDetails.getTermCode().equals("2246") || blockDetails.getTermCode().equals("2231")) )) {
+                        if (blockDetails.getTermCode().equals(CODE_TERM_MAPPING.get(term)) || term.startsWith("Summer") && (blockDetails.getTermCode().equals("2246"))) {
                             blocks.add(new Course.Block(
                                     blockDetails.getComponentCode(),
                                     blockDetails.getLocationCode(),
