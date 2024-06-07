@@ -17,6 +17,7 @@ public class BlockDto {
     private String locationCode;
     private String roomCode;
     private String section;
+    private String session;
     private String buildingCode;
     private String instructionModeCode;
     private String instructionModeDescription;

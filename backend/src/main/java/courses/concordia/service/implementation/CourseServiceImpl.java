@@ -1,5 +1,6 @@
 package courses.concordia.service.implementation;
 
+import com.google.gson.reflect.TypeToken;
 import courses.concordia.dto.model.course.CourseDto;
 import courses.concordia.dto.model.course.CourseReviewsDto;
 import courses.concordia.dto.model.review.ReviewDto;
@@ -11,6 +12,7 @@ import courses.concordia.dto.model.course.CourseFilterDto;
 import courses.concordia.model.Review;
 import courses.concordia.repository.CourseRepository;
 import courses.concordia.service.CourseService;
+import courses.concordia.util.JsonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -20,7 +22,10 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -111,6 +116,37 @@ public class CourseServiceImpl implements CourseService {
         return new CourseReviewsDto()
                 .setCourse(course)
                 .setReviews(reviews);
+    }
+
+    /**
+     * Updates the courses in the repository based on the contents of the provided file.
+     * This method is used to update the course schedules from an external source.
+     *
+     * @param file The file containing the updated course information.
+     */
+    @Override
+    public void updateCourses(MultipartFile file) {
+        log.info("Updating courses schedules from file: {}", file.getOriginalFilename());
+        List<Course> courses = processCourseFile(file);
+        courses.forEach(this::updateSchedules);
+        log.info("{} courses updated successfully", courses.size());
+    }
+
+    private void updateSchedules(Course course) {
+        courseRepository.findById(course.get_id())
+                .ifPresentOrElse(existingCourse -> {
+                    existingCourse.setSchedules(course.getSchedules());
+                    courseRepository.save(existingCourse);
+                }, () -> courseRepository.save(course));
+    }
+
+    private List<Course> processCourseFile(MultipartFile file) {
+        try (InputStream inputStream = file.getInputStream()) {
+            return JsonUtils.getData(inputStream, new TypeToken<List<Course>>() {});
+        } catch (IOException e) {
+            log.error("Failed to process course file", e);
+            throw new RuntimeException("Failed to process course file", e);
+        }
     }
 
     /**
