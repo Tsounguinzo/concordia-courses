@@ -5,13 +5,9 @@ import courses.concordia.util.JsonUtils;
 import courses.concordia.util.seed.model.*;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import static courses.concordia.util.AIUtils.generateText;
 import static courses.concordia.util.seed.ConcordiaAPICallUtil.*;
 
 @Slf4j
@@ -19,21 +15,23 @@ public class SeedRunner {
 
     private static final Map<String, String> TERM_CODE_MAPPING = new HashMap<>();
     private static final Map<String, String> CODE_TERM_MAPPING = new HashMap<>();
-    private static final String SEED_FILENAME = "2023-2024-courses-v3.json";
+    private static final String SEED_FILENAME = "2024_2025_concordia_courses.json";
 
     static {
-        TERM_CODE_MAPPING.put("2231", "Summer");
-        TERM_CODE_MAPPING.put("2232", "Fall");
-        TERM_CODE_MAPPING.put("2233", "Fall/Winter");
-        TERM_CODE_MAPPING.put("2234", "Winter");
-        TERM_CODE_MAPPING.put("2235", "Spring");
-        TERM_CODE_MAPPING.put("2236", "Summer");
-        CODE_TERM_MAPPING.put("Summer", "2231");
-        CODE_TERM_MAPPING.put("Fall", "2232");
-        CODE_TERM_MAPPING.put("Fall/Winter", "2233");
-        CODE_TERM_MAPPING.put("Winter", "2234");
-        CODE_TERM_MAPPING.put("Spring", "2235");
-        // CODE_TERM_MAPPING.put("Summer", "2236");
+        TERM_CODE_MAPPING.put("2231", "Summer 2024");
+        TERM_CODE_MAPPING.put("2241", "Summer 2025");
+        TERM_CODE_MAPPING.put("2242", "Fall 2024");
+        TERM_CODE_MAPPING.put("2243", "Fall/Winter 2024-2025");
+        TERM_CODE_MAPPING.put("2244", "Winter 2025");
+        TERM_CODE_MAPPING.put("2245", "Spring 2025");
+        TERM_CODE_MAPPING.put("2246", "Summer 2025");
+        CODE_TERM_MAPPING.put("Summer 2025", "2241");
+        CODE_TERM_MAPPING.put("Fall 2024", "2242");
+        CODE_TERM_MAPPING.put("Fall/Winter 2024-2025", "2243");
+        CODE_TERM_MAPPING.put("Winter 2025", "2244");
+        CODE_TERM_MAPPING.put("Spring 2025", "2245");
+        CODE_TERM_MAPPING.put("Summer 2024", "2231");
+        // CODE_TERM_MAPPING.put("Summer", "2246");
     }
 
     public static void main(String[] args) {
@@ -87,12 +85,13 @@ public class SeedRunner {
                 for (String term : terms) {
                     var blocks = new LinkedHashSet<Course.Block>();
                     for (CourseWithDetails blockDetails : coursesBlock) {
-                        if (blockDetails.getTermCode().equals(CODE_TERM_MAPPING.get(term)) || (term.equals("Summer") && blockDetails.getTermCode().equals("2236"))) {
+                        if (blockDetails.getTermCode().equals(CODE_TERM_MAPPING.get(term)) || (term.startsWith("Summer") && (blockDetails.getTermCode().equals("2246") || blockDetails.getTermCode().equals("2231")) )) {
                             blocks.add(new Course.Block(
                                     blockDetails.getComponentCode(),
                                     blockDetails.getLocationCode(),
                                     blockDetails.getRoomCode(),
                                     blockDetails.getSection(),
+                                    blockDetails.getSession(),
                                     blockDetails.getBuildingCode(),
                                     blockDetails.getInstructionModeCode(),
                                     blockDetails.getInstructionModeDescription(),
@@ -106,6 +105,8 @@ public class SeedRunner {
                                     blockDetails.getClassStartTime(),
                                     blockDetails.getClassEndTime()
                             ));
+                        } else {
+                            //log.warn(blockDetails.getTermCode() + " does not match " + CODE_TERM_MAPPING.get(term) + " for " + course.getSubject() + " " + course.getCatalog() + " " + term + ". Skipping block. Summer: " + term.startsWith("Summer") + " and code is 2246 or 2231: " + (blockDetails.getTermCode().equals("2246") || blockDetails.getTermCode().equals("2231")));
                         }
                     }
                     var schedule = new Course.Schedule(blocks, term);
@@ -234,6 +235,5 @@ public class SeedRunner {
 
         return Collections.emptyList();
     }
-
 
 }
