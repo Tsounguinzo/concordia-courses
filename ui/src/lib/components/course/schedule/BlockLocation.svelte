@@ -1,20 +1,26 @@
 <script lang="ts">
     import Tooltip from "$lib/components/common/Tooltip.svelte";
-    import * as buildingCodes from '$lib/data/buildingCodes.json';
+    export let locationCode: string
 
-    export let roomCode: string
-    export let buildingCode: string
-
-    const code = buildingCode as keyof typeof buildingCode
     let show = false;
+
+    function locationLongName(locationCode: string): string {
+        switch (locationCode) {
+            case 'SGW': return 'Sir George Williams – downtown';
+            case 'LOY': return 'Loyola';
+            case 'ONL': return 'Online';
+            case 'PI': return 'Power Institute';
+            default: return locationCode;
+        }
+    }
 </script>
 
 <span class='relative whitespace-nowrap'>
-      <Tooltip {show} text={(buildingCode === "") ? "ONLINE" : buildingCodes[code]}>
+      <Tooltip {show} text={locationLongName(locationCode)}>
         <p class='inline-block cursor-default text-sm leading-7 sm:text-base'
            on:mouseenter={() => show = true}
            on:mouseleave={() => show = false}>
-          {roomCode}
+          {locationCode}
         </p>
       </Tooltip>
 </span>
