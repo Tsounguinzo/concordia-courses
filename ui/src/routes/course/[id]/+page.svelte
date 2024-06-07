@@ -1,6 +1,6 @@
 <script lang="ts">
     import {page} from "$app/stores";
-    import {addAcademicYear, courseNameToId, getCurrentTerms, instructorNameToUrlParam} from "$lib/utils";
+    import {courseNameToId, instructorNameToUrlParam} from "$lib/utils";
     import {derived, writable} from "svelte/store";
     import type {Review} from "$lib/model/Review";
     import type {Course} from "$lib/model/Course";
@@ -28,7 +28,6 @@
 
     const user = $page.data.user;
     $: visitor = $visitorId;
-    const currentTerms = getCurrentTerms();
 
     let firstFetch = true;
     const numberOfReviewsToShow = 5;
@@ -105,14 +104,6 @@
     $: if ($course === null) {
         goto("/explore")
     }
-
-    if ($course?.terms.some((term) => !currentTerms.includes(addAcademicYear(term)))) {
-        course.set({
-            ...$course,
-            terms: $course.terms.filter((term) => currentTerms.includes(addAcademicYear(term))),
-        });
-    }
-
 
     $: userReview = $showingReviews?.find((r) => r.userId === (user?.id ?? visitor));
     $: hasNotReviewed = user
