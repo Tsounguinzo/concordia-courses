@@ -136,6 +136,7 @@ public class CourseServiceImpl implements CourseService {
         courseRepository.findById(course.get_id())
                 .ifPresentOrElse(existingCourse -> {
                     existingCourse.setSchedules(course.getSchedules());
+                    existingCourse.setTerms(course.getTerms());
                     courseRepository.save(existingCourse);
                 }, () -> courseRepository.save(course));
     }
