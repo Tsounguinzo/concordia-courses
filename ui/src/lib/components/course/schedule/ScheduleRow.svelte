@@ -27,7 +27,7 @@
     </td>
     <td class='py-2 text-gray-700 dark:text-gray-300'>
         <div class='flex flex-col items-start pl-1 text-center font-medium'>
-            <BlockLocation roomCode={block.roomCode} buildingCode={block.buildingCode}/>
+            <BlockLocation locationCode={block.locationCode}/>
         </div>
     </td>
     <td class='whitespace-nowrap py-2 text-sm font-medium sm:text-base'>

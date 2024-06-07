@@ -1,7 +1,6 @@
 <script lang="ts">
     import type {Course} from "$lib/model/Course";
     import {
-        addAcademicYear,
         termColorMap,
         termToIcon,
         variantToSize
@@ -39,7 +38,7 @@
                 <div class='flex items-center space-x-1.5 whitespace-nowrap dark:text-gray-400'>
                     {@html termToIcon(term, variant)}
                     <div class={twMerge('pr-1 font-medium dark:text-gray-200')}>
-                        <Highlight text={addAcademicYear(term)} {query}/>
+                        <Highlight text={term} {query}/>
                     </div>
                 </div>
             </div>

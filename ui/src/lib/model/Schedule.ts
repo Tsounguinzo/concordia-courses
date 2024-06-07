@@ -3,6 +3,7 @@ export type Block = {
     locationCode: string;
     roomCode: string;
     section: string;
+    session: string;
     buildingCode: string;
     instructionModeCode: string;
     instructionModeDescription: string;

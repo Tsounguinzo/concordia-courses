@@ -1,4 +1,3 @@
-import type {Schedule} from './model/Schedule';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import type {Review} from "$lib/model/Review";
@@ -16,48 +15,31 @@ export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
 
-export const getCurrentTerms = (): [string, string, string, string, string] => {
-    const now = new Date();
-    const month = now.getMonth() + 1;
-    const year = now.getFullYear();
-
-    if (month >= 8)
-        return [`Fall ${year}`, `Fall/Winter ${year}-${year + 1}`, `Winter ${year + 1}`, `Spring ${year + 1}` , `Summer ${year + 1}`];
-
-    return [`Fall ${year - 1}`, `Fall/Winter ${year - 1}-${year}`, `Winter ${year}`, `Spring ${year}` , `Summer ${year}`];
-};
-
-export const addAcademicYear = (term: string) => {
-    const now = new Date();
-    const month = now.getMonth() + 1;
-    const year = now.getFullYear();
-
-    if (month >= 8)
-        return [`Fall ${year}`, `Fall/Winter ${year}-${year + 1}`, `Winter ${year + 1}`, `Spring ${year + 1}` , `Summer ${year + 1}`].filter(current => current.split(" ")[0] === term)[0];
-
-    return [`Fall ${year - 1}`, `Fall/Winter ${year - 1}-${year}`, `Winter ${year}`, `Spring ${year}` , `Summer ${year}`].filter(current => current.split(" ")[0] === term)[0];
-};
-
 export const sortTerms = (terms: string[]) => {
     const order = ['Fall', 'Fall/Winter', 'Winter', 'Spring', 'Summer'];
 
     return terms.sort((a, b) => {
-        return a === b ? 0 : order.indexOf(a) - order.indexOf(b);
-    });
-};
+        const [aTerm, aYear] = a.split(' ');
+        const [bTerm, bYear] = b.split(' ');
 
-export const sortSchedulesByBlocks = (schedules: Schedule[]) => {
-    const order = ['LEC', 'TUT', 'LAB'];
+        // Special case: ex "Summer 2024" comes before "Fall 2024"
+        if (aTerm === 'Summer' && bTerm === 'Fall' && aYear === bYear) {
+            return -1;
+        }
 
-    return schedules.sort((a, b) => {
-        const aNum = a.blocks[0].section;
-        const bNum = b.blocks[0].section;
-        const aType = a.blocks[0].componentCode;
-        const bType = b.blocks[0].componentCode;
+        if (aTerm === 'Fall' && bTerm === 'Summer' && aYear === bYear) {
+            return 1;
+        }
 
-        return aType === bType
-            ? aNum.localeCompare(bNum)
-            : order.indexOf(aType) - order.indexOf(bType);
+        // Compare the years first
+        const yearComparison = parseInt(aYear, 10) - parseInt(bYear, 10);
+
+        if (yearComparison !== 0) {
+            return yearComparison;
+        }
+
+        // If the years are the same, compare the term types using the predefined order
+        return order.indexOf(aTerm) - order.indexOf(bTerm);
     });
 };
 

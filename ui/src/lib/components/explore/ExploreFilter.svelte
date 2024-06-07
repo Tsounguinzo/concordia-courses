@@ -103,9 +103,10 @@
         <div class='py-1'/>
         <div class='flex flex-wrap gap-2'>
             {#each termsOptions as term, i (i)}
+                {@const termWithoutYear = term.split(" ")[0]}
                 <FilterButton
-                        icon={termToIcon(term, variant === 'mobile' ? 'small' : 'large')}
-                        selectedClass={termColorMap[(term === 'Fall/Winter') ? term.replace('/','_').toLowerCase() : term.toLowerCase()]}
+                        icon={termToIcon(termWithoutYear, variant === 'mobile' ? 'small' : 'large')}
+                        selectedClass={termColorMap[(termWithoutYear === 'Fall/Winter') ? termWithoutYear.replace('/','_').toLowerCase() : termWithoutYear.toLowerCase()]}
                         name={term}
                         isSelected={$selectedTerms.includes(term)}
                         selections={selectedTerms}
