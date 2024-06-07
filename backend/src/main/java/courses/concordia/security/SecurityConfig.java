@@ -40,7 +40,7 @@ public class SecurityConfig{
                 )
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(hostCheckFilter, UsernamePasswordAuthenticationFilter.class)
+                //.addFilterBefore(hostCheckFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(rateLimitFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwAuthenFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable()
