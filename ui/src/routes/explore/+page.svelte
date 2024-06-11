@@ -17,6 +17,7 @@
     import Seo from "$lib/components/common/Seo.svelte";
     import InstructorCard from "$lib/components/explore/InstructorCard.svelte";
     import type {Instructor} from "$lib/model/Instructor";
+    import {browser} from "$app/environment";
 
     type SortByType = (typeof allSortByOptions)[number];
 
@@ -84,6 +85,7 @@
     let isMounted = false;
     let previousState = '';
     const instructorsModeOn = writable<boolean>(false);
+    let resetFiltersTrigger = false;
 
     function toggle() {
         instructorsModeOn.update(state => {
@@ -91,6 +93,12 @@
             localStorage.setItem('instructorsModeOn', JSON.stringify(newState));
             return newState;
         });
+
+        resetFiltersTrigger = true;
+        setTimeout(() => {
+            resetFiltersTrigger = false;
+        }, 100);
+
         fetchData(true);
     }
 
@@ -106,10 +114,8 @@
         sortBy: makeSortPayload($sortBy),
     };
 
-    /*
-
     const saveFiltersToSessionStorage = () => {
-        if (typeof sessionStorage !== 'undefined') {
+        if (isMounted && browser) {
             sessionStorage.setItem('filters', JSON.stringify({
                 savedSelectedSubjects: $selectedSubjects,
                 savedSelectedLevels: $selectedLevels,
@@ -122,29 +128,30 @@
     };
 
     const loadFiltersFromSessionStorage = () => {
-        if (typeof sessionStorage !== 'undefined') {
-            const savedFilters = sessionStorage.getItem('filters');
-            if (savedFilters) {
-                const {
-                    savedSelectedSubjects,
-                    savedSelectedLevels,
-                    savedSelectedTerms,
-                    savedSelectedDepartments,
-                    savedSelectedTags,
-                    savedSortBy
-                } = JSON.parse(savedFilters);
+        return new Promise((resolve) => {
+            if (browser) {
+                const savedFilters = sessionStorage.getItem('filters');
+                if (savedFilters) {
+                    const {
+                        savedSelectedSubjects,
+                        savedSelectedLevels,
+                        savedSelectedTerms,
+                        savedSelectedDepartments,
+                        savedSelectedTags,
+                        savedSortBy
+                    } = JSON.parse(savedFilters);
 
-                savedSelectedSubjects?.forEach((subject: string) => selectedSubjects.update(items => [...items, subject]));
-                savedSelectedLevels?.forEach((level: string) => selectedLevels.update(items => [...items, level]));
-                savedSelectedTerms?.forEach((term: string) => selectedTerms.update(items => [...items, term]));
-                savedSelectedDepartments?.forEach((department: string) => selectedDepartments.update(items => [...items, department]));
-                savedSelectedTags?.forEach((tag: string) => selectedTags.update(items => [...items, tag]));
-                sortBy.set(savedSortBy);
+                    savedSelectedSubjects?.forEach((subject: string) => selectedSubjects.update(items => [...items, subject]));
+                    savedSelectedLevels?.forEach((level: string) => selectedLevels.update(items => [...items, level]));
+                    savedSelectedTerms?.forEach((term: string) => selectedTerms.update(items => [...items, term]));
+                    savedSelectedDepartments?.forEach((department: string) => selectedDepartments.update(items => [...items, department]));
+                    savedSelectedTags?.forEach((tag: string) => selectedTags.update(items => [...items, tag]));
+                    sortBy.set(savedSortBy);
+                }
             }
-        }
+            resolve();
+        });
     };
-
-     */
 
     const fetchData = async (reset = false) => {
         try {
@@ -167,7 +174,7 @@
         }
     };
 
-    onMount(() => {
+    onMount(async () => {
         const savedState = localStorage.getItem('instructorsModeOn');
         if (savedState !== null) {
             const parsedState = JSON.parse(savedState);
@@ -178,8 +185,8 @@
                 instructorsModeOn.set(false);
             }
         }
-        // loadFiltersFromSessionStorage();
-        fetchData(true);
+        await loadFiltersFromSessionStorage();
+        await fetchData(true);
         isMounted = true;
     });
 
@@ -191,7 +198,7 @@
             previousState = currentState;
         }
 
-        //saveFiltersToSessionStorage();
+        saveFiltersToSessionStorage();
     }
 
     const fetchMore = async () => {
@@ -236,6 +243,7 @@
                         {selectedTags}
                         variant='mobile'
                         {instructorsModeOn}
+                        {resetFiltersTrigger}
                 />
             </FilterToggle>
         </div>
@@ -315,6 +323,7 @@
                     {selectedDepartments}
                     {selectedTags}
                     {instructorsModeOn}
+                    {resetFiltersTrigger}
             />
         </div>
     </div>
