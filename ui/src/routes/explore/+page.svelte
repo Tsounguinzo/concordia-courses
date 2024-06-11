@@ -123,6 +123,7 @@
                 savedSelectedDepartments: $selectedDepartments,
                 savedSelectedTags: $selectedTags,
                 savedSortBy: $sortBy,
+                savedQuery: query,
             }));
         }
     };
@@ -138,7 +139,8 @@
                         savedSelectedTerms,
                         savedSelectedDepartments,
                         savedSelectedTags,
-                        savedSortBy
+                        savedSortBy,
+                        savedQuery
                     } = JSON.parse(savedFilters);
 
                     savedSelectedSubjects?.forEach((subject: string) => selectedSubjects.update(items => [...items, subject]));
@@ -147,6 +149,7 @@
                     savedSelectedDepartments?.forEach((department: string) => selectedDepartments.update(items => [...items, department]));
                     savedSelectedTags?.forEach((tag: string) => selectedTags.update(items => [...items, tag]));
                     sortBy.set(savedSortBy);
+                    query = savedQuery;
                 }
             }
             resolve();
@@ -191,9 +194,9 @@
     });
 
     $: {
-        const currentState = JSON.stringify([$selectedSubjects, $selectedLevels, $selectedTerms, $selectedTags, $selectedDepartments, $sortBy]);
+        const currentState = JSON.stringify([$selectedSubjects, $selectedLevels, $selectedTerms, $selectedTags, $selectedDepartments, $sortBy, query]);
 
-        if (isMounted && (query !== '' || currentState !== previousState)) {
+        if (isMounted && currentState !== previousState) {
             fetchData(true);
             previousState = currentState;
         }
@@ -251,6 +254,7 @@
             <div class='ml-auto flex w-full max-w-xl flex-col overflow-y-hidden'>
                 <SearchBar
                         handleInputChange={(value) => query = value}
+                        value={query}
                         iconStyle='mt-2 lg:mt-0 absolute top-1/3 transform -translate-y-1/2'
                         inputStyle='block rounded-lg w-full bg-slate-50 p-3 pr-5 pl-10 text-md text-black outline-none dark:border-neutral-50 dark:bg-neutral-800 dark:text-gray-200 dark:placeholder:text-neutral-500'
                         outerInputStyle='my-2 mt-4 lg:mt-2 flex flex-col h-20 rounded-lg bg-slate-50 dark:border-neutral-50 dark:bg-neutral-800 dark:text-gray-200 rounded-lg'
