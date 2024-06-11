@@ -21,10 +21,11 @@
     export let sortBy: Writable<string>;
     export let variant: 'mobile' | 'desktop';
     export let instructorsModeOn: Writable<boolean>;
+    export let resetFiltersTrigger: boolean;
 
     let reset = false;
     const departmentsOptions = departments.map(department => department.deparmentDescription);
-    $: $instructorsModeOn, resetFilters();
+    $: if (resetFiltersTrigger) resetFilters();
     $: sortByOptions = getSortByOptions($instructorsModeOn);
 
     function resetFilters() {

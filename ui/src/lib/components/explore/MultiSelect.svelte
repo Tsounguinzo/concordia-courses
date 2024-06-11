@@ -5,6 +5,7 @@
     import type {Writable} from "svelte/store";
     import {writable} from "svelte/store";
     import {createCombobox} from "svelte-headlessui";
+    import {onMount, tick} from "svelte";
 
     export let options: string[];
     export let values: Writable<string[]>;
@@ -12,6 +13,7 @@
     export let inputClassName: string = '';
 
     const query = writable('');
+    let initialLoad = true;
 
     // Needed to prevent the onBlur (resetting query) from firing when just clicking an option
     const optionClicked = writable(false);
@@ -33,6 +35,22 @@
             optionClicked.set(false);
         }, 200);
     };
+
+    onMount(async () => {
+        // Ensure the DOM has updated before we subscribe
+        await tick();
+
+        const unsubscribe = values.subscribe((value) => {
+            if (initialLoad) {
+                combobox.set({selected: value});
+                initialLoad = false;
+            }
+        })
+
+        return () => {
+            unsubscribe();
+        };
+    })
 
     const handleOptionMouseDown = () => {
         optionClicked.set(true);

@@ -4,6 +4,7 @@
     import {ChevronDown} from "lucide-svelte";
     import {type Writable, writable} from "svelte/store";
     import {createCombobox} from "svelte-headlessui";
+    import {onMount, tick} from "svelte";
 
     export let options: readonly T[];
     export let storeValue: Writable<T>;
@@ -11,6 +12,7 @@
     export let inputClassName: string = '';
 
     let query = writable('');
+    let initialLoad = true;
 
     $: filtered = $query !== '' ?
         options.filter((x) => {
@@ -21,6 +23,21 @@
     $: if(reset) {
         combobox.set({ selected: options[0]});
     }
+
+    onMount(async () => {
+        await tick();
+
+        const unsubscribe = storeValue.subscribe((value) => {
+            if (initialLoad) {
+                combobox.set({selected: value});
+                initialLoad = false;
+            }
+        })
+
+        return () => {
+            unsubscribe();
+        };
+    })
 
     $: storeValue.set($combobox.selected)
     const combobox = createCombobox({label: 'Actions', selected: options[0]})
