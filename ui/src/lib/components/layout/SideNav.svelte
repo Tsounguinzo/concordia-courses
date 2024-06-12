@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {onMount} from "svelte";
+    import {getContext, onMount} from "svelte";
     import {page} from "$app/stores";
     import Transition from 'svelte-transition'
     import DarkModeToggle from "./DarkModeToggle.svelte";
@@ -10,6 +10,7 @@
 
     const user = $page.data.user;
 
+    const i18n = getContext('i18n');
     onMount(() => {
         document.body.style.overflow = $mobileMenuOpen ? 'hidden' : 'auto';
     });
@@ -53,7 +54,7 @@
                                 class='mr-2 rounded-2xl p-1 text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-neutral-700'
                                 on:click|preventDefault={() => mobileMenuOpen.set(false)}
                         >
-                            <span class='sr-only'>Close menu</span>
+                            <span class='sr-only'>{$i18n.t('Close menu')}</span>
                             <X class='h-6 w-6' aria-hidden='true'/>
                         </button>
                     </div>
@@ -65,7 +66,7 @@
                                        class='-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-neutral-700'
                                        on:click={() => mobileMenuOpen.set(false)}
                                     >
-                                        {item.name}
+                                        {$i18n.t(item.name)}
                                     </a>
                                 {/each}
                             </div>
@@ -76,14 +77,14 @@
                                            class='-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-neutral-700'
                                            on:click={() => mobileMenuOpen.set(false)}
                                         >
-                                            Profile
+                                            {$i18n.t('Profile')}
                                         </a>
                                         <a href=""
                                            on:click={handleLogout}
                                            on:click={() => mobileMenuOpen.set(false)}
                                            class='-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 dark:text-gray-200  dark:hover:bg-neutral-700'
                                         >
-                                            Log out
+                                            {$i18n.t('Log out')}
                                         </a>
                                     </div>
                                 {:else }
@@ -91,7 +92,7 @@
                                             class='-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 dark:text-gray-200  dark:hover:bg-neutral-700'
                                        on:click={() => mobileMenuOpen.set(false)}
                                     >
-                                        Log in
+                                        {$i18n.t('Log in')}
                                     </a>
                                 {/if}
                             </div>

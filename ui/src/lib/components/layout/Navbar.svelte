@@ -9,12 +9,13 @@
     import SideNav from "./SideNav.svelte";
     import ProfileDropdown from "$lib/components/profile/ProfileDropdown.svelte";
     import NotificationDropdown from "$lib/components/profile/NotificationDropdown.svelte";
-    import {onMount} from "svelte";
+    import {getContext, onMount} from "svelte";
     import {repo} from "$lib/repo";
     import {toast} from "svelte-sonner";
+    import Languages from "$lib/components/layout/Languages.svelte";
 
     const { courses, instructors, coursesIndex, instructorsIndex } = getSearchIndex();
-
+    const i18n = getContext('i18n');
     const user = $page.data.user;
     $: pathName = $page.url.pathname;
     const notifications = writable<Notification[]>([]);
@@ -68,13 +69,14 @@
                 <NotificationDropdown {notifications}/>
             </div>
         {/if}
-        <div class='flex lg:hidden'>
+        <div class='flex lg:hidden items-center'>
+            <Languages/>
             <button
                     type='button'
                     class='inline-flex items-center justify-center rounded-md p-2.5 text-gray-700 dark:text-gray-200'
                     on:click={() => mobileMenuOpen.set(true)}
             >
-                <span class='sr-only'>Open main menu</span>
+                <span class='sr-only'>{$i18n.t('Open main menu')}</span>
                 <Menu
                         class='h-6 w-6 stroke-2 text-gray-400'
                         aria-hidden='true'
@@ -83,6 +85,7 @@
         </div>
         <div class='flex min-w-fit flex-row lg:flex-1'>
             <div class='my-auto hidden gap-x-1 lg:ml-auto lg:flex lg:items-center'>
+                <Languages/>
                 <DarkModeToggle/>
                 {#if user}
                     <NotificationDropdown {notifications}/>
@@ -95,7 +98,7 @@
 
                     <a href="/login"
                        class='rounded-md bg-slate-50 px-3 py-2 text-sm font-semibold text-gray-500 hover:bg-gray-100 dark:bg-neutral-800 dark:text-gray-200 dark:hover:bg-neutral-700'>
-                        Log in
+                        {$i18n.t('Log in')}
                     </a>
                 {/if}
             </div>

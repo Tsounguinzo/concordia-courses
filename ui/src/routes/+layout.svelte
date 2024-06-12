@@ -2,7 +2,7 @@
     import "../app.css";
     import {darkModeOn} from "$lib/darkmode";
     import Navbar from "$lib/components/layout/Navbar.svelte";
-    import {onMount} from "svelte";
+    import {onMount, setContext} from "svelte";
     import {Toaster} from "svelte-sonner";
     import Footer from "$lib/components/layout/Footer.svelte";
     import {page} from "$app/stores";
@@ -10,6 +10,9 @@
     import { inject } from '@vercel/analytics'
     import {dev} from "$app/environment";
     import {visitorId} from "$lib/store";
+    import i18n, { initI18n, getLanguages } from '$lib/i18n';
+
+    setContext('i18n', i18n);
 
     injectSpeedInsights();
     inject({ mode: dev ? 'development' : 'production' });
@@ -29,6 +32,14 @@
     }
 
     onMount(async () => {
+        const languages = await getLanguages();
+
+        const browserLanguage = navigator.languages
+            ? navigator.languages[0]
+            : navigator.language;
+
+        initI18n(languages.map((lang) => lang.code).includes(browserLanguage) ? browserLanguage : 'en-US');
+
         let ses = window.sessionStorage.getItem("visitorId");
         if (ses) {
             visitorId.set(JSON.parse(ses));

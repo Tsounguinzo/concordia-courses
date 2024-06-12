@@ -1,0 +1,22 @@
+[
+	{
+		"code": "en-US",
+		"title": "English (US)"
+	},
+	{
+		"code": "en-CA",
+		"title": "English (CA)"
+	},
+	{
+		"code": "en-GB",
+		"title": "English (GB)"
+	},
+	{
+		"code": "fr-CA",
+		"title": "French (CA)"
+	},
+	{
+		"code": "fr-FR",
+		"title": "French (FR)"
+	}
+]
