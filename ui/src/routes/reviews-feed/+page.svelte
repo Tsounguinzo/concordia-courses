@@ -9,7 +9,7 @@
     import {writable} from "svelte/store";
     import {repo} from "$lib/repo";
     import {toast} from "svelte-sonner";
-    import {onMount} from "svelte";
+    import {getContext, onMount} from "svelte";
     import FeedFilter from "$lib/components/common/filter/FeedFilter.svelte";
     import type {Review} from "$lib/model/Review";
     import InstructorOrCourseReview from "$lib/components/review/Review.svelte";
@@ -44,6 +44,7 @@
     const sortBy = writable<SortByType>('New');
     let isMounted = false;
     let previousState = '';
+    const i18n = getContext('i18n');
     const userInteractions = writable<Interaction[] | undefined>([]);
 
     $: filters = {
@@ -121,7 +122,7 @@
 <Seo title="Reviews Feed" description="Reviews feed for courses at concordia.courses" ogTitle="Reviews Feed | Concordia.courses" ogDescription="Reviews feed for courses at concordia.courses" ogImageAlt="concordia.courses Reviews page Snapshot" ogImage="og-image-feed.png"/>
 <div class='flex flex-col items-center py-8'>
     <h1 class='mb-16 text-center text-5xl font-bold tracking-tight text-gray-900 dark:text-gray-200 sm:text-5xl'>
-        What Students Think
+        {$i18n.t("What Students Think")}
     </h1>
     <div class='relative flex w-full max-w-xl flex-col lg:max-w-6xl lg:flex-row lg:justify-center'>
         <div class='m-auto flex w-full max-w-xl flex-col overflow-y-hidden'>
@@ -151,7 +152,7 @@
             {#if !hasMore || !reviews?.length}
                 <div class='mx-auto mt-4 text-center'>
                     <p class='text-gray-500 dark:text-gray-400'>
-                        Whoa! We've scrolled through them all. No more reviews in sight!
+                        {$i18n.t("Whoa! We've scrolled through them all. No more reviews in sight!")}
                     </p>
                 </div>
             {:else }

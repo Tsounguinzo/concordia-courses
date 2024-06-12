@@ -6,10 +6,12 @@
     import {determineReviewFor} from "$lib/utils.js";
     import SharedReview from "$lib/components/review/Review.svelte";
     import {Info} from "lucide-svelte";
+    import {getContext} from "svelte";
 
     const review: Review = $page.data.review;
     const error = $page.data.error;
     let reviewFor: string;
+    const i18n = getContext('i18n');
 
     if(!error) reviewFor = determineReviewFor(review)
 
@@ -32,10 +34,10 @@
             <div class='mx-4 flex w-full flex-col rounded-md bg-slate-50 p-6 dark:bg-neutral-800 md:mt-10 relative'>
                 <div class='flex flex-col items-center'>
                     <h1 class='text-3xl font-semibold text-center text-gray-800 dark:text-gray-200'>
-                        Review for <strong>{reviewFor}</strong>
+                        {$i18n.t('Review for')} <strong>{reviewFor}</strong>
                     </h1>
                     <p class='text-gray-600 dark:text-gray-400 text-center'>
-                        Shared Review
+                        {$i18n.t('Shared Review')}
                     </p>
                 </div>
                 <div class="z-10">

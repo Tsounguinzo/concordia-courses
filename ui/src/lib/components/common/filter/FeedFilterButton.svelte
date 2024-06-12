@@ -1,10 +1,12 @@
 <script lang="ts">
     import type {Writable} from "svelte/store";
     import {twMerge} from "tailwind-merge";
+    import {getContext} from "svelte";
 
     export let selectedClass: string;
     export let sortBy: Writable<string>;
     export let name: string;
+    const i18n = getContext('i18n');
 
     $: selected = $sortBy === name;
 
@@ -22,6 +24,6 @@
 >
     <span class='flex items-center gap-x-2'>
         <slot/>
-        {name}
+        {$i18n.t(name)}
     </span>
 </button>

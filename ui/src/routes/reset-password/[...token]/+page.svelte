@@ -9,12 +9,14 @@
     import {repo} from "$lib/repo";
     import {Eye, EyeOff, Info} from "lucide-svelte";
     import {page} from "$app/stores";
+    import {getContext} from "svelte";
 
     const initialValues = {password: '', confirmPassword: ''};
     let showPassword, showConfirmPassword, passwordChanged = false;
     const username = $page.data.username;
     const token = $page.data.token;
     const error = $page.data.error;
+    const i18n = getContext('i18n');
 
     const validate = (values, actions) => {
         const errors = {
@@ -23,11 +25,11 @@
         };
 
         if (values.password === '') {
-            errors.password = 'Password is required';
+            errors.password = $i18n.t("Password is required");
         } else if (values.confirmPassword == '') {
-            errors.confirmPassword = "Confirmation is required";
+            errors.confirmPassword = $i18n.t("Confirmation is required");
         } else if (values.password !== values.confirmPassword) {
-            errors.confirmPassword = "Passwords must match";
+            errors.confirmPassword = $i18n.t("Passwords must match");
         }
 
         return errors;
@@ -39,7 +41,7 @@
                 passwordChanged = true;
                 return message
             },
-            error: 'Oops! Something went wrong. Please try again.',
+            error: `${$i18n.t("Oops! Something went wrong.")} ${$i18n.t("Please try again.")}`,
         });
     };
 
@@ -51,7 +53,7 @@
         <div class="flex items-center justify-center text-md font-medium text-gray-800 dark:text-gray-200">
             <div class="dark:bg-green-900 bg-green-400 rounded-md p-3 flex gap-x-4 items-center justify-center">
                 <Info class="min-w-6 min-h-6"/>
-                Your password has been reset successfully. You can now <a href="/login" class="text-primary-500 dark:text-primary-400 underline">login</a> with your new password.
+                {$i18n.t("Your password has been reset successfully.")}
             </div>
         </div>
     </div>
@@ -82,16 +84,15 @@
                 <div class='flex w-full justify-center mx-auto max-w-2xl'>
                     <div class='mx-4 flex w-full flex-col rounded-md bg-slate-50 p-6 dark:bg-neutral-800 md:mt-10 relative'>
                         <div class='flex flex-col items-center'>
-                            <h1 class='text-3xl font-bold text-center text-gray-800 dark:text-gray-200'>Reset
-                                Password</h1>
-                            <p class='text-gray-600 dark:text-gray-400 text-center'>Resetting your password for
+                            <h1 class='text-3xl font-bold text-center text-gray-800 dark:text-gray-200'>{$i18n.t("Reset Password")}</h1>
+                            <p class='text-gray-600 dark:text-gray-400 text-center'>{$i18n.t("Resetting your password for")}
                                 <strong>{username}</strong></p>
                         </div>
                         <div class="z-10">
                             <div class="flex w-full flex-row">
                                 <div class='flex flex-col space-y-3 w-full md:m-4 sm:w-1/2'>
                                     <div class='flex flex-col'>
-                                        <FieldLabel For='password'>Password</FieldLabel>
+                                        <FieldLabel For='password'>{$i18n.t("Password")}</FieldLabel>
                                         <div class="flex flex-row gap-x-1">
                                             <Field
                                                     type={showPassword ? "text" : "password"}
@@ -117,7 +118,7 @@
                                     </div>
                                     <div class='py-1'/>
                                     <div class='flex flex-col'>
-                                        <FieldLabel For='confirmPassword'>Confirm Password</FieldLabel>
+                                        <FieldLabel For='confirmPassword'>{$i18n.t("Confirm Password")}</FieldLabel>
                                         <div class="flex flex-row gap-x-1">
                                             <Field
                                                     type={showConfirmPassword ? "text" : "password"}
