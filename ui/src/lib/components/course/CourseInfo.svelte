@@ -10,6 +10,7 @@
     import {page} from "$app/stores";
     import {experienceToIcon} from "$lib/utils";
     import {twMerge} from "tailwind-merge";
+    import TextProcessor from "$lib/components/common/TextProcessor.svelte";
 
     export let course: Course;
     export let reviews: Review[];
@@ -86,19 +87,21 @@
             <div class='flex items-center gap-2'>
                 {#if user}
                     {#if isSubscribed}
-                        <button on:click={unsubscribe} class="flex gap-x-2 p-1 px-2 items-center rounded-lg bg-slate-200 dark:border-neutral-600 dark:bg-neutral-700 transition-colors duration-300 hover:text-primary-600 dark:hover:text-primary-600 dark:text-gray-200">
-                        <BellOff
-                                size={20}
-                                class='stroke-2'
-                        />
+                        <button on:click={unsubscribe}
+                                class="flex gap-x-2 p-1 px-2 items-center rounded-lg bg-slate-200 dark:border-neutral-600 dark:bg-neutral-700 transition-colors duration-300 hover:text-primary-600 dark:hover:text-primary-600 dark:text-gray-200">
+                            <BellOff
+                                    size={20}
+                                    class='stroke-2'
+                            />
                             Unsubscribe
                         </button>
                     {:else }
-                        <button on:click={subscribe} class="flex gap-x-2 p-1 px-2 items-center rounded-lg bg-slate-200 dark:border-neutral-600 dark:bg-neutral-700 transition-colors duration-300 hover:text-primary-600 dark:hover:text-primary-600 dark:text-gray-200">
-                        <Bell
-                                size={20}
-                                class='stroke-2'
-                        />
+                        <button on:click={subscribe}
+                                class="flex gap-x-2 p-1 px-2 items-center rounded-lg bg-slate-200 dark:border-neutral-600 dark:bg-neutral-700 transition-colors duration-300 hover:text-primary-600 dark:hover:text-primary-600 dark:text-gray-200">
+                            <Bell
+                                    size={20}
+                                    class='stroke-2'
+                            />
                             Subscribe
                         </button>
                     {/if}
@@ -112,7 +115,9 @@
         <CourseTerms course={course} variant='large'/>
         <div class='py-1'/>
         <p class='break-words text-gray-500 dark:text-gray-400'>
-            {course.description}
+            {#key course._id}
+                <TextProcessor text={course.description} exclude={course.prerequisites}/>
+            {/key}
         </p>
         <div class='grow py-3'/>
         <CourseInfoStats class='mb-4 sm:hidden' allReviews={reviews}/>

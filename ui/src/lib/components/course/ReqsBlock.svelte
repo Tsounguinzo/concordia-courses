@@ -1,4 +1,6 @@
 <script lang="ts">
+    import TextProcessor from "$lib/components/common/TextProcessor.svelte";
+
     export let title: string;
     export let text: string;
 </script>
@@ -10,7 +12,7 @@
 
     {#if text}
         <div class='text-gray-500 dark:text-gray-400'>
-            {text}
+            <TextProcessor {text}/>
         </div>
     {:else }
         <p class='text-gray-500 dark:text-gray-400'>
