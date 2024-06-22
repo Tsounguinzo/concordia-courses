@@ -5,16 +5,37 @@ import courses.concordia.dto.model.instructor.InstructorFilterDto;
 import courses.concordia.dto.response.Response;
 import courses.concordia.service.InstructorService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
+@Slf4j
 @RequestMapping("/api/v1/instructors")
 public class InstructorController {
     private final InstructorService instructorService;
-    
+    @Value("${beaudelaire.uploadKey}")
+    private String uploadKey;
+
+    @PutMapping("/upload")
+    public ResponseEntity<String> uploadInstructors(@RequestParam("file") MultipartFile file, @RequestParam String key) {
+        try {
+            if (!key.equals(uploadKey)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid key");
+            }
+            instructorService.uploadInstructors(file);
+            return ResponseEntity.ok("Instructors processed successfully");
+        } catch (Exception e) {
+            log.error("Error processing instructors file", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing instructors file");
+        }
+    }
     @GetMapping
     public Response<?> getInstructors() {
         return Response

@@ -1,5 +1,6 @@
 package courses.concordia.service.implementation;
 
+import com.google.gson.reflect.TypeToken;
 import courses.concordia.dto.model.instructor.InstructorDto;
 import courses.concordia.dto.model.instructor.InstructorFilterDto;
 import courses.concordia.dto.model.instructor.InstructorReviewsDto;
@@ -11,6 +12,7 @@ import courses.concordia.model.Instructor;
 import courses.concordia.model.Review;
 import courses.concordia.repository.InstructorRepository;
 import courses.concordia.service.InstructorService;
+import courses.concordia.util.JsonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -20,7 +22,10 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -110,6 +115,28 @@ public class InstructorServiceImpl implements InstructorService {
         return new InstructorReviewsDto()
                 .setInstructor(instructor)
                 .setReviews(reviews);
+    }
+
+    @Override
+    public void uploadInstructors(MultipartFile file) {
+        log.info("Uploading instructors from file: {}", file.getOriginalFilename());
+        List<InstructorDto> instructors = processInstructorFile(file);
+        instructors.forEach(this::addOrUpdateInstructor);
+        log.info("Instructors uploaded successfully");
+    }
+
+    private List<InstructorDto> processInstructorFile(MultipartFile file) {
+        try (InputStream inputStream = file.getInputStream()) {
+            return JsonUtils.getData(inputStream, new TypeToken<List<InstructorDto>>() {});
+        } catch (IOException e) {
+            log.error("Failed to process instructor file", e);
+            throw new RuntimeException("Failed to process instructor file", e);
+        }
+    }
+
+    public void addOrUpdateInstructor(InstructorDto instructorDto) {
+        Instructor instructor = modelMapper.map(instructorDto, Instructor.class);
+        instructorRepository.save(instructor);
     }
 
     /**
