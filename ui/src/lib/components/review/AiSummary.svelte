@@ -8,7 +8,7 @@
 
     export let instructor: Instructor;
 
-    let showSummary = true;
+    let showSummary = false;
     let now: Date = new Date();
     let displayTime: string;
 
@@ -56,7 +56,7 @@
     </div>
     <div class="relative flex w-full flex-col summary-content items-center" class:open={showSummary} class:closed={!showSummary}>
         <div class='mt-2 px-2 bg-primary-400 rounded-lg w-fit'>
-            Powered By Chat GPT (gpt-4o)
+            summarized By ChatGPT
         </div>
         <div class='text-gray-500 mt-2'>
             last update: {displayTime}
