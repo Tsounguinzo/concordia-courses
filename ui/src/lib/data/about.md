@@ -31,6 +31,19 @@ with the needs of our community.
 
 <div class="custom-dropdown">
 <details>
+<summary class="bg-gray-200 dark:bg-neutral-700 dark:text-gray-300 dark:hover:bg-neutral-600 cursor-pointer" >Who created concordia.courses?</summary>
+<p>
+  <ul>
+    <li> <a href="https://beaudelaire.ca"> Beaudelaire Tsoungui Nzodoumkouo </a>, SOEN Concordia </li>
+    <li> <a href="https://www.linkedin.com/in/zhengxuan-zhao-978802128"> zhengxuan zhao </a>, SOEN Mcgill </li>
+    <li> <a href="https://www.russ-aulakh.com"> Russ Aulakh </a>, CS Concordia </li>
+  </ul>
+</p>
+</details>
+</div>
+
+<div class="custom-dropdown">
+<details>
 <summary class="bg-gray-200 dark:bg-neutral-700 dark:text-gray-300 dark:hover:bg-neutral-600 cursor-pointer" >Are my reviews anonymous?</summary>
 <p>Yes, your reviews are completely anonymous. Feel free to share your honest opinion without worrying about your identity being revealed.</p>
 </details>
