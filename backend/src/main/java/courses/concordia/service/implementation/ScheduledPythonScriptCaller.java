@@ -9,18 +9,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -87,13 +81,28 @@ public class ScheduledPythonScriptCaller {
         return LocalDateTime.now().toString();
     }
 
-    private File getScriptFile() throws IllegalArgumentException, URISyntaxException {
-        URL resource = getClass().getClassLoader().getResource(RESOURCE_DIRECTORY);
-        if (resource == null) {
-            throw new IllegalArgumentException("Resource not found: " + RESOURCE_DIRECTORY);
+    private File getScriptFile() throws IOException {
+        ClassPathResource resource = new ClassPathResource(RESOURCE_DIRECTORY + "/" + SCRIPT_NAME);
+
+        if (!resource.exists()) {
+            throw new FileNotFoundException("Resource not found: " + RESOURCE_DIRECTORY + "/" + SCRIPT_NAME);
         }
-        Path path = Paths.get(resource.toURI());
-        return new File(path.toFile(), SCRIPT_NAME);
+
+        // Create a temporary file
+        File tempFile = File.createTempFile("script", ".py");
+        tempFile.deleteOnExit();
+
+        // Copy the content of the resource to the temporary file
+        try (InputStream inputStream = resource.getInputStream();
+             OutputStream outputStream = new FileOutputStream(tempFile)) {
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, length);
+            }
+        }
+
+        return tempFile;
     }
 
     private String runPythonScript(File scriptFile, String cutoffDate) throws IOException, InterruptedException {
