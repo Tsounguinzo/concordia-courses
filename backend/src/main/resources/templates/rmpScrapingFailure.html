@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Scraping Failure</title>
+</head>
+<body style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 0; padding: 20px; background-color: #F4F4F4; color: #333;">
+<div style="max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+    <p style="font-size: 24px; margin-bottom: 20px; color: #333;">Hello, <strong style="font-weight: bold;" th:text="${name}">[Name]</strong>!</p>
+    <p style="font-size: 16px; line-height: 1.5; color: #555;">Unfortunately, the scraping process encountered an error and did not complete successfully.</p>
+    <p style="font-size: 16px; line-height: 1.5; color: #555;">Error Details:</p>
+    <p style="font-size: 16px; line-height: 1.5; color: #555; background-color: #F8D7DA; padding: 10px; border-radius: 5px; color: #721C24;" th:text="${errorMessage}">[Error Message]</p>
+    <p style="font-size: 16px; line-height: 1.5; color: #555;">Please check the error details and try the scraping process again.</p>
+    <p style="font-size: 12px; text-align: center; margin-top: 20px; color: #999;">If you need assistance, please contact our support team. 😊</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Scraping Success</title>
+</head>
+<body style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 0; padding: 20px; background-color: #F4F4F4; color: #333;">
+<div style="max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+    <p style="font-size: 24px; margin-bottom: 20px; color: #333;">Hello, <strong style="font-weight: bold;" th:text="${name}">[Name]</strong>!</p>
+    <p style="font-size: 16px; line-height: 1.5; color: #555;">The scraping process has completed successfully.</p>
+    <p style="font-size: 16px; line-height: 1.5; color: #555;">Here are the details of the scraping operation:</p>
+    <ul style="font-size: 16px; line-height: 1.5; color: #555;">
+        <li>Start Time: <span th:text="${startTime}">[Start Time]</span></li>
+        <li>End Time: <span th:text="${endTime}">[End Time]</span></li>
+        <li>Total Records Scraped: <span th:text="${recordCount}">[Record Count]</span></li>
+    </ul>
+    <p style="font-size: 16px; line-height: 1.5; color: #555;">You can now proceed with reviewing the scraped data.</p>
+    <p style="font-size: 12px; text-align: center; margin-top: 20px; color: #999;">Thank you for using Concordia courses! 😊</p>
+</div>
+</body>
+</html>

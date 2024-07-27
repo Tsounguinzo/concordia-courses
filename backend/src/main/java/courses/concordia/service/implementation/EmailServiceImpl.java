@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import java.time.LocalDate;
+
 @Service
 @RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
@@ -20,7 +22,55 @@ public class EmailServiceImpl implements EmailService {
     public static final String NEW_VERIFICATION_TOKEN = "New Verification Code";
     public static final String RESET_PASSWORD_TOKEN = "Reset Password";
     public static final String RESET_PASSWORD_CONFIRMATION = "Password Reset Confirmation";
+
     public static final String UTF_8_ENCODING = "UTF-8";
+
+    @Override
+    public void sendFailureMailMessage(String name, String to, String errorMessage) {
+        try {
+            MimeMessage message = emailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, UTF_8_ENCODING);
+
+            Context context = new Context();
+            context.setVariable("name", name);
+            context.setVariable("errorMessage", errorMessage);
+
+            String htmlContent = templateEngine.process("rmpScrapingFailure", context);
+            helper.setFrom("cdpl4ter@gmail.com");
+            helper.setTo(to);
+            helper.setSubject("RMP Scraping Failure - " + LocalDate.now());
+            helper.setText(htmlContent, true);
+
+            emailSender.send(message);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e.getMessage());
+        }    }
+
+    @Override
+    public void sendSuccessMailMessage(String name, String to, String startTime, String endTime, int recordCount) {
+        try {
+            MimeMessage message = emailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, UTF_8_ENCODING);
+
+            Context context = new Context();
+            context.setVariable("name", name);
+            context.setVariable("startTime", startTime);
+            context.setVariable("endTime", endTime);
+            context.setVariable("recordCount", recordCount);
+
+            String htmlContent = templateEngine.process("rmpScrapingSuccess", context);
+            helper.setFrom("cdpl4ter@gmail.com");
+            helper.setTo(to);
+            helper.setSubject("RMP Scraping Success - " + LocalDate.now());
+            helper.setText(htmlContent, true);
+
+            emailSender.send(message);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 
     /**
      * Sends a simple HTML email for account verification to a new user.

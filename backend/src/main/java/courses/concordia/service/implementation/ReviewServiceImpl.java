@@ -123,6 +123,10 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewRepository.save(modelMapper.map(reviewDto, Review.class));
     }
 
+    public boolean reviewDoesNotExist(Review review) {
+        return !reviewRepository.existsByTimestampAndInstructorIdAndCourseId(review.getTimestamp(), review.getInstructorId(), review.getCourseId());
+    }
+
     /**
      * Updates an existing Review entity from a ReviewDto.
      *

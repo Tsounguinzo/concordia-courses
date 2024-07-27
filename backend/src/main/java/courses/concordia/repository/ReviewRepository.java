@@ -4,6 +4,7 @@ import courses.concordia.model.Review;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,4 +17,6 @@ public interface ReviewRepository extends MongoRepository<Review, String> {
     List<Review> findAllByInstructorIdAndType(String instructorId, String type);
 
     List<Review> findAllByCourseIdAndType(String courseId, String type);
+
+    boolean existsByTimestampAndInstructorIdAndCourseId(LocalDateTime timestamp, String instructorId, String courseId);
 }
