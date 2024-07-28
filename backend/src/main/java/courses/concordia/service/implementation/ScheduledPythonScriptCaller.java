@@ -132,12 +132,19 @@ public class ScheduledPythonScriptCaller {
         pb.redirectErrorStream(true);
 
         Process process = pb.start();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-            String result = reader.lines().collect(Collectors.joining(System.lineSeparator()));
+        try (BufferedReader outputReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+             BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
+
+            // Capture standard output
+            String result = outputReader.lines().collect(Collectors.joining(System.lineSeparator()));
+
+            // Capture standard error
+            String errorResult = errorReader.lines().collect(Collectors.joining(System.lineSeparator()));
 
             int exitCode = process.waitFor();
             if (exitCode != 0) {
                 log.error("Python script exited with code: {}", exitCode);
+                log.error("Python script error output: {}", errorResult);
                 throw new IOException("Python script exited with code: " + exitCode);
             }
             return result;
