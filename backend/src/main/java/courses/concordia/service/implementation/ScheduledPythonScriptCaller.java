@@ -13,8 +13,10 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.util.FileSystemUtils;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,6 +33,16 @@ public class ScheduledPythonScriptCaller {
     private static final String DEFAULT_CUTOFF_DATE = "2024-06-22";
     private static final String RESOURCE_DIRECTORY = "rmpScraping";
     private static final String SCRIPT_NAME = "processReviews.py";
+
+    private static final String[] REQUIRED_FILES = {
+            "processReviews.py",
+            "utils.py",
+            "concordiaProfRateMyProf.json",
+            "subject-catalogs.json",
+            "department_descriptions.json",
+            "updated_ids.json"
+    };
+
     @EventListener(ContextRefreshedEvent.class)
     public void onApplicationEvent() {
         scrapeRMP();
@@ -38,14 +50,16 @@ public class ScheduledPythonScriptCaller {
     @Scheduled(cron = "0 0 0 * * ?")  // Run daily at midnight
     public void scrapeRMP() {
         log.info("Starting to scrape RMP");
-        var start = getCurrentDateTime();
         int reviewsCount = 0;
         try {
+
+            var start = getCurrentDateTime();
+
             String lastScrapedDate = getLastScrapedDate();
             String cutoffDate = lastScrapedDate == null ? DEFAULT_CUTOFF_DATE : lastScrapedDate;
             updateLastScrapedDate();
 
-            File scriptFile = getScriptFile();
+            File scriptFile = prepareScriptDirectory();
             String result = runPythonScript(scriptFile, cutoffDate);
 
             List<Review> reviews = JsonUtils.getData(result, new TypeToken<List<Review>>() {});
@@ -53,13 +67,14 @@ public class ScheduledPythonScriptCaller {
             reviewsCount = reviews.size();
             addReviews(reviews);
 
+            var end = getCurrentDateTime();
+            emailService.sendSuccessMailMessage("Beaudelaire", "Beaudelaire@tutamail.com", start, end, reviewsCount);
+
         } catch (Exception e) {
             log.error("Error while scraping RMP", e);
             emailService.sendFailureMailMessage("Beaudelaire", "Beaudelaire@tutamail.com", e.getMessage());
         }
         log.info("Finished scraping RMP");
-        var end = getCurrentDateTime();
-        emailService.sendSuccessMailMessage("Beaudelaire", "Beaudelaire@tutamail.com", start, end, reviewsCount);
     }
 
     private String getLastScrapedDate() {
@@ -81,33 +96,39 @@ public class ScheduledPythonScriptCaller {
         return LocalDateTime.now().toString();
     }
 
-    private File getScriptFile() throws IOException {
-        ClassPathResource resource = new ClassPathResource(RESOURCE_DIRECTORY + "/" + SCRIPT_NAME);
+    private File prepareScriptDirectory() throws IOException {
+        File tempDir = Files.createTempDirectory("rmp_scraping").toFile();
+        tempDir.deleteOnExit();
 
-        if (!resource.exists()) {
-            throw new FileNotFoundException("Resource not found: " + RESOURCE_DIRECTORY + "/" + SCRIPT_NAME);
-        }
+        for (String fileName : REQUIRED_FILES) {
+            ClassPathResource resource = new ClassPathResource(RESOURCE_DIRECTORY + "/" + fileName);
+            if (!resource.exists()) {
+                throw new FileNotFoundException("Resource not found: " + RESOURCE_DIRECTORY + "/" + fileName);
+            }
 
-        // Create a temporary file
-        File tempFile = File.createTempFile("script", ".py");
-        tempFile.deleteOnExit();
-
-        // Copy the content of the resource to the temporary file
-        try (InputStream inputStream = resource.getInputStream();
-             OutputStream outputStream = new FileOutputStream(tempFile)) {
-            byte[] buffer = new byte[1024];
-            int length;
-            while ((length = inputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, length);
+            File destFile = new File(tempDir, fileName);
+            try (InputStream inputStream = resource.getInputStream();
+                 OutputStream outputStream = new FileOutputStream(destFile)) {
+                byte[] buffer = new byte[1024];
+                int length;
+                while ((length = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, length);
+                }
             }
         }
 
-        return tempFile;
+        return tempDir;
     }
 
-    private String runPythonScript(File scriptFile, String cutoffDate) throws IOException, InterruptedException {
-        String[] command = {"python", scriptFile.getAbsolutePath(), cutoffDate};
+    private String runPythonScript(File scriptDir, String cutoffDate) throws IOException, InterruptedException {
+        String pythonExecutable = System.getenv("PYTHON_EXECUTABLE");
+        if (pythonExecutable == null || pythonExecutable.isEmpty()) {
+            pythonExecutable = "python"; // Default to "python" if not set
+        }
+
+        String[] command = {pythonExecutable, SCRIPT_NAME, cutoffDate};
         ProcessBuilder pb = new ProcessBuilder(command);
+        pb.directory(scriptDir);
         pb.redirectErrorStream(true);
 
         Process process = pb.start();
@@ -123,6 +144,9 @@ public class ScheduledPythonScriptCaller {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new IOException("Python script execution interrupted", e);
+        } finally {
+            // Clean up the temporary directory
+            FileSystemUtils.deleteRecursively(scriptDir.toPath());
         }
     }
 
