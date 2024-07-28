@@ -4,7 +4,8 @@
 FROM maven:3.6.0-jdk-11-slim AS build
 COPY src /app/src
 COPY pom.xml /app
-RUN mvn -f /home/app/pom.xml clean package
+RUN apt-get update && apt-get install -y maven && apt-get clean
+RUN mvn -f /app/pom.xml clean package
 
 
 #
