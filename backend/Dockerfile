@@ -8,6 +8,9 @@ WORKDIR /app
 COPY pom.xml /app/
 COPY src /app/src
 
+# Install Maven (if not using Maven wrapper)
+RUN apt-get update && apt-get install -y maven && apt-get clean
+
 # Build the application
 RUN mvn clean package -DskipTests
 
