@@ -123,7 +123,7 @@ public class ScheduledPythonScriptCaller {
     private String runPythonScript(File scriptDir, String cutoffDate) throws IOException, InterruptedException {
         String pythonExecutable = System.getenv("PYTHON_EXECUTABLE");
         if (pythonExecutable == null || pythonExecutable.isEmpty()) {
-            pythonExecutable = "python3"; // Default to "python3" if not set
+            pythonExecutable = "python"; // Default to "python" if not set
         }
 
         String[] command = {pythonExecutable, SCRIPT_NAME, cutoffDate};
