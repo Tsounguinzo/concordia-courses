@@ -1,5 +1,8 @@
-[phases]
-setup = "apt-get update && apt-get install -y python3 python3-pip"
+[phases.setup]
+run = [
+    "apt-get update",
+    "apt-get install -y python3 python3-pip"
+]
 
 [variables]
 PYTHON_EXECUTABLE = "/usr/bin/python3"
