@@ -1,5 +1,2 @@
 [phases.setup]
-run = [
-    "apt-get update",
-    "apt-get install -y python3 python3-pip"
-]
+nixPkgs = ["python3", "python3Packages.pip"]
