@@ -60,6 +60,7 @@ public class ScheduledPythonScriptCaller {
             updateLastScrapedDate();
 
             File scriptFile = prepareScriptDirectory();
+            log.info("Prepared script directory: {}", scriptFile.getName());
             String result = runPythonScript(scriptFile, cutoffDate);
 
             List<Review> reviews = JsonUtils.getData(result, new TypeToken<List<Review>>() {});
@@ -127,7 +128,7 @@ public class ScheduledPythonScriptCaller {
     private String runPythonScript(File scriptDir, String cutoffDate) throws IOException, InterruptedException {
         String pythonExecutable = System.getenv("PYTHON_EXECUTABLE");
         if (pythonExecutable == null || pythonExecutable.isEmpty()) {
-            pythonExecutable = "python3"; // Default to "python" if not set
+            pythonExecutable = "python"; // Default to "python" if not set
         }
 
         String[] command = {pythonExecutable, SCRIPT_NAME, cutoffDate};
@@ -148,6 +149,7 @@ public class ScheduledPythonScriptCaller {
             int exitCode = process.waitFor();
             if (exitCode != 0) {
                 log.error("Python script exited with code: {}", exitCode);
+                log.error("Python script output: {}", result);
                 log.error("Python script error output: {}", errorResult);
                 throw new IOException("Python script exited with code: " + exitCode);
             }
