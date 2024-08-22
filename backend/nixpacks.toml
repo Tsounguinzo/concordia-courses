@@ -1,5 +1,8 @@
 [phases.setup]
 nixPkgs = ["...", "python3", "python3Packages.requests"]
 
+[build.dependencies]
+python3Packages = ["requests"]
+
 [phases.build]
 cmds = ["...", "python -c 'import requests; print(requests.__version__)'"]
