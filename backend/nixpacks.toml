@@ -2,4 +2,4 @@
 nixPkgs = ["...", "python3", "python3Packages.pip"]
 
 [phases.build]
-cmds = ["pip install requests"]
+cmds = ["...", "pip install requests"]
