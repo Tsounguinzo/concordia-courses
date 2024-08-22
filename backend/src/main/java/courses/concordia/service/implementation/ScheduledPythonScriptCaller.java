@@ -60,7 +60,6 @@ public class ScheduledPythonScriptCaller {
             updateLastScrapedDate();
 
             File scriptFile = prepareScriptDirectory();
-            log.info("Prepared script directory: {}", scriptFile.getName());
             String result = runPythonScript(scriptFile, cutoffDate);
 
             List<Review> reviews = JsonUtils.getData(result, new TypeToken<List<Review>>() {});
@@ -137,21 +136,16 @@ public class ScheduledPythonScriptCaller {
         pb.redirectErrorStream(true);
 
         Process process = pb.start();
-        try (BufferedReader outputReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-             BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
+        try (BufferedReader outputReader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
 
             // Capture standard output
             String result = outputReader.lines().collect(Collectors.joining(System.lineSeparator()));
-
-            // Capture standard error
-            String errorResult = errorReader.lines().collect(Collectors.joining(System.lineSeparator()));
 
             int exitCode = process.waitFor();
             if (exitCode != 0) {
                 log.error("Python script exited with code: {}", exitCode);
                 log.error("Python script output: {}", result);
-                log.error("Python script error output: {}", errorResult);
-                throw new IOException("Python script exited with code: " + exitCode);
+                throw new IOException("Python script failed: " + result);
             }
             return result;
         } catch (InterruptedException e) {
