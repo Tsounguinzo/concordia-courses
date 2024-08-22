@@ -1,5 +1,5 @@
 [phases.setup]
-nixPkgs = ["...", "python39", "python3Packages.pip"]
+nixPkgs = ["...", "python3", "python3Packages.pip"]
 
-[phases.install]
+[phases.build]
 cmds = ["pip install requests"]
