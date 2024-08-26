@@ -304,13 +304,19 @@ public class ReviewServiceImpl implements ReviewService {
      * @param courseId The ID of the course.
      */
     private void updateCourseExperience(String courseId) {
-        List<Review> reviews = reviewRepository.findAllByCourseIdAndType(courseId, "course");
-        double avgExperience = reviews.stream().mapToInt(Review::getExperience).average().orElse(0.0);
+        List<Review> reviews = reviewRepository.findAllByCourseId(courseId);
+        double avgExperienceAndRating = reviews.stream().mapToDouble(r -> {
+            if (r.getType().equals("course")) {
+                return r.getExperience();
+            } else {
+                return r.getRating();
+            }
+        }).average().orElse(0);
         double avgDifficulty = reviews.stream().mapToInt(Review::getDifficulty).average().orElse(0.0);
         int reviewsCount = reviews.size();
         Course course = courseRepository.findById(courseId).orElse(null);
         if (course != null) {
-            course.setAvgExperience(avgExperience);
+            course.setAvgExperience(avgExperienceAndRating);
             course.setAvgDifficulty(avgDifficulty);
             course.setReviewCount(reviewsCount);
             courseRepository.save(course);
@@ -324,8 +330,14 @@ public class ReviewServiceImpl implements ReviewService {
      */
     private void updateInstructorRatingCoursesAndTags(Review review){
         String instructorId = review.getInstructorId();
-        List<Review> reviews = reviewRepository.findAllByInstructorIdAndType(instructorId, "instructor");
-        double avgRating = reviews.stream().mapToInt(Review::getRating).average().orElse(0.0);
+        List<Review> reviews = reviewRepository.findAllByInstructorId(instructorId);
+        double avgExperienceAndRating = reviews.stream().mapToDouble(r -> {
+            if (r.getType().equals("course")) {
+                return r.getExperience();
+            } else {
+                return r.getRating();
+            }
+        }).average().orElse(0);
         double avgDifficulty = reviews.stream().mapToInt(Review::getDifficulty).average().orElse(0.0);
         int reviewsCount = reviews.size();
         Set<Instructor.Tag> tags = reviews.stream().flatMap(r -> r.getTags().stream()).collect(Collectors.toSet());
@@ -337,7 +349,7 @@ public class ReviewServiceImpl implements ReviewService {
         if (instructor != null) {
             instructor.setTags(tags);
             instructor.getCourses().addAll(courses);
-            instructor.setAvgRating(avgRating);
+            instructor.setAvgRating(avgExperienceAndRating);
             instructor.setAvgDifficulty(avgDifficulty);
             instructor.setReviewCount(reviewsCount);
             instructorRepository.save(instructor);

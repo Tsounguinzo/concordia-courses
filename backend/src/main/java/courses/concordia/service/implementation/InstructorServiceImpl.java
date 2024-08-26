@@ -128,9 +128,15 @@ public class InstructorServiceImpl implements InstructorService {
         instructors.forEach(instructor -> {
             Query query = new Query(Criteria.where("instructorId").is(instructor.get_id()));
             List<Review> reviews = mongoTemplate.find(query, Review.class);
-            double avgRating = reviews.stream().mapToDouble(Review::getRating).average().orElse(0.0);
             double avgDifficulty = reviews.stream().mapToDouble(Review::getDifficulty).average().orElse(0.0);
-            instructor.setAvgRating(avgRating);
+            double avgExperienceAndRating = reviews.stream().mapToDouble(review -> {
+                if (review.getType().equals("course")) {
+                    return review.getExperience();
+                } else {
+                    return review.getRating();
+                }
+            }).average().orElse(0);
+            instructor.setAvgRating(avgExperienceAndRating);
             instructor.setAvgDifficulty(avgDifficulty);
             instructor.setReviewCount(reviews.size());
             instructorRepository.save(instructor);

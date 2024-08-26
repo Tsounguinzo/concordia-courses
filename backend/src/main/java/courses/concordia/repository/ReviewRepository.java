@@ -19,4 +19,6 @@ public interface ReviewRepository extends MongoRepository<Review, String> {
     List<Review> findAllByCourseIdAndType(String courseId, String type);
 
     boolean existsByTimestampAndInstructorIdAndCourseId(LocalDateTime timestamp, String instructorId, String courseId);
+    List<Review> findAllByCourseId(String courseId);
+    List<Review> findAllByInstructorId(String instructorId);
 }

@@ -144,9 +144,15 @@ public class CourseServiceImpl implements CourseService {
             Query query = new Query(Criteria.where("courseId").is(course.get_id()));
             List<Review> reviews = mongoTemplate.find(query, Review.class);
             double avgDifficulty = reviews.stream().mapToDouble(Review::getDifficulty).average().orElse(0);
-            double avgExperience = reviews.stream().mapToDouble(Review::getExperience).average().orElse(0);
+            double avgExperienceAndRating = reviews.stream().mapToDouble(review -> {
+                if (review.getType().equals("course")) {
+                    return review.getExperience();
+                } else {
+                    return review.getRating();
+                }
+            }).average().orElse(0);
             course.setAvgDifficulty(avgDifficulty);
-            course.setAvgExperience(avgExperience);
+            course.setAvgExperience(avgExperienceAndRating);
             course.setReviewCount(reviews.size());
             courseRepository.save(course);
         });
