@@ -261,6 +261,7 @@
                 <div class='w-full shadow-sm'>
                     {#if userReview}
                         <CourseReview
+                                useTaughtBy={true}
                                 canModify={Boolean((user && userReview?.userId === user?.id) || (visitor && userReview?.userId === visitor))}
                                 handleDelete={() => handleDelete(userReview)}
                                 editReview={editReviewOpen}
@@ -276,6 +277,7 @@
                             )
                             .slice(0, $showAllReviews ? $showingReviews.length : numberOfReviewsToShow) as review (review._id)}
                             <CourseReview
+                                    useTaughtBy={true}
                                     canModify={Boolean((user && review?.userId === user?.id) || (visitor && review?.userId === visitor))}
                                     handleDelete={() => handleDelete(review)}
                                     editReview={editReviewOpen}
@@ -346,6 +348,7 @@
                     <div class='w-full shadow-sm'>
                         {#if userReview}
                             <CourseReview
+                                    useTaughtBy={true}
                                     canModify={Boolean((user && userReview?.userId === user?.id) || (visitor && userReview?.userId === visitor))}
                                     handleDelete={() => handleDelete(userReview)}
                                     editReview={editReviewOpen}
@@ -362,6 +365,7 @@
                                 )
                                 .slice(0, $showAllReviews ? $showingReviews.length : numberOfReviewsToShow) as review (review._id)}
                                 <CourseReview
+                                        useTaughtBy={true}
                                         canModify={Boolean((user && review?.userId === user?.id) || (visitor && review?.userId === visitor))}
                                         handleDelete={() => handleDelete(review)}
                                         editReview={editReviewOpen}

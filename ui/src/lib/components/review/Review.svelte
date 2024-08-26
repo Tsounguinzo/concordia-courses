@@ -30,6 +30,7 @@
     export let updateLikes: (likes: number) => void;
     export let review: Review;
     export let shareable: boolean = true;
+    export let useTaughtBy: boolean;
 
     let readMore = false;
     let show = false;
@@ -140,7 +141,7 @@
     </div>
     <div class='flex items-center'>
         <p class='mb-2 mt-auto flex-1 text-sm italic leading-4 text-gray-700 dark:text-gray-200'>
-            {#if (review.type ?? 'course') === 'course'}
+            {#if typeof useTaughtBy === 'undefined' ? (review.type ?? 'course') === 'course' : useTaughtBy}
                 Taught by{' '}
                 <a href={`/instructor/${review.instructorId}`}
                    class='font-medium transition hover:text-primary-600'>

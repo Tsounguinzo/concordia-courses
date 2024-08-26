@@ -13,4 +13,5 @@ public interface CourseService {
     CourseDto getCourseById(String id);
     CourseReviewsDto getCourseAndReviewsById(String id);
     void updateCourses(MultipartFile file);
+    void updateCoursesStatistics();
 }

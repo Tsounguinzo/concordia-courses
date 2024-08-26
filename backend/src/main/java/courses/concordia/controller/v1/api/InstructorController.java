@@ -43,6 +43,15 @@ public class InstructorController {
                 .setPayload(instructorService.getInstructors());
     }
 
+    @GetMapping("/stats")
+    public ResponseEntity<String> updateInstructorsStats(@RequestParam String key) {
+        if (!key.equals(uploadKey)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid key");
+        }
+        instructorService.updateInstructorsStatistics();
+        return ResponseEntity.ok("Courses processed successfully");
+    }
+
     @GetMapping("/{id}")
     public Response<?> getInstructorById(@PathVariable String id, @RequestParam(name = "with_reviews", defaultValue = "false") boolean withReviews) {
         Object instructorPayload = withReviews ? instructorService.getInstructorAndReviewsById(id) : instructorService.getInstructorById(id);

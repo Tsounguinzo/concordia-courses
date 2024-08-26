@@ -106,7 +106,7 @@ public class InstructorServiceImpl implements InstructorService {
         log.info("Retrieving instructor and reviews with id {}", id);
         InstructorDto instructor = getInstructorById(id);
 
-        Query query = new Query(Criteria.where("instructorId").is(id).and("type").is("instructor")).with(Sort.by(Sort.Direction.DESC, "timestamp"));
+        Query query = new Query(Criteria.where("instructorId").is(id)).with(Sort.by(Sort.Direction.DESC, "timestamp"));
         List<ReviewDto> reviews = mongoTemplate.find(query, Review.class)
                 .stream()
                 .map(review -> modelMapper.map(review, ReviewDto.class))
@@ -115,6 +115,27 @@ public class InstructorServiceImpl implements InstructorService {
         return new InstructorReviewsDto()
                 .setInstructor(instructor)
                 .setReviews(reviews);
+    }
+
+    /**
+     * Updates the statistics for all instructors in the repository.
+     * This method calculates the average difficulty and rating ratings for each instructor based on reviews.
+     */
+    @Override
+    public void updateInstructorsStatistics() {
+        log.info("Updating Instructors statistics");
+        List<Instructor> instructors = instructorRepository.findAll();
+        instructors.forEach(instructor -> {
+            Query query = new Query(Criteria.where("instructorId").is(instructor.get_id()));
+            List<Review> reviews = mongoTemplate.find(query, Review.class);
+            double avgRating = reviews.stream().mapToDouble(Review::getRating).average().orElse(0.0);
+            double avgDifficulty = reviews.stream().mapToDouble(Review::getDifficulty).average().orElse(0.0);
+            instructor.setAvgRating(avgRating);
+            instructor.setAvgDifficulty(avgDifficulty);
+            instructor.setReviewCount(reviews.size());
+            instructorRepository.save(instructor);
+        });
+        log.info("Instructors statistics updated successfully");
     }
 
     @Override

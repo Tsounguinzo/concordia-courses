@@ -2,13 +2,13 @@ package courses.concordia.service.implementation;
 
 import com.google.gson.reflect.TypeToken;
 import courses.concordia.dto.model.course.CourseDto;
+import courses.concordia.dto.model.course.CourseFilterDto;
 import courses.concordia.dto.model.course.CourseReviewsDto;
 import courses.concordia.dto.model.review.ReviewDto;
 import courses.concordia.exception.CustomExceptionFactory;
 import courses.concordia.exception.EntityType;
 import courses.concordia.exception.ExceptionType;
 import courses.concordia.model.Course;
-import courses.concordia.dto.model.course.CourseFilterDto;
 import courses.concordia.model.Review;
 import courses.concordia.repository.CourseRepository;
 import courses.concordia.service.CourseService;
@@ -107,7 +107,7 @@ public class CourseServiceImpl implements CourseService {
         log.info("Retrieving course and reviews with ID {}", id);
         CourseDto course = getCourseById(id);
 
-        Query query = new Query(Criteria.where("courseId").is(id).and("type").is("course")).with(Sort.by(Sort.Direction.DESC, "timestamp"));
+        Query query = new Query(Criteria.where("courseId").is(id)).with(Sort.by(Sort.Direction.DESC, "timestamp"));
         List<ReviewDto> reviews = mongoTemplate.find(query, Review.class)
                 .stream()
                 .map(review -> modelMapper.map(review, ReviewDto.class))
@@ -130,6 +130,27 @@ public class CourseServiceImpl implements CourseService {
         List<Course> courses = processCourseFile(file);
         courses.forEach(this::updateSchedules);
         log.info("{} courses updated successfully", courses.size());
+    }
+
+    /**
+     * Updates the statistics for all courses in the repository.
+     * This method calculates the average difficulty and experience ratings for each course based on reviews.
+     */
+    @Override
+    public void updateCoursesStatistics() {
+        log.info("Updating courses statistics");
+        List<Course> courses = courseRepository.findAll();
+        courses.forEach(course -> {
+            Query query = new Query(Criteria.where("courseId").is(course.get_id()));
+            List<Review> reviews = mongoTemplate.find(query, Review.class);
+            double avgDifficulty = reviews.stream().mapToDouble(Review::getDifficulty).average().orElse(0);
+            double avgExperience = reviews.stream().mapToDouble(Review::getExperience).average().orElse(0);
+            course.setAvgDifficulty(avgDifficulty);
+            course.setAvgExperience(avgExperience);
+            course.setReviewCount(reviews.size());
+            courseRepository.save(course);
+        });
+        log.info("Courses statistics updated successfully");
     }
 
     private void updateSchedules(Course course) {

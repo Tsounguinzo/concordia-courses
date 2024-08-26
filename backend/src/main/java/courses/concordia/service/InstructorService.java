@@ -12,5 +12,6 @@ public interface InstructorService {
     List<InstructorDto> getInstructorsWithFilter(int limit, int offset, InstructorFilterDto filters);
     InstructorDto getInstructorById(String id);
     InstructorReviewsDto getInstructorAndReviewsById(String id);
+    void updateInstructorsStatistics();
     void uploadInstructors(MultipartFile file);
 }
