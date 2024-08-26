@@ -43,6 +43,7 @@
 		"flexsearch": "^0.7.43",
 		"greet-by-time": "^1.0.1",
 		"lodash": "^4.17.21",
+		"mode-watcher": "^0.4.1",
 		"lucide-svelte": "^0.323.0",
 		"marked": "^12.0.1",
 		"svelte-headlessui": "^0.0.33",
