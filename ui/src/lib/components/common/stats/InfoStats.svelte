@@ -28,9 +28,8 @@
     const lg = useMediaQuery('(min-width: 1024px)');
 
     $: rating = allReviews.map((r) => r?.rating);
-    $: averageRating = sum(rating) / allReviews.length;
     $: experience = allReviews.map((r) => r?.experience);
-    $: averageExperience = sum(experience) / allReviews.length;
+    $: averageRatingAndExperience = (sum(experience) + sum(rating)) / allReviews.length;
     $: difficulties = allReviews.map((r) => r.difficulty);
     $: averageDifficulty = sum(difficulties) / allReviews.length;
 
@@ -47,7 +46,7 @@
             <div class='md:rounded-xl md:p-2'>
                 <Stat
                         title={`${type === 'course' ? 'Experience' : 'Clarity Rating'} Score`}
-                        value={round2Decimals(type === 'course' ? averageExperience : averageRating)}
+                        value={round2Decimals(averageRatingAndExperience)}
                         icon='star'
                         variant={variant}
                 />

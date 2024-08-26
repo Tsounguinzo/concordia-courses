@@ -52,6 +52,7 @@
         };
     });
 
+    const isCourseType = typeof useTaughtBy === 'undefined' ? (review.type ?? 'course') === 'course' : useTaughtBy;
 </script>
 
 <div class={twMerge(
@@ -91,9 +92,9 @@
                     <div class='flex w-64 flex-col items-end rounded-lg p-2'>
                         <div class='flex items-center gap-x-2'>
                             <div class='whitespace-nowrap text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
-                                {(review.type ?? 'course') === 'course' ? 'Experience' : 'Clarity Rating'}
+                                {isCourseType ? 'Experience' : 'Clarity Rating'}
                             </div>
-                            <IconRating rating={(review.type ?? 'course') === 'course' ? review.experience : review.rating} icon="star"/>
+                            <IconRating rating={isCourseType ? review.experience : review.rating} icon="star"/>
                         </div>
                         <div class='flex items-center gap-x-2'>
                             <div class='text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
@@ -141,7 +142,7 @@
     </div>
     <div class='flex items-center'>
         <p class='mb-2 mt-auto flex-1 text-sm italic leading-4 text-gray-700 dark:text-gray-200'>
-            {#if typeof useTaughtBy === 'undefined' ? (review.type ?? 'course') === 'course' : useTaughtBy}
+            {#if isCourseType}
                 Taught by{' '}
                 <a href={`/instructor/${review.instructorId}`}
                    class='font-medium transition hover:text-primary-600'>

@@ -51,7 +51,7 @@ public class CourseController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid key");
         }
         courseService.updateCoursesStatistics();
-        return ResponseEntity.ok("Courses processed successfully");
+        return ResponseEntity.ok("Courses stats updated successfully");
     }
 
     @GetMapping("/{id}")

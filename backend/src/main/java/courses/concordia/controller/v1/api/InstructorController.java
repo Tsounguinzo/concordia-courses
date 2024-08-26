@@ -49,7 +49,7 @@ public class InstructorController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid key");
         }
         instructorService.updateInstructorsStatistics();
-        return ResponseEntity.ok("Courses processed successfully");
+        return ResponseEntity.ok("Instructors stats updated successfully");
     }
 
     @GetMapping("/{id}")
