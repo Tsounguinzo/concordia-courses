@@ -1,7 +1,7 @@
 <script lang="ts">
     import { cn } from '$lib/utils';
     import { Motion } from 'svelte-motion';
-    import {darkModeOn} from "$lib/darkmode";
+    import {mode} from "mode-watcher";
 
     const paths = [
         'M-380 -189C-380 -189 -312 216 152 343C616 470 684 875 684 875',
@@ -131,8 +131,8 @@
                     gradientUnits="userSpaceOnUse"
                     gradientTransform="translate(352 34) rotate(90) scale(555 1560.62)"
             >
-                <stop offset="0.0666667" stop-color={$darkModeOn ? '#d4d4d4' : ''}></stop>
-                <stop offset="0.243243" stop-color={$darkModeOn ? '#d4d4d4' : ''}></stop>
+                <stop offset="0.0666667" stop-color={$mode === 'dark' ? '#d4d4d4' : ''}></stop>
+                <stop offset="0.243243" stop-color={$mode === 'dark' ? '#d4d4d4' : ''}></stop>
                 <stop offset="0.43594" stop-color="white" stop-opacity="0"></stop>
             </radialGradient>
         </defs>

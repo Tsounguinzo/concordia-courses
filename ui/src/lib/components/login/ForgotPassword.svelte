@@ -3,10 +3,10 @@
     import {ShieldQuestion} from "lucide-svelte";
     import Transition from "svelte-transition";
     import {createDialog} from "svelte-headlessui";
-    import {darkModeOn} from "$lib/darkmode";
     import {writable} from "svelte/store";
     import {toast} from "svelte-sonner";
     import {repo} from "$lib/repo";
+    import {mode} from "mode-watcher";
 
     export let title: string;
     export let text: string;
@@ -48,7 +48,7 @@
             size={size}/>
 </button>
 <Transition show={$dialog.expanded}>
-    <div class={twMerge('relative z-50', $darkModeOn ? 'dark' : '')}>
+    <div class={twMerge('relative z-50', $mode === 'dark' ? 'dark' : '')}>
         <Transition
                 enter='ease-out duration-200'
                 enterFrom='opacity-0'

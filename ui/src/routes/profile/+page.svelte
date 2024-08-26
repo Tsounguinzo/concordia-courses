@@ -19,9 +19,9 @@
     import CardBody from "$lib/components/common/animation/ThreeDCardEffect/CardBody.svelte";
     import CardItem from "$lib/components/common/animation/ThreeDCardEffect/CardItem.svelte";
     import VerificationPrompt from "$lib/components/profile/VerificationPrompt.svelte";
-    import {darkModeOn} from "$lib/darkmode";
     import Skeleton from "$lib/components/common/loader/Skeleton.svelte";
     import {instructorIdToName} from "$lib/utils.js";
+    import {mode} from "mode-watcher";
 
     const user = $page.data.user;
     let isMouseEntered = false;
@@ -76,13 +76,13 @@
 <div class='mx-auto max-w-2xl'>
     {#if user === undefined || user === null}
         <Skeleton class='mb-2 rounded-lg mt-4' width={800} height={300} count={1}
-                  color={$darkModeOn ? 'rgb(38 38 38)' : 'rgb(226 232 240)'}/>
+                  color={$mode === 'dark' ? 'rgb(38 38 38)' : 'rgb(226 232 240)'}/>
 
         <Skeleton class='mb-8 rounded-lg mt-4' width={800} height={80} count={1}
-                  color={$darkModeOn ? 'rgb(38 38 38)' : 'rgb(226 232 240)'}/>
+                  color={$mode === 'dark' ? 'rgb(38 38 38)' : 'rgb(226 232 240)'}/>
 
         <Skeleton class='mb-2 rounded-lg mt-2' width={800} height={200} count={5}
-                  color={$darkModeOn ? 'rgb(38 38 38)' : 'rgb(226 232 240)'}/>
+                  color={$mode === 'dark' ? 'rgb(38 38 38)' : 'rgb(226 232 240)'}/>
     {:else }
         <JumpToTopButton/>
         <CardContainer bind:isMouseEntered
@@ -164,7 +164,7 @@
                 {#if $tabs.selected === "Reviews"}
                     {#if $userReviews === undefined}
                         <Skeleton class='mb-2 rounded-lg mt-2' width={800} height={200} count={5}
-                                  color={$darkModeOn ? 'rgb(38 38 38)' : 'rgb(226 232 240)'}/>
+                                  color={$mode === 'dark' ? 'rgb(38 38 38)' : 'rgb(226 232 240)'}/>
                     {:else }
                         {#if $userReviews.length}
                             {#each $userReviews.sort((a, b) => a.timestamp - b.timestamp) as review (review._id)}
@@ -204,7 +204,7 @@
                     <div class='m-4'>
                         {#if $userSubscriptions === undefined }
                             <Skeleton class='mb-2 rounded-lg mt-2' width={700} height={60} count={5}
-                                      color={$darkModeOn ? 'rgb(38 38 38)' : 'rgb(226 232 240)'}/>
+                                      color={$mode === 'dark' ? 'rgb(38 38 38)' : 'rgb(226 232 240)'}/>
                         {:else }
                             {#if $userSubscriptions.length !== 0}
                                 {#each $userSubscriptions as subscription, i (i)}

@@ -1,5 +1,4 @@
 <script lang="ts">
-    import {darkModeOn} from "$lib/darkmode";
     import Seo from "$lib/components/common/Seo.svelte";
     import JumpToTopButton from "$lib/components/common/JumpToTopButton.svelte";
     import InfiniteScroll from "svelte-infinite-scroll";
@@ -18,6 +17,7 @@
     import {spliceCourseCode} from "$lib/utils";
     import {instructorIdToName} from "$lib/utils.js";
     import {visitorId} from "$lib/store";
+    import {mode} from "mode-watcher";
 
     type SortByType = (typeof feedSortByOptions)[number];
 
@@ -144,7 +144,7 @@
             {:else }
                 <div class='mx-2 text-gray-50'>
                     <Skeleton class='mb-2 rounded-lg first:mt-2'
-                              color={$darkModeOn ? 'rgb(38 38 38)' : 'rgb(226 232 240)'}/>
+                              color={$mode === 'dark' ? 'rgb(38 38 38)' : 'rgb(226 232 240)'}/>
                 </div>
             {/if}
 

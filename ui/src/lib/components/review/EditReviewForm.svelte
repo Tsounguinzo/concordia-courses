@@ -2,7 +2,6 @@
     import Transition from "svelte-transition";
     import {createDialog} from "svelte-headlessui";
     import {twMerge} from "tailwind-merge";
-    import {darkModeOn} from "$lib/darkmode";
     import ReviewForm from "./ReviewForm.svelte";
     import type {Review} from "$lib/model/Review";
     import type {Course} from "$lib/model/Course";
@@ -14,6 +13,7 @@
     import {instructorIdToName} from "$lib/utils.js";
     import {validateReviewContent, validateFieldPresence, validateNumericRange, validateTags} from "$lib/validators";
     import {type Instructor} from "$lib/model/Instructor";
+    import {mode} from "mode-watcher";
 
     export let course: Course | null = null;
     export let instructor: Instructor | null = null;
@@ -74,7 +74,7 @@
 
 {#if $open}
     <Transition appear show={$open} unmount={true}>
-        <div class={twMerge('relative z-50', $darkModeOn ? 'dark' : '')}>
+        <div class={twMerge('relative z-50', $mode === 'dark' ? 'dark' : '')}>
             <Transition
                     enter='ease-out duration-200'
                     enterFrom='opacity-0'

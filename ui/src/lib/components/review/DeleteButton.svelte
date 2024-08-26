@@ -3,7 +3,7 @@
     import {Trash2} from "lucide-svelte";
     import Transition from "svelte-transition";
     import {createDialog} from "svelte-headlessui";
-    import {darkModeOn} from "$lib/darkmode";
+    import {mode} from "mode-watcher";
 
     export let title: string;
     export let text: string;
@@ -18,7 +18,7 @@
     <Trash2 class='stroke-gray-500 transition duration-200 hover:stroke-red-600 dark:stroke-gray-400 dark:hover:stroke-red-600' size={size}/>
 </button>
 <Transition show={$dialog.expanded}>
-    <button class={twMerge('relative z-50', $darkModeOn ? 'dark' : '')} on:click={dialog.close}>
+    <button class={twMerge('relative z-50', $mode === 'dark' ? 'dark' : '')} on:click={dialog.close}>
         <Transition
                 enter='ease-out duration-200'
                 enterFrom='opacity-0'

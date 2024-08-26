@@ -11,13 +11,13 @@
     import JumpToTopButton from "$lib/components/common/JumpToTopButton.svelte";
     import CourseCard from "$lib/components/explore/CourseCard.svelte";
     import {allSortByOptions} from "$lib/types";
-    import {darkModeOn} from "$lib/darkmode";
     import Skeleton from "$lib/components/common/loader/Skeleton.svelte";
     import {toast} from "svelte-sonner";
     import Seo from "$lib/components/common/Seo.svelte";
     import InstructorCard from "$lib/components/explore/InstructorCard.svelte";
     import type {Instructor} from "$lib/model/Instructor";
     import {browser} from "$app/environment";
+    import {mode} from "mode-watcher";
 
     type SortByType = (typeof allSortByOptions)[number];
 
@@ -300,7 +300,7 @@
                 {:else }
                     <div class='mx-2 text-gray-50'>
                         <Skeleton class='mb-2 rounded-lg first:mt-2'
-                                  color={$darkModeOn ? 'rgb(38 38 38)' : 'rgb(226 232 240)'}/>
+                                  color={$mode === 'dark' ? 'rgb(38 38 38)' : 'rgb(226 232 240)'}/>
                     </div>
                 {/if}
 
