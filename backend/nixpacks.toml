@@ -1,8 +1,11 @@
 ##https://search.nixos.org/packages
 
 [phases.setup]
-nixPkgs = ["...", "python3", "python311Packages.requests"]
+nixPkgs = ["...", "python311Packages.pip", "python3"]
+
+[phases.build]
+nixPkgs = ["...", "pip install requests"]
 
 [phases.test]
 cmds = ["""python3 -c 'import requests; print("Requests version:", requests.__version__)'"""]
-dependsOn = ["setup"]
+dependsOn = ["build"]
