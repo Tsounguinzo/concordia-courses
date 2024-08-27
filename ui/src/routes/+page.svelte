@@ -30,15 +30,15 @@
                     results={$searchResults}
                     handleInputChange={handleInputChange}
             />
-                <a href="/reviews-feed" class='mx-auto cursor-pointer text-sm text-gray-800 underline underline-offset-4 hover:text-gray-500 dark:text-gray-400 dark:hover:text-gray-500 md:text-base'>
+                <a href="/reviews-feed" class='mx-auto rounded-md bg-slate-50 px-3 py-2 text-sm font-semibold text-gray-500 hover:bg-gray-100 dark:bg-neutral-800 dark:text-gray-200 dark:hover:bg-neutral-700'>
                     Explore reviews feed <span aria-hidden='true'>&rarr;</span>
                 </a>
             </div>
         </div>
     </div>
-    <div class="flex items-center mt-10">
-        <a href="/grades" class='mx-auto cursor-pointer text-sm text-gray-800 underline underline-offset-4 hover:text-gray-500 dark:text-gray-400 dark:hover:text-gray-500 md:text-base'>
-            Share your grades distribution <span aria-hidden='true'>&rarr;</span>
-        </a>
+    <div class="flex items-center mt-1">
+        <button disabled class='rounded-md mx-auto bg-slate-50 px-3 py-2 text-sm font-semibold text-gray-500 hover:bg-gray-100 dark:bg-neutral-800 dark:text-gray-200 dark:hover:bg-neutral-700'>
+            Search by review content (soon) <!--span aria-hidden='true'>&rarr;</span-->
+        </button>
     </div>
 </div>

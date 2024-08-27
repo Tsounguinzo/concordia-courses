@@ -94,7 +94,7 @@
                             <div class='whitespace-nowrap text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
                                 {isCourseType ? 'Experience' : 'Clarity Rating'}
                             </div>
-                            <IconRating rating={isCourseType ? review.experience : review.rating} icon="star"/>
+                            <IconRating rating={review.experience ?? review.rating} icon="star"/>
                         </div>
                         <div class='flex items-center gap-x-2'>
                             <div class='text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>

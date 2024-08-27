@@ -29,6 +29,7 @@
 
     $: rating = allReviews.map((r) => r?.rating);
     $: experience = allReviews.map((r) => r?.experience);
+    $: ratingAndExperience = rating.concat(experience);
     $: averageRatingAndExperience = (sum(experience) + sum(rating)) / allReviews.length;
     $: difficulties = allReviews.map((r) => r.difficulty);
     $: averageDifficulty = sum(difficulties) / allReviews.length;
@@ -54,7 +55,7 @@
                 <Histogram
                         width={180}
                         height={$lg ? 132 : 80}
-                        data={type === 'course' ? experience : rating}
+                        data={ratingAndExperience}
                         max={5}
                         gap={10}
                         class='mx-auto hidden sm:block'
