@@ -1,2 +1,6 @@
 [phases.setup]
 nixPkgs = ["...", "python3", "python3Packages.requests"]
+
+[phases.test]
+cmds = ["""python3 -c 'import requests; print("Requests version:", requests.__version__)'"""]
+dependsOn = ["setup"]
