@@ -1,5 +1,8 @@
 [phases.setup]
-nixPkgs = ["...", "python3", "python3Packages.requests"]
+nixPkgs = ["...", "python3", "pip"]
+
+[phases.build]
+cmds = ["...", "pip install -r requirements.txt"]
 
 [phases.test]
 cmds = ["""python3 -c 'import requests; print("Requests version:", requests.__version__)'"""]
