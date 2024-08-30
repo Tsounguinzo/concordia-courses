@@ -392,6 +392,18 @@ export const repo = {
         return await client.get(`/auth/forgot_password?username=${username}`);
     },
 
+    async getReviewsByFTS(query: string): Promise<Review[]> {
+        return await client.deserialize<Review[]>(
+            'GET',
+            `/search?query=${query}`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }
+        );
+    },
+
     async updatePassword(newPassword: string, token: string): Promise<Response> {
         return await client.put(`/auth/update_password?token=${token}`, {
             headers: {
