@@ -2,6 +2,7 @@ package courses.concordia.controller.v1.api;
 
 import com.mongodb.client.*;
 import com.mongodb.client.model.search.SearchOperator;
+import courses.concordia.dto.response.Response;
 import courses.concordia.model.Instructor;
 import courses.concordia.model.Review;
 import lombok.RequiredArgsConstructor;
@@ -9,12 +10,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,7 +38,7 @@ public class AtlasSearchController {
     private String databaseName;
 
     @GetMapping
-    public ResponseEntity<List<Review>> FTS(@RequestParam String query) {
+    public Response<?> FTS(@RequestParam String query) {
 
         try (MongoClient mongoClient = MongoClients.create(mongodbUri)) {
             MongoDatabase database = mongoClient.getDatabase(databaseName);
@@ -77,7 +78,7 @@ public class AtlasSearchController {
                 reviews.add(review);
             }
 
-            return ResponseEntity.ok(reviews);
+            return Response.ok().setPayload(reviews);
         }
     }
 }

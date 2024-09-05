@@ -15,7 +15,7 @@
         isEmptySearch = false;
 
         const queryResults = await repo.getReviewsByFTS(input);
-        reviews = [...reviews, ...queryResults];
+        reviews = [...queryResults];
 
         input = '';
         isLoading = false;
