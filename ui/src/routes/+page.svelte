@@ -25,7 +25,7 @@
             <h1 class='mb-6 py-3 text-left text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-200 md:text-5xl'>
                 Give, Share and explore reviews on instructors and courses @ Concordia.
             </h1>
-            <a href="https://flyfast.io" class="p-3 bg-gradient-to-r from-blue-500 to-emerald-400 rounded-lg font-semibold">
+            <a href="https://flyfast.io" class="p-3 bg-gradient-to-r from-blue-500 to-emerald-400 rounded-lg font-semibold max-sm:text-sm">
                 Try out my new project, FlyFast.io! 🚀
             </a>
             <div class='flex flex-col gap-6 text-center'>
