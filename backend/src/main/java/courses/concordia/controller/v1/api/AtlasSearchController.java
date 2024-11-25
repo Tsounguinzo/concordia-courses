@@ -15,11 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -72,15 +75,25 @@ public class AtlasSearchController {
                 review.setContent(doc.getString("content"));
                 review.setCourseId(doc.getString("courseId"));
                 review.setInstructorId(doc.getString("instructorId"));
-                String timestampStr = doc.getString("timestamp");
-                if (timestampStr != null) {
-                    try {
-                        LocalDateTime timestamp = LocalDateTime.parse(timestampStr, DateTimeFormatter.ISO_DATE_TIME);
+                try {
+                    String timestampStr = doc.getString("timestamp");
+                    if (timestampStr != null) {
+                        try {
+                            LocalDateTime timestamp = LocalDateTime.parse(timestampStr, DateTimeFormatter.ISO_DATE_TIME);
+                            review.setTimestamp(timestamp);
+                        } catch (DateTimeParseException e) {
+                            System.err.println("Error parsing timestamp: " + timestampStr);
+                        }
+                    }
+                } catch (ClassCastException e) {
+                    Date date = doc.getDate("timestamp");
+                    if (date != null) {
+                        Instant instant = date.toInstant();
+                        LocalDateTime timestamp = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
                         review.setTimestamp(timestamp);
-                    } catch (DateTimeParseException e) {
-                        System.err.println("Error parsing timestamp: " + timestampStr);
                     }
                 }
+
                 review.setDifficulty(doc.getInteger("difficulty"));
                 review.setExperience(doc.getInteger("experience"));
                 review.setRating(doc.getInteger("rating"));
