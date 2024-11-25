@@ -6,6 +6,7 @@
     import ReviewComponent from "$lib/components/review/Review.svelte";
     import {spring} from 'svelte/motion';
     import {onMount} from 'svelte';
+    import {ArrowUpFromDot, Search} from "lucide-svelte";
 
     interface SearchState {
         isLoading: boolean;
@@ -149,7 +150,7 @@
         {/if}
 
         <!-- Parent relative container -->
-        <div class="relative max-w-2xl mx-auto mb-12">
+        <div class="relative max-w-2xl mx-auto mb-16">
             <!-- Search Form -->
             <form on:submit={handleSubmit}
                   class="relative transform transition-all duration-500
@@ -171,15 +172,16 @@
                         />
 
                         <!-- Search icon -->
-                        <div
+                        <button type="submit"
                                 class="absolute left-4 transition-transform duration-300"
                                 style="transform: translateZ(20px) {focusedInput ? 'scale(1.1)' : ''}"
                         >
-                            <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                            </svg>
-                        </div>
+                            {#if input.trim()}
+                                <ArrowUpFromDot class="text-gray-600 bg-gray-400 rounded-full p-1" />
+                            {:else}
+                                <Search class="text-gray-400"/>
+                            {/if}
+                        </button>
 
                         <!-- Clear button -->
                         {#if input}

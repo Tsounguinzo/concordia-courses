@@ -5,6 +5,7 @@ export const navigationItems = [
   { name: 'Explore', href: '/explore' },
   { name: 'Reviews', href: '/reviews-feed' },
   { name: 'About', href: '/about' },
+  { name: 'Search', href: '/search' },
 ];
 
 export const backendUrl = import.meta.env.VITE_BACKEND_URL ?? 'http://localhost:8080';
