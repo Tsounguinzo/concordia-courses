@@ -1,70 +1,286 @@
 <script lang="ts">
-    import {repo} from '$lib/repo';
+    import { fade, fly, slide, scale } from 'svelte/transition';
+    import { elasticOut, cubicOut } from 'svelte/easing';
+    import { repo } from '$lib/repo';
+    import type { Review } from "$lib/model/Review";
     import ReviewComponent from "$lib/components/review/Review.svelte";
-    import type {Review} from "$lib/model/Review";
-    import {mode} from "mode-watcher";
-    import Skeleton from "$lib/components/common/loader/Skeleton.svelte";
+    import { spring } from 'svelte/motion';
+    import { onMount } from 'svelte';
 
-    let input = '';
-    let isEmptySearch = true
-    let isLoading: boolean = false;
-    let reviews: Review[] = [];
-
-    async function handleSubmit() {
-        isLoading = true;
-        isEmptySearch = false;
-
-        const queryResults = await repo.getReviewsByFTS(input);
-        reviews = [...queryResults];
-
-        input = '';
-        isLoading = false;
+    interface SearchState {
+        isLoading: boolean;
+        hasError: boolean;
+        errorMessage: string;
+        isEmpty: boolean;
+        searchAttempted: boolean;
     }
 
+    let input = '';
+    let reviews: Review[] = [];
+    let focusedInput = false;
+    let isLimitMenuOpen = false;
+    let resultLimit = 10; // Default value
+
+    // Initialize search state
+    let searchState: SearchState = {
+        isLoading: false,
+        hasError: false,
+        errorMessage: '',
+        isEmpty: true,
+        searchAttempted: false
+    };
+
+    // Load saved limit from localStorage on mount
+    onMount(() => {
+        const savedLimit = localStorage.getItem('searchResultLimit');
+        if (savedLimit) {
+            resultLimit = parseInt(savedLimit);
+        }
+    });
+
+    // Animated counter for results
+    const resultCount = spring(0, {
+        stiffness: 0.1,
+        damping: 0.8
+    });
+
+    $: resultCount.set(reviews.length);
+
+    // Handle limit changes
+    function updateLimit(newLimit: number) {
+        resultLimit = Math.max(1, Math.min(100, newLimit));
+        localStorage.setItem('searchResultLimit', resultLimit.toString());
+        isLimitMenuOpen = false;
+
+        // If we have an active search, refresh results
+        if (input.trim() && searchState.searchAttempted) {
+            handleSubmit(new Event('submit'));
+        }
+    }
+
+    async function handleSubmit(event: Event) {
+        event.preventDefault();
+        if (input.trim()) {
+            try {
+                searchState.isLoading = true;
+                searchState.hasError = false;
+                searchState.searchAttempted = true;
+                reviews = await repo.getReviewsByFTS(encodeURIComponent(input.trim()), resultLimit);
+            } catch (error) {
+                searchState.hasError = true;
+                searchState.errorMessage = 'Failed to fetch reviews. Please try again.';
+            } finally {
+                searchState.isLoading = false;
+                searchState.isEmpty = reviews.length === 0;
+            }
+        }
+    }
+
+    function clearSearch() {
+        input = '';
+        reviews = [];
+        searchState.isEmpty = true;
+        searchState.hasError = false;
+        searchState.searchAttempted = false;
+    }
+
+    const getRoute = (review: Review): string => {
+        switch(review.type) {
+            case 'course':
+                return `/course/${review.courseId}#review-${review._id}`;
+            case 'instructor':
+                return `/instructor/${review.instructorId}#review-${review._id}`;
+            case 'school':
+                return `/school/${review.schoolId}#review-${review._id}`;
+            default:
+                return '#';
+        }
+    };
+
+    function handleClick(review: Review) {
+        const route = getRoute(review);
+        window.location.href = route;
+    }
+
+    // Predefined limit options
+    const limitOptions = [10, 25, 50, 75, 100];
 </script>
 
-<div class={`transition-all ease-in-out duration-300 flex flex-col items-center ${isEmptySearch ? 'justify-center' : 'justify-end'} min-h-[calc(100vh-19vh)]`}>
-    <div class="my-10">
-        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {#if isLoading}
-                <Skeleton class='mb-2 rounded-lg' width={800} height={200}
-                          color={$mode === 'dark' ? 'rgb(38 38 38)' : 'rgb(226 232 240)'}/>
-            {:else}
-                {#key reviews.length}
-                    {#if reviews}
-                        {#each reviews as review (review._id)}
-                            <ReviewComponent {review}/>
-                        {/each}
-                    {/if}
-                {/key}
-            {/if}
-        </div>
-    </div>
-    {#if isEmptySearch}
-        <h1 class="text-4xl font-bold mb-2 text-gray-800 dark:text-gray-300">Discover Smarter Search</h1>
-        <p class="mb-8 text-lg font-semibold text-gray-500 dark:text-gray-400">Easily find reviews you like with our
-            search tool.</p>
-    {/if}
-    <form on:submit={handleSubmit} class="w-full max-w-2xl mx-auto">
-        <div class="relative flex items-center">
-            <input
-                    autofocus
-                    type="text"
-                    bind:value={input}
-                    placeholder="Search reviews by content..."
-                    class="w-full py-3 px-4 pr-12 rounded-full bg-neutral-200 dark:bg-neutral-800 text-gray-900 dark:text-gray-50 placeholder-gray-500 focus:outline-none focus:ring-2 dark:focus:ring-gray-200 focus:ring-gray-700"
-            />
-            <button
-                    type="submit"
-                    class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-60 dark:hover:text-gray-200"
-                    aria-label="Submit search"
+<div class="min-h-screen px-4 py-8 transition-colors duration-500">
+    <div class="max-w-7xl mx-auto">
+        <!-- Hero Section -->
+        {#if searchState.isEmpty && !searchState.searchAttempted}
+            <div
+                    class="text-center space-y-6 mb-12"
+                    in:fly="{{ y: 20, duration: 800, easing: elasticOut }}"
             >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd"
-                          d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                          clip-rule="evenodd"/>
-                </svg>
-            </button>
-        </div>
-    </form>
+                <h1
+                        class="text-6xl font-bold tracking-tight bg-clip-text text-transparent
+                        bg-gradient-to-r from-primary-600 to-primary-400"
+                        style="filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.2))"
+                >
+                    Discover Reviews
+                </h1>
+                <p
+                        class="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto
+                        transform transition-all duration-300"
+                        style="opacity: {focusedInput ? 0.6 : 1};
+                        transform: scale({focusedInput ? 0.95 : 1})"
+                >
+                    Find the wildest reviews, e.g "racist", "not too bad for a prof", ...
+                </p>
+            </div>
+        {/if}
+
+        <!-- Search Form with Limit Selector -->
+        <form
+                on:submit={handleSubmit}
+                class="relative max-w-2xl mx-auto mb-12 transform transition-all duration-500
+                {searchState.searchAttempted ? 'scale-90' : 'scale-100'}"
+        >
+            <div class="relative group" style="transform-style: preserve-3d">
+                <!-- Search input -->
+                <div class="relative flex items-center">
+                    <input
+                            type="text"
+                            bind:value={input}
+                            placeholder="Search reviews..."
+                            class="w-full pl-12 pr-24 py-6 text-lg rounded-full bg-white/90
+                            dark:bg-gray-800/90 text-gray-900 dark:text-gray-50
+                            placeholder-gray-500 border-2 border-transparent
+                            focus:outline-none focus:ring-2 focus:ring-primary-500
+                            transition-all duration-300"
+                            style="transform: translateZ(10px)"
+                    />
+
+                    <!-- Search icon -->
+                    <div
+                            class="absolute left-4 transition-transform duration-300"
+                            style="transform: translateZ(20px) {focusedInput ? 'scale(1.1)' : ''}"
+                    >
+                        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+
+                    <!-- Clear button -->
+                    {#if input}
+                        <button
+                                type="button"
+                                class="absolute right-4 p-2 text-gray-400 hover:text-gray-600
+                                dark:hover:text-gray-200 transition-all duration-200"
+                                on:click={clearSearch}
+                                style="transform: translateZ(20px)"
+                        >
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M6 18L18 6M6 6l12 12" stroke-width="2" stroke-linecap="round" />
+                            </svg>
+                        </button>
+                    {/if}
+                </div>
+            </div>
+            <!-- Limit Selector -->
+            <div class="absolute right-12 mt-4 rounded-lg flex items-center bg-white/90 dark:bg-gray-800/90 text-gray-900 dark:text-gray-50">
+                <div class="relative">
+                    <button
+                            type="button"
+                            class="px-3 py-2 text-sm font-medium text-gray-600 dark:text-gray-300
+                                    hover:text-primary-500 dark:hover:text-primary-400
+                                    transition-colors duration-200"
+                            on:click={() => isLimitMenuOpen = !isLimitMenuOpen}
+                    >
+                        {resultLimit} results
+                        <svg
+                                class="inline-block w-4 h-4 ml-1 transition-transform duration-200"
+                                class:transform={isLimitMenuOpen}
+                                class:rotate-180={isLimitMenuOpen}
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                        >
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+
+                    {#if isLimitMenuOpen}
+                        <div
+                                class="absolute right-0 mt-2 py-2 w-48 bg-white dark:bg-gray-800
+                                        rounded-lg shadow-xl border border-gray-200 dark:border-gray-700
+                                        z-50"
+                                in:scale="{{ duration: 200, start: 0.95 }}"
+                                out:scale="{{ duration: 150 }}"
+                        >
+                            <!-- Custom input -->
+                            <div class="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
+                                <input
+                                        type="number"
+                                        min="1"
+                                        max="100"
+                                        bind:value={resultLimit}
+                                        on:change={() => updateLimit(resultLimit)}
+                                        class="w-full px-2 py-1 text-sm rounded border border-gray-300
+                                                dark:border-gray-600 dark:bg-gray-700"
+                                        placeholder="1-100"
+                                />
+                            </div>
+
+                            <!-- Preset options -->
+                            {#each limitOptions as limit}
+                                <button
+                                        type="button"
+                                        class="w-full px-4 py-2 text-left text-sm hover:bg-gray-100
+                                                dark:hover:bg-gray-700 transition-colors duration-150
+                                                {resultLimit === limit ? 'text-primary-500 font-medium' : 'text-gray-700 dark:text-gray-300'}"
+                                        on:click={() => updateLimit(limit)}
+                                >
+                                    {limit} results
+                                </button>
+                            {/each}
+                        </div>
+                    {/if}
+                </div>
+            </div>
+        </form>
+
+        <!-- Results Section -->
+        {#if searchState.isLoading}
+            <div class="flex justify-center items-center py-12" in:fade>
+                <div class="relative">
+                    <div class="w-12 h-12 border-4 border-primary-200 border-t-primary-500
+                            rounded-full animate-spin" />
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="w-4 h-4 bg-primary-500 rounded-full animate-pulse" />
+                    </div>
+                </div>
+            </div>
+        {:else if reviews.length > 0}
+            <div
+                    class="text-center mb-8 text-gray-600 dark:text-gray-400"
+                    in:slide="{{ duration: 400 }}"
+            >
+                Found <span class="font-bold text-primary-500">{$resultCount}</span> reviews
+            </div>
+
+            <div class="flex flex-wrap justify-center items-start gap-6">
+                {#each reviews as review, i (review._id)}
+                    <button
+                            class="w-full lg:w-1/2 xl:w-1/3"
+                            in:fly="{{ y: 50, duration: 600, delay: i * 100 }}"
+                            on:click={() => handleClick(review)}
+                    >
+                        <ReviewComponent {review} />
+                    </button>
+                {/each}
+            </div>
+        {:else if searchState.searchAttempted}
+            <div
+                    class="text-center py-12 text-gray-600 dark:text-gray-400"
+                    in:scale="{{ duration: 400, easing: cubicOut }}"
+            >
+                <p class="text-lg mb-2">No reviews found for "{input}"</p>
+                <p class="text-sm">Try different words or check your spelling</p>
+            </div>
+        {/if}
+    </div>
 </div>

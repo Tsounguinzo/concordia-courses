@@ -20,8 +20,10 @@
     import Confetti from "$lib/components/common/animation/Confetti.svelte";
     import AiSummary from "$lib/components/review/AiSummary.svelte";
     import {visitorId} from "$lib/store";
+    import {onMount} from "svelte";
 
     $: params = $page.params.name;
+    $: hash = $page.url.hash;
 
     const user = $page.data.user;
     $: visitor = $visitorId;
@@ -40,6 +42,51 @@
         showAllReviews.set(false);
         refetch()
     }
+
+    const scrollToReview = async (reviewId: string) => {
+        // Wait for $allReviews to be loaded
+        while ($allReviews === undefined) {
+            await new Promise(resolve => setTimeout(resolve, 50));
+        }
+
+        // Find the target review
+        const allReviews = $allReviews ?? [];
+        const targetReview = allReviews.find(r => r._id === reviewId);
+
+        if (!targetReview) {
+            console.log('Review not found');
+            return;
+        }
+
+        // Check if the review is in the currently displayed reviews
+        let isInShowingReviews = $showingReviews.some(r => r._id === reviewId);
+
+        if (isInShowingReviews) {
+            // Show all reviews
+            showAllReviews.set(true);
+
+            // Wait for showingReviews to update
+            while (!$showingReviews.some(r => r._id === reviewId)) {
+                await new Promise(resolve => setTimeout(resolve, 50));
+            }
+        }
+
+        // Wait for the element to be in the DOM
+        let element;
+        while (!(element = document.getElementById(`review-${reviewId}`))) {
+            await new Promise(resolve => setTimeout(resolve, 50));
+        }
+
+        // Scroll to the element
+        element.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    onMount(() => {
+        if (hash && hash.startsWith('#review-')) {
+            const reviewId = hash.substring('#review-'.length);
+            scrollToReview(reviewId);
+        }
+    });
 
     const refetch = () => {
         const id = params
@@ -191,7 +238,7 @@
     <Confetti bind:trigger={triggerConfetti}/>
     <div class="mx-auto mt-10 max-w-5xl md:mt-0">
         <div class='mx-auto flex max-w-5xl overflow-hidden'>
-            <InstructorInfo instructor={$instructor} allReviews={$allReviews}/>
+            <InstructorInfo instructor={$instructor} allReviews={$allReviews ?? []}/>
         </div>
         <div class='mx-auto mt-4 max-w-5xl'>
             <div class='w-full'>

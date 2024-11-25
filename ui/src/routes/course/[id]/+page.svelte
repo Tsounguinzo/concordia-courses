@@ -23,8 +23,10 @@
     import CourseDistributionAndNotes from "$lib/components/course/CourseDistributionAndNotes.svelte";
     import type {GradeDistribution} from "$lib/model/GradeDistribution";
     import {visitorId} from "$lib/store";
+    import {onMount} from "svelte";
 
     $: params = $page.params.id;
+    $: hash = $page.url.hash;
 
     const user = $page.data.user;
     $: visitor = $visitorId;
@@ -46,6 +48,51 @@
         showAllReviews.set(false);
         refetch()
     }
+
+    const scrollToReview = async (reviewId: string) => {
+        // Wait for $allReviews to be loaded
+        while ($allReviews === undefined) {
+            await new Promise(resolve => setTimeout(resolve, 50));
+        }
+
+        // Find the target review
+        const allReviews = $allReviews ?? [];
+        const targetReview = allReviews.find(r => r._id === reviewId);
+
+        if (!targetReview) {
+            console.log('Review not found');
+            return;
+        }
+
+        // Check if the review is in the currently displayed reviews
+        let isInShowingReviews = $showingReviews.some(r => r._id === reviewId);
+
+        if (isInShowingReviews) {
+            // Show all reviews
+            showAllReviews.set(true);
+
+            // Wait for showingReviews to update
+            while (!$showingReviews.some(r => r._id === reviewId)) {
+                await new Promise(resolve => setTimeout(resolve, 50));
+            }
+        }
+
+        // Wait for the element to be in the DOM
+        let element;
+        while (!(element = document.getElementById(`review-${reviewId}`))) {
+            await new Promise(resolve => setTimeout(resolve, 50));
+        }
+
+        // Scroll to the element
+        element.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    onMount(() => {
+        if (hash && hash.startsWith('#review-')) {
+            const reviewId = hash.substring('#review-'.length);
+            scrollToReview(reviewId);
+        }
+    });
 
     function fetchGradeDistribution(subject: string | undefined, catalog: string | undefined) {
         if (subject && catalog) {

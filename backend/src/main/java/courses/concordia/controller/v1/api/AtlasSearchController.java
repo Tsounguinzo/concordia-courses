@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,7 +41,7 @@ public class AtlasSearchController {
     private String databaseName;
 
     @GetMapping
-    public Response<?> FTS(@RequestParam String query) {
+    public Response<?> FTS(@RequestParam String query, @RequestParam int limit) {
 
         try (MongoClient mongoClient = MongoClients.create(mongodbUri)) {
             MongoDatabase database = mongoClient.getDatabase(databaseName);
@@ -59,7 +62,7 @@ public class AtlasSearchController {
                             exclude(),
                             include("type", "content", "courseId", "instructorId", "timestamp", "_id", "difficulty", "experience", "rating", "tags"),
                             metaSearchScore("score"))),
-                    limit(10)
+                    limit(limit)
             ));
 
             List<Review> reviews = new ArrayList<>();
@@ -70,7 +73,12 @@ public class AtlasSearchController {
                 review.setContent(doc.getString("content"));
                 review.setCourseId(doc.getString("courseId"));
                 review.setInstructorId(doc.getString("instructorId"));
-                //review.setTimestamp(LocalDateTime.parse(doc.getDate("timestamp").toString()));
+                Date date = doc.getDate("timestamp");
+                if (date != null) {
+                    Instant instant = date.toInstant();
+                    LocalDateTime timestamp = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+                    review.setTimestamp(timestamp);
+                }
                 review.setDifficulty(doc.getInteger("difficulty"));
                 review.setExperience(doc.getInteger("experience"));
                 review.setRating(doc.getInteger("rating"));

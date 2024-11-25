@@ -59,6 +59,7 @@
         'relative flex w-full flex-col gap-4 border-b-[1px] border-b-gray-300 bg-slate-50 px-6 py-3 first:rounded-t-md last:rounded-b-md last:border-b-0 dark:border-b-gray-600 dark:bg-neutral-800',
         $$props.class
       )}
+     id={`review-${review._id}`}
 >
     <div class='flex flex-col'>
         <div class='flex w-full'>

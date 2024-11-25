@@ -40,8 +40,8 @@
         </div>
     </div>
     <div class="flex items-center mt-1">
-        <a href="/" class='rounded-md mx-auto bg-slate-50 px-3 py-2 text-sm font-semibold text-gray-500 hover:bg-gray-100 dark:bg-neutral-800 dark:text-gray-200 dark:hover:bg-neutral-700'>
-            Search by review content (soon) <!--span aria-hidden='true'>&rarr;</span-->
+        <a href="/search" class='rounded-md mx-auto bg-slate-50 px-3 py-2 text-sm font-semibold text-gray-500 hover:bg-gray-100 dark:bg-neutral-800 dark:text-gray-200 dark:hover:bg-neutral-700'>
+            Search by review content <span class="rounded-lg bg-primary-500 text-white p-1 ml-1">New</span>
         </a>
     </div>
 </div>

@@ -31,6 +31,7 @@
         on:mouseenter={() => hovering.set(true)}
         on:mouseleave={() => hovering.set(false)}
         on:click={handleClick}
+        on:mousedown={handleClick}
         on:keydown={handleKeydown}
 >
     <div class={twMerge(

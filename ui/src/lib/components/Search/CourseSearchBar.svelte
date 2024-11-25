@@ -67,7 +67,6 @@
                         text={`${spliceCourseCode(result._id, ' ')} - ${result.title}`}
                         type="course"
                         url={`/course/${courseIdToUrlParam(result._id)}`}
-                        on:click={onResultClick}
                 />
             {/each}
             {#each results.instructors as result, index (uuidv4())}
@@ -78,7 +77,6 @@
                         text={result}
                         type="instructor"
                         url={`/instructor/${instructorNameToUrlParam(result)}`}
-                        on:click={onResultClick}
                 />
             {/each}
             <ExploreButton />
