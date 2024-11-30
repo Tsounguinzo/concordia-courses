@@ -2,30 +2,13 @@
 
 ### 📚 **Why Concordia.Courses?**
 
-Concordia.Courses was born out of a shared frustration with traditional course review platforms like Rate My Professor.
-As students from Concordia and McGill, we found these platforms cumbersome and lacking the depth and authenticity we 
-needed to make informed decisions about our courses and professors.
-
-Our goal is to provide an open-source, safe, straightforward, reliable, and engaging platform where Concordia students can share 
-their real experiences and insights. We believe in the power of student-driven content, ensuring that the reviews 
-you read are genuine and reflective of the actual classroom experience. By updating course information every semester 
-and allowing users to upload grade distributions and study notes, we aim to create a comprehensive resource that evolves 
-with the needs of our community.
+We aim to offer Concordia students a straightforward, open-source platform to share real course experiences and insights. By training ConcordiaAI, we’re enhancing your ability to make informed academic choices.  
+Our platform is supported by ads to help fund the development of ConcordiaAI and ensure the platform remains free to use.
 
 ### 🚀 **How to Contribute**
 
-#### 🗣️ Non-Technical Contributions
-
-- **Upload Your Grade Distributions:** Share your grade distributions to help other students make informed decisions. [Upload here](https://concordia.courses/grades).
-- **Spread the Word:** Talk about concordia.courses with your friends and classmates to increase awareness and usage.
-- **Write Reviews:** Share your experiences by writing reviews for courses and instructors. Your insights can help guide other students.
-
-#### 📊 Technical Contributions
-
-- **Contribute to the Codebase:** If you're a developer, check out our GitHub repository and contribute to the project. [Explore the repo](https://github.com/Tsounguinzo/concordia-courses).
-- **Fix Bugs and Add Features:** Help us improve the platform by fixing bugs or adding new features. You can find or create issues to work on in our GitHub repo.
-- **Develop Study Tools:** Create and integrate new study tools or features that can benefit the student community.
-
+- **Spread the Word:** Share Concordia.Courses with your peers.
+- **Write Reviews:** Share your course and instructor experiences to help other students.
 
 ### 💡 **FAQs**
 
