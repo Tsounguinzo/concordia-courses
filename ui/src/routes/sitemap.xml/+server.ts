@@ -1,4 +1,11 @@
+import courses from '$lib/data/searchCourses.json';
+import {generateSitemapEntries} from "$lib/utils";
+
 export async function GET() {
+
+    const urls = generateSitemapEntries(courses);
+
+
     return new Response(
         `
 		<?xml version="1.0" encoding="UTF-8" ?>
@@ -10,6 +17,16 @@ export async function GET() {
 			xmlns:image="https://www.google.com/schemas/sitemap-image/1.1"
 			xmlns:video="https://www.google.com/schemas/sitemap-video/1.1"
 		>
+		${
+            urls.map(
+                (url) => 
+                    `<url>
+                        <loc>${url.loc}</loc>
+                        <changefreq>${url.changefreq}</changefreq>
+                        <priority>${url.priority}</priority>
+                     </url>`
+            ).join('')
+        }
 		<url>
 			<loc>https://concordia.courses</loc>
 			<changefreq>yearly</changefreq>
@@ -31,14 +48,9 @@ export async function GET() {
 			<priority>1.0</priority>
 		</url>
 		<url>
-			<loc>https://concordia.courses/course</loc>
+			<loc>https://concordia.courses/search</loc>
 			<changefreq>daily</changefreq>
-			<priority>1.0</priority>
-		</url>
-		<url>
-			<loc>https://concordia.courses/instructor</loc>
-			<changefreq>daily</changefreq>
-			<priority>1.0</priority>
+			<priority>0.8</priority>
 		</url>
 		<url>
 			<loc>https://concordia.courses/login</loc>

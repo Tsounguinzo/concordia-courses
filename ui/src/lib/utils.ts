@@ -202,3 +202,42 @@ export function convertGradePointsToLetter(gradePoints: number): string {
         return 'F';
     }
 }
+
+type Course = {
+    _id: string;
+    title: string;
+    subject: string;
+    catalog: string;
+    instructors: string[];
+};
+
+type UrlEntry = {
+    loc: string;
+    changefreq: string;
+    priority: number;
+};
+
+
+export const generateSitemapEntries = (courses: Course[]): UrlEntry[] => {
+    const urls: UrlEntry[] = [];
+
+    courses.forEach((course) => {
+        const courseUrl = `https://concordia.courses/course/${courseIdToUrlParam(course._id)}`;
+        urls.push({
+            loc: courseUrl,
+            changefreq: 'daily',
+            priority: 1.0,
+        });
+
+        course.instructors.forEach((instructor) => {
+            const instructorUrl = `https://concordia.courses/instructor/${instructorNameToUrlParam(instructor)}`;
+            urls.push({
+                loc: instructorUrl,
+                changefreq: 'daily',
+                priority: 1.0,
+            });
+        });
+    });
+
+    return urls;
+};
