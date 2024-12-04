@@ -254,9 +254,9 @@
     $: showingReviews.set($sortedAndFilteredReviews);
 </script>
 <Seo title={params?.replace('-', ' ').toUpperCase()}
-     description="{params?.replace('-', ' ').toUpperCase() + ' Reviews at Concordia.courses'}"
-     ogDescription={params?.replace('-', ' ').toUpperCase() + ' Reviews at Concordia.courses'}
-     ogTitle={`${params?.replace('-', ' ').toUpperCase()} | Concordia.courses`}/>
+     description="{params?.replace('-', ' ').toUpperCase() + ' Reviews on Concordia.courses'}"
+     ogDescription={params?.replace('-', ' ').toUpperCase() + ' Reviews on Concordia.courses'}
+     ogTitle={`${params?.replace('-', ' ').toUpperCase()} at Concordia University | Concordia.courses`}/>
 
 {#if $course === undefined || $course === null || $showingReviews === undefined}
     <Loading/>
