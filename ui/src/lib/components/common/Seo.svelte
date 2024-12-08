@@ -57,7 +57,7 @@
      "@type": "${type}",
      "name": "${title}",
      "description": "${description}",
-     "url": "${url}",
+     "url": "${url}"
   }
 </script>
 

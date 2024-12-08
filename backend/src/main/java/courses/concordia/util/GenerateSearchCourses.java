@@ -10,10 +10,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class GenerateSearchCourses {
-    public static Path COURSE_FILE_PATH = Paths.get("backend", "src", "main", "resources", "data", "db.courses.json");
-    public static Path INSTRUCTOR_FILE_PATH = Paths.get("backend", "src", "main", "resources", "data", "db.instructors.json");
-    public static Path SEARCH_FILE_PATH = Paths.get("backend", "src", "main", "resources", "data", "searchCourses.json");
-    public static Path COURSE_CODES_FILE_PATH = Paths.get("backend", "src", "main", "resources", "data", "courseCodes.json");
+    public static final Path COURSE_FILE_PATH = Paths.get("backend", "src", "main", "resources", "data", "db.courses.json");
+    public static final Path INSTRUCTOR_FILE_PATH = Paths.get("backend", "src", "main", "resources", "data", "db.instructors.json");
+    public static final Path SEARCH_FILE_PATH = Paths.get("backend", "src", "main", "resources", "data", "searchCourses.json");
+    public static final Path COURSE_CODES_FILE_PATH = Paths.get("backend", "src", "main", "resources", "data", "courseCodes.json");
 
     public static void main(String[] args) throws Exception {
 

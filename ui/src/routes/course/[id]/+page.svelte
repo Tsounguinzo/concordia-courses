@@ -1,6 +1,6 @@
 <script lang="ts">
     import {page} from "$app/stores";
-    import {courseNameToId, instructorNameToUrlParam} from "$lib/utils";
+    import {courseNameToId, getCampusLocation, getCourseMode, instructorNameToUrlParam} from "$lib/utils";
     import {derived, writable} from "svelte/store";
     import type {Review} from "$lib/model/Review";
     import type {Course} from "$lib/model/Course";
@@ -259,6 +259,95 @@
      ogTitle={`${params?.replace('-', ' ').toUpperCase()} | Concordia.courses`}
      keywords={params ? [...params.split('-'), params.replace('-', ' ')] : undefined}
 />
+
+<svelte:head>
+    {@html `
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org/",
+        "@id": "${$page.url.href}",
+        "@type": "Course",
+        "name": "${$course?.title ?? (params?.replace('-', ' ')?.toUpperCase() ?? 'Untitled Course')}",
+        "description": "${($course?.description ?? '').replace(/"/g, '\\"')}",
+        "url": "${$page.url.href}",
+        "inLanguage": "en",
+        "provider": {
+            "@type": "Organization",
+            "name": "Concordia University",
+            "url": "https://www.concordia.ca/"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Course Website",
+            "url": "https://www.concordia.courses"
+        },
+        "offers": [{
+            "@type": "Offer",
+            "category": "Free"
+        }],
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "${$course?.avgExperience?.toFixed(1) ?? '0.0'}",
+            "ratingCount": "${$course?.reviewCount ?? '0'}",
+            "reviewCount": "${$course?.reviewCount ?? '0'}"
+        }
+        ${($course && $course.schedules && $course.schedules.length > 0) ? `,
+        "hasCourseInstance": [
+            ${$course.schedules.map((schedule, index) => {
+        const termName = schedule.term ?? "Term";
+        const mode = getCourseMode(schedule.blocks[0]?.instructionModeCode);
+        const campusLocationCode = schedule.blocks[0]?.locationCode ?? '';
+        const campusLocation = getCampusLocation(campusLocationCode);
+
+        // If blended or onsite, add location; if online, omit location
+        const locationProperty = (mode === 'Onsite' || mode === 'Blended') && campusLocation
+            ? `,
+                    "location": ${JSON.stringify(campusLocation)}`
+            : '';
+
+        return `{
+                    "@type": "CourseInstance",
+                    "name": "${termName}",
+                    "courseMode": "${mode}",
+                    "courseWorkload": "PT6H"
+                    ${locationProperty}
+                }${index < $course.schedules.length - 1 ? ',' : ''}`;
+    }).join('')}
+        ]` : `,
+        "hasCourseInstance": [{
+            "@type": "CourseInstance",
+            "name": "Default Term",
+            "courseMode": "Online",
+            "courseWorkload": "PT6H"
+        }]`}
+        ${($allReviews && $allReviews.length > 0) ? `,
+        "review": [
+            ${$allReviews.slice(0, 8).map((review, index, arr) => {
+        const ratingValue = Math.max(1, review.experience ?? review.rating ?? 1);
+        const datePublished = new Date(review.timestamp).toISOString();
+        const reviewBody = (review.content ?? '').replace(/"/g, '\\"');
+        return `{
+                    "@type": "Review",
+                    "author": {
+                        "@type": "Person",
+                        "name": "Anonymous"
+                    },
+                    "datePublished": "${datePublished}",
+                    "reviewBody": "${reviewBody}",
+                    "reviewRating": {
+                        "@type": "Rating",
+                        "ratingValue": "${ratingValue}",
+                        "bestRating": "5",
+                        "worstRating": "1"
+                    }
+                }${index < Math.min(arr.length, 8) - 1 ? ',' : ''}`;
+    }).join('')}
+        ]` : ''}
+    }
+    </script>
+    `}
+</svelte:head>
+
 
 {#if $course === undefined || $course === null || $showingReviews === undefined}
     <Loading/>
