@@ -13,6 +13,7 @@ public class GenerateSearchCourses {
     public static Path COURSE_FILE_PATH = Paths.get("backend", "src", "main", "resources", "data", "db.courses.json");
     public static Path INSTRUCTOR_FILE_PATH = Paths.get("backend", "src", "main", "resources", "data", "db.instructors.json");
     public static Path SEARCH_FILE_PATH = Paths.get("backend", "src", "main", "resources", "data", "searchCourses.json");
+    public static Path COURSE_CODES_FILE_PATH = Paths.get("backend", "src", "main", "resources", "data", "courseCodes.json");
 
     public static void main(String[] args) throws Exception {
 
@@ -37,6 +38,10 @@ public class GenerateSearchCourses {
             return courseMap;
         }).collect(Collectors.toList());
 
+        // ALl courses subject
+        Set<String> courseSubjects = courses.stream().map(Course::getSubject).collect(Collectors.toSet());
+
         JsonUtils.toJson(result, SEARCH_FILE_PATH.toString());
+        JsonUtils.toJson(courseSubjects, COURSE_CODES_FILE_PATH.toString());
     }
 }
