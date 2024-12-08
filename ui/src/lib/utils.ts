@@ -241,3 +241,56 @@ export const generateSitemapEntries = (courses: Course[]): UrlEntry[] => {
 
     return urls;
 };
+
+export function getCampusLocation(locationCode: String) {
+    switch (locationCode) {
+        case 'SGW':
+            return {
+                "@type": "Place",
+                "name": "Concordia University - Sir George Williams Campus",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "1455 De Maisonneuve Blvd W",
+                    "addressLocality": "Montreal",
+                    "addressRegion": "QC",
+                    "postalCode": "H3G 1M8",
+                    "addressCountry": "Canada"
+                }
+            };
+        case 'LOY':
+            return {
+                "@type": "Place",
+                "name": "Concordia University - Loyola Campus",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "7141 Sherbrooke St W",
+                    "addressLocality": "Montreal",
+                    "addressRegion": "QC",
+                    "postalCode": "H4B 1R6",
+                    "addressCountry": "Canada"
+                }
+            };
+        case 'PI':
+            return {
+                "@type": "Place",
+                "name": "Power Institute",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "1455 De Maisonneuve Blvd W",
+                    "addressLocality": "Montreal",
+                    "addressRegion": "QC",
+                    "postalCode": "H3G 1M8",
+                    "addressCountry": "Canada"
+                }
+            };
+        // For online courses, we return null and won't include location
+        default:
+            return null;
+    }
+}
+
+export function getCourseMode(code: String) {
+    if (code === 'ONL') return 'Online';
+    if (code === 'BLD') return 'Blended';
+    return 'Onsite';
+}
