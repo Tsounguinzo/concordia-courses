@@ -9,13 +9,14 @@
     export let ogTitle: string = "Reviews of Concordia Courses and Instructors";
     export let ogImage: string = "og-image.png";
     export let ogImageAlt: string = 'concordia.courses Home page Snapshot';
+    export let keywords: string[] | undefined = undefined;
 
     $: url = $page.url.href;
 </script>
 
 <MetaTags
         title={title}
-        titleTemplate="%s | Concordia Courses"
+        titleTemplate="%s at Concordia University | Concordia Courses"
         description={description}
         canonical={url}
         openGraph={{
@@ -47,6 +48,9 @@
 
 <svelte:head>
     {@html `
+<meta name="author" content="Beaudelaire Tsoungui Nzodoumkouo, zhengxuan zhao, Russ Aulakh" />
+<meta name="keywords"
+      content="${keywords?.join(', ')}, Concordia, Courses, Instructors, Reviews, Ratings, Rigor, Difficulty, Student, Insights, University, Montreal, Quebec, Canada, Concordia University, CU, Professor, Concordia Course, Concordia Instructor, Concordia Professor" />
 <script type="application/ld+json">
   {
      "@context": "http://schema.org",

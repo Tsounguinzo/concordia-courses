@@ -229,9 +229,11 @@
     $: showingReviews.set($sortedAndFilteredReviews);
 </script>
 <Seo title={params && instructorIdToName(params)}
-     description={`${params && instructorIdToName(params)} Reviews on Concordia.courses`}
+     description={`${params && instructorIdToName(params)} is/was a professor at Concordia University - see what their students are saying about them or leave a rating yourself.`}
      ogDescription={params && instructorIdToName(params) + ' Reviews on Concordia.courses'}
-     ogTitle={`${params && instructorIdToName(params)} at Concordia University | Concordia.courses`}/>
+     ogTitle={`${params && instructorIdToName(params)} | Concordia.courses`}
+     keywords={params ? [...instructorIdToName(params).split(' '), instructorIdToName(params)] : undefined}
+/>
 
 {#if $instructor === undefined || $instructor === null || $showingReviews === undefined}
     <Loading/>

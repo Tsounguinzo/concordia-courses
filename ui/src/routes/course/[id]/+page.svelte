@@ -254,9 +254,11 @@
     $: showingReviews.set($sortedAndFilteredReviews);
 </script>
 <Seo title={params?.replace('-', ' ').toUpperCase()}
-     description="{params?.replace('-', ' ').toUpperCase() + ' Reviews on Concordia.courses'}"
+     description={`${params?.replace('-', ' ').toUpperCase()} is a course at Concordia University. Read reviews and insights from students who have taken this course.`}
      ogDescription={params?.replace('-', ' ').toUpperCase() + ' Reviews on Concordia.courses'}
-     ogTitle={`${params?.replace('-', ' ').toUpperCase()} at Concordia University | Concordia.courses`}/>
+     ogTitle={`${params?.replace('-', ' ').toUpperCase()} | Concordia.courses`}
+     keywords={params ? [...params.split('-'), params.replace('-', ' ')] : undefined}
+/>
 
 {#if $course === undefined || $course === null || $showingReviews === undefined}
     <Loading/>
