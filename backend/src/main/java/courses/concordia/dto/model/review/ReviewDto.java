@@ -54,7 +54,7 @@ public class ReviewDto {
 
     // instructor specific fields
     private int rating; // 0-5
-    private Set<Instructor.Tag> tags;
+    private Set<Instructor.Tag> tags = Set.of();
 
     // School specific ratings
     private int schoolId;

@@ -4,6 +4,7 @@ import courses.concordia.dto.model.review.ReviewDto;
 import courses.concordia.dto.model.review.ReviewFilterDto;
 import courses.concordia.dto.model.review.ReviewPayloadDto;
 import courses.concordia.dto.response.Response;
+import courses.concordia.dto.response.ReviewProcessingResult;
 import courses.concordia.model.User;
 import courses.concordia.service.InteractionService;
 import courses.concordia.service.NotificationService;
@@ -17,7 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -33,12 +36,23 @@ public class ReviewController {
 
     @PutMapping("/upload")
     public ResponseEntity<String> uploadReviews(@RequestParam("file") MultipartFile file, @RequestParam String key) {
-        try {
             if (!key.equals(uploadKey)) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid key");
             }
-            reviewService.uploadReviews(file);
-            return ResponseEntity.ok("Reviews processed successfully");
+
+        try {
+            ReviewProcessingResult result = reviewService.uploadReviews(file);
+            // Construct a summary response
+            Map<String, Object> responseBody = new HashMap<>();
+            responseBody.put("message", "Reviews processed with some results");
+            responseBody.put("added", result.getAddedCount());
+            responseBody.put("alreadyExisted", result.getAlreadyExistsCount());
+            responseBody.put("failed", result.getFailedCount());
+            if (!result.getErrors().isEmpty()) {
+                responseBody.put("errors", result.getErrors());
+            }
+            return ResponseEntity.ok(responseBody.toString());
+
         } catch (Exception e) {
             log.error("Error processing reviews file", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing reviews file");

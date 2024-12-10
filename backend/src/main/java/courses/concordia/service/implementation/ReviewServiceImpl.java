@@ -4,6 +4,7 @@ import com.google.gson.reflect.TypeToken;
 import courses.concordia.dto.mapper.ReviewMapper;
 import courses.concordia.dto.model.review.ReviewDto;
 import courses.concordia.dto.model.review.ReviewFilterDto;
+import courses.concordia.dto.response.ReviewProcessingResult;
 import courses.concordia.exception.CustomExceptionFactory;
 import courses.concordia.exception.EntityType;
 import courses.concordia.exception.ExceptionType;
@@ -227,21 +228,53 @@ public class ReviewServiceImpl implements ReviewService {
      * Uploads reviews from a file.
      *
      * @param file The file containing reviews.
+     * @return A ReviewProcessingResult object containing the result of the review upload.
      */
     @Override
-    public void uploadReviews(MultipartFile file) {
-        log.info("Uploading reviews from file: {}", file.getOriginalFilename());
+    public ReviewProcessingResult uploadReviews(MultipartFile file) {
+        log.info("Starting to upload reviews from file: {}", file.getOriginalFilename());
         List<ReviewDto> reviewDtos = processReviewFile(file);
-        reviewDtos.forEach(this::addOrUpdateReview);
-        log.info("{} reviews processed successfully", reviewDtos.size());
+
+        ReviewProcessingResult result = new ReviewProcessingResult();
+
+        for (ReviewDto dto : reviewDtos) {
+            try {
+                Review review = modelMapper.map(dto, Review.class);
+
+                if (reviewRepository.existsByTimestampAndInstructorIdAndCourseId(review.getTimestamp(), review.getInstructorId(), review.getCourseId())) {
+                    result.incrementAlreadyExists();
+                } else {
+                    // New review, add it
+                    reviewRepository.save(review);
+                    result.incrementAdded();
+                }
+
+            } catch (Exception e) {
+                String errorMsg = String.format("Failed to process review (instructorId=%s, courseId=%s, timestamp=%s, userId=%s): %s",
+                        dto.getInstructorId(), dto.getCourseId(), dto.getTimestamp(), dto.getUserId(), e.getMessage());
+                log.error(errorMsg, e);
+                result.addError(errorMsg);
+                result.incrementFailed();
+            }
+        }
+
+        log.info("Reviews processing completed. Added: {}, AlreadyExist: {}, Failed: {}",
+                result.getAddedCount(), result.getAlreadyExistsCount(), result.getFailedCount());
+
+        if (!result.getErrors().isEmpty()) {
+            log.info("There were errors during processing: {}", result.getErrors());
+        }
+
+        return result;
     }
 
     private List<ReviewDto> processReviewFile(MultipartFile file) {
         try (InputStream inputStream = file.getInputStream()) {
             return JsonUtils.getData(inputStream, new TypeToken<List<ReviewDto>>() {});
         } catch (IOException e) {
-            log.error("Failed to process review file", e);
-            throw new RuntimeException("Failed to process review file", e);
+            String errorMsg = "Failed to process review file: " + file.getOriginalFilename();
+            log.error(errorMsg, e);
+            throw new RuntimeException(errorMsg, e);
         }
     }
 
