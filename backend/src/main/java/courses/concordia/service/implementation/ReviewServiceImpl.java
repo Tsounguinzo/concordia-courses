@@ -84,6 +84,7 @@ public class ReviewServiceImpl implements ReviewService {
             @CacheEvict(value = "instructorsCacheWithFilters", allEntries = true, condition = "#reviewDto.type.equals('instructor')"),
             @CacheEvict(value = "reviewsCacheWithFilters", allEntries = true),
             @CacheEvict(value = "instructorsCache", allEntries = true),
+            @CacheEvict(value = "courseInstructorsCache", key = "#reviewDto.courseId")
     })
     @Transactional
     @Override
@@ -152,7 +153,8 @@ public class ReviewServiceImpl implements ReviewService {
             @CacheEvict(value = "coursesCacheWithFilters", allEntries = true),
             @CacheEvict(value = "instructorsCacheWithFilters", allEntries = true),
             @CacheEvict(value = "reviewsCacheWithFilters", allEntries = true),
-            @CacheEvict(value = "instructorsCache", allEntries = true)
+            @CacheEvict(value = "instructorsCache", allEntries = true),
+            @CacheEvict(value = "courseInstructorsCache", key = "#reviewDto.courseId")
     })
     @Transactional
     @Override
