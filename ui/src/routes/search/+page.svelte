@@ -6,7 +6,7 @@
     import ReviewComponent from "$lib/components/review/Review.svelte";
     import {spring} from 'svelte/motion';
     import {onMount} from 'svelte';
-    import {ArrowUpFromDot, Search} from "lucide-svelte";
+    import {Search, ChevronUp} from "lucide-svelte";
 
     interface SearchState {
         isLoading: boolean;
@@ -22,7 +22,6 @@
     let isLimitMenuOpen = false;
     let resultLimit = 10; // Default value
 
-    // Initialize search state
     let searchState: SearchState = {
         isLoading: false,
         hasError: false,
@@ -31,7 +30,6 @@
         searchAttempted: false
     };
 
-    // Load saved limit from localStorage on mount
     onMount(() => {
         const savedLimit = localStorage.getItem('searchResultLimit');
         if (savedLimit) {
@@ -39,7 +37,6 @@
         }
     });
 
-    // Animated counter for results
     const resultCount = spring(0, {
         stiffness: 0.1,
         damping: 0.8
@@ -47,7 +44,6 @@
 
     $: resultCount.set(reviews.length);
 
-    // Handle limit changes
     function updateLimit(newLimit: number) {
         resultLimit = Math.max(1, Math.min(100, newLimit));
         localStorage.setItem('searchResultLimit', resultLimit.toString());
@@ -103,7 +99,6 @@
         window.location.href = route;
     }
 
-    // Predefined limit options
     const limitOptions = [10, 25, 50, 75, 100];
 
     function clickOutside(node: HTMLElement) {
@@ -140,9 +135,9 @@
                 </h1>
                 <p
                         class="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto
-                        transform transition-all duration-300"
+                    transform transition-all duration-300"
                         style="opacity: {focusedInput ? 0.6 : 1};
-                        transform: scale({focusedInput ? 0.95 : 1})"
+                    transform: scale({focusedInput ? 0.95 : 1})"
                 >
                     Find the wildest reviews, e.g "racist", "not too bad for a prof", ...
                 </p>
@@ -152,52 +147,48 @@
         <!-- Parent relative container -->
         <div class="relative max-w-2xl mx-auto mb-16">
             <!-- Search Form -->
-            <form on:submit={handleSubmit}
-                  class="relative transform transition-all duration-500
-                {searchState.searchAttempted ? 'scale-90' : 'scale-100'}"
-            >
-                <div class="relative group" style="transform-style: preserve-3d">
-                    <!-- Search input -->
-                    <div class="relative flex items-center">
-                        <input
-                                type="text"
-                                bind:value={input}
-                                placeholder="Search reviews..."
-                                class="w-full pl-12 pr-24 py-2 text-lg rounded-full bg-white/90
-                            dark:bg-gray-800/90 text-gray-900 dark:text-gray-50
-                            placeholder-gray-500 border-2 border-transparent
-                            focus:outline-none focus:ring-2 focus:ring-primary-500
-                            transition-all duration-300"
-                                style="transform: translateZ(10px)"
-                        />
-
-                        <!-- Search icon -->
-                        <button type="submit"
-                                class="absolute left-4 transition-transform duration-300"
-                                style="transform: translateZ(20px) {focusedInput ? 'scale(1.1)' : ''}"
-                        >
-                            {#if input.trim()}
-                                <ArrowUpFromDot class="text-gray-600 bg-gray-400 rounded-full p-1" />
-                            {:else}
-                                <Search class="text-gray-400"/>
-                            {/if}
-                        </button>
-
-                        <!-- Clear button -->
-                        {#if input}
-                            <button
-                                    type="button"
-                                    class="absolute right-4 p-2 text-gray-400 hover:text-gray-600
-                                dark:hover:text-gray-200 transition-all duration-200"
-                                    on:click={clearSearch}
-                                    style="transform: translateZ(20px)"
-                            >
-                                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                    <path d="M6 18L18 6M6 6l12 12" stroke-width="2" stroke-linecap="round"/>
-                                </svg>
-                            </button>
-                        {/if}
+            <form on:submit={handleSubmit} class="relative">
+                <div class="relative flex items-center">
+                    <!-- Search Icon on the left inside input container -->
+                    <div class="absolute left-3 text-gray-400 pointer-events-none">
+                        <Search class="w-5 h-5"/>
                     </div>
+
+                    <!-- Input Field -->
+                    <input
+                            type="text"
+                            bind:value={input}
+                            on:focus={() => focusedInput = true}
+                            on:blur={() => focusedInput = false}
+                            placeholder="Search reviews..."
+                            class="w-full pl-10 pr-24 py-2 text-lg rounded-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-50 placeholder-gray-500 border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500 transition-all duration-300"
+                    />
+
+                    <!-- Clear button -->
+                    {#if input}
+                        <button
+                                type="button"
+                                class="absolute right-14 p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-all duration-200"
+                                on:click={clearSearch}
+                        >
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M6 18L18 6M6 6l12 12" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </button>
+                    {/if}
+
+                    <!-- Submit (Search) button -->
+                    <button
+                            type="submit"
+                            disabled={!input.trim() || searchState.isLoading}
+                            class="absolute right-2 h-9 px-3 bg-primary-500 hover:bg-primary-600 text-white rounded-full text-sm font-medium transition-colors duration-200 disabled:opacity-50 flex items-center justify-center"
+                    >
+                        {#if searchState.isLoading}
+                            <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                        {:else}
+                            <ChevronUp class="w-4 h-4" />
+                        {/if}
+                    </button>
                 </div>
             </form>
 
@@ -210,8 +201,8 @@
                     <button
                             type="button"
                             class="px-3 py-2 text-sm font-medium text-gray-600 dark:text-gray-300
-                                hover:text-primary-500 dark:hover:text-primary-400
-                                transition-colors duration-200"
+                            hover:text-primary-500 dark:hover:text-primary-400
+                            transition-colors duration-200"
                             on:click={() => isLimitMenuOpen = !isLimitMenuOpen}
                     >
                         {resultLimit} results
@@ -230,8 +221,8 @@
                     {#if isLimitMenuOpen}
                         <div
                                 class="absolute right-0 mt-2 py-2 w-48 bg-white dark:bg-gray-800
-                                    rounded-lg shadow-xl border border-gray-200 dark:border-gray-700
-                                    z-50"
+                                rounded-lg shadow-xl border border-gray-200 dark:border-gray-700
+                                z-50"
                                 in:scale="{{ duration: 200, start: 0.95 }}"
                                 out:scale="{{ duration: 150 }}"
                         >
@@ -243,8 +234,7 @@
                                         max="100"
                                         bind:value={resultLimit}
                                         on:change={() => updateLimit(resultLimit)}
-                                        class="w-full px-2 py-1 text-sm rounded border border-gray-300
-                                            dark:border-gray-600 dark:bg-gray-700"
+                                        class="w-full px-2 py-1 text-sm rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
                                         placeholder="1-100"
                                 />
                             </div>
@@ -254,8 +244,8 @@
                                 <button
                                         type="button"
                                         class="w-full px-4 py-2 text-left text-sm hover:bg-gray-100
-                                            dark:hover:bg-gray-700 transition-colors duration-150
-                                            {resultLimit === limit ? 'text-primary-500 font-medium' : 'text-gray-700 dark:text-gray-300'}"
+                                        dark:hover:bg-gray-700 transition-colors duration-150
+                                        {resultLimit === limit ? 'text-primary-500 font-medium' : 'text-gray-700 dark:text-gray-300'}"
                                         on:click={() => updateLimit(limit)}
                                 >
                                     {limit} results
@@ -271,8 +261,7 @@
         {#if searchState.isLoading}
             <div class="flex justify-center items-center py-12" in:fade>
                 <div class="relative">
-                    <div class="w-12 h-12 border-4 border-primary-200 border-t-primary-500
-                            rounded-full animate-spin"/>
+                    <div class="w-12 h-12 border-4 border-primary-200 border-t-primary-500 rounded-full animate-spin"/>
                     <div class="absolute inset-0 flex items-center justify-center">
                         <div class="w-4 h-4 bg-primary-500 rounded-full animate-pulse"/>
                     </div>

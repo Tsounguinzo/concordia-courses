@@ -308,6 +308,15 @@ export const repo = {
         );
     },
 
+    async getCourseInstructors(
+        courseId: String,
+    ): Promise<Instructor[]> {
+        return await client.deserialize<Instructor[]>(
+            'GET',
+            `/courses/${courseId}/instructors`,
+        );
+    },
+
     async getReviewsFeed(
         limit: number,
         offset: number,

@@ -4,13 +4,16 @@ import com.google.gson.reflect.TypeToken;
 import courses.concordia.dto.model.course.CourseDto;
 import courses.concordia.dto.model.course.CourseFilterDto;
 import courses.concordia.dto.model.course.CourseReviewsDto;
+import courses.concordia.dto.model.instructor.InstructorDto;
 import courses.concordia.dto.model.review.ReviewDto;
 import courses.concordia.exception.CustomExceptionFactory;
 import courses.concordia.exception.EntityType;
 import courses.concordia.exception.ExceptionType;
 import courses.concordia.model.Course;
+import courses.concordia.model.Instructor;
 import courses.concordia.model.Review;
 import courses.concordia.repository.CourseRepository;
+import courses.concordia.repository.InstructorRepository;
 import courses.concordia.service.CourseService;
 import courses.concordia.util.JsonUtils;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +32,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -37,6 +41,7 @@ import java.util.stream.Collectors;
 @Service
 public class CourseServiceImpl implements CourseService {
     private final CourseRepository courseRepository;
+    private final InstructorRepository instructorRepository;
     private final MongoTemplate mongoTemplate;
     private final ModelMapper modelMapper;
 
@@ -157,6 +162,17 @@ public class CourseServiceImpl implements CourseService {
             courseRepository.save(course);
         });
         log.info("Courses statistics updated successfully");
+    }
+
+    @Cacheable(value = "courseInstructorsCache", key = "#id")
+    @Override
+    public List<InstructorDto> getInstructors(String id) {
+        log.info("Retrieving instructors for course with ID {}", id);
+        CourseDto course = getCourseById(id);
+        return instructorRepository.findByCoursesContaining(Set.of(new Instructor.Course(course.getSubject(), course.getCatalog())))
+                .stream()
+                .map(instructor -> modelMapper.map(instructor, InstructorDto.class))
+                .collect(Collectors.toList());
     }
 
     private void updateSchedules(Course course) {

@@ -60,6 +60,11 @@ public class CourseController {
         return Response.ok().setPayload(course);
     }
 
+    @GetMapping("/{id}/instructors")
+    public Response<?> getInstructorForCourse(@PathVariable String id) {
+        return Response.ok().setPayload(courseService.getInstructors(id));
+    }
+
     @PostMapping("/filter")
     public Response<?> getCourses(@RequestBody CourseFilterDto filters, @RequestParam int limit, @RequestParam int offset) {
         List<CourseDto> courses = courseService.getCoursesWithFilter(limit, offset, filters);
