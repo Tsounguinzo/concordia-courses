@@ -16,3 +16,12 @@ export type Course = {
     subject: string;
     catalog: string;
 }
+
+export type CourseInstructor = {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    avgDifficulty: number;
+    avgRating: number;
+    reviewCount: number;
+}

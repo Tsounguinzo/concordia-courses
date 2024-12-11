@@ -4,7 +4,7 @@ import com.google.gson.reflect.TypeToken;
 import courses.concordia.dto.model.course.CourseDto;
 import courses.concordia.dto.model.course.CourseFilterDto;
 import courses.concordia.dto.model.course.CourseReviewsDto;
-import courses.concordia.dto.model.instructor.InstructorDto;
+import courses.concordia.dto.model.instructor.CourseInstructorDto;
 import courses.concordia.dto.model.review.ReviewDto;
 import courses.concordia.exception.CustomExceptionFactory;
 import courses.concordia.exception.EntityType;
@@ -166,12 +166,12 @@ public class CourseServiceImpl implements CourseService {
 
     @Cacheable(value = "courseInstructorsCache", key = "#id")
     @Override
-    public List<InstructorDto> getInstructors(String id) {
+    public List<CourseInstructorDto> getInstructors(String id) {
         log.info("Retrieving instructors for course with ID {}", id);
         CourseDto course = getCourseById(id);
         return instructorRepository.findByCoursesContaining(Set.of(new Instructor.Course(course.getSubject(), course.getCatalog())))
                 .stream()
-                .map(instructor -> modelMapper.map(instructor, InstructorDto.class))
+                .map(instructor -> modelMapper.map(instructor, CourseInstructorDto.class))
                 .collect(Collectors.toList());
     }
 

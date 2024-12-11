@@ -11,6 +11,7 @@
     import CourseReviewPrompt from "$lib/components/common/ReviewPrompt.svelte";
     import ReviewEmptyPrompt from "$lib/components/review/ReviewEmptyPrompt.svelte";
     import CourseRequirements from "$lib/components/course/CourseRequirements.svelte";
+    import InstructorsBoard from "$lib/components/course/InstructorsBoard.svelte";
     import ReviewFilter from "$lib/components/review/ReviewFilter.svelte";
     import SchedulesDisplay from "$lib/components/course/schedule/SchedulesDisplay.svelte";
     import CourseReview from "$lib/components/review/Review.svelte";
@@ -24,6 +25,7 @@
     import type {GradeDistribution} from "$lib/model/GradeDistribution";
     import {visitorId} from "$lib/store";
     import {onMount} from "svelte";
+    import type {CourseInstructor} from "$lib/model/Instructor";
 
     $: params = $page.params.id;
     $: hash = $page.url.hash;
@@ -42,6 +44,7 @@
     const userInteractions = writable<Interaction[] | undefined>([]);
     let triggerConfetti = writable(false);
     const gradeDistribution = writable<GradeDistribution | undefined | null>(undefined);
+    const instructors = writable<CourseInstructor[]>([]);
 
     $: if (params) {
         firstFetch = true;
@@ -115,6 +118,7 @@
         const inner = async () => {
             try {
                 const payload = await repo.getCourseWithReviews(id);
+                const courseInstructors = await repo.getCourseInstructors(id);
 
                 if (typeof payload === 'string') {
                     course.set(null);
@@ -123,6 +127,7 @@
 
                 if (firstFetch) {
                     course.set(payload?.course);
+                    instructors.set(courseInstructors);
                 }
 
                 fetchGradeDistribution(payload?.course?.subject, payload?.course?.catalog);
@@ -439,14 +444,21 @@
                 {/if}
 
             </div>
-            <div class='col-span-2'>
+
+            <div class='col-span-2 space-y-5'>
+                <InstructorsBoard instructors={$instructors}/>
                 <CourseRequirements course={$course}/>
             </div>
+
         </div>
         <div class='flex flex-col lg:hidden'>
             <div class='mb-4 flex'>
+                <InstructorsBoard instructors={$instructors}/>
+            </div>
+            <div class='mb-4 flex'>
                 <CourseRequirements course={$course}/>
             </div>
+
             {#if $gradeDistribution || $course?.notes}
                 <h2 class='text-center mb-2 text-xl font-bold leading-none text-gray-700 dark:text-gray-200'>
                     {#if $gradeDistribution && $course?.notes}

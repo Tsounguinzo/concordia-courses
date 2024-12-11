@@ -7,7 +7,7 @@ import type {Review, ReviewType} from './model/Review';
 import type {Subscription} from './model/Subscription';
 import type {User} from './model/User';
 import {backendUrl} from "$lib/constants";
-import type {Instructor} from "$lib/model/Instructor";
+import type {CourseInstructor, Instructor} from "$lib/model/Instructor";
 import type {GetInstructorWithReviewsPayload} from "$lib/model/GetInstructorWithReviewsPayload";
 import type {GetInstructorReviewsInteractionPayload} from "$lib/model/GetInstructorReviewsInteractionPayload";
 import {ISOFormattedDateUTC4} from "$lib/utils";
@@ -310,8 +310,8 @@ export const repo = {
 
     async getCourseInstructors(
         courseId: String,
-    ): Promise<Instructor[]> {
-        return await client.deserialize<Instructor[]>(
+    ): Promise<CourseInstructor[]> {
+        return await client.deserialize<CourseInstructor[]>(
             'GET',
             `/courses/${courseId}/instructors`,
         );
