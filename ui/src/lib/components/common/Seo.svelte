@@ -4,7 +4,6 @@
 
     export let title: string;
     export let description: string;
-    export let type: string = "WebPage";
     export let ogDescription: string = 'Student Insights on Instructors and Rigor of Courses at Concordia University';
     export let ogTitle: string = "Reviews of Concordia Courses and Instructors";
     export let ogImage: string = "og-image.png";
@@ -51,15 +50,6 @@
 <meta name="author" content="Beaudelaire Tsoungui Nzodoumkouo, zhengxuan zhao, Russ Aulakh" />
 <meta name="keywords"
       content="${keywords?.join(', ')}, Concordia, Courses, Instructors, Reviews, Ratings, Rigor, Difficulty, Student, Insights, University, Montreal, Quebec, Canada, Concordia University, CU, Professor, Concordia Course, Concordia Instructor, Concordia Professor" />
-<script type="application/ld+json">
-  {
-     "@context": "http://schema.org",
-     "@type": "${type}",
-     "name": "${title}",
-     "description": "${description}",
-     "url": "${url}"
-  }
-</script>
 
 <script>
     (function(h,o,t,j,a,r){

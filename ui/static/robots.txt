@@ -6,6 +6,3 @@ Disallow: /course
 Disallow: /instructor
 Allow: /course/
 Allow: /instructor/
-
-Crawl-delay: 10
-Host: concordia.courses

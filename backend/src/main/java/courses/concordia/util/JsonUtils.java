@@ -24,11 +24,11 @@ public class JsonUtils {
             Type dataType = typeToken.getType();
             return gson.fromJson(reader, dataType);
         } catch (FileNotFoundException e) {
-            log.error("JSON file not found at {}: {}", jsonFilePath, e.getMessage());
+            log.error("JSON file not found at {}: {}", jsonFilePath, e.getMessage(), e);
         } catch (JsonSyntaxException e) {
-            log.error("Failed to parse JSON from {}: {}", jsonFilePath, e.getMessage());
+            log.error("Failed to parse JSON from {}: {}", jsonFilePath, e.getMessage(), e);
         } catch (Exception e) {
-            log.error("Unexpected error reading JSON from {}: {}", jsonFilePath, e.getMessage());
+            log.error("Unexpected error reading JSON from {}: {}", jsonFilePath, e.getMessage(), e);
         }
         return null;
     }
