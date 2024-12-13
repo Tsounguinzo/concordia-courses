@@ -14,4 +14,8 @@ public interface ReviewService {
     List<ReviewDto> getReviewsWithFilter(int limit, int offset, ReviewFilterDto filters);
     ReviewDto getReviewById(String id);
     ProcessingResult uploadReviews(MultipartFile file);
+
+    ProcessingResult deleteDuplicateReviews();
+
+    ProcessingResult deleteReviewsWithNonExistentInstructorIds();
 }

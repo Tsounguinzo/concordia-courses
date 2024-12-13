@@ -109,4 +109,16 @@ public class ReviewController {
         reviewService.deleteReview(reviewPayloadDto.getId(), reviewPayloadDto.getType(), reviewPayloadDto.getCourseId(), reviewPayloadDto.getInstructorId());
         return Response.ok().setPayload("Review was deleted successfully");
     }
+
+    @DeleteMapping("/instructor")
+    public ResponseEntity<String> deleteReviewsWithNonExistingInstructors() {
+        ProcessingResult result = reviewService.deleteReviewsWithNonExistentInstructorIds();
+        return ResponseEntity.ok("Reviews deleted successfully. " + result.getDeletedCount() + " reviews were deleted.");
+    }
+
+    @DeleteMapping("/duplicate")
+    public ResponseEntity<String> deleteDuplicateReviews() {
+        ProcessingResult result = reviewService.deleteDuplicateReviews();
+        return ResponseEntity.ok("Duplicate reviews deleted successfully. " + result.getDeletedCount() + " reviews were deleted.");
+    }
 }

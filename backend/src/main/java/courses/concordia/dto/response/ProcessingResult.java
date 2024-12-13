@@ -10,8 +10,13 @@ public class ProcessingResult {
     private int addedCount;
     private int failedCount;
     private int updatedCount;
+    private int deletedCount;
     private int alreadyExistsCount;
     private List<String> errors = new ArrayList<>();
+
+    public void incrementDeleted() {
+        deletedCount++;
+    }
 
     public void incrementAdded() {
         addedCount++;

@@ -281,6 +281,85 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     /**
+     * Finds and deletes duplicate reviews. A "duplicate" is defined as multiple reviews with
+     * the same (courseId, content, timestamp). Keeps exactly one review per group,
+     * deletes the rest.
+     *
+     * @return a ProcessingResult containing information about how many duplicates were deleted
+     */
+    @Override
+    public ProcessingResult deleteDuplicateReviews() {
+        ProcessingResult result = new ProcessingResult();
+
+        List<Review> allReviews = reviewRepository.findAll();
+
+        Map<String, List<Review>> grouped = new HashMap<>();
+
+        for (Review review : allReviews) {
+            String key = String.join(
+                    "_",
+                    Objects.toString(review.getCourseId(), ""),
+                    Objects.toString(review.getContent(), ""),
+                    Objects.toString(review.getTimestamp(), "")
+            );
+            grouped.computeIfAbsent(key, k -> new ArrayList<>()).add(review);
+        }
+
+        List<Review> duplicates = new ArrayList<>();
+        for (List<Review> group : grouped.values()) {
+            if (group.size() > 1) {
+                group.sort((r1, r2) -> Integer.compare(r2.getInstructorId().length(), r1.getInstructorId().length()));
+                duplicates.addAll(group.subList(1, group.size()));
+            }
+        }
+
+        if (!duplicates.isEmpty()) {
+            reviewRepository.deleteAll(duplicates);
+            result.setDeletedCount(duplicates.size());
+        }
+
+        log.info("Deleted {} duplicate reviews.", duplicates.size());
+
+        return result;
+    }
+
+    /**
+     * Deletes all reviews of type "instructor" which reference a non-existent instructorId.
+     *
+     * @return a ProcessingResult containing info about how many reviews were deleted
+     */
+    @Override
+    public ProcessingResult deleteReviewsWithNonExistentInstructorIds() {
+        ProcessingResult result = new ProcessingResult();
+
+        Set<String> validInstructorIds = instructorRepository.findAll()
+                .stream()
+                .map(Instructor::get_id)
+                .collect(Collectors.toSet());
+
+        List<Review> instructorReviews = reviewRepository.findAllByType("instructor");
+
+        List<Review> invalidInstructorReviews = instructorReviews.stream()
+                .filter(review -> {
+                    String instructorId = review.getInstructorId();
+                    // If instructorId is null or not found in the validInstructorIds set
+                    return instructorId == null || !validInstructorIds.contains(instructorId);
+                })
+                .collect(Collectors.toList());
+
+        if (!invalidInstructorReviews.isEmpty()) {
+            reviewRepository.deleteAll(invalidInstructorReviews);
+            log.info("Deleted {} reviews referencing non-existent instructors.", invalidInstructorReviews.size());
+            result.setDeletedCount(invalidInstructorReviews.size());
+        } else {
+            log.info("No reviews referencing non-existent instructors found.");
+        }
+
+        return result;
+    }
+
+
+    /**
      * Finds reviews based on filtering criteria with pagination support.
      *
      * @param filters The filtering criteria for reviews.
