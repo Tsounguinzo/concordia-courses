@@ -247,8 +247,13 @@ public class ReviewServiceImpl implements ReviewService {
                     result.incrementAlreadyExists();
                 } else {
                     // New review, add it
-                    reviewRepository.save(review);
-                    result.incrementAdded();
+                    if(instructorRepository.existsById(review.getInstructorId())){
+                        reviewRepository.save(review);
+                        result.incrementAdded();
+                    } else {
+                        result.incrementFailed();
+                        result.addError("Instructor with ID " + review.getInstructorId() + " does not exist");
+                    }
                 }
 
             } catch (Exception e) {
