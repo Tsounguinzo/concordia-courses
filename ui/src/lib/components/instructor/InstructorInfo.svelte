@@ -5,6 +5,7 @@
     import InstructorInfoStats from "$lib/components/common/stats/InfoStats.svelte";
     import type {Review} from "$lib/model/Review";
     import {twMerge} from "tailwind-merge";
+    import {ExternalLink} from "lucide-svelte";
 
     export let instructor: Instructor;
     export let allReviews: Review[];
@@ -20,6 +21,11 @@
                 <h1 class='break-words text-4xl font-semibold text-gray-800 dark:text-gray-200'>
                     {instructor.firstName} {instructor.lastName}
                 </h1>
+                {#if instructor?.externalLink}
+                    <a href={instructor.externalLink} class='my-auto dark:text-gray-200'>
+                        <ExternalLink size={20} className='ml-1 transition-colors duration-300 hover:stroke-red-600'/>
+                    </a>
+                {/if}
             </div>
             {#if instructor.departments}
                 <h2 class='break-words text-lg font-semibold text-primary-800 dark:text-primary-200 my-3'>

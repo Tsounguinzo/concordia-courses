@@ -2,6 +2,7 @@ export type Instructor = {
     _id: string;
     firstName: string;
     lastName: string;
+    externalLink?: string;
     departments: string[];
     courses: Course[];
     tags: string[];

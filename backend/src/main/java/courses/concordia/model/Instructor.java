@@ -33,6 +33,8 @@ public class Instructor {
     private Set<Course> courses;
     private Set<Tag> tags;
     @ToString.Exclude @EqualsAndHashCode.Exclude
+    private String externalLink;
+    @ToString.Exclude @EqualsAndHashCode.Exclude
     private double avgDifficulty = 0.0;
     @ToString.Exclude @EqualsAndHashCode.Exclude
     private double avgRating = 0.0;

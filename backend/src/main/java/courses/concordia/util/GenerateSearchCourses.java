@@ -3,6 +3,7 @@ package courses.concordia.util;
 import com.google.gson.reflect.TypeToken;
 import courses.concordia.model.Instructor;
 import courses.concordia.util.seed.model.Course;
+import org.thymeleaf.util.StringUtils;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -34,7 +35,16 @@ public class GenerateSearchCourses {
             courseMap.put("title", course.getTitle());
             courseMap.put("subject", course.getSubject());
             courseMap.put("catalog", course.getCatalog());
-            courseMap.put("instructors", courseInstructors.getOrDefault(course.get_id(), Collections.emptyList()));
+            courseMap.put("instructors",
+                    courseInstructors.getOrDefault(course.get_id(), Collections.emptyList())
+                            .stream()
+                            .map(String::toLowerCase)
+                            .map(instructor -> Arrays.stream(instructor.split(" "))
+                                    .map(StringUtils::capitalize)
+                                    .collect(Collectors.joining(" "))
+                            )
+                            .collect(Collectors.toList())
+            );
             return courseMap;
         }).collect(Collectors.toList());
 
