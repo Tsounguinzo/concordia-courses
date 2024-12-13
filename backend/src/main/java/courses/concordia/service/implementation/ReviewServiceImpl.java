@@ -240,6 +240,11 @@ public class ReviewServiceImpl implements ReviewService {
         ProcessingResult result = new ProcessingResult();
 
         for (ReviewDto dto : reviewDtos) {
+            if (dto.getContent() == null || dto.getContent().isBlank() || !dto.getContent().matches(".*[a-zA-Z].*") || dto.getContent().matches("^[a-zA-Z0-9]{1,3}$")) {
+                result.incrementFailed();
+                result.addError("Review content is empty");
+                continue;
+            }
             try {
                 Review review = modelMapper.map(dto, Review.class);
 
