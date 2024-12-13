@@ -5,6 +5,7 @@ import courses.concordia.dto.model.instructor.InstructorDto;
 import courses.concordia.dto.model.instructor.InstructorFilterDto;
 import courses.concordia.dto.model.instructor.InstructorReviewsDto;
 import courses.concordia.dto.model.review.ReviewDto;
+import courses.concordia.dto.response.ProcessingResult;
 import courses.concordia.exception.CustomExceptionFactory;
 import courses.concordia.exception.EntityType;
 import courses.concordia.exception.ExceptionType;
@@ -145,25 +146,58 @@ public class InstructorServiceImpl implements InstructorService {
     }
 
     @Override
-    public void uploadInstructors(MultipartFile file) {
-        log.info("Uploading instructors from file: {}", file.getOriginalFilename());
+    public ProcessingResult uploadInstructors(MultipartFile file) {
+        log.info("Starting to upload instructors from file: {}", file.getOriginalFilename());
         List<InstructorDto> instructors = processInstructorFile(file);
-        instructors.forEach(this::addOrUpdateInstructor);
-        log.info("Instructors uploaded successfully");
+
+        ProcessingResult result = new ProcessingResult();
+
+        for (InstructorDto dto : instructors) {
+            try {
+                Instructor instructor = modelMapper.map(dto, Instructor.class);
+                Instructor existingInstructor = instructorRepository.findById(instructor.get_id()).orElse(null);
+
+                if (existingInstructor != null) {
+                    result.incrementAlreadyExists();
+                    // Update existing instructor
+                    if (instructor.getCourses() != null && !existingInstructor.getCourses().containsAll(instructor.getCourses())) {
+                        existingInstructor.addCourses(instructor.getCourses());
+                        instructorRepository.save(existingInstructor);
+                        result.incrementUpdated();
+                    }
+                } else {
+                    // New Instructor, add it
+                    instructorRepository.save(instructor);
+                    result.incrementAdded();
+                }
+
+            } catch (Exception e) {
+                String errorMsg = String.format("Failed to process instructor (instructorId=%s): %s",
+                        dto.get_id(), e.getMessage());
+                log.error(errorMsg, e);
+                result.addError(errorMsg);
+                result.incrementFailed();
+            }
+        }
+
+        log.info("Instructors processing completed. Added: {}, AlreadyExist: {}, Failed: {}",
+                result.getAddedCount(), result.getAlreadyExistsCount(), result.getFailedCount());
+
+        if (!result.getErrors().isEmpty()) {
+            log.info("There were errors during processing: {}", result.getErrors());
+        }
+
+        return result;
     }
 
     private List<InstructorDto> processInstructorFile(MultipartFile file) {
         try (InputStream inputStream = file.getInputStream()) {
             return JsonUtils.getData(inputStream, new TypeToken<List<InstructorDto>>() {});
         } catch (IOException e) {
-            log.error("Failed to process instructor file", e);
+            String errorMsg = "Failed to process professor file: " + file.getOriginalFilename();
+            log.error(errorMsg, e);
             throw new RuntimeException("Failed to process instructor file", e);
         }
-    }
-
-    public void addOrUpdateInstructor(InstructorDto instructorDto) {
-        Instructor instructor = modelMapper.map(instructorDto, Instructor.class);
-        instructorRepository.save(instructor);
     }
 
     /**

@@ -47,6 +47,10 @@ public class Instructor {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime lastSummaryUpdate;
 
+    public void addCourses(Set<Course> courses) {
+        this.courses.addAll(courses);
+    }
+
     @Data
     @AllArgsConstructor
     @NoArgsConstructor

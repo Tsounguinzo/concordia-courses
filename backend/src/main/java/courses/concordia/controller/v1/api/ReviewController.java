@@ -4,7 +4,7 @@ import courses.concordia.dto.model.review.ReviewDto;
 import courses.concordia.dto.model.review.ReviewFilterDto;
 import courses.concordia.dto.model.review.ReviewPayloadDto;
 import courses.concordia.dto.response.Response;
-import courses.concordia.dto.response.ReviewProcessingResult;
+import courses.concordia.dto.response.ProcessingResult;
 import courses.concordia.model.User;
 import courses.concordia.service.InteractionService;
 import courses.concordia.service.NotificationService;
@@ -41,7 +41,7 @@ public class ReviewController {
             }
 
         try {
-            ReviewProcessingResult result = reviewService.uploadReviews(file);
+            ProcessingResult result = reviewService.uploadReviews(file);
             // Construct a summary response
             Map<String, Object> responseBody = new HashMap<>();
             responseBody.put("message", "Reviews processed with some results");

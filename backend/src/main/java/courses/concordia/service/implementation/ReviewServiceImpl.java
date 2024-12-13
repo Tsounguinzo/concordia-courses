@@ -4,7 +4,7 @@ import com.google.gson.reflect.TypeToken;
 import courses.concordia.dto.mapper.ReviewMapper;
 import courses.concordia.dto.model.review.ReviewDto;
 import courses.concordia.dto.model.review.ReviewFilterDto;
-import courses.concordia.dto.response.ReviewProcessingResult;
+import courses.concordia.dto.response.ProcessingResult;
 import courses.concordia.exception.CustomExceptionFactory;
 import courses.concordia.exception.EntityType;
 import courses.concordia.exception.ExceptionType;
@@ -230,14 +230,14 @@ public class ReviewServiceImpl implements ReviewService {
      * Uploads reviews from a file.
      *
      * @param file The file containing reviews.
-     * @return A ReviewProcessingResult object containing the result of the review upload.
+     * @return A ProcessingResult object containing the result of the review upload.
      */
     @Override
-    public ReviewProcessingResult uploadReviews(MultipartFile file) {
+    public ProcessingResult uploadReviews(MultipartFile file) {
         log.info("Starting to upload reviews from file: {}", file.getOriginalFilename());
         List<ReviewDto> reviewDtos = processReviewFile(file);
 
-        ReviewProcessingResult result = new ReviewProcessingResult();
+        ProcessingResult result = new ProcessingResult();
 
         for (ReviewDto dto : reviewDtos) {
             try {

@@ -3,6 +3,7 @@ package courses.concordia.service;
 import courses.concordia.dto.model.instructor.InstructorDto;
 import courses.concordia.dto.model.instructor.InstructorFilterDto;
 import courses.concordia.dto.model.instructor.InstructorReviewsDto;
+import courses.concordia.dto.response.ProcessingResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -13,5 +14,5 @@ public interface InstructorService {
     InstructorDto getInstructorById(String id);
     InstructorReviewsDto getInstructorAndReviewsById(String id);
     void updateInstructorsStatistics();
-    void uploadInstructors(MultipartFile file);
+    ProcessingResult uploadInstructors(MultipartFile file);
 }
