@@ -16,6 +16,8 @@ public class Course {
     private String prerequisites;
     private String catalog;
     private String title;
+    private double classUnit;
+    private String ConUCourseID;
     private List<Schedule> schedules;
 
     @Data
@@ -38,6 +40,11 @@ public class Course {
         private String sundays;
         private String classStartTime;
         private String classEndTime;
+        private int enrollmentCapacity;
+        private int currentEnrollment;
+        private int waitlistCapacity;
+        private int currentWaitlistTotal;
+        private String hasSeatReserved;
     }
 
     @Data

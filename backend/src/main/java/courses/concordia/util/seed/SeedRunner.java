@@ -103,7 +103,12 @@ public class SeedRunner {
                                     blockDetails.getSaturdays(),
                                     blockDetails.getSundays(),
                                     blockDetails.getClassStartTime(),
-                                    blockDetails.getClassEndTime()
+                                    blockDetails.getClassEndTime(),
+                                    blockDetails.getEnrollmentCapacity(),
+                                    blockDetails.getCurrentEnrollment(),
+                                    blockDetails.getWaitlistCapacity(),
+                                    blockDetails.getCurrentWaitlistTotal(),
+                                    blockDetails.getHasSeatReserved()
                             ));
                         } else {
                             //log.warn(blockDetails.getTermCode() + " does not match " + CODE_TERM_MAPPING.get(term) + " for " + course.getSubject() + " " + course.getCatalog() + " " + term + ". Skipping block. Summer: " + term.startsWith("Summer") + " and code is 2246 or 2231: " + (blockDetails.getTermCode().equals("2246") || blockDetails.getTermCode().equals("2231")));
@@ -130,6 +135,8 @@ public class SeedRunner {
                     course.getPrerequisites(),
                     course.getCatalog(),
                     course.getTitle(),
+                    course.getClassUnit(),
+                    course.getID(),
                     schedules
             );
             newCourses.add(newCourse);

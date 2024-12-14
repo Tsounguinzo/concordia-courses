@@ -22,6 +22,8 @@ public class Course {
     private String description;
     private String catalog;
     private String title;
+    private double classUnit;
+    private String ConUCourseID;
     private String notes;
     @ToString.Exclude @EqualsAndHashCode.Exclude
     private double avgDifficulty = 0.0;
@@ -51,6 +53,11 @@ public class Course {
         private String sundays;
         private String classStartTime;
         private String classEndTime;
+        private int enrollmentCapacity;
+        private int currentEnrollment;
+        private int waitlistCapacity;
+        private int currentWaitlistTotal;
+        private String hasSeatReserved;
     }
 
     @Data

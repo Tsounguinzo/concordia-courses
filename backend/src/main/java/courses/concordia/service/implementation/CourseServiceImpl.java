@@ -180,6 +180,8 @@ public class CourseServiceImpl implements CourseService {
                 .ifPresentOrElse(existingCourse -> {
                     existingCourse.setSchedules(course.getSchedules());
                     existingCourse.setTerms(course.getTerms());
+                    existingCourse.setClassUnit(course.getClassUnit());
+                    existingCourse.setConUCourseID(course.getConUCourseID());
                     courseRepository.save(existingCourse);
                 }, () -> courseRepository.save(course));
     }

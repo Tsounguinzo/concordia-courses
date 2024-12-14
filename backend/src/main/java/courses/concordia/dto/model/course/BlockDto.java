@@ -30,4 +30,9 @@ public class BlockDto {
     private String sundays;
     private String classStartTime;
     private String classEndTime;
+    private int enrollmentCapacity;
+    private int currentEnrollment;
+    private int waitlistCapacity;
+    private int currentWaitlistTotal;
+    private String hasSeatReserved;
 }

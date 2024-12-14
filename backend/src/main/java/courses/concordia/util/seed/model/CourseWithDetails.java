@@ -43,9 +43,9 @@ public class CourseWithDetails {
     private String departmentDescription;
     private String facultyCode;
     private String facultyDescription;
-    private String enrollmentCapacity;
-    private String currentEnrollment;
-    private String waitlistCapacity;
-    private String currentWaitlistTotal;
+    private int enrollmentCapacity;
+    private int currentEnrollment;
+    private int waitlistCapacity;
+    private int currentWaitlistTotal;
     private String hasSeatReserved;
 }

@@ -11,6 +11,6 @@ public class CourseCatalogue {
     private String subject;
     private String catalog;
     private String career;
-    private String classUnit;
+    private double classUnit;
     private String prerequisites;
 }
