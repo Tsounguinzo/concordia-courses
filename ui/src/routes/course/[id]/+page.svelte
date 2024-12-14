@@ -277,6 +277,12 @@
         <div class='py-2.5'/>
         <div class='hidden gap-x-6 lg:grid lg:grid-cols-5'>
             <div class='col-span-3'>
+                <a href="/grades" class="block mb-3 rounded-md bg-blue-50 p-3 text-sm">
+                    <p class="text-blue-800">
+                        📊 Help other students by sharing your grade distributions.
+                        <a href="/grades" class="font-medium underline hover:text-blue-600">Upload here</a>
+                    </p>
+                </a>
                 {#if $gradeDistribution || $course?.notes}
                     <h2 class='text-center mb-2 text-xl font-bold leading-none text-gray-700 dark:text-gray-200'>
                         {#if $gradeDistribution && $course?.notes}
@@ -369,6 +375,13 @@
             <div class='mb-4 flex'>
                 <CourseRequirements course={$course}/>
             </div>
+
+            <a href="/grades" class="block mb-3 rounded-md bg-blue-50 p-3 text-sm">
+                <p class="text-blue-800">
+                    📊 Help other students by sharing your grade distributions.
+                    <a href="/grades" class="font-medium underline hover:text-blue-600">Upload here</a>
+                </p>
+            </a>
 
             {#if $gradeDistribution || $course?.notes}
                 <h2 class='text-center mb-2 text-xl font-bold leading-none text-gray-700 dark:text-gray-200'>
