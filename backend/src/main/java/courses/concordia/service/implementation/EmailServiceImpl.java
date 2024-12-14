@@ -3,6 +3,7 @@ package courses.concordia.service.implementation;
 import courses.concordia.service.EmailService;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -11,8 +12,12 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Map;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
 
@@ -149,5 +154,51 @@ public class EmailServiceImpl implements EmailService {
             System.out.println(e.getMessage());
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    @Override
+    public void sendEnrollmentUpdateReport(
+            String name,
+            String to,
+            String startTime,
+            String endTime,
+            long duration,
+            int totalCourses,
+            int totalSchedules,
+            int updatedCourses,
+            Map<String, Integer> retentionReasons) {
+        try {
+            MimeMessage message = emailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, UTF_8_ENCODING);
+
+            Context context = new Context();
+            context.setVariable("name", name);
+            context.setVariable("timestamp", LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+            context.setVariable("startTime", startTime);
+            context.setVariable("endTime", endTime);
+            context.setVariable("duration", formatDuration(duration));
+            context.setVariable("totalCourses", totalCourses);
+            context.setVariable("totalSchedules", totalSchedules);
+            context.setVariable("updatedCourses", updatedCourses);
+            context.setVariable("retentionReasons", retentionReasons);
+
+            String htmlContent = templateEngine.process("enrollmentUpdateReport", context);
+            helper.setFrom("cdpl4ter@gmail.com");
+            helper.setTo(to);
+            helper.setSubject("Course Enrollment Update Report - " + LocalDate.now());
+            helper.setText(htmlContent, true);
+
+            emailSender.send(message);
+        } catch (Exception e) {
+            log.error("Failed to send enrollment update report", e);
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    private String formatDuration(long milliseconds) {
+        long minutes = (milliseconds / 1000) / 60;
+        long seconds = (milliseconds / 1000) % 60;
+        long millis = milliseconds % 1000;
+        return String.format("%dm %ds %dms", minutes, seconds, millis);
     }
 }

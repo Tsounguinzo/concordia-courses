@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Enrollment Update Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .stats-container {
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .retention-reasons {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .success { color: #28a745; }
+        .warning { color: #ffc107; }
+        .danger { color: #dc3545; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>Course Enrollment Update Report</h2>
+        <p>Update completed on <span th:text="${timestamp}">timestamp</span></p>
+    </div>
+
+    <div class="stats-container">
+        <h3>Update Statistics</h3>
+        <p>⏱️ Duration: <strong th:text="${duration}">duration</strong></p>
+        <p>📚 Total Courses Processed: <strong th:text="${totalCourses}">0</strong></p>
+        <p>📅 Total Schedules Processed: <strong th:text="${totalSchedules}">0</strong></p>
+        <p>🔄 Courses Updated: <strong class="success" th:text="${updatedCourses}">0</strong></p>
+    </div>
+
+    <div class="retention-reasons">
+        <h3>Schedule Retention Breakdown</h3>
+        <ul>
+            <li th:each="reason : ${retentionReasons}">
+                <span th:text="${reason.key}">Reason</span>: 
+                <strong th:text="${reason.value}">0</strong>
+            </li>
+        </ul>
+    </div>
+
+    <div class="stats-container">
+        <h3>Processing Details</h3>
+        <p>🕐 Start Time: <span th:text="${startTime}">start</span></p>
+        <p>🕐 End Time: <span th:text="${endTime}">end</span></p>
+    </div>
+</body>
+</html> 
