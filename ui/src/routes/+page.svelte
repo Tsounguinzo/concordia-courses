@@ -33,13 +33,15 @@
                     results={$searchResults}
                     handleInputChange={handleInputChange}
             />
-                <a href="/grades" class="block rounded-lg bg-gradient-to-r from-purple-50 to-blue-50 p-4 shadow-sm">
+                <div on:mousedown={() => window.location.href = "/grades"}
+                     on:keydown={() => window.location.href = "/grades"}
+                     class="block rounded-lg bg-gradient-to-r from-purple-50 to-blue-50 p-4 shadow-sm cursor-pointer">
                     <h3 class="text-lg font-semibold text-gray-900">Help Build Our Community 🤝</h3>
                     <p class="mt-1 text-sm text-gray-600">
                         Share your course grade distributions to help other students make informed decisions.
                         <a href="/grades" class="font-medium text-blue-600 hover:underline">Upload yours now</a>
                     </p>
-                </a>
+                </div>
 
                 <a href="/reviews-feed" class='mx-auto rounded-md bg-slate-50 px-3 py-2 text-sm font-semibold text-gray-500 hover:bg-gray-100 dark:bg-neutral-800 dark:text-gray-200 dark:hover:bg-neutral-700'>
                     Explore reviews feed <span aria-hidden='true'>&rarr;</span>
