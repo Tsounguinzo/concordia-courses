@@ -53,10 +53,10 @@ public class Course {
         private String sundays;
         private String classStartTime;
         private String classEndTime;
-        private int enrollmentCapacity;
-        private int currentEnrollment;
-        private int waitlistCapacity;
-        private int currentWaitlistTotal;
+        private Integer enrollmentCapacity;
+        private Integer currentEnrollment;
+        private Integer waitlistCapacity;
+        private Integer currentWaitlistTotal;
         private String hasSeatReserved;
     }
 
