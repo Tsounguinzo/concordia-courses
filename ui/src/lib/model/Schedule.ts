@@ -16,6 +16,11 @@ export type Block = {
     sundays: string;
     classStartTime: string;
     classEndTime: string;
+    enrollmentCapacity: number;
+    currentEnrollment: number;
+    waitlistCapacity: number;
+    currentWaitlistTotal: number;
+    hasSeatReserved: string;
 };
 
 

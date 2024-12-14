@@ -82,7 +82,8 @@
     <div class='flex w-full flex-col md:w-7/12'>
         <div class='flex flex-row space-x-2 align-middle'>
             <h1 class='text-3xl font-semibold text-gray-800 dark:text-gray-200'>
-                {course.subject} {course.catalog}
+                {course.subject} {course.catalog} <br class="sm:hidden"/>
+                <span class="max-sm:hidden">-</span>  {course.classUnit} credit(s)
             </h1>
             <div class='flex items-center gap-2'>
                 {#if user}

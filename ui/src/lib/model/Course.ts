@@ -12,6 +12,8 @@ export type Course = {
     avgDifficulty: number;
     avgExperience: number;
     reviewCount: number;
+    classUnit: number;
+    ConUCourseID: string;
     notes: string;
     schedules: Schedule[];
 };

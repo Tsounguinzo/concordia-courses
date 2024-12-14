@@ -1,6 +1,6 @@
 <script lang="ts">
     import TimeblockDays from "./TimeblockDays.svelte";
-    import BlockLocation from "./BlockLocation.svelte";
+    import EnrollmentStatus from "./EnrollmentStatus.svelte";
     import type {Block} from "$lib/model/Schedule";
 
     export let block: Block
@@ -27,7 +27,13 @@
     </td>
     <td class='py-2 text-gray-700 dark:text-gray-300'>
         <div class='flex flex-col items-start pl-1 text-center font-medium'>
-            <BlockLocation locationCode={block.locationCode}/>
+            <EnrollmentStatus
+                enrollmentCapacity={block.enrollmentCapacity}
+                currentEnrollment={block.currentEnrollment}
+                waitlistCapacity={block.waitlistCapacity}
+                currentWaitlistTotal={block.currentWaitlistTotal}
+                hasSeatReserved={block.hasSeatReserved}
+            />
         </div>
     </td>
     <td class='whitespace-nowrap py-2 text-sm font-medium sm:text-base'>
