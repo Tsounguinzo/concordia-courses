@@ -14,6 +14,7 @@
     import AutocompleteInput from "$lib/components/review/AutocompleteInput.svelte";
     import FileInput from "$lib/components/common/form/FileInput.svelte";
     import ExampleDialog from "$lib/components/grades/ExampleDialog.svelte";
+    import { uploadFiles } from "$lib/utils/uploadthing";
 
     let initialValues = {
         term: '',
@@ -47,8 +48,8 @@
         };
 
         const options: FileValidationOptions = {
-            allowedTypes: ["image/jpeg", "image/png", "application/pdf"],
-            maxSizeMB: 5,
+            allowedTypes: ["image/jpeg", "image/png"],
+            maxSizeMB: 4,
         };
         errors.term = validateFromOptions(values.term, "Term", ['Fall', 'Winter', 'Spring', 'Summer', 'Fall/Winter']);
         errors.year = validateYear(values.year);
@@ -64,30 +65,41 @@
     };
 
     const onSubmit = async (values, actions) => {
-        const formData = new FormData();
-        formData.append('term', values.term);
-        formData.append('year', values.year);
-        formData.append('gradeDistribution', values.gradeDistribution);
-
         try {
-            toast.promise(fetch('?/upload', {
-                method: 'POST',
-                body: formData,
-            }), {
-                loading: 'Uploading files...',
-                success: 'Files uploaded successfully.',
-                error: (err) => err.error || 'Failed to upload files',
+            const { term, year, gradeDistribution } = values;
+
+            // Create a new file name
+            const newFileName = `${term}-${year}-gradeDistribution${gradeDistribution.name.slice(gradeDistribution.name.lastIndexOf('.'))}`;
+
+            // Create a new File object with the new name
+            const renamedFile = new File([gradeDistribution], newFileName, {
+                type: gradeDistribution.type,
+                lastModified: gradeDistribution.lastModified,
+            });
+
+
+            // Start upload with UploadThing
+            toast.promise(uploadFiles(
+                'gradeDistribution',
+                {
+                    files: [renamedFile],
+                }
+            ), {
+                loading: 'Uploading file...',
+                success: 'Uploaded successfully.',
+                error: (err) => err.message || 'Upload failed'
             });
 
             actions.resetForm();
             reset = true;
             setTimeout(() => reset = false, 100);
         } catch (error) {
-            toast.error(error.message);
+            toast.error(error.message || 'Upload failed');
         } finally {
             actions.setSubmitting(false);
         }
     };
+
 </script>
 
 <Sveltik

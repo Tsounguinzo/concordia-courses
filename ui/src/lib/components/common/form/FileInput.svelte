@@ -44,7 +44,7 @@
                 <path d="m16 16-4-4-4 4"/>
             </svg>
             <p class="mt-2 text-center text-sm ">Click to upload.</p>
-            <p class="mt-2 text-center text-sm ">Max file size: 5MB</p>
+            <p class="mt-2 text-center text-sm ">Max file size: 4MB</p>
             <span class="sr-only">File upload</span>
         </div>
     {:else}
