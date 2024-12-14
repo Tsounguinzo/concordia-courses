@@ -235,26 +235,6 @@
      keywords={params ? [...instructorIdToName(params).split(' '), instructorIdToName(params)] : undefined}
 />
 
-<svelte:head>
-    {@html `
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org/",
-        "@type": "Person",
-        "name": "${($instructor?.firstName ?? '')} ${($instructor?.lastName ?? '')}",
-        "url": "${$page.url.href}",
-        "jobTitle": "Professor",
-        "worksFor": {
-            "@type": "CollegeOrUniversity",
-            "name": "Concordia University",
-            "sameAs": "https://www.concordia.ca/"
-        }
-    }
-    </script>
-    `}
-</svelte:head>
-
-
 {#if $instructor === undefined || $instructor === null || $showingReviews === undefined}
     <Loading/>
 {:else }
