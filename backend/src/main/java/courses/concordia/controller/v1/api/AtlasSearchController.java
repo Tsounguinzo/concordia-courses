@@ -5,6 +5,7 @@ import com.mongodb.client.model.search.SearchOperator;
 import courses.concordia.dto.response.Response;
 import courses.concordia.model.Instructor;
 import courses.concordia.model.Review;
+import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
@@ -42,6 +43,7 @@ public class AtlasSearchController {
     @Value("${spring.data.mongodb.database}")
     private String databaseName;
 
+    @Timed(value = "atlas.search", description = "Search for reviews using Atlas Search")
     @GetMapping
     public Response<?> FTS(@RequestParam String query, @RequestParam int limit) {
 

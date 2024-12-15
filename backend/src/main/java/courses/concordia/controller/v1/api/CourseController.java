@@ -4,6 +4,7 @@ import courses.concordia.dto.model.course.CourseDto;
 import courses.concordia.dto.response.Response;
 import courses.concordia.dto.model.course.CourseFilterDto;
 import courses.concordia.service.CourseService;
+import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +25,7 @@ public class CourseController {
     @Value("${beaudelaire.uploadKey}")
     private String uploadKey;
 
+    @Timed(value = "courses.upload", description = "Upload courses file")
     @PutMapping("/update")
     public ResponseEntity<String> updateCourses(@RequestParam("file") MultipartFile file, @RequestParam String key) {
         try {
@@ -38,6 +40,7 @@ public class CourseController {
         }
     }
 
+    @Timed(value = "courses.get", description = "Get courses")
     @GetMapping
     public Response<?> getCourses() {
         return Response
@@ -45,6 +48,7 @@ public class CourseController {
                 .setPayload(courseService.getCourses());
     }
 
+    @Timed(value = "courses.stats", description = "Update courses stats")
     @GetMapping("/stats")
     public ResponseEntity<String> updateCoursesStats(@RequestParam String key) {
         if (!key.equals(uploadKey)) {
@@ -54,17 +58,20 @@ public class CourseController {
         return ResponseEntity.ok("Courses stats updated successfully");
     }
 
+    @Timed(value = "courses.get", description = "Get course by ID")
     @GetMapping("/{id}")
     public Response<?> getCourseById(@PathVariable String id, @RequestParam(name = "with_reviews", defaultValue = "false") boolean withReviews) {
         Object course = withReviews ? courseService.getCourseAndReviewsById(id) : courseService.getCourseById(id);
         return Response.ok().setPayload(course);
     }
 
+    @Timed(value = "courses.get", description = "Get instructors for course")
     @GetMapping("/{id}/instructors")
     public Response<?> getInstructorForCourse(@PathVariable String id) {
         return Response.ok().setPayload(courseService.getInstructors(id));
     }
 
+    @Timed(value = "courses.get", description = "Get courses with filter")
     @PostMapping("/filter")
     public Response<?> getCourses(@RequestBody CourseFilterDto filters, @RequestParam int limit, @RequestParam int offset) {
         List<CourseDto> courses = courseService.getCoursesWithFilter(limit, offset, filters);

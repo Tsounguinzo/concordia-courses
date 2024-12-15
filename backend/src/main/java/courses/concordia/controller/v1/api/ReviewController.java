@@ -10,6 +10,7 @@ import courses.concordia.service.InteractionService;
 import courses.concordia.service.NotificationService;
 import courses.concordia.service.ReviewService;
 import courses.concordia.service.UserService;
+import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,6 +35,7 @@ public class ReviewController {
     @Value("${beaudelaire.uploadKey}")
     private String uploadKey;
 
+    @Timed(value = "reviews.upload", description = "Upload reviews file")
     @PutMapping("/upload")
     public ResponseEntity<String> uploadReviews(@RequestParam("file") MultipartFile file, @RequestParam String key) {
             if (!key.equals(uploadKey)) {
@@ -59,24 +61,28 @@ public class ReviewController {
         }
     }
 
+    @Timed(value = "reviews.get", description = "Get reviews")
     @GetMapping
     public Response<?> getReviews(@RequestParam String userId) {
         List<ReviewDto> reviews = reviewService.getUserReviews(userId);
         return Response.ok().setPayload(reviews);
     }
 
+    @Timed(value = "reviews.get", description = "Get review by ID")
     @GetMapping("/shared")
     public Response<?> getReview(@RequestParam String id) {
         ReviewDto review = reviewService.getReviewById(id);
         return Response.ok().setPayload(review);
     }
 
+    @Timed(value = "reviews.get", description = "Get reviews with filters")
     @PostMapping("/filter")
     public Response<?> getReviewsWithFilters(@RequestBody ReviewFilterDto filters, @RequestParam int limit, @RequestParam int offset) {
         List<ReviewDto> reviews = reviewService.getReviewsWithFilter(limit, offset, filters);
         return Response.ok().setPayload(reviews);
     }
 
+    @Timed(value = "reviews.get", description = "Get reviews by course ID")
     @PostMapping
     public Response<?> addReview(@RequestBody ReviewDto reviewDto) {
         User user = userService.getAuthenticatedUser();
@@ -94,6 +100,7 @@ public class ReviewController {
         return Response.ok().setPayload(addedReview);
     }
 
+    @Timed(value = "reviews.update", description = "Update review")
     @PutMapping
     public Response<?> updateReview(@RequestBody ReviewDto reviewDto) {
         ReviewDto addedReview = reviewService.addOrUpdateReview(reviewDto);
@@ -101,6 +108,7 @@ public class ReviewController {
         return Response.ok().setPayload(addedReview);
     }
 
+    @Timed(value = "reviews.delete", description = "Delete review")
     @DeleteMapping
     public Response<?> deleteReview(@RequestBody ReviewPayloadDto reviewPayloadDto) {
         ReviewDto reviewDto = reviewService.getReviewById(reviewPayloadDto.getId());
@@ -110,12 +118,14 @@ public class ReviewController {
         return Response.ok().setPayload("Review was deleted successfully");
     }
 
+    @Timed(value = "reviews.delete", description = "Delete reviews with non-existing instructors")
     @DeleteMapping("/instructor")
     public ResponseEntity<String> deleteReviewsWithNonExistingInstructors() {
         ProcessingResult result = reviewService.deleteReviewsWithNonExistentInstructorIds();
         return ResponseEntity.ok("Reviews deleted successfully. " + result.getDeletedCount() + " reviews were deleted.");
     }
 
+    @Timed(value = "reviews.delete", description = "Delete duplicate reviews")
     @DeleteMapping("/duplicate")
     public ResponseEntity<String> deleteDuplicateReviews() {
         ProcessingResult result = reviewService.deleteDuplicateReviews();
