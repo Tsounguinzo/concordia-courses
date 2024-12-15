@@ -50,7 +50,7 @@ public class ScheduledTask {
         updateCourseEnrollmentData();
     }
 
-    @Scheduled(cron = "0 0 0 * * ?")  // Run daily at midnight
+    @Scheduled(cron = "0 0 2 * * ?", zone = "America/New_York")// Run daily at midnight
     public void updateCourseEnrollmentData() {
         log.info("Starting scheduled enrollment data update...");
         long startTime = System.currentTimeMillis();
@@ -88,6 +88,7 @@ public class ScheduledTask {
                     if (termCode == null) {
                         updatedSchedules.add(oldSchedule);
                         retentionReasons.merge("Term not found", 1, Integer::sum);
+                        log.warn("Term not found for term: {} {}", oldSchedule.getTerm(), oldSchedule);
                         continue;
                     }
 
@@ -139,6 +140,7 @@ public class ScheduledTask {
                     } else {
                         updatedSchedules.add(oldSchedule);
                         retentionReasons.merge("No blocks found", 1, Integer::sum);
+                        log.warn("No blocks found for course: {} {}", course.getSubject(), course.getCatalog());
                     }
                 }
 
