@@ -14,9 +14,7 @@ spring:
     active: default
 
   cache:
-    type: caffeine
-    caffeine:
-      spec: maximumSize=500,expireAfterAccess=600s
+    type: redis
 
   mail:
     host: smtp.gmail.com
