@@ -1,12 +1,19 @@
-import {backendUrl} from "$lib/constants";
-import type {RequestOptions} from "$lib/types";
+import { backendUrl } from "$lib/constants";
+import type { RequestOptions } from "$lib/types";
+import zlib from 'zlib';
+import { Buffer } from 'buffer';
+
 
 const sendRequest = async ({ request, url, method, requestBody = null }) => {
     const query = url.search ? `${backendUrl}${url.pathname}${url.search}` : `${backendUrl}${url.pathname}`;
     try {
         const options: RequestOptions = {
             method,
-            headers: request.headers,
+            headers: {
+                ...request.headers,
+                'Accept-Encoding': 'gzip', // Request gzip-encoded responses
+                'Content-Type': 'application/json', // Default content type for JSON
+            },
         };
 
         if (requestBody) {
@@ -15,11 +22,21 @@ const sendRequest = async ({ request, url, method, requestBody = null }) => {
 
         const response = await fetch(query, options);
 
+        // Decompress gzip response if necessary
         let responseData;
         try {
-            responseData = await response.json();
+            const buffer = await response.arrayBuffer();
+            const decodedResponse = Buffer.from(buffer);
+
+            // Check if the response is gzip-encoded
+            const contentEncoding = response.headers.get('content-encoding') || '';
+            if (contentEncoding.includes('gzip')) {
+                responseData = JSON.parse(zlib.gunzipSync(decodedResponse).toString());
+            } else {
+                responseData = JSON.parse(decodedResponse.toString());
+            }
         } catch (e) {
-            // Handle non-JSON response
+            // Handle non-JSON or non-gzip response
             if (!response.ok) {
                 return new Response("Error: Response is not in JSON format", { status: response.status });
             }
@@ -29,7 +46,7 @@ const sendRequest = async ({ request, url, method, requestBody = null }) => {
         if (!response.ok) {
             //console.error(`Request to ${query.replace(/[\n\r]/g, "")} failed with status: ${response.status}`);
             const errorMessage = responseData.errors?.message || 'Unknown error';
-            return new Response(JSON.stringify(errorMessage), { status: response.status});
+            return new Response(JSON.stringify(errorMessage), { status: response.status });
         }
 
         //console.log(`Request to ${query.replace(/[\n\r]/g, "")} was successful`);
@@ -48,8 +65,8 @@ export const POST = async ({ url, request }) => {
     let requestBody;
     try {
         requestBody = await request.json();
-    }catch (err){
-        console.log("Error in POST Body")
+    } catch (err) {
+        console.log("Error in POST Body");
     }
     return await sendRequest({ request, url, method: 'POST', requestBody });
 };
@@ -58,19 +75,18 @@ export const PUT = async ({ url, request }) => {
     let requestBody;
     try {
         requestBody = await request.json();
-    }catch (err){
-        console.log("Error in PUT Body")
+    } catch (err) {
+        console.log("Error in PUT Body");
     }
     return await sendRequest({ request, url, method: 'PUT', requestBody });
 };
-
 
 export const DELETE = async ({ url, request }) => {
     let requestBody;
     try {
         requestBody = await request.json();
-    }catch (err){
-        console.log("Error in DELETE Body")
+    } catch (err) {
+        console.log("Error in DELETE Body");
     }
     return await sendRequest({ request, url, method: 'DELETE', requestBody });
 };
