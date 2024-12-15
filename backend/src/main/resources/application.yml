@@ -62,10 +62,6 @@ allowed:
 server:
   port: 8080
   forward-headers-strategy: native
-  compression:
-    enabled: true
-    mime-types: application/json,application/xml,text/html,text/xml,text/plain
-    min-response-size: 2048
 
 management:
   endpoints:
