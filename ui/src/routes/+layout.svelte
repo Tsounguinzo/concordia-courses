@@ -44,12 +44,12 @@
 
 <ModeWatcher/>
 <Toaster closeButton position="top-center"/>
-<div class='min-h-screen overflow-auto bg-slate-300 pb-5 transition duration-300 ease-in-out dark:bg-neutral-900'>
+<div class='min-h-screen overflow-auto bg-slate-200 pb-5 transition duration-300 ease-in-out dark:bg-neutral-900'>
     <Navbar/>
-    <main class='mx-2 md:mx-16 lg:mx-24 xl:mx-40'>
+    <main class={$page.url.pathname.match(/\//) ? '' : 'mx-2 md:mx-16 lg:mx-24 xl:mx-40'}>
         <slot/>
     </main>
-    <div class='hidden lg:block {$page.url.pathname.match(/^(\/|\/login|\/reset-password)$/) ? "absolute" : "static"} bottom-0'>
-        <Footer/>
+    <div class="hidden lg:block fixed bottom-2 left-1/2 transform -translate-x-1/2">
+        <Footer />
     </div>
 </div>
