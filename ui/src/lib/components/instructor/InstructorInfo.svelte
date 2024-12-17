@@ -30,9 +30,11 @@
             {#if instructor.departments}
                 <h2 class='break-words text-lg font-semibold text-primary-800 dark:text-primary-200 my-3'>
                     {#each instructor.departments as department}
-                        {department.toLowerCase().includes("department") ? '' : 'Department of'} {department}
-                        {#if department !== instructor.departments[instructor.departments.length - 1]}
-                            <br/>
+                        {#if department}
+                            {department.toLowerCase().includes("department") ? '' : 'Department of'} {department}
+                            {#if department !== instructor.departments[instructor.departments.length - 1]}
+                                <br/>
+                            {/if}
                         {/if}
                     {/each}
                 </h2>
