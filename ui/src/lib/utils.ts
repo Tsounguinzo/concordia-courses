@@ -239,7 +239,7 @@ export const generateSitemapEntries = (courses: Course[]): UrlEntry[] => {
         });
     });
 
-    return urls;
+    return [...(new Set(urls))];
 };
 
 export function getCampusLocation(locationCode: String) {
