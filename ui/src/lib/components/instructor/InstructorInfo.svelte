@@ -13,7 +13,7 @@
     $: [color, icon] = experienceToIcon(instructor.avgRating);
     $: externalCourses = allReviews
         .filter(review => review.schoolId)
-        .map(review => spliceCourseCode(review.courseId, ' '))
+        .map(review => review.courseId)
         .filter((courseId, index, self) => self.indexOf(courseId) === index);
 </script>
 
@@ -67,7 +67,7 @@
                                         <div class="mt-1 ml-1">
                                             <a class='font-medium transition hover:text-primary-600'
                                                href={`https://mcgill.courses/course/${courseIdToUrlParam(courseId)}`}>
-                                                {courseId}
+                                                {spliceCourseCode(courseId, ' ')}
                                             </a>
                                             {index < externalCourses.length - 1 ? "," : ""}
                                         </div>
