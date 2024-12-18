@@ -12,7 +12,7 @@
 
     $: [color, icon] = experienceToIcon(instructor.avgRating);
     $: externalCourses = allReviews
-        .filter(review => review.schoolId)
+        .filter(review => review.schoolId === "mcgill-university")
         .map(review => review.courseId)
         .filter((courseId, index, self) => self.indexOf(courseId) === index);
 </script>
