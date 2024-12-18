@@ -151,7 +151,7 @@
                 </a>
             {:else }
                 Written for{' '}
-                <a href={`/course/${courseIdToUrlParam(review.courseId)}`}
+                <a href={review?.schoolId === "mcgill-university" ? `https://mcgill.courses/course/${courseIdToUrlParam(review.courseId)}` : `/course/${courseIdToUrlParam(review.courseId)}`}
                    class='font-medium transition hover:text-primary-600'>
                     {spliceCourseCode(review.courseId, ' ')}
                 </a>

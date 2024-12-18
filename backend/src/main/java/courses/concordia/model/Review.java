@@ -61,5 +61,5 @@ public class Review {
     private Set<Instructor.Tag> tags = Set.of();
 
     // School specific ratings
-    private int schoolId;
+    private String schoolId;
 }
