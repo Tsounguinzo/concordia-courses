@@ -30,6 +30,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -137,6 +138,11 @@ public class InstructorServiceImpl implements InstructorService {
                     return review.getRating();
                 }
             }).average().orElse(0);
+            Set<Instructor.Tag> tags = reviews.stream()
+                    .map(Review::getTags)
+                    .flatMap(Set::stream)
+                    .collect(Collectors.toSet());
+            instructor.setTags(tags);
             instructor.setAvgRating(avgExperienceAndRating);
             instructor.setAvgDifficulty(avgDifficulty);
             instructor.setReviewCount(reviews.size());

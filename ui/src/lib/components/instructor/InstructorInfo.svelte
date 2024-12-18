@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {courseIdToUrlParam, experienceToIcon} from "$lib/utils";
+    import {courseIdToUrlParam, experienceToIcon, spliceCourseCode} from "$lib/utils";
     import type {Instructor} from "$lib/model/Instructor";
     import InstructorTags from "$lib/components/instructor/InstructorTags.svelte";
     import InstructorInfoStats from "$lib/components/common/stats/InfoStats.svelte";
@@ -11,6 +11,10 @@
     export let allReviews: Review[];
 
     $: [color, icon] = experienceToIcon(instructor.avgRating);
+    $: externalCourses = allReviews
+        .filter(review => review.schoolId)
+        .map(review => spliceCourseCode(review.courseId, ' '))
+        .filter((courseId, index, self) => self.indexOf(courseId) === index);
 </script>
 
 
@@ -55,6 +59,22 @@
                                 </div>
                             {/each}
                         </div>
+                        {#if externalCourses.length}
+                            <div class='mt-4'>
+                                <div>Courses taught at McGill universities:</div>
+                                <div class='max-w-sm flex flex-wrap'>
+                                    {#each externalCourses as courseId, index}
+                                        <div class="mt-1 ml-1">
+                                            <a class='font-medium transition hover:text-primary-600'
+                                               href={`https://mcgill.courses/course/${courseIdToUrlParam(courseId)}`}>
+                                                {courseId}
+                                            </a>
+                                            {index < externalCourses.length - 1 ? "," : ""}
+                                        </div>
+                                    {/each}
+                                </div>
+                            </div>
+                        {/if}
                     </div>
                 {:else}
                     This professor hasn't taught any courses that have been reviewed yet.

@@ -52,7 +52,7 @@
             7,832+ courses.<br/> Concordia Courses.
         </h1>
         <p class="text-base text-gray-600 dark:text-gray-400 sm:text-lg">
-            Concordia Courses cumulates 59643+ reviews for over 4,863 instructors.
+            Concordia Courses cumulates 61,727+ reviews for over 4,863 instructors.
         </p>
         <div class="relative w-full">
             <CourseSearchBar results={$searchResults} handleInputChange={handleInputChange} />
