@@ -21,20 +21,20 @@
 
     // 15 Course Reviews
     const courseReviews = [
-        { name: "ENGR243", username: "@Course", body: "Prof is clear and explains well.", img: "https://avatar.vercel.sh/ENGR243" },
-        { name: "SOCI320", username: "@Course", body: "One of the best courses. Very engaging!", img: "https://avatar.vercel.sh/SOCI320" },
-        { name: "BTM481", username: "@Course", body: "Time-consuming, but great project experience.", img: "https://avatar.vercel.sh/BTM481" },
-        { name: "EDUC270", username: "@Course", body: "Useful content but slow lectures.", img: "https://avatar.vercel.sh/EDUC270" },
-        { name: "MIAE313", username: "@Course", body: "Great introduction into machine parts.", img: "https://avatar.vercel.sh/MIAE313" }
+        { name: "ENGR243", username: "@Course", body: "Prof is clear and explains well.", img: "https://avatar.vercel.sh/ENGR243", href: "/course/engr-243" },
+        { name: "SOCI320", username: "@Course", body: "One of the best courses. Very engaging!", img: "https://avatar.vercel.sh/SOCI320", href: "/course/soci-320" },
+        { name: "BTM481", username: "@Course", body: "Time-consuming, but great project experience.", img: "https://avatar.vercel.sh/BTM481", href: "/course/btm4-81" },
+        { name: "EDUC270", username: "@Course", body: "Useful content but slow lectures.", img: "https://avatar.vercel.sh/EDUC270", href: "/course/educ-270" },
+        { name: "MIAE313", username: "@Course", body: "Great introduction into machine parts.", img: "https://avatar.vercel.sh/MIAE313", href: "/course/miae-313" }
     ];
 
     // 15 Instructor Reviews
     const instructorReviews = [
-        { name: "Riccardo Romeo", username: "@Instructor", body: "Great prof, 100% recommend.", img: "https://avatar.vercel.sh/RiccardoRomeo" },
-        { name: "Michel Deslauriers", username: "@Instructor", body: "Lectures are fun and interesting.", img: "https://avatar.vercel.sh/MichelDeslauriers" },
-        { name: "Marcie Frank", username: "@Instructor", body: "Pop-up assignments, attend classes!", img: "https://avatar.vercel.sh/MarcieFrank" },
-        { name: "Jesse Arseneault", username: "@Instructor", body: "Clear grading criteria and creative projects.", img: "https://avatar.vercel.sh/JesseArseneault" },
-        { name: "Christine Jamieson", username: "@Instructor", body: "Easy online course, very manageable.", img: "https://avatar.vercel.sh/ChristineJamieson" }
+        { name: "Riccardo Romeo", username: "@Instructor", body: "Great prof, 100% recommend.", img: "https://avatar.vercel.sh/RiccardoRomeo", href: "/instructor/riccardo-r.-romeo" },
+        { name: "Michel Deslauriers", username: "@Instructor", body: "Lectures are fun and interesting.", img: "https://avatar.vercel.sh/MichelDeslauriers", href: "/instructor/michel-deslauriers" },
+        { name: "Marcie Frank", username: "@Instructor", body: "Pop-up assignments, attend classes!", img: "https://avatar.vercel.sh/MarcieFrank", href: "/instructor/marcie-frank" },
+        { name: "Jesse Arseneault", username: "@Instructor", body: "Clear grading criteria and creative projects.", img: "https://avatar.vercel.sh/JesseArseneault", href: "/instructor/jesse-arseneault" },
+        { name: "Christine Jamieson", username: "@Instructor", body: "Easy online course, very manageable.", img: "https://avatar.vercel.sh/ChristineJamieson", href: "/instructor/christine-jamieson" }
     ];
 
 </script>
@@ -52,7 +52,7 @@
             7,832+ courses.<br/> Concordia Courses.
         </h1>
         <p class="text-base text-gray-600 dark:text-gray-400 sm:text-lg">
-            Concordia Courses cumulates 61,727+ reviews for over 4,863 instructors.
+            Concordia Courses cumulates 61,788+ reviews for over 4,863 instructors.
         </p>
         <div class="relative w-full">
             <CourseSearchBar results={$searchResults} handleInputChange={handleInputChange} />

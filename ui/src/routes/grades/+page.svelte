@@ -2,8 +2,13 @@
     import BackgroundBeams from "$lib/components/common/animation/BackgroundBeams.svelte";
     import UploadForm from "$lib/components/grades/UploadForm.svelte";
     import Seo from "$lib/components/common/Seo.svelte";
+    import {writable} from "svelte/store";
+    import Confetti from "$lib/components/common/animation/Confetti.svelte";
+
+    let triggerConfetti = writable(false);
 </script>
 <Seo title="Grades Upload" description="Upload your Grades distribution" ogDescription="Upload your Grades distribution" ogTitle="Grades | Concordia.courses" ogImage="og-image-grades.png" ogImageAlt="concordia.courses Grades Upload page Snapshot"/>
+<Confetti bind:trigger={triggerConfetti}/>
 <div class='flex w-full justify-center items-center min-h-[calc(100vh-22vh)]'>
     <div class='flex w-full justify-center mx-auto max-w-2xl'>
         <div class='mx-4 flex w-full flex-col rounded-md bg-slate-50 p-6 dark:bg-neutral-800 md:mt-10 relative'>
@@ -16,7 +21,7 @@
                 </p>
             </div>
             <div class="z-10">
-                <UploadForm/>
+                <UploadForm {triggerConfetti}/>
             </div>
             <BackgroundBeams/>
         </div>

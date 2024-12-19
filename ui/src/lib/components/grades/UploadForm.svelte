@@ -15,6 +15,7 @@
     import FileInput from "$lib/components/common/form/FileInput.svelte";
     import ExampleDialog from "$lib/components/grades/ExampleDialog.svelte";
     import { uploadFiles } from "$lib/utils/uploadthing";
+    import {type Writable} from "svelte/store";
 
     let initialValues = {
         term: '',
@@ -23,6 +24,7 @@
     };
 
     let reset: boolean = false;
+    export let triggerConfetti: Writable<boolean>
 
     let gradeDistributionExample = {
         title: 'Getting your Grade Distribution',
@@ -86,7 +88,10 @@
                 }
             ), {
                 loading: 'Uploading file...',
-                success: 'Uploaded successfully.',
+                success: () => {
+                   triggerConfetti.set(true);
+                   return 'Uploaded successfully.'
+                },
                 error: (err) => err.message || 'Upload failed'
             });
 
