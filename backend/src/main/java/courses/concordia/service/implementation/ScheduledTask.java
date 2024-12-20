@@ -7,8 +7,6 @@ import courses.concordia.util.JsonUtils;
 import courses.concordia.util.seed.model.CourseWithDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -43,11 +41,6 @@ public class ScheduledTask {
         for (Map.Entry<String, String> entry : TERM_CODE_MAPPING.entrySet()) {
             CODE_TERM_MAPPING.put(entry.getValue(), entry.getKey());
         }
-    }
-
-    @EventListener(ContextRefreshedEvent.class)
-    public void onApplicationEvent() {
-        updateCourseEnrollmentData();
     }
 
     @Scheduled(cron = "0 0 2 * * ?", zone = "America/New_York")// Run daily at midnight

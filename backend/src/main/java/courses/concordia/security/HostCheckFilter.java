@@ -19,7 +19,6 @@ public class HostCheckFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        /*
         String host = request.getHeader("Host");
 
         if (ALLOWED_HOST.equals(host)) {
@@ -27,6 +26,5 @@ public class HostCheckFilter extends OncePerRequestFilter {
         } else {
             response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden");
         }
-         */
     }
 }

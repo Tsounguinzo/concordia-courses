@@ -28,6 +28,7 @@ public class SecurityConfig{
         return http
                 .requiresChannel(channel -> channel.anyRequest().requiresSecure())//enforce https
                 .authorizeHttpRequests(authz -> authz
+                        .requestMatchers("/admin/**").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers("/api/v1/search/**").permitAll() // Allow unauthenticated access
                         .requestMatchers("/api/v1/instructors/**").permitAll() // Allow unauthenticated access
