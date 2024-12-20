@@ -19,7 +19,7 @@ public class SecurityConfig{
 
     private final JwtAuthenticationFilter jwAuthenFilter;
     private final RateLimitFilter rateLimitFilter;
-    private final HostCheckFilter hostCheckFilter;
+    //private final HostCheckFilter hostCheckFilter;
 
     private final AuthenticationProvider authenticationProvider;
     @Bean
@@ -43,7 +43,6 @@ public class SecurityConfig{
                 )
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(hostCheckFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(rateLimitFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwAuthenFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable()
