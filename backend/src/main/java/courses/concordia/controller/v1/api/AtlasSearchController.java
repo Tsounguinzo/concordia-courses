@@ -21,10 +21,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.mongodb.client.model.Aggregates.*;
@@ -104,6 +101,50 @@ public class AtlasSearchController {
             }
 
             return Response.ok().setPayload(reviews);
+        }
+    }
+
+    @GetMapping("/instructor")
+    public Response<?> getInstructorByName(@RequestParam String name) {
+        try (MongoClient mongoClient = MongoClients.create(mongodbUri)) {
+            MongoDatabase database = mongoClient.getDatabase(databaseName);
+            MongoCollection<Document> collection = database.getCollection("instructors");
+
+            // Define the search stage
+            SearchOperator nameSearchClause = text(fieldPath("_id"), name);
+
+            Bson searchStage = search(
+                    nameSearchClause,
+                    searchOptions().option("scoreDetails", false)
+            );
+
+            // Create a pipeline that searches, projects, and limits the number of results returned.
+            AggregateIterable<Document> aggregationResults = collection.aggregate(Arrays.asList(
+                    searchStage,
+                    project(fields(excludeId(),
+                            exclude(),
+                            include("_id", "firstName", "lastName", "departments", "courses", "tags", "avgDifficulty", "avgRating", "reviewCount", "aiSummary"),
+                            metaSearchScore("score"))),
+                    limit(3)
+            ));
+
+            List<Instructor> instructors = new ArrayList<>();
+            for (Document doc : aggregationResults) {
+                Instructor instructor = new Instructor();
+                instructor.set_id(doc.getString("_id"));
+                instructor.setFirstName(doc.getString("firstName"));
+                instructor.setLastName(doc.getString("lastName"));
+                instructor.setCourses(new HashSet<>(((ArrayList<Instructor.Course>) doc.get("courses"))));
+                instructor.setDepartments(((ArrayList<String>) doc.get("departments")).stream().map(Instructor.Department::valueOf).collect(Collectors.toSet()));
+                instructor.setTags(((ArrayList<String>) doc.get("tags")).stream().map(Instructor.Tag::valueOf).collect(Collectors.toSet()));
+                instructor.setAvgDifficulty(doc.getDouble("avgDifficulty"));
+                instructor.setAvgRating(doc.getDouble("avgRating"));
+                instructor.setReviewCount(doc.getInteger("reviewCount"));
+                instructor.setAiSummary(doc.getString("aiSummary"));
+                instructors.add(instructor);
+            }
+
+            return Response.ok().setPayload(instructors);
         }
     }
 }
