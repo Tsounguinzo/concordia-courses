@@ -6,6 +6,7 @@ import courses.concordia.dto.model.course.CourseFilterDto;
 import courses.concordia.dto.model.course.CourseReviewsDto;
 import courses.concordia.dto.model.instructor.CourseInstructorDto;
 import courses.concordia.dto.model.review.ReviewDto;
+import courses.concordia.dto.model.review.ReviewSortingDto;
 import courses.concordia.exception.CustomExceptionFactory;
 import courses.concordia.exception.EntityType;
 import courses.concordia.exception.ExceptionType;
@@ -44,22 +45,6 @@ public class CourseServiceImpl implements CourseService {
     private final InstructorRepository instructorRepository;
     private final MongoTemplate mongoTemplate;
     private final ModelMapper modelMapper;
-
-    /**
-     * Retrieves all available courses from the repository.
-     * The results are cached to improve performance for subsequent requests.
-     *
-     * @return A list of {@link CourseDto} representing all courses.
-     */
-    @Cacheable(value = "coursesCache")
-    @Override
-    public List<CourseDto> getCourses() {
-        log.info("Retrieving all courses");
-        return courseRepository.findAll()
-                .stream()
-                .map(course -> modelMapper.map(course, CourseDto.class))
-                .collect(Collectors.toList());
-    }
 
     /**
      * Retrieves a list of courses filtered according to the specified criteria, with pagination.
@@ -113,6 +98,56 @@ public class CourseServiceImpl implements CourseService {
         CourseDto course = getCourseById(id);
 
         Query query = new Query(Criteria.where("courseId").is(id)).with(Sort.by(Sort.Direction.DESC, "timestamp"));
+        List<ReviewDto> reviews = mongoTemplate.find(query, Review.class)
+                .stream()
+                .map(review -> modelMapper.map(review, ReviewDto.class))
+                .collect(Collectors.toList());
+
+        return new CourseReviewsDto()
+                .setCourse(course)
+                .setReviews(reviews);
+    }
+
+    /**
+     * Retrieves a course along with its reviews based on the course ID, with pagination.
+     * The results are cached to improve performance on subsequent calls with the same ID.
+     *
+     * @param id       The unique identifier for the course.
+     * @param limit    The maximum number of reviews to return.
+     * @param offset   The offset from the start of the dataset for paging.
+     * @param sortType The sorting criteria to apply to the reviews.
+     * @return A {@link CourseReviewsDto} object containing the course and its reviews.
+     */
+    @Cacheable(value = "courseReviewsCache", key = "{#id, 'course', #limit, #offset, #sortType.hashCode()}")
+    @Override
+    public CourseReviewsDto getCourseAndReviewsByIdPaginated(String id, int limit, int offset, ReviewSortingDto sortType) {
+        log.info("Retrieving course and reviews with ID {} with limit {}, offset {}, and sorting {}", id, limit, offset, sortType);
+        CourseDto course = getCourseById(id);
+
+        Query query = new Query(Criteria.where("courseId").is(id))
+                .with(PageRequest.of(offset / limit, limit));
+
+        if (sortType.getSortType() != null) {
+            log.info("Applying sort by {} in {} order", sortType.getSortType(), sortType.isReverse() ? "DESC" : "ASC");
+            switch (sortType.getSortType()) {
+                case Difficulty:
+                    query.with(Sort.by(sortType.isReverse() ? Sort.Direction.DESC : Sort.Direction.ASC, "difficulty"));
+                    break;
+                case Rating, Experience:
+                    query.with(Sort.by(sortType.isReverse() ? Sort.Direction.DESC : Sort.Direction.ASC, "experience"));
+                    break;
+                case Likes:
+                    query.with(Sort.by(sortType.isReverse() ? Sort.Direction.DESC : Sort.Direction.ASC, "likes"));
+                    break;
+                case Recent:
+                    query.with(Sort.by(sortType.isReverse() ? Sort.Direction.DESC : Sort.Direction.ASC, "timestamp"));
+                    break;
+                default:
+                    query.with(Sort.by(Sort.Direction.DESC, "timestamp"));
+                    break;
+            }
+        }
+
         List<ReviewDto> reviews = mongoTemplate.find(query, Review.class)
                 .stream()
                 .map(review -> modelMapper.map(review, ReviewDto.class))

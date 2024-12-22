@@ -1,4 +1,4 @@
-package courses.concordia.controller.v1.request;
+package courses.concordia.controller.request;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

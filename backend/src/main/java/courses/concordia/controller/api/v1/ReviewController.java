@@ -1,4 +1,4 @@
-package courses.concordia.controller.v1.api;
+package courses.concordia.controller.api.v1;
 
 import courses.concordia.dto.model.review.ReviewDto;
 import courses.concordia.dto.model.review.ReviewFilterDto;

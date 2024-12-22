@@ -1,4 +1,4 @@
-package courses.concordia.controller.v1.request;
+package courses.concordia.controller.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.Email;

@@ -1,4 +1,4 @@
-package courses.concordia.controller.v1.api;
+package courses.concordia.controller.api.v1;
 
 import courses.concordia.dto.model.instructor.InstructorDto;
 import courses.concordia.dto.model.instructor.InstructorFilterDto;
@@ -52,14 +52,6 @@ public class InstructorController {
             log.error("Error processing instructors file", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing instructors file");
         }
-    }
-
-    @Timed(value = "instructors.get", description = "Get instructors")
-    @GetMapping
-    public Response<?> getInstructors() {
-        return Response
-                .ok()
-                .setPayload(instructorService.getInstructors());
     }
 
     @Timed(value = "instructors.stats", description = "Update instructors stats")

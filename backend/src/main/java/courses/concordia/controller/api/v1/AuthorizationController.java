@@ -1,9 +1,9 @@
-package courses.concordia.controller.v1.api;
+package courses.concordia.controller.api.v1;
 
-import courses.concordia.controller.v1.request.AuthenticationRequest;
-import courses.concordia.controller.v1.request.LoginRequest;
-import courses.concordia.controller.v1.request.PasswordChangeRequest;
-import courses.concordia.controller.v1.request.SignupRequest;
+import courses.concordia.controller.request.AuthenticationRequest;
+import courses.concordia.controller.request.LoginRequest;
+import courses.concordia.controller.request.PasswordChangeRequest;
+import courses.concordia.controller.request.SignupRequest;
 import courses.concordia.dto.model.user.UserDto;
 import courses.concordia.dto.model.user.UserResponseDto;
 import courses.concordia.dto.response.AuthenticationResponse;

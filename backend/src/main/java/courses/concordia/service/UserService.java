@@ -1,6 +1,6 @@
 package courses.concordia.service;
 
-import courses.concordia.controller.v1.request.LoginRequest;
+import courses.concordia.controller.request.LoginRequest;
 import courses.concordia.dto.model.user.UserDto;
 import courses.concordia.dto.response.AuthenticationResponse;
 import courses.concordia.model.Token;

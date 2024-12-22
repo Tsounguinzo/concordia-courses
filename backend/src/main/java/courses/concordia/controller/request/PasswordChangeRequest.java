@@ -1,4 +1,4 @@
-package courses.concordia.controller.v1.request;
+package courses.concordia.controller.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.NotEmpty;
@@ -13,11 +13,8 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LoginRequest {
+public class PasswordChangeRequest {
     @NotNull
     @NotEmpty
-    private String username;
-    @NotNull
-    @NotEmpty
-    private String password;
+    private String newPassword;
 }

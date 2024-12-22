@@ -3,7 +3,7 @@ package courses.concordia.service.implementation;
 import courses.concordia.config.JwtConfigProperties;
 import courses.concordia.config.RtConfigProperties;
 import courses.concordia.config.TokenType;
-import courses.concordia.controller.v1.request.LoginRequest;
+import courses.concordia.controller.request.LoginRequest;
 import courses.concordia.dto.mapper.UserMapper;
 import courses.concordia.dto.model.user.UserDto;
 import courses.concordia.dto.response.AuthenticationResponse;

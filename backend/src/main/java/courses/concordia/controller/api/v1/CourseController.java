@@ -1,4 +1,4 @@
-package courses.concordia.controller.v1.api;
+package courses.concordia.controller.api.v1;
 
 import courses.concordia.dto.model.course.CourseDto;
 import courses.concordia.dto.response.Response;
@@ -38,14 +38,6 @@ public class CourseController {
             log.error("Error processing courses file", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing courses file");
         }
-    }
-
-    @Timed(value = "courses.get", description = "Get courses")
-    @GetMapping
-    public Response<?> getCourses() {
-        return Response
-                .ok()
-                .setPayload(courseService.getCourses());
     }
 
     @Timed(value = "courses.stats", description = "Update courses stats")

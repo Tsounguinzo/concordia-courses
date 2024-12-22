@@ -31,6 +31,7 @@ public class SecurityConfig{
                         .requestMatchers("/api-docs").permitAll()
                         .requestMatchers("/swagger-ui.html").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
+                        .requestMatchers("/api/v2/**").permitAll() // Allow unauthenticated access
                         .requestMatchers("/api/v1/search/**").permitAll() // Allow unauthenticated access
                         .requestMatchers("/api/v1/instructors/**").permitAll() // Allow unauthenticated access
                         .requestMatchers("/api/v1/grades/**").permitAll() // Allow unauthenticated access

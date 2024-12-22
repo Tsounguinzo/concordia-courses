@@ -1,4 +1,4 @@
-package courses.concordia.controller.v1.api;
+package courses.concordia.controller.api.v1;
 
 import com.mongodb.client.*;
 import com.mongodb.client.model.search.SearchOperator;
@@ -42,7 +42,7 @@ public class AtlasSearchController {
 
     @Timed(value = "atlas.search", description = "Search for reviews using Atlas Search")
     @GetMapping
-    public Response<?> FTS(@RequestParam String query, @RequestParam int limit) {
+    public Response<?> FTSReviewContent(@RequestParam String query, @RequestParam int limit) {
 
         try (MongoClient mongoClient = MongoClients.create(mongodbUri)) {
             MongoDatabase database = mongoClient.getDatabase(databaseName);
@@ -105,13 +105,13 @@ public class AtlasSearchController {
     }
 
     @GetMapping("/instructor")
-    public Response<?> getInstructorByName(@RequestParam String name) {
+    public Response<?> FTSInstructorName(@RequestParam String query) {
         try (MongoClient mongoClient = MongoClients.create(mongodbUri)) {
             MongoDatabase database = mongoClient.getDatabase(databaseName);
             MongoCollection<Document> collection = database.getCollection("instructors");
 
             // Define the search stage
-            SearchOperator nameSearchClause = text(fieldPath("_id"), name);
+            SearchOperator nameSearchClause = text(fieldPath("_id"), query);
 
             Bson searchStage = search(
                     nameSearchClause,
