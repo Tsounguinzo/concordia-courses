@@ -43,7 +43,7 @@ public class ScheduledTask {
         }
     }
 
-    @Scheduled(cron = "0 0 2 * * ?", zone = "America/New_York")// Run daily at midnight
+    @Scheduled(cron = "0 0 2 * * ?", zone = "America/New_York")// Run daily at 2 am
     public void updateCourseEnrollmentData() {
         log.info("Starting scheduled enrollment data update...");
         long startTime = System.currentTimeMillis();

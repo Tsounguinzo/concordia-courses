@@ -124,7 +124,13 @@ public class CourseServiceImpl implements CourseService {
         log.info("Retrieving course and reviews with ID {} with limit {}, offset {}, and sorting {}", id, limit, offset, sortType);
         CourseDto course = getCourseById(id);
 
-        Query query = new Query(Criteria.where("courseId").is(id))
+        Criteria criteria = Criteria.where("courseId").is(id);
+
+        if (sortType.getSelectedInstructor() != null && !sortType.getSelectedInstructor().isBlank()) {
+            criteria = criteria.and("instructorId").is(sortType.getSelectedInstructor());
+        }
+
+        Query query = new Query(criteria)
                 .with(PageRequest.of(offset / limit, limit));
 
         if (sortType.getSortType() != null) {

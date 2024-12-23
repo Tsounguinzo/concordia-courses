@@ -120,7 +120,13 @@ public class InstructorServiceImpl implements InstructorService {
         log.info("Retrieving instructor and reviews with id {} with pagination: limit={}, offset={}, sortType={}", id, limit, offset, sortType);
         InstructorDto instructor = getInstructorById(id);
 
-        Query query = new Query(Criteria.where("instructorId").is(id))
+        Criteria criteria = Criteria.where("instructorId").is(id);
+
+        if (sortType.getSelectedCourse() != null && !sortType.getSelectedCourse().isBlank()) {
+            criteria = criteria.and("courseId").is(sortType.getSelectedCourse());
+        }
+
+        Query query = new Query(criteria)
                 .with(PageRequest.of(offset / limit, limit));
 
         if (sortType.getSortType() != null) {

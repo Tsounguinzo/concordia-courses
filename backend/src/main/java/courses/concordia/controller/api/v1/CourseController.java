@@ -1,10 +1,12 @@
 package courses.concordia.controller.api.v1;
 
 import courses.concordia.dto.model.course.CourseDto;
+import courses.concordia.dto.model.review.ReviewSortingDto;
 import courses.concordia.dto.response.Response;
 import courses.concordia.dto.model.course.CourseFilterDto;
 import courses.concordia.service.CourseService;
 import io.micrometer.core.annotation.Timed;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,11 +52,21 @@ public class CourseController {
         return ResponseEntity.ok("Courses stats updated successfully");
     }
 
+    @Operation(summary = "Get course by ID")
     @Timed(value = "courses.get", description = "Get course by ID")
-    @GetMapping("/{id}")
-    public Response<?> getCourseById(@PathVariable String id, @RequestParam(name = "with_reviews", defaultValue = "false") boolean withReviews) {
-        Object course = withReviews ? courseService.getCourseAndReviewsById(id) : courseService.getCourseById(id);
-        return Response.ok().setPayload(course);
+    @PostMapping("/{id}")
+    public Response<?> getCourseById(
+            @PathVariable String id,
+            @RequestBody ReviewSortingDto sortType,
+            @RequestParam(name = "with_reviews", defaultValue = "false") boolean withReviews,
+            @RequestParam(name = "limit", defaultValue = "20") int limit,
+            @RequestParam(name = "offset", defaultValue = "0") int offset
+    ) {
+        if (!withReviews) {
+            return Response.ok().setPayload(courseService.getCourseById(id));
+        }
+
+        return Response.ok().setPayload(courseService.getCourseAndReviewsByIdPaginated(id, limit, offset, sortType));
     }
 
     @Timed(value = "courses.get", description = "Get instructors for course")

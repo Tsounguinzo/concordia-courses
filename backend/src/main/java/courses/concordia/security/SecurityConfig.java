@@ -31,13 +31,12 @@ public class SecurityConfig{
                         .requestMatchers("/api-docs").permitAll()
                         .requestMatchers("/swagger-ui.html").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
-                        .requestMatchers("/api/v2/**").permitAll() // Allow unauthenticated access
-                        .requestMatchers("/api/v1/search/**").permitAll() // Allow unauthenticated access
-                        .requestMatchers("/api/v1/instructors/**").permitAll() // Allow unauthenticated access
-                        .requestMatchers("/api/v1/grades/**").permitAll() // Allow unauthenticated access
-                        .requestMatchers("/api/v1/courses/**").permitAll() // Allow unauthenticated access
-                        .requestMatchers("/api/v1/reviews/**").permitAll() // Allow unauthenticated access
-                        .requestMatchers("/api/v1/interactions/**").permitAll() // Allow unauthenticated access
+                        .requestMatchers("/api/v1/search/**").permitAll()
+                        .requestMatchers("/api/v1/instructors/**").permitAll()
+                        .requestMatchers("/api/v1/grades/**").permitAll()
+                        .requestMatchers("/api/v1/courses/**").permitAll()
+                        .requestMatchers("/api/v1/reviews/**").permitAll()
+                        .requestMatchers("/api/v1/interactions/**").permitAll()
                         .requestMatchers("/api/v1/auth/user", "/api/v1/auth/reset_password", "/api/v1/auth/forgot_password").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/signin", "/api/v1/auth/signup").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/api/v1/auth/update_password").permitAll()

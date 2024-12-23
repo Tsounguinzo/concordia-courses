@@ -11,6 +11,13 @@ export interface RequestOptions {
         body?: string;
 }
 
+export interface SortFilterDto {
+        sortType: string;            // e.g. "Recent", "Difficulty", "Likes"...
+        reverse: boolean;            // ascending/descending
+        selectedInstructor: string;  // e.g. "john-doe"
+        selectedCourse: string;      // e.g. "COMP228"
+}
+
 export const allSortByOptions = [
         '',
         'Best Experience',

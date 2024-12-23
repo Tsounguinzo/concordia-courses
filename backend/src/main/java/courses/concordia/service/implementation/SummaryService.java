@@ -27,11 +27,8 @@ public class SummaryService {
     private static final int REVIEW_THRESHOLD = 10;
     private static final int REVIEW_CEILING = 450;
 
-    @EventListener(ContextRefreshedEvent.class)
-    public void onApplicationEvent() {
-        updateSummaries();
-    }
-    @Scheduled(cron = "0 0 0 * * ?")  // Run daily at midnight
+
+    @Scheduled(cron = "0 0 2 * * ?", zone = "America/New_York")// Run daily at 2 am
     public void updateSummaries() {
         log.info("Starting to update summaries for instructors");
         List<Instructor> instructors = instructorRepository.findAll();

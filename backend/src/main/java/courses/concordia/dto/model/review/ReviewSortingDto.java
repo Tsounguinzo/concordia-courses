@@ -17,6 +17,8 @@ import lombok.experimental.Accessors;
 public class ReviewSortingDto {
     private ReviewSortType sortType;
     private boolean reverse;
+    private String selectedInstructor;
+    private String selectedCourse;
 
     @Getter
     @AllArgsConstructor

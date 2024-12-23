@@ -11,6 +11,7 @@ import type {CourseInstructor, Instructor} from "$lib/model/Instructor";
 import type {GetInstructorWithReviewsPayload} from "$lib/model/GetInstructorWithReviewsPayload";
 import type {GetInstructorReviewsInteractionPayload} from "$lib/model/GetInstructorReviewsInteractionPayload";
 import {ISOFormattedDateUTC4} from "$lib/utils";
+import type {SortFilterDto} from "./types";
 
 const prefix = '/api/v1';
 
@@ -257,20 +258,38 @@ export const repo = {
     },
 
     async getCourseWithReviews(
-        id: string | undefined
+        id: string | undefined,
+        limit: number,
+        offset: number,
+        filters: SortFilterDto
     ): Promise<GetCourseWithReviewsPayload | null> {
         return await client.deserialize<GetCourseWithReviewsPayload | null>(
-            'GET',
-            `/courses/${id}?with_reviews=true`
+            'POST',
+            `/courses/${id}?limit=${limit}&offset=${offset}with_reviews=true`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(filters),
+            }
         );
     },
 
     async getInstructorWithReviews(
-        id: string | undefined
+        id: string | undefined,
+        limit: number,
+        offset: number,
+        filters: SortFilterDto
     ): Promise<GetInstructorWithReviewsPayload | null> {
         return await client.deserialize<GetInstructorWithReviewsPayload | null>(
-            'GET',
-            `/instructors/${id}?with_reviews=true`
+            'POST',
+            `/instructors/${id}?limit=${limit}&offset=${offset}with_reviews=true`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(filters),
+            }
         );
     },
 

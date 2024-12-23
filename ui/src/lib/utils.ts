@@ -138,6 +138,22 @@ export const experienceToIcon = (experience: number): [string, string] => {
     }
 }
 
+export function convertSortByToEnum(sortBy: string) {
+    switch (sortBy) {
+        case 'Best Experience': return 'experience';
+        case 'Worst Experience': return 'experience';
+        case 'Best Rating': return 'rating';
+        case 'Worst Rating': return 'rating';
+        case 'Easiest': return 'difficulty';
+        case 'Hardest': return 'difficulty';
+        case 'Most Recent': return 'Recent';
+        case 'Least Recent': return 'Recent';
+        case 'Most Liked': return 'Likes';
+        case 'Most Disliked': return 'Likes';
+        default: return 'Recent';
+    }
+}
+
 export function determineReviewFor(review: Review) {
     switch (review.type) {
         case 'course':
