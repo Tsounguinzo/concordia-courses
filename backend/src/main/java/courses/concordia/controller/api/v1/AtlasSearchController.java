@@ -3,6 +3,7 @@ package courses.concordia.controller.api.v1;
 import com.mongodb.client.*;
 import com.mongodb.client.model.search.SearchOperator;
 import courses.concordia.dto.response.Response;
+import courses.concordia.model.Course;
 import courses.concordia.model.Instructor;
 import courses.concordia.model.Review;
 import io.micrometer.core.annotation.Timed;
@@ -145,6 +146,53 @@ public class AtlasSearchController {
             }
 
             return Response.ok().setPayload(instructors);
+        }
+    }
+
+    @GetMapping("/course")
+    public Response<?> FTSCourseTitle(@RequestParam String query) {
+        try (MongoClient mongoClient = MongoClients.create(mongodbUri)) {
+            MongoDatabase database = mongoClient.getDatabase(databaseName);
+            MongoCollection<Document> collection = database.getCollection("courses");
+
+            // Define the search stage
+            SearchOperator nameSearchClause = text(fieldPath("title"), query);
+
+            Bson searchStage = search(
+                    nameSearchClause,
+                    searchOptions().option("scoreDetails", false)
+            );
+
+            // Create a pipeline that searches, projects, and limits the number of results returned.
+            AggregateIterable<Document> aggregationResults = collection.aggregate(Arrays.asList(
+                    searchStage,
+                    project(fields(excludeId(),
+                            exclude(),
+                            include("_id", "prerequisites", "subject", "catalog", "title", "classUnit", "terms", "instructors", "avgDifficulty", "avgExperience", "reviewCount", "description", "schedules"),
+                            metaSearchScore("score"))),
+                    limit(3)
+            ));
+
+            List<Course> courses = new ArrayList<>();
+            for (Document doc : aggregationResults) {
+                Course course = new Course();
+                course.set_id(doc.getString("_id"));
+                course.setTerms((ArrayList<String>) doc.get("terms"));
+                course.setInstructors((ArrayList<String>) doc.get("instructors"));
+                course.setPrerequisites(doc.getString("prerequisites"));
+                course.setDescription(doc.getString("description"));
+                course.setSubject(doc.getString("subject"));
+                course.setCatalog(doc.getString("catalog"));
+                course.setTitle(doc.getString("title"));
+                course.setClassUnit(doc.getDouble("classUnit"));
+                course.setAvgDifficulty(doc.getDouble("avgDifficulty"));
+                course.setAvgExperience(doc.getDouble("avgExperience"));
+                course.setReviewCount(doc.getInteger("reviewCount"));
+                course.setSchedules(((ArrayList<Course.Schedule>) doc.get("schedules")));
+                courses.add(course);
+            }
+
+            return Response.ok().setPayload(courses);
         }
     }
 }
