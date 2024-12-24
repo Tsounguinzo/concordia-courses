@@ -77,7 +77,11 @@ public class ReviewController {
 
     @Timed(value = "reviews.get", description = "Get reviews with filters")
     @PostMapping("/filter")
-    public Response<?> getReviewsWithFilters(@RequestBody ReviewFilterDto filters, @RequestParam int limit, @RequestParam int offset) {
+    public Response<?> getReviewsWithFilters(
+            @RequestBody ReviewFilterDto filters,
+            @RequestParam(name = "limit", defaultValue = "20") int limit,
+            @RequestParam(name = "offset", defaultValue = "0") int offset
+    ) {
         List<ReviewDto> reviews = reviewService.getReviewsWithFilter(limit, offset, filters);
         return Response.ok().setPayload(reviews);
     }

@@ -69,7 +69,7 @@ public class InstructorController {
     @Operation(summary = "Get instructor by ID")
     @Timed(value = "instructors.get", description = "Get instructor by ID")
     @PostMapping("/{id}")
-    public Response<?> getInstructorById(
+    public Response<?> getInstructorByIdWithReviews(
             @PathVariable String id,
             @RequestBody ReviewSortingDto sortType,
             @RequestParam(name = "userId", defaultValue = "null") String userId,

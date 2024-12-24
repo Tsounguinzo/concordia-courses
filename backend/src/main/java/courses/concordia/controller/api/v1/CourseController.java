@@ -54,7 +54,7 @@ public class CourseController {
 
     @Timed(value = "courses.get", description = "Get course by ID")
     @PostMapping("/{id}")
-    public Response<?> getCourseById(
+    public Response<?> getCourseByIdWithReviews(
             @PathVariable String id,
             @RequestBody ReviewSortingDto sortType,
             @RequestParam(name = "userId", defaultValue = "null") String userId,
