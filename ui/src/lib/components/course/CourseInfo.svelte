@@ -128,7 +128,7 @@
                 allReviews={reviews}
         />
         <p class='mb-6 text-sm text-gray-500 dark:text-gray-400'>
-            {reviews.length} review(s)
+            {reviews.length ? reviews.length : course.reviewCount } review(s)
         </p>
     </div>
     <div class='hidden w-5/12 justify-center rounded-md bg-neutral-50 py-4 dark:bg-neutral-800 md:mx-5 md:flex lg:ml-12 lg:mt-6 xl:justify-start'>

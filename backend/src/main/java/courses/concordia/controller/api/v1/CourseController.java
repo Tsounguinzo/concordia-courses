@@ -52,12 +52,12 @@ public class CourseController {
         return ResponseEntity.ok("Courses stats updated successfully");
     }
 
-    @Operation(summary = "Get course by ID")
     @Timed(value = "courses.get", description = "Get course by ID")
     @PostMapping("/{id}")
     public Response<?> getCourseById(
             @PathVariable String id,
             @RequestBody ReviewSortingDto sortType,
+            @RequestParam(name = "userId", defaultValue = "null") String userId,
             @RequestParam(name = "with_reviews", defaultValue = "false") boolean withReviews,
             @RequestParam(name = "limit", defaultValue = "20") int limit,
             @RequestParam(name = "offset", defaultValue = "0") int offset
@@ -66,7 +66,7 @@ public class CourseController {
             return Response.ok().setPayload(courseService.getCourseById(id));
         }
 
-        return Response.ok().setPayload(courseService.getCourseAndReviewsByIdPaginated(id, limit, offset, sortType));
+        return Response.ok().setPayload(courseService.getCourseAndReviewsByIdPaginated(id, limit, offset, userId, sortType));
     }
 
     @Timed(value = "courses.get", description = "Get instructors for course")

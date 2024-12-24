@@ -49,7 +49,7 @@
     <main class={$page.url.pathname.match(/\//) ? '' : 'mx-2 md:mx-16 lg:mx-24 xl:mx-40'}>
         <slot/>
     </main>
-    <div class="hidden lg:block fixed bottom-2 left-1/2 transform -translate-x-1/2">
+    <div class="hidden lg:block fixed bottom-2 left-1/2 ">
         <Footer />
     </div>
 </div>

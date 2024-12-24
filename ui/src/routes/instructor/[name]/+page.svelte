@@ -7,7 +7,7 @@
 
     // Import your repo, models, and utility functions
     import { repo } from "$lib/repo";
-    import { visitorId } from "$lib/store";
+    import {visitorId, writeOnceStore} from "$lib/store";
     import { convertSortByToEnum, courseNameToId, instructorIdToName, instructorNameToUrlParam } from "$lib/utils";
 
     // Types
@@ -42,16 +42,17 @@
     // Instructor and reviews
     const instructor = writable<Instructor | null | undefined>(undefined);
     const allReviews = writable<Review[] | undefined>(undefined);
-    const showingReviews = writable<Review[]>([]);
     const userInteractions = writable<Interaction[] | undefined>([]);
+    let hasUserReviewed = false;
+    const hasReviews = writeOnceStore(null);
 
     // Confetti (when a new review is added)
     let triggerConfetti = writable(false);
 
     // Sorting & filtering
     let sortFilter = writable<SortFilterDto>({
-        sortType: "Recent",
-        reverse: false,
+        sortType: "recent",
+        reverse: true,
         selectedInstructor: "",
         selectedCourse: ""
     });
@@ -112,9 +113,8 @@
 
                 const filterObj = get(sortFilter);
 
-                // Call your repo method that fetches instructor + paginated reviews
-                const response = await repo.getInstructorWithReviews(instructorId, limit, offset, filterObj);
-                const { instructor: fetchedInstructor, reviews: pageReviews } = response || {};
+                const response = await repo.getInstructorWithReviews(instructorId, limit, offset, user?.id ?? visitor, filterObj);
+                const { instructor: fetchedInstructor, reviews: pageReviews, totalReviews: total, hasUserReviewed: reviewed} = response || {};
 
                 // If no instructor found => set to null => triggers redirect
                 if (!fetchedInstructor) {
@@ -122,15 +122,21 @@
                     return;
                 }
 
+                try {
+                    hasReviews.set(fetchedInstructor.reviewCount > 0 || pageReviews.length > 0);
+                } catch (err) {
+                    // expected
+                }
+
+                hasUserReviewed = reviewed;
                 instructor.set(fetchedInstructor);
 
                 // Merge newly fetched reviews into existing
                 const currentReviews = get(allReviews) || [];
                 allReviews.set([...currentReviews, ...pageReviews]);
-                showingReviews.set(get(allReviews));
 
                 // Update totalReviews from the instructor's reviewCount
-                totalReviews = fetchedInstructor.reviewCount ?? 0;
+                totalReviews = total ?? 0;
 
                 // If user is logged in or has a visitor ID, fetch interactions
                 const userId = user?.id ?? visitor;
@@ -153,14 +159,7 @@
         goto("/explore");
     }
 
-    $: userReview = get(allReviews)?.find((r) => r.userId === user?.id);
-    // Check if the user has not reviewed yet => show prompt
-    $: hasNotReviewed =
-        user
-            ? !(get(allReviews)?.some((r) => r.userId === user?.id))
-            : visitor
-                ? !(get(allReviews)?.some((r) => r.userId === visitor))
-                : true;
+    $: userReview = $allReviews?.find((r) => r.userId === user?.id || r.userId === visitor);
 
     // Handle form submission for add/edit
     const handleSubmit = (successMessage: string) => {
@@ -169,7 +168,7 @@
                 toast.success(successMessage);
                 addReviewOpen.set(false);
                 editReviewOpen.set(false);
-                refetch();
+                resetAndRefetch();
                 if (successMessage.includes("added")) {
                     triggerConfetti.set(true);
                 }
@@ -184,8 +183,6 @@
         const userId = user?.id ?? visitor;
         const res = await repo.deleteReview(review._id, review.type, review.courseId, review.instructorId, userId);
         if (res.ok) {
-            // Filter out the deleted review
-            showingReviews.set(get(showingReviews)?.filter((r) => r._id !== review._id));
             allReviews.set(get(allReviews)?.filter((r) => r._id !== review._id));
         }
         handleSubmit("Review deleted successfully.")(res);
@@ -217,10 +214,10 @@
             selectedInstructor: instructorNameToUrlParam(instrName),
             selectedCourse: courseNameToId(courseName),
             reverse:
-                sortBy === "Least Recent" ||
-                sortBy === "Worst Experience" ||
-                sortBy === "Easiest" ||
-                sortBy === "Most Disliked"
+                sortBy === "Most Recent" ||
+                sortBy === "Best Experience" ||
+                sortBy === "Hardest" ||
+                sortBy === "Most Liked"
         }));
 
         resetAndRefetch();
@@ -242,7 +239,7 @@
 />
 
 <!-- If we're still loading or there's no instructor => show Loading. If $instructor===null => goto("/explore") -->
-{#if $instructor === undefined || $instructor === null || $showingReviews === undefined}
+{#if $instructor === undefined || $instructor === null || $allReviews === undefined}
     <Loading/>
 {:else}
     <!-- Confetti if a new review was just added -->
@@ -259,12 +256,9 @@
                     Reviews
                 </h2>
 
-                <!-- If user hasn't reviewed yet, show the prompt -->
-                {#if hasNotReviewed}
-                    <InstructorReviewPrompt openAddReview={addReviewOpen} type="instructor"/>
-                {/if}
+                <InstructorReviewPrompt {hasUserReviewed} openAddReview={addReviewOpen} type="instructor"/>
 
-                {#if $allReviews && $allReviews.length > 0}
+                {#if $hasReviews}
                     <div class="my-2">
                         <ReviewFilter on:sortChanged={handleSortChange} type="instructor" instructor={$instructor}/>
                     </div>
@@ -279,8 +273,8 @@
                     {/if}
 
                     <!-- Single list of reviews, no pinning of the user's review -->
-                    {#if $showingReviews}
-                        {#each $showingReviews as review (review._id)}
+                    {#if $allReviews}
+                        {#each $allReviews as review (review._id)}
                             <InstructorReview
                                     useTaughtBy={false}
                                     canModify={(user && review.userId === user?.id) || (visitor && review.userId === visitor)}
@@ -296,15 +290,15 @@
 
                 <!-- Load More Button if there's more to fetch -->
                 {#if $allReviews.length < totalReviews}
-                    <div class="flex justify-center mt-4">
+                    <div class='flex justify-center text-gray-800 dark:text-gray-300'>
                         <button
-                                class="relative inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+                                class='inline-flex justify-center items-center h-full w-full border border-dashed border-neutral-700 py-2 dark:border-neutral-500'
                                 on:click={loadMoreReviews}
                                 disabled={$isFetching}
                         >
                             {#if $isFetching}
                                 <svg
-                                        class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                                        class="animate-spin -ml-1 mr-3 h-5 w-5"
                                         xmlns="http://www.w3.org/2000/svg"
                                         fill="none"
                                         viewBox="0 0 24 24"

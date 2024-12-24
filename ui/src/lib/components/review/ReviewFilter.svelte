@@ -9,7 +9,6 @@
     import type {Course} from "$lib/model/Course";
     import type {Instructor} from "$lib/model/Instructor";
 
-    export let showAllReviews: Writable<boolean>;
     export let type: 'course' | 'instructor' = 'course';
     export let course: Course | null = null;
     export let instructor: Instructor | null = null;
@@ -33,7 +32,6 @@
     const dispatch = createEventDispatcher();
 
     $: if (sortBy || selectedInstructor || selectedCourse) {
-        showAllReviews.set(false);
         dispatch('sortChanged', [$sortBy, $selectedInstructor, $selectedCourse]);
     }
 

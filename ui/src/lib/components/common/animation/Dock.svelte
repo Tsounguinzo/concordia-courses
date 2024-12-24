@@ -18,7 +18,7 @@
     export let direction: DockProps["direction"] = "middle";
 
     const dockVariants = cva(
-        "mx-auto w-max mt-8 h-[58px] p-2 flex gap-2 rounded-2xl border supports-backdrop-blur:bg-white/10 supports-backdrop-blur:dark:bg-black/10 backdrop-blur-md"
+        "mx-auto w-max h-[58px] p-2 flex gap-2 rounded-2xl border supports-backdrop-blur:bg-white/10 supports-backdrop-blur:dark:bg-black/10 backdrop-blur-md"
     );
 
     let dockElement: HTMLDivElement;

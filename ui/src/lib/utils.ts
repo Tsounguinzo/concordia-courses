@@ -146,11 +146,11 @@ export function convertSortByToEnum(sortBy: string) {
         case 'Worst Rating': return 'rating';
         case 'Easiest': return 'difficulty';
         case 'Hardest': return 'difficulty';
-        case 'Most Recent': return 'Recent';
-        case 'Least Recent': return 'Recent';
-        case 'Most Liked': return 'Likes';
-        case 'Most Disliked': return 'Likes';
-        default: return 'Recent';
+        case 'Most Recent': return 'recent';
+        case 'Least Recent': return 'recent';
+        case 'Most Liked': return 'likes';
+        case 'Most Disliked': return 'likes';
+        default: return 'recent';
     }
 }
 

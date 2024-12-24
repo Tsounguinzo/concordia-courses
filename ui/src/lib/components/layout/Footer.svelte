@@ -18,10 +18,30 @@
         ]
     };
 
+    export let left = 8;
+    export let bottom = 8;
+    let moving = false;
+
+    function onMouseDown() {
+        moving = true;
+    }
+
+    function onMouseMove(e) {
+        if (moving) {
+            left += e.movementX;
+            bottom -= e.movementY;
+        }
+    }
+
+    function onMouseUp() {
+        moving = false;
+    }
 </script>
 
+<svelte:window on:mouseup={onMouseUp} on:mousemove={onMouseMove} />
+
 {#if pathName !== '/profile'}
-        <div>
+    <section on:mousedown={onMouseDown} style="left: {left}px; bottom: {bottom}px;" class="select-none cursor-move absolute transform -translate-x-1/2">
             <Dock
                     direction="middle"
                     class="relative border-black dark:border-white"
@@ -39,5 +59,6 @@
                     </DockIcon>
                 {/each}
             </Dock>
-        </div>
+    </section>
+
 {/if}

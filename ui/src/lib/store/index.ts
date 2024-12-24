@@ -9,3 +9,20 @@ export const searchResults = writable<SearchResults>({
 
 export const mobileMenuOpen = writable(false);
 export const visitorId: Writable<string|null> = writable(null);
+
+export function writeOnceStore(initialValue: any) {
+    let hasBeenSet = false;
+    const { subscribe, set } = writable(initialValue);
+
+    return {
+        subscribe,
+        set(value: any) {
+            if (!hasBeenSet) {
+                hasBeenSet = true;
+                set(value);
+            } else {
+                throw new Error("This store can only be assigned once.");
+            }
+        }
+    };
+}

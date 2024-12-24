@@ -18,4 +18,6 @@ import java.util.List;
 public class CourseReviewsDto {
     private CourseDto course;
     private List<ReviewDto> reviews;
+    private long totalReviews;
+    private boolean hasUserReviewed;
 }

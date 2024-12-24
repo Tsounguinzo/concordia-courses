@@ -12,7 +12,7 @@ export interface RequestOptions {
 }
 
 export interface SortFilterDto {
-        sortType: string;            // e.g. "Recent", "Difficulty", "Likes"...
+        sortType: "recent" | "rating" | "experience" | "difficulty" | "likes";
         reverse: boolean;            // ascending/descending
         selectedInstructor: string;  // e.g. "john-doe"
         selectedCourse: string;      // e.g. "COMP228"

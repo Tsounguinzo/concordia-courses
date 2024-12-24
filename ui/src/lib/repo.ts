@@ -261,11 +261,12 @@ export const repo = {
         id: string | undefined,
         limit: number,
         offset: number,
+        userId: string,
         filters: SortFilterDto
     ): Promise<GetCourseWithReviewsPayload | null> {
         return await client.deserialize<GetCourseWithReviewsPayload | null>(
             'POST',
-            `/courses/${id}?limit=${limit}&offset=${offset}with_reviews=true`,
+            `/courses/${id}?limit=${limit}&offset=${offset}&userId=${userId}&with_reviews=true`,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -279,11 +280,12 @@ export const repo = {
         id: string | undefined,
         limit: number,
         offset: number,
+        userId: string,
         filters: SortFilterDto
     ): Promise<GetInstructorWithReviewsPayload | null> {
         return await client.deserialize<GetInstructorWithReviewsPayload | null>(
             'POST',
-            `/instructors/${id}?limit=${limit}&offset=${offset}with_reviews=true`,
+            `/instructors/${id}?limit=${limit}&offset=${offset}&userId=${userId}&with_reviews=true`,
             {
                 headers: {
                     'Content-Type': 'application/json',

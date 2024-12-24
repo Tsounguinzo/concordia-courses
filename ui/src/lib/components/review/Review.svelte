@@ -3,7 +3,7 @@
     import {twMerge} from "tailwind-merge";
     import Transition from "svelte-transition";
     import DeleteButton from "./DeleteButton.svelte";
-    import {Edit, Pin} from "lucide-svelte";
+    import {BadgeCheck, Edit} from "lucide-svelte";
     import LoginPrompt from "./LoginPrompt.svelte";
     import {
         courseIdToUrlParam,
@@ -87,7 +87,7 @@
                         </Tooltip>
                     </div>
                     {#if canModify}
-                        <Pin class='ml-2 mt-2 text-primary-600'/>
+                        <BadgeCheck class='ml-2 mt-2 text-primary-600'/>
                     {/if}
                     <div class='grow'/>
                     <div class='flex w-64 flex-col items-end rounded-lg p-2'>

@@ -4,4 +4,6 @@ import type { Review } from './Review';
 export type GetCourseWithReviewsPayload = {
   course: Course;
   reviews: Review[];
+  totalReviews: number;
+  hasUserReviewed: boolean;
 };

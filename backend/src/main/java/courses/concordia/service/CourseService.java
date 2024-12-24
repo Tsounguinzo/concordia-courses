@@ -12,9 +12,8 @@ import java.util.List;
 public interface CourseService {
     List<CourseDto> getCoursesWithFilter(int limit, int offset, CourseFilterDto filters);
     CourseDto getCourseById(String id);
-    CourseReviewsDto getCourseAndReviewsById(String id);
     void updateCourses(MultipartFile file);
     void updateCoursesStatistics();
     List<CourseInstructorDto> getInstructors(String id);
-    CourseReviewsDto getCourseAndReviewsByIdPaginated(String id, int limit, int offset, ReviewSortingDto sortType);
+    CourseReviewsDto getCourseAndReviewsByIdPaginated(String id, int limit, int offset, String userId, ReviewSortingDto sortType);
 }

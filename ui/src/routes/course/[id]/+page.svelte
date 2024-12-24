@@ -36,7 +36,7 @@
 
     // Repo & store
     import { repo } from "$lib/repo";
-    import { visitorId } from "$lib/store";
+    import {visitorId, writeOnceStore} from "$lib/store";
 
     // Svelte reactive declarations
     $: params = $page.params.id;
@@ -46,11 +46,12 @@
 
     // Local stores for reviews & course data
     const allReviews = writable<Review[] | undefined>(undefined);
-    const showingReviews = writable<Review[]>([]);
     const course = writable<Course | null | undefined>(undefined);
     const instructors = writable<CourseInstructor[]>([]);
     const userInteractions = writable<Interaction[] | undefined>([]);
     const gradeDistribution = writable<GradeDistribution | undefined | null>(undefined);
+    let hasUserReviewed = false;
+    const hasReviews = writeOnceStore(null);
 
     // Confetti
     let triggerConfetti = writable(false);
@@ -64,8 +65,8 @@
 
     // Sorting & filtering (server-side)
     let sortFilter = writable<SortFilterDto>({
-        sortType: "Recent",
-        reverse: false,
+        sortType: "recent",
+        reverse: true,
         selectedInstructor: "",
         selectedCourse: ""
     });
@@ -145,9 +146,8 @@
 
                 const filterObj = get(sortFilter);
 
-                // This calls your new v2 or updated method returning {course, reviews, ...}
-                const response = await repo.getCourseWithReviews(courseId, limit, offset, filterObj);
-                const { course: fetchedCourse, reviews: pageReviews } = response || {};
+                const response = await repo.getCourseWithReviews(courseId, limit, offset, user?.id ?? visitor, filterObj);
+                const { course: fetchedCourse, reviews: pageReviews, totalReviews: total, hasUserReviewed: reviewed } = response || {};
 
                 if (!fetchedCourse) {
                     // No course => goto /explore
@@ -155,7 +155,13 @@
                     return;
                 }
 
-                // Update the course
+                try {
+                    hasReviews.set(fetchedCourse.reviewCount > 0 || pageReviews.length > 0);
+                } catch (err) {
+                   // expected
+                }
+
+                hasUserReviewed = reviewed;
                 course.set(fetchedCourse);
 
                 // Fetch instructors
@@ -167,10 +173,8 @@
                 // Merge reviews from previous fetch
                 const current = get(allReviews) || [];
                 allReviews.set([...current, ...pageReviews]);
-                showingReviews.set(get(allReviews));
 
-                // Update totalReviews from course.reviewCount
-                totalReviews = fetchedCourse.reviewCount ?? 0;
+                totalReviews = total ?? 0;
 
                 // Fetch interactions if available
                 const userId = user?.id ?? visitor;
@@ -194,13 +198,7 @@
     }
 
     // Check if the user has a review
-    $: userReview = get(allReviews)?.find((r) => r.userId === user?.id);
-    $: hasNotReviewed =
-        user
-            ? !(get(allReviews)?.some((r) => r.userId === user?.id))
-            : visitor
-                ? !(get(allReviews)?.some((r) => r.userId === visitor))
-                : true;
+    $: userReview = $allReviews?.find((r) => r.userId === user?.id || r.userId === visitor);
 
     // Handling adding or editing reviews
     const handleSubmit = (successMessage: string) => {
@@ -209,7 +207,7 @@
                 toast.success(successMessage);
                 addReviewOpen.set(false);
                 editReviewOpen.set(false);
-                refetch();
+                resetAndRefetch();
                 if (successMessage.includes("added")) {
                     triggerConfetti.set(true);
                 }
@@ -225,8 +223,6 @@
         const res = await repo.deleteReview(review._id, review.type, review.courseId, review.instructorId, userId);
 
         if (res.ok) {
-            // Manually remove from local store
-            showingReviews.set(get(showingReviews)?.filter((r) => r._id !== review._id));
             allReviews.set(get(allReviews)?.filter((r) => r._id !== review._id));
         }
 
@@ -260,10 +256,10 @@
             selectedInstructor: instructorNameToUrlParam(instrName),
             selectedCourse: courseNameToId(courseName),
             reverse:
-                sortBy === "Least Recent" ||
-                sortBy === "Worst Experience" ||
-                sortBy === "Easiest" ||
-                sortBy === "Most Disliked"
+                sortBy === "Most Recent" ||
+                sortBy === "Best Experience" ||
+                sortBy === "Hardest" ||
+                sortBy === "Most Liked"
         }));
 
         resetAndRefetch();
@@ -286,7 +282,7 @@
 />
 
 <!-- If no course or reviews are loaded yet, show Loading. If course==null, we'll redirect. -->
-{#if $course === undefined || $course === null || $showingReviews === undefined}
+{#if $course === undefined || $course === null || $allReviews === undefined}
     <Loading/>
 {:else}
     <!-- Confetti if user adds a new review -->
@@ -342,13 +338,11 @@
                     Reviews
                 </h2>
 
-                <!-- If user hasn't reviewed yet, show prompt -->
-                {#if hasNotReviewed}
-                    <CourseReviewPrompt openAddReview={addReviewOpen}/>
-                {/if}
+
+                <CourseReviewPrompt {hasUserReviewed} openAddReview={addReviewOpen}/>
 
                 <!-- If we have reviews, show filter + listing. Otherwise, empty prompt. -->
-                {#if $allReviews && $allReviews.length > 0}
+                {#if $hasReviews}
                     <div class="mb-2 py-2">
                         <ReviewFilter on:sortChanged={handleSortChange} course={$course}/>
                     </div>
@@ -358,8 +352,8 @@
 
                 <!-- Reviews list -->
                 <div class="w-full shadow-sm">
-                    {#if $showingReviews}
-                        {#each $showingReviews as review (review._id)}
+                    {#if $allReviews}
+                        {#each $allReviews as review (review._id)}
                             <CourseReview
                                     useTaughtBy={true}
                                     canModify={(user && review.userId === user?.id) || (visitor && review.userId === visitor)}
@@ -375,32 +369,21 @@
 
                 <!-- Load More Button (if more reviews remain) -->
                 {#if $allReviews.length < totalReviews}
-                    <div class="flex justify-center mt-4">
+                    <div class='flex justify-center text-gray-800 dark:text-gray-300'>
                         <button
-                                class="relative inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+                                class='inline-flex justify-center items-center h-full w-full border border-dashed border-neutral-700 py-2 dark:border-neutral-500'
                                 on:click={loadMoreReviews}
                                 disabled={$isFetching}
                         >
                             {#if $isFetching}
                                 <svg
-                                        class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                                        class="animate-spin -ml-1 mr-3 h-5 w-5"
                                         xmlns="http://www.w3.org/2000/svg"
                                         fill="none"
                                         viewBox="0 0 24 24"
                                 >
-                                    <circle
-                                            class="opacity-25"
-                                            cx="12"
-                                            cy="12"
-                                            r="10"
-                                            stroke="currentColor"
-                                            stroke-width="4"
-                                    />
-                                    <path
-                                            class="opacity-75"
-                                            fill="currentColor"
-                                            d="M4 12a8 8 0 018-8v8H4z"
-                                    />
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
                                 </svg>
                                 Loading...
                             {:else}
@@ -467,11 +450,9 @@
                         Reviews
                     </h2>
 
-                    {#if hasNotReviewed}
-                        <CourseReviewPrompt openAddReview={addReviewOpen}/>
-                    {/if}
+                    <CourseReviewPrompt {hasUserReviewed} openAddReview={addReviewOpen}/>
 
-                    {#if $allReviews.length > 0}
+                    {#if $hasReviews}
                         <div class="my-2">
                             <ReviewFilter on:sortChanged={handleSortChange} course={$course}/>
                         </div>
@@ -480,8 +461,8 @@
                     {/if}
 
                     <div class="w-full shadow-sm">
-                        {#if $showingReviews}
-                            {#each $showingReviews as review (review._id)}
+                        {#if $allReviews}
+                            {#each $allReviews as review (review._id)}
                                 <CourseReview
                                         useTaughtBy={true}
                                         canModify={(user && review.userId === user?.id) || (visitor && review.userId === visitor)}
@@ -496,32 +477,21 @@
                     </div>
 
                     {#if $allReviews.length < totalReviews}
-                        <div class="flex justify-center mt-4">
+                        <div class='flex justify-center text-gray-800 dark:text-gray-300'>
                             <button
-                                    class="relative inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+                                    class='inline-flex justify-center items-center h-full w-full border border-dashed border-neutral-700 py-2 dark:border-neutral-500'
                                     on:click={loadMoreReviews}
                                     disabled={$isFetching}
                             >
                                 {#if $isFetching}
                                     <svg
-                                            class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                                            class="animate-spin -ml-1 mr-3 h-5 w-5"
                                             xmlns="http://www.w3.org/2000/svg"
                                             fill="none"
                                             viewBox="0 0 24 24"
                                     >
-                                        <circle
-                                                class="opacity-25"
-                                                cx="12"
-                                                cy="12"
-                                                r="10"
-                                                stroke="currentColor"
-                                                stroke-width="4"
-                                        />
-                                        <path
-                                                class="opacity-75"
-                                                fill="currentColor"
-                                                d="M4 12a8 8 0 018-8v8H4z"
-                                        />
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
                                     </svg>
                                     Loading...
                                 {:else}

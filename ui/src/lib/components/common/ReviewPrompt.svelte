@@ -5,6 +5,7 @@
     import {visitorId} from "$lib/store";
 
     export let openAddReview: Writable<boolean>;
+    export let hasUserReviewed: boolean;
     export let type: 'course' | 'instructor' | 'school' = 'course';
 
     const user =  $page.data.user
@@ -38,9 +39,9 @@
         {/if}
         {' '}
     </p>
-    <button class='mt-2 rounded-lg bg-primary-700 px-3 py-2 text-sm font-medium text-white transition duration-200 hover:bg-primary sm:text-base'
-            on:click={handleClick}>
+    <button class='mt-2 rounded-lg bg-primary-700 px-3 py-2 text-sm font-medium text-white transition duration-200 hover:bg-primary sm:text-base disabled:bg-gray-400'
+            on:click={handleClick} disabled={hasUserReviewed}>
         <Tooltip text={message} show={promptVerification} offset={{x: -15, y: -15}}/>
-        Leave a review
+        {hasUserReviewed ? 'Already Reviewed' : 'Leave a Review'}
     </button>
 </div>

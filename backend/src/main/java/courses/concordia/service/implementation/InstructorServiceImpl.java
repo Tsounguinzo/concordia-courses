@@ -81,42 +81,19 @@ public class InstructorServiceImpl implements InstructorService {
     }
 
     /**
-     * Retrieves an instructor along with its reviews based on his id.
-     * The results are cached to improve performance on subsequent calls with the same id.
-     *
-     * @param id The unique identifier for the instructor.
-     * @return A {@link InstructorReviewsDto} object containing the instructor and its reviews.
-     */
-    @Cacheable(value = "instructorReviewsCache", key = "{#id, 'instructor'}")
-    @Override
-    public InstructorReviewsDto getInstructorAndReviewsById(String id) {
-        log.info("Retrieving instructor and reviews with id {}", id);
-        InstructorDto instructor = getInstructorById(id);
-
-        Query query = new Query(Criteria.where("instructorId").is(id)).with(Sort.by(Sort.Direction.DESC, "timestamp"));
-        List<ReviewDto> reviews = mongoTemplate.find(query, Review.class)
-                .stream()
-                .map(review -> modelMapper.map(review, ReviewDto.class))
-                .collect(Collectors.toList());
-
-        return new InstructorReviewsDto()
-                .setInstructor(instructor)
-                .setReviews(reviews);
-    }
-
-    /**
      * Retrieves an instructor along with its reviews based on his id, with pagination.
      * The results are cached to improve performance on subsequent calls with the same id.
      *
      * @param id       The unique identifier for the instructor.
      * @param limit    The maximum number of reviews to return.
      * @param offset   The offset from the start of the dataset for paging.
+     * @param userId  The unique identifier of the user requesting the reviews.
      * @param sortType The sorting criteria to apply to the reviews.
      * @return A {@link InstructorReviewsDto} object containing the instructor and its reviews.
      */
     @Cacheable(value = "instructorReviewsCache", key = "{#id, 'instructor', #limit, #offset, #sortType.hashCode()}")
     @Override
-    public InstructorReviewsDto getInstructorAndReviewsByIdPaginated(String id, int limit, int offset, ReviewSortingDto sortType) {
+    public InstructorReviewsDto getInstructorAndReviewsByIdPaginated(String id, int limit, int offset, String userId, ReviewSortingDto sortType) {
         log.info("Retrieving instructor and reviews with id {} with pagination: limit={}, offset={}, sortType={}", id, limit, offset, sortType);
         InstructorDto instructor = getInstructorById(id);
 
@@ -126,8 +103,7 @@ public class InstructorServiceImpl implements InstructorService {
             criteria = criteria.and("courseId").is(sortType.getSelectedCourse());
         }
 
-        Query query = new Query(criteria)
-                .with(PageRequest.of(offset / limit, limit));
+        Query query = new Query(criteria);
 
         if (sortType.getSortType() != null) {
             log.info("Applying sort by {} in {} order", sortType.getSortType(), sortType.isReverse() ? "DESC" : "ASC");
@@ -150,14 +126,22 @@ public class InstructorServiceImpl implements InstructorService {
             }
         }
 
+        long totalReviews = mongoTemplate.count(query, Review.class);
+
+        query.with(PageRequest.of(offset / limit, limit));
+
         List<ReviewDto> reviews = mongoTemplate.find(query, Review.class)
                 .stream()
                 .map(review -> modelMapper.map(review, ReviewDto.class))
                 .collect(Collectors.toList());
 
+        boolean hasUserReviewed = userId != null && !userId.equals("null") && mongoTemplate.exists(new Query(Criteria.where("userId").is(userId).and("instructorId").is(id)), Review.class);
+
         return new InstructorReviewsDto()
                 .setInstructor(instructor)
-                .setReviews(reviews);
+                .setReviews(reviews)
+                .setTotalReviews(totalReviews)
+                .setHasUserReviewed(hasUserReviewed);
     }
 
     /**

@@ -22,4 +22,6 @@ import java.util.List;
 public class InstructorReviewsDto {
     private InstructorDto instructor;
     private List<ReviewDto> reviews;
+    private long totalReviews;
+    private boolean hasUserReviewed;
 }

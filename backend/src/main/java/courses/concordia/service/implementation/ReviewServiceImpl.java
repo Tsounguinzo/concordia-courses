@@ -78,8 +78,8 @@ public class ReviewServiceImpl implements ReviewService {
      * @return The added or updated review data transfer object.
      */
     @Caching(evict = {
-            @CacheEvict(value = "courseReviewsCache", key = "{#reviewDto.courseId, #reviewDto.type}", condition = "#reviewDto.type.equals('course')"),
-            @CacheEvict(value = "instructorReviewsCache", key = "{#reviewDto.instructorId, #reviewDto.type}", condition = "#reviewDto.type.equals('instructor')"),
+            @CacheEvict(value = "courseReviewsCache", allEntries = true, condition = "#reviewDto.type.equals('course')"),
+            @CacheEvict(value = "instructorReviewsCache", allEntries = true, condition = "#reviewDto.type.equals('instructor')"),
             @CacheEvict(value = "coursesCacheWithFilters", allEntries = true, condition = "#reviewDto.type.equals('course')"),
             @CacheEvict(value = "instructorsCacheWithFilters", allEntries = true, condition = "#reviewDto.type.equals('instructor')"),
             @CacheEvict(value = "reviewsCacheWithFilters", allEntries = true),
@@ -148,13 +148,13 @@ public class ReviewServiceImpl implements ReviewService {
      * @param id The ID of the review.
      */
     @Caching(evict = {
-            @CacheEvict(value = "courseReviewsCache", key = "{#courseId, 'course'}", condition = "#type.equals('course')"),
-            @CacheEvict(value = "instructorReviewsCache", key = "{#instructorId, 'instructor'}", condition = "#type.equals('instructor')"),
+            @CacheEvict(value = "courseReviewsCache", allEntries = true, condition = "#type.equals('course')"),
+            @CacheEvict(value = "instructorReviewsCache", allEntries = true, condition = "#type.equals('instructor')"),
             @CacheEvict(value = "coursesCacheWithFilters", allEntries = true),
             @CacheEvict(value = "instructorsCacheWithFilters", allEntries = true),
             @CacheEvict(value = "reviewsCacheWithFilters", allEntries = true),
             @CacheEvict(value = "instructorsCache", allEntries = true),
-            @CacheEvict(value = "courseInstructorsCache", key = "#reviewDto.courseId")
+            @CacheEvict(value = "courseInstructorsCache", key = "#courseId")
     })
     @Transactional
     @Override
