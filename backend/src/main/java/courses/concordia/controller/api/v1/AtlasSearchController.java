@@ -43,7 +43,10 @@ public class AtlasSearchController {
 
     @Timed(value = "atlas.search", description = "Search for reviews using Atlas Search")
     @GetMapping
-    public Response<?> FTSReviewContent(@RequestParam String query, @RequestParam int limit) {
+    public Response<?> FTSReviewContent(
+            @RequestParam String query,
+            @RequestParam(name = "limit", defaultValue = "15") int limit
+    ) {
 
         try (MongoClient mongoClient = MongoClients.create(mongodbUri)) {
             MongoDatabase database = mongoClient.getDatabase(databaseName);
@@ -106,7 +109,10 @@ public class AtlasSearchController {
     }
 
     @GetMapping("/instructor")
-    public Response<?> FTSInstructorName(@RequestParam String query) {
+    public Response<?> FTSInstructorName(
+            @RequestParam String query,
+            @RequestParam(name = "limit", defaultValue = "3") int limit
+    ) {
         try (MongoClient mongoClient = MongoClients.create(mongodbUri)) {
             MongoDatabase database = mongoClient.getDatabase(databaseName);
             MongoCollection<Document> collection = database.getCollection("instructors");
@@ -126,7 +132,7 @@ public class AtlasSearchController {
                             exclude(),
                             include("_id", "firstName", "lastName", "departments", "courses", "tags", "avgDifficulty", "avgRating", "reviewCount", "aiSummary"),
                             metaSearchScore("score"))),
-                    limit(3)
+                    limit(limit)
             ));
 
             List<Instructor> instructors = new ArrayList<>();
@@ -150,7 +156,10 @@ public class AtlasSearchController {
     }
 
     @GetMapping("/course")
-    public Response<?> FTSCourseTitle(@RequestParam String query) {
+    public Response<?> FTSCourseTitle(
+            @RequestParam String query,
+            @RequestParam(name = "limit", defaultValue = "3") int limit
+    ) {
         try (MongoClient mongoClient = MongoClients.create(mongodbUri)) {
             MongoDatabase database = mongoClient.getDatabase(databaseName);
             MongoCollection<Document> collection = database.getCollection("courses");
@@ -170,7 +179,7 @@ public class AtlasSearchController {
                             exclude(),
                             include("_id", "prerequisites", "subject", "catalog", "title", "classUnit", "terms", "instructors", "avgDifficulty", "avgExperience", "reviewCount", "description", "schedules"),
                             metaSearchScore("score"))),
-                    limit(3)
+                    limit(limit)
             ));
 
             List<Course> courses = new ArrayList<>();
