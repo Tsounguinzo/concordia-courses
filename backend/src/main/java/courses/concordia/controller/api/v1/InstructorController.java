@@ -73,20 +73,19 @@ public class InstructorController {
             @PathVariable String id,
             @RequestBody ReviewSortingDto sortType,
             @RequestParam(name = "userId", defaultValue = "null") String userId,
-            @RequestParam(name = "with_reviews", defaultValue = "false") boolean withReviews,
             @RequestParam(name = "limit", defaultValue = "20") int limit,
             @RequestParam(name = "offset", defaultValue = "0") int offset
     ) {
-        if (!withReviews) {
-            return Response.ok().setPayload(instructorService.getInstructorById(id));
-        }
-
         return Response.ok().setPayload(instructorService.getInstructorAndReviewsByIdPaginated(id, limit, offset, userId, sortType));
     }
 
     @Timed(value = "instructors.get", description = "Get instructors with filter")
     @PostMapping("/filter")
-    public Response<?> getInstructorsWithFilters(@RequestBody InstructorFilterDto filters, @RequestParam int limit, @RequestParam int offset) {
+    public Response<?> getInstructorsWithFilters(
+            @RequestBody InstructorFilterDto filters,
+            @RequestParam(name = "limit", defaultValue = "20") int limit,
+            @RequestParam(name = "offset", defaultValue = "0") int offset
+    ) {
         List<InstructorDto> instructors = instructorService.getInstructorsWithFilter(limit, offset, filters);
         return Response.ok().setPayload(instructors);
     }

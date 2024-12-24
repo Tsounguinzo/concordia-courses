@@ -58,14 +58,9 @@ public class CourseController {
             @PathVariable String id,
             @RequestBody ReviewSortingDto sortType,
             @RequestParam(name = "userId", defaultValue = "null") String userId,
-            @RequestParam(name = "with_reviews", defaultValue = "false") boolean withReviews,
             @RequestParam(name = "limit", defaultValue = "20") int limit,
             @RequestParam(name = "offset", defaultValue = "0") int offset
     ) {
-        if (!withReviews) {
-            return Response.ok().setPayload(courseService.getCourseById(id));
-        }
-
         return Response.ok().setPayload(courseService.getCourseAndReviewsByIdPaginated(id, limit, offset, userId, sortType));
     }
 
@@ -77,7 +72,11 @@ public class CourseController {
 
     @Timed(value = "courses.get", description = "Get courses with filter")
     @PostMapping("/filter")
-    public Response<?> getCourses(@RequestBody CourseFilterDto filters, @RequestParam int limit, @RequestParam int offset) {
+    public Response<?> getCoursesWithFilters(
+            @RequestBody CourseFilterDto filters,
+            @RequestParam(name = "limit", defaultValue = "20") int limit,
+            @RequestParam(name = "offset", defaultValue = "0") int offset
+    ) {
         List<CourseDto> courses = courseService.getCoursesWithFilter(limit, offset, filters);
         return Response.ok().setPayload(courses);
     }
