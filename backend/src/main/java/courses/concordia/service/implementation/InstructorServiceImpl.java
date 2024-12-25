@@ -28,10 +28,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -170,9 +169,21 @@ public class InstructorServiceImpl implements InstructorService {
             Set<Instructor.Course> courses = reviews.stream()
                     .map(Review::getCourseId)
                     .filter(courseId -> courseId != null && !courseId.isBlank())
-                    .map(courseId -> courseId.split("(\\D*)(\\d.*)"))
-                    .filter(courseIdSplit -> courseIdSplit.length == 3)
-                    .map(courseIdSplit -> new Instructor.Course(courseIdSplit[1], courseIdSplit[2]))
+                    .map(courseId -> {
+                        // some exceptions CEWPMOD1, CEWPMOD4, CEWPMOD4B, CEBDMOD10, CEENMOD6C, CEBUMOD6A
+                        if (courseId.startsWith("CEWP") ||
+                                courseId.startsWith("CEBD") ||
+                                courseId.startsWith("CEEN") ||
+                                courseId.startsWith("CEBU")) {
+                            // Split manually for these patterns
+                            int splitIndex = courseId.indexOf("MOD");
+                            return new String[]{courseId.substring(0, splitIndex), courseId.substring(splitIndex)};
+                        }
+                        Matcher matcher = Pattern.compile("(\\D*)(\\d.*)").matcher(courseId);
+                        return matcher.matches() ? new String[]{matcher.group(1), matcher.group(2)} : null;
+                    })
+                    .filter(Objects::nonNull)
+                    .map(courseIdSplit -> new Instructor.Course(courseIdSplit[0], courseIdSplit[1]))
                     .collect(Collectors.toSet());
             instructor.setTags(tags);
             instructor.addCourses(courses);
