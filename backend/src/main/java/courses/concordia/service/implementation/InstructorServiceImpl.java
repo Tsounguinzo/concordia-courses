@@ -167,7 +167,13 @@ public class InstructorServiceImpl implements InstructorService {
                     .map(Review::getTags)
                     .flatMap(Set::stream)
                     .collect(Collectors.toSet());
+            Set<Instructor.Course> courses = reviews.stream()
+                    .map(Review::getCourseId)
+                    .filter(courseId -> courseId != null && !courseId.isBlank())
+                    .map(courseId -> new Instructor.Course(courseId.split("(\\D*)(\\d.*)")[1], courseId.split("(\\D*)(\\d.*)")[2]))
+                    .collect(Collectors.toSet());
             instructor.setTags(tags);
+            instructor.addCourses(courses);
             instructor.setAvgRating(avgExperienceAndRating);
             instructor.setAvgDifficulty(avgDifficulty);
             instructor.setReviewCount(reviews.size());
