@@ -171,10 +171,10 @@ public class InstructorServiceImpl implements InstructorService {
                     .filter(courseId -> courseId != null && !courseId.isBlank())
                     .map(courseId -> {
                         // some exceptions CEWPMOD1, CEWPMOD4, CEWPMOD4B, CEBDMOD10, CEENMOD6C, CEBUMOD6A
-                        if (courseId.startsWith("CEWP") ||
-                                courseId.startsWith("CEBD") ||
-                                courseId.startsWith("CEEN") ||
-                                courseId.startsWith("CEBU")) {
+                        if (courseId.startsWith("CEWPMOD") ||
+                                courseId.startsWith("CEBDMOD") ||
+                                courseId.startsWith("CEENMOD") ||
+                                courseId.startsWith("CEBUMOD")) {
                             // Split manually for these patterns
                             int splitIndex = courseId.indexOf("MOD");
                             return new String[]{courseId.substring(0, splitIndex), courseId.substring(splitIndex)};
