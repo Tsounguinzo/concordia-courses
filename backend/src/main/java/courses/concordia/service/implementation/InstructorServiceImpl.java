@@ -170,9 +170,9 @@ public class InstructorServiceImpl implements InstructorService {
             Set<Instructor.Course> courses = reviews.stream()
                     .map(Review::getCourseId)
                     .filter(courseId -> courseId != null && !courseId.isBlank())
-                    // print the course id
-                    .peek(System.out::println)
-                    .map(courseId -> new Instructor.Course(courseId.split("(\\D*)(\\d.*)")[1], courseId.split("(\\D*)(\\d.*)")[2]))
+                    .map(courseId -> courseId.split("(\\D*)(\\d.*)"))
+                    .filter(courseIdSplit -> courseIdSplit.length == 3)
+                    .map(courseIdSplit -> new Instructor.Course(courseIdSplit[1], courseIdSplit[2]))
                     .collect(Collectors.toSet());
             instructor.setTags(tags);
             instructor.addCourses(courses);
