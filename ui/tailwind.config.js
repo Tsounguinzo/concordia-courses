@@ -9,6 +9,7 @@ export default {
             animation: {
                 marquee: "marquee var(--duration) linear infinite",
                 "marquee-vertical": "marquee-vertical var(--duration) linear infinite",
+                gradient: "gradient 8s linear infinite",
             },
             keyframes: {
                 marquee: {
@@ -18,6 +19,11 @@ export default {
                 "marquee-vertical": {
                     from: { transform: "translateY(0)" },
                     to: { transform: "translateY(calc(-100% - var(--gap)))" },
+                },
+                gradient: {
+                    to: {
+                        "background-position": "200% center",
+                    },
                 },
             },
             colors: {
