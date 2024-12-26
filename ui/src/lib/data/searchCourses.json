@@ -87,7 +87,8 @@
       "Jack Martin",
       "Stanley L Schulman",
       "Ted H. Nowak",
-      "Carmen N. Kuczewski"
+      "Carmen N. Kuczewski",
+      "Alexey Lyubimov"
     ]
   },
   {
@@ -340,7 +341,8 @@
       "Salvatore Iannetta",
       "Michael Roy",
       "Manmohan Kapoor",
-      "Nathalie Repenning"
+      "Nathalie Repenning",
+      "Sabrina Lairy"
     ]
   },
   {
@@ -947,6 +949,7 @@
     "instructors": [
       "Rosemary C Reilly",
       "Ronald Thiessen",
+      "Stephanie A. Mitelman",
       "Faye Assee"
     ]
   },
@@ -2858,8 +2861,11 @@
     "catalog": "353",
     "instructors": [
       "Ernestine M. Daubner",
+      "Elizabeth Kalbfleisch",
       "Jim Alice",
-      "Charles Gagnon"
+      "Julia Skelly",
+      "Charles Gagnon",
+      "Rebecca Duclos"
     ]
   },
   {
@@ -3291,7 +3297,8 @@
       "Cheryl Simon",
       "John Howes",
       "Sheila Rao",
-      "Travis Bost"
+      "Travis Bost",
+      "Jonathan Wald"
     ]
   },
   {
@@ -3573,7 +3580,8 @@
     "catalog": "352",
     "instructors": [
       "Elaine Paterson",
-      "Susan Surette"
+      "Susan Surette",
+      "Julia Skelly"
     ]
   },
   {
@@ -4036,7 +4044,9 @@
     "title": "Population and Conservation Genetics",
     "subject": "BIOL",
     "catalog": "452",
-    "instructors": []
+    "instructors": [
+      "Selvadurai Dayanandan"
+    ]
   },
   {
     "_id": "BIOL322",
@@ -4781,6 +4791,7 @@
     "catalog": "451",
     "instructors": [
       "Christopher Willis",
+      "Jassim Hassan",
       "Shahin Karimidorabati"
     ]
   },
@@ -4791,7 +4802,8 @@
     "catalog": "452",
     "instructors": [
       "Amir Mofidi",
-      "Emre Erkmen"
+      "Emre Erkmen",
+      "Jassim Hassan"
     ]
   },
   {
@@ -5328,7 +5340,9 @@
       "Jim Grant",
       "Ian M Ferguson",
       "Catherine Calogeropoulos",
-      "Rassim Khelifa"
+      "Rassim Khelifa",
+      "Selvadurai Dayanandan",
+      "Rassim Khalifa"
     ]
   },
   {
@@ -6761,7 +6775,8 @@
       "Chunjiang An",
       "John Hadjinicolaou",
       "Jae-hoon Hwang",
-      "Hong Guan"
+      "Hong Guan",
+      "Jaehoon Hwang"
     ]
   },
   {
@@ -6997,7 +7012,8 @@
       "Bruno Lee",
       "Farrah Fayyaz",
       "Joonhee Lee",
-      "Min Ning"
+      "Min Ning",
+      "Lucia Tirca"
     ]
   },
   {
@@ -7015,7 +7031,8 @@
     "subject": "BLDG",
     "catalog": "6061",
     "instructors": [
-      "Khaled Galal"
+      "Khaled Galal",
+      "Lucia Tirca"
     ]
   },
   {
@@ -7857,6 +7874,7 @@
     "subject": "CART",
     "catalog": "411",
     "instructors": [
+      "Cécile Martin",
       "Bradley J. Todd",
       "Christopher Salter"
     ]
@@ -8516,6 +8534,8 @@
       "Farzad Ghodoosi-poor",
       "Ardalan Sabamehr",
       "Ashutosh Bagchi",
+      "Anjan Bhowmick",
+      "Lucia Tirca",
       "Luis Esteban Amador Jimenez"
     ]
   },
@@ -8563,7 +8583,9 @@
     "title": "SEISMIC ASS. \u0026 RET. OF STRUC",
     "subject": "CIVI",
     "catalog": "6031",
-    "instructors": []
+    "instructors": [
+      "Lucia Tirca"
+    ]
   },
   {
     "_id": "CIVI6021",
@@ -9003,13 +9025,16 @@
       "Michael B. Beigleman",
       "Phillipe Colas",
       "Ronald J. Abraira",
+      "Shahla Hodai Hemami",
       "Ralph Nobel",
       "Frederick P. Tobin",
       "Mark Medicoff",
       "Greg Lypny",
       "Bryan Barbieri",
       "Bonnie Feigenbaum",
+      "Philippe Colas",
       "Marcio Coelho",
+      "Adel Raphael",
       "Yu-shan Hsu",
       "Eric Martineau",
       "Matteo Pisano"
@@ -9258,8 +9283,7 @@
       "Ali Jannatpour",
       "Mohamed Taleb",
       "Hakim Mellah",
-      "Gosta Grahne",
-      "Aiman Latif Hanna"
+      "Gosta Grahne"
     ]
   },
   {
@@ -9292,6 +9316,7 @@
       "Guy Barbeau",
       "Andrea Kim",
       "Rabih Khoury",
+      "Roumen Solov",
       "Young-chul Jeong",
       "Liliya Lyubman",
       "Natalia Totskaya",
@@ -9320,6 +9345,7 @@
       "Diarra Gaoussou",
       "Philippe Colas",
       "Didier Chanut",
+      "Morteza Sardari",
       "Morteza Taghdisi Masabi",
       "Cahit Kose",
       "Behshad Azodideylami",
@@ -9436,6 +9462,7 @@
       "Elisabeth Peltier",
       "Jonathan B. Schacter",
       "George Kanaan",
+      "Shahla Hodai Hemami",
       "Chiraz Ben Ali",
       "Vesna Pankovska",
       "Maurice Rossin-arthiat",
@@ -9447,6 +9474,7 @@
       "Salvatore Iannetta",
       "Peter Hilal",
       "Li Yao",
+      "Alexey Lyubimov",
       "Pierre Hilal",
       "Hui Fan",
       "Cynthia Melhem",
@@ -9539,6 +9567,8 @@
       "Adriane Macdonald",
       "Neil A. Fernandes",
       "Shannon Lloyd",
+      "Adel Raphael",
+      "Morteza Sardari",
       "Ashkan Rostami",
       "Yu-shan Hsu",
       "Eric Martineau"
@@ -9616,6 +9646,7 @@
       "Nigel Taklalsingh",
       "Atif Acikgoz",
       "Felicity Tsering Chödron Hamer",
+      "Adel Raphael",
       "Yu-shan Hsu"
     ]
   },
@@ -9649,6 +9680,7 @@
       "Sirage Alattas",
       "Yasemin Kahyaoglu",
       "Arka Mukherjee",
+      "Rahul Ravi",
       "Peter L. Rosenthal",
       "Bryan Barbieri",
       "Mahesh Sharma",
@@ -9824,6 +9856,7 @@
       "Rachida Dssouli",
       "Sadegh Ghanderpanah",
       "Mokhtar Beldjehem",
+      "Volker Haarslev",
       "Nawwaf Kharma",
       "Bahareh Goodarzi",
       "Yan Liu",
@@ -9894,7 +9927,8 @@
       "Michael Barcomb Admin",
       "Carmen Kuczewski",
       "Jonathan Schacter",
-      "Marie-hélène Vanier"
+      "Marie-hélène Vanier",
+      "Sabrina Lairy"
     ]
   },
   {
@@ -9983,6 +10017,7 @@
       "Juliane Proelss",
       "Loretta Hung",
       "Rahul Ravi",
+      "Yanting Wu",
       "Nada El-hassan",
       "Penny Ellison",
       "David Newton",
@@ -10395,6 +10430,7 @@
     "catalog": "353",
     "instructors": [
       "Denis Rinfret",
+      "Volker Haarslev",
       "Todd Eavis",
       "Nematollaah Shiri",
       "Khaled Jababo",
@@ -10868,7 +10904,9 @@
     "title": "FOUNDATIONS/SEMANTIC WEB",
     "subject": "COMP",
     "catalog": "6531",
-    "instructors": []
+    "instructors": [
+      "Volker Haarslev"
+    ]
   },
   {
     "_id": "COMP690",
@@ -10971,6 +11009,7 @@
     "instructors": [
       "Joel Mckim",
       "Dennis Murphy",
+      "Christopher Gutierrez",
       "Christiana Abraham"
     ]
   },
@@ -11062,7 +11101,8 @@
       "Hakim Mellah",
       "Nora Houari",
       "Aiman Latif Hanna",
-      "Arash Azarfar"
+      "Arash Azarfar",
+      "Hussein Olleik"
     ]
   },
   {
@@ -11107,7 +11147,8 @@
       "Nora Houari",
       "Aiman Latif Hanna",
       "Diego Elias Damasceno Costa",
-      "Joanne Downs"
+      "Joanne Downs",
+      "Hussein Olleik"
     ]
   },
   {
@@ -11172,6 +11213,7 @@
       "Andrew Delong",
       "Mirco Ravanelli",
       "Rajagopalan Jayakumar",
+      "Mahdi Hosseini",
       "Yang Wang",
       "Ali Ayub"
     ]
@@ -11286,6 +11328,8 @@
     "subject": "COMS",
     "catalog": "362",
     "instructors": [
+      "Samantha Thrift",
+      "Christopher Gutierrez",
       "Chih-yun Chia"
     ]
   },
@@ -11583,7 +11627,8 @@
       "Sandra Jeppensen",
       "Ian Reilly",
       "Ahmed Al-rawi",
-      "Jeremy Stolow"
+      "Jeremy Stolow",
+      "Christopher Gutierrez"
     ]
   },
   {
@@ -11630,6 +11675,7 @@
     "subject": "COMS",
     "catalog": "310",
     "instructors": [
+      "Samantha Thrift",
       "Christopher Gutierrez",
       "Christiana Abraham"
     ]
@@ -13579,8 +13625,10 @@
     "subject": "EAST",
     "catalog": "211",
     "instructors": [
+      "Rebecca Robinson",
       "John Winiarz",
-      "Teresa M Connors"
+      "Teresa M Connors",
+      "Christopher Byrne"
     ]
   },
   {
@@ -13789,6 +13837,7 @@
       "Mindy Yan-miller",
       "Zoe Laks",
       "Sarah Pupo",
+      "Rebecca Munce",
       "Paul Hardy",
       "Margot Scott Klingender",
       "Étienne Camille Charbonneau",
@@ -13953,6 +14002,7 @@
       "Michael Pinsonneault",
       "Paul Scriver",
       "Kevin Austin",
+      "David Lewis",
       "Teresa M Connors",
       "Claire Kenway",
       "Marie-hélène Vanier"
@@ -14182,6 +14232,7 @@
       "Malleswara Rao Talla",
       "Anca Alecsandru",
       "Elise Critoph",
+      "Huan Xie",
       "Jong Won Ma",
       "Arezo Bodaghi",
       "Amanda Vincelli"
@@ -14243,6 +14294,7 @@
       "Dana Ghandour",
       "Kokouvi Tewou",
       "Mesbah Sharaf",
+      "Moshe Lander",
       "David Desjardins",
       "Fatina Siblini",
       "Anca Alecsandru",
@@ -14288,7 +14340,8 @@
       "Effrosyni Diamantoudi",
       "Georgios Farfaras",
       "Dipjyoti Majumdar",
-      "James Mcintosh"
+      "James Mcintosh",
+      "Huan Xie"
     ]
   },
   {
@@ -14448,6 +14501,7 @@
     "catalog": "337",
     "instructors": [
       "Balbir Sahni",
+      "Moshe Lander",
       "Arezoo Banihashem"
     ]
   },
@@ -14548,6 +14602,7 @@
       "Yevheniy Kompaniyets",
       "Eugene Kompaniyets",
       "Kokouvi Tewou",
+      "Moshe Lander",
       "Abdelkrim Hammi",
       "Fatina Siblini",
       "Anca Alecsandru",
@@ -15076,7 +15131,8 @@
       "Candis Steenbergen",
       "Rami Kamel",
       "Nassim Noroozi",
-      "Fiona J. Rowlands"
+      "Fiona J. Rowlands",
+      "Yosra Dali"
     ]
   },
   {
@@ -15216,7 +15272,8 @@
     "catalog": "303",
     "instructors": [
       "Will Penny",
-      "Yasaman Jalali-kushki"
+      "Yasaman Jalali-kushki",
+      "Yosra Dali"
     ]
   },
   {
@@ -15401,6 +15458,7 @@
     "catalog": "384",
     "instructors": [
       "Rami Kamel",
+      "Yosra Dali",
       "Brian Andrew Benoit"
     ]
   },
@@ -15536,7 +15594,8 @@
     "instructors": [
       "Vivek Venkatesh",
       "Jihan Rabah",
-      "Ofra Aslan"
+      "Ofra Aslan",
+      "Kamran Shaikh"
     ]
   },
   {
@@ -15899,6 +15958,7 @@
     "catalog": "364",
     "instructors": [
       "Yousef Shayan",
+      "William Lynch",
       "Walaa Hamouda",
       "Aishy Amer"
     ]
@@ -16340,6 +16400,7 @@
       "Stephen Yeager",
       "Stephen Powell",
       "Bruce Gilchrist",
+      "Ghislaine Comeau",
       "Sara Kennedy",
       "Daphne Symeonides"
     ]
@@ -16396,7 +16457,8 @@
       "Nathan Elliott",
       "John Emil Vincent",
       "Bruce Gilchrist",
-      "Brian Peters"
+      "Brian Peters",
+      "Keelan Harkin"
     ]
   },
   {
@@ -17198,6 +17260,7 @@
       "Doina Lecca",
       "Linda Gold",
       "Marina Promies",
+      "Miao Yu",
       "Juliane Martini",
       "Radu Lilioara",
       "Jennifer Banton",
@@ -17956,7 +18019,8 @@
     "instructors": [
       "Michael Kenneally",
       "Susan Cahill",
-      "Kate Bligh"
+      "Kate Bligh",
+      "Keelan Harkin"
     ]
   },
   {
@@ -17967,6 +18031,7 @@
     "instructors": [
       "Scott Mcfarlane",
       "Jessica Bardill",
+      "Garry Beitel",
       "Gage Diabo"
     ]
   },
@@ -18466,6 +18531,7 @@
       "Mark Pierre Rozahegy",
       "Elaine F. Pigeon",
       "Alan Bourassa",
+      "Isabelle Johnston",
       "Andy Perluzzo",
       "Mark Filipowich",
       "Matthew King",
@@ -18573,6 +18639,7 @@
     "catalog": "311",
     "instructors": [
       "Judith Herz",
+      "Karen Oberer",
       "Jeremy Valentine Freeman",
       "Kevin Pask",
       "Darragh Languay",
@@ -19061,6 +19128,7 @@
       "Dimiter Dryanov",
       "Ali Akgunduz",
       "Nhat Truong Nguyen",
+      "Kiarash Aryankia",
       "Donald Peter Davis",
       "Alexandre Paradis",
       "Joonhee Lee",
@@ -19619,10 +19687,12 @@
       "Weiping Zhu",
       "Min Ning",
       "Caroline Hachem",
+      "Ivan Kantor",
       "Mohammadali Ghaderi",
       "Jae-hoon Hwang",
       "Chafic Brikho",
-      "Alireza Haghighat Mamaghani"
+      "Alireza Haghighat Mamaghani",
+      "Jaehoon Hwang"
     ]
   },
   {
@@ -20212,10 +20282,12 @@
       "Matthew Harsh",
       "Kari Zacharias",
       "Gita Hafezi",
+      "Felipe Venegas",
       "Brandiff Caron",
       "Ghada Touir",
       "Herve Robert Horner",
       "Ezgi Ozyonum",
+      "Arezo Bodaghi",
       "Jeremy Arnott",
       "Jonathan Wald"
     ]
@@ -20609,6 +20681,7 @@
       "Patrick Mcdonaugh",
       "Stuart Macmillan",
       "Mathias Orhero",
+      "Quinn Valencourt",
       "Pakize Uludag",
       "Kamal Fox",
       "Mark Pierre Rozahegy",
@@ -21018,6 +21091,7 @@
       "Marius Paraschivoiu",
       "Amir G. Aghdam",
       "Hany Alaa Eldin Gomaa",
+      "Nabil Esmail",
       "Ida Karimfazli",
       "Alexandre Paradis"
     ]
@@ -21101,6 +21175,7 @@
       "Carole El Ayoubi",
       "Ashutosh Bagchi",
       "Suraj Joshi",
+      "Anjan Bhowmick",
       "Lan Lin",
       "Jassim Hassan",
       "A K Waizuddin Ahmed",
@@ -21558,6 +21633,7 @@
       "Craig Morrison",
       "Natalie Doonan",
       "Philipp Keidl",
+      "David Lerue",
       "Maya Rae Oppenheimer",
       "Molly-claire Gillett",
       "Sabrina Sinanis",
@@ -21785,7 +21861,8 @@
     "instructors": [
       "I. Reena Atanasiadis",
       "Igor Dos Santos",
-      "Nicolas Martelin"
+      "Nicolas Martelin",
+      "I Reena Atanasiadis"
     ]
   },
   {
@@ -23313,6 +23390,7 @@
     "subject": "FMST",
     "catalog": "328",
     "instructors": [
+      "Michael Baker",
       "Luca Caminati"
     ]
   },
@@ -23657,7 +23735,8 @@
       "Sofia Brockenshire:",
       "Marianna Milhorat",
       "Daniel R Cross",
-      "Erin Weisgerber"
+      "Erin Weisgerber",
+      "Sofia Brockenshire"
     ]
   },
   {
@@ -23717,6 +23796,7 @@
     "subject": "FMST",
     "catalog": "200",
     "instructors": [
+      "Michael Baker",
       "Louis Goyette",
       "Kay Dickinson",
       "Donato Totaro",
@@ -23971,6 +24051,7 @@
     "subject": "FPST",
     "catalog": "211",
     "instructors": [
+      "Karl Hele",
       "Anny Morissette",
       "Sigwan Thivierge",
       "Emanuel P Lowi"
@@ -25382,6 +25463,8 @@
     "subject": "GEOG",
     "catalog": "210",
     "instructors": [
+      "Sarah Turner",
+      "Souad Guernina",
       "Karolina Apland",
       "Kevin Gould",
       "James Freeman",
@@ -26862,7 +26945,8 @@
     "instructors": [
       "Ronald Rudin",
       "Gavin Foster",
-      "Virginie Fillion-fecteau"
+      "Virginie Fillion-fecteau",
+      "Jérôme Aan De Wiel"
     ]
   },
   {
@@ -27405,6 +27489,7 @@
     "catalog": "366",
     "instructors": [
       "Timothy Sedo",
+      "Iwa Nawrocki",
       "Timothy Chandler"
     ]
   },
@@ -27860,7 +27945,8 @@
     "subject": "HIST",
     "catalog": "342",
     "instructors": [
-      "Shannon Mcsheffrey"
+      "Shannon Mcsheffrey",
+      "Twisha Singh"
     ]
   },
   {
@@ -27869,7 +27955,8 @@
     "subject": "HIST",
     "catalog": "347",
     "instructors": [
-      "Rachel Berger"
+      "Rachel Berger",
+      "Brian Lewis"
     ]
   },
   {
@@ -27880,6 +27967,7 @@
     "instructors": [
       "Anya Zilberstein",
       "Sylvia Ruby",
+      "Colleen Gray",
       "Elena Razlogova",
       "Gavin J Taylor"
     ]
@@ -27961,7 +28049,8 @@
     "subject": "HIST",
     "catalog": "388",
     "instructors": [
-      "Steven High"
+      "Steven High",
+      "Brian Lewis"
     ]
   },
   {
@@ -28187,6 +28276,7 @@
     "catalog": "351",
     "instructors": [
       "Shannon Mcsheffrey",
+      "Colleen Gray",
       "Charles Gagnon"
     ]
   },
@@ -28618,6 +28708,7 @@
     "subject": "HIST",
     "catalog": "360",
     "instructors": [
+      "Iwa Nawrocki",
       "Max Bergholz",
       "Frank Chalk"
     ]
@@ -28683,7 +28774,8 @@
     "subject": "HIST",
     "catalog": "386",
     "instructors": [
-      "Warren L Wilson"
+      "Warren L Wilson",
+      "Brian Lewis"
     ]
   },
   {
@@ -29211,7 +29303,8 @@
     "catalog": "6331",
     "instructors": [
       "Mohammad Jeihoonian",
-      "Mingyuan Chen"
+      "Mingyuan Chen",
+      "Youssef Abidar"
     ]
   },
   {
@@ -29255,6 +29348,7 @@
       "Masoumeh Zanjani",
       "Daria Terekhov",
       "Kazemi  Zanjani",
+      "Youssef Abidar",
       "Masoumeh Kazemi Zanjani"
     ]
   },
@@ -29383,6 +29477,7 @@
     "subject": "INDU",
     "catalog": "6141",
     "instructors": [
+      "Mohammad Jeihoonian",
       "Mingyuan Chen",
       "Claudio Contardo",
       "Ziba Jabbar Zare"
@@ -29589,6 +29684,7 @@
     "catalog": "6311",
     "instructors": [
       "Anjali Awasthi",
+      "Mohammad Jeihoonian",
       "Daria Terekhov",
       "Yasser Ghamary",
       "Ali Akgunduz",
@@ -29779,7 +29875,8 @@
       "Joanne Locke",
       "Larysa Lysenko",
       "David Pickup",
-      "Anne Wade"
+      "Anne Wade",
+      "Carol Johnson"
     ]
   },
   {
@@ -30125,6 +30222,7 @@
       "Giovanni Di Lullo",
       "Josie Caruso",
       "Ugo Sbarra",
+      "Laura Prelipcean",
       "Maria-luisa Teoli",
       "Claudio Clivio",
       "Cristina Mobrici",
@@ -30176,7 +30274,8 @@
       "Anna Eyler",
       "Florian Grond",
       "Tanya Giannelia",
-      "Andrew Rabyniuk"
+      "Andrew Rabyniuk",
+      "Roberta Piccinini"
     ]
   },
   {
@@ -31287,6 +31386,7 @@
       "Mark Hale",
       "Jacqueline Peters",
       "Dana Isac",
+      "Alan Bale",
       "Kirill Fessenko",
       "Veno Volenec",
       "Madeline Kissock"
@@ -31747,6 +31847,7 @@
       "Abdulrahman Chikhouni",
       "Jisun Yu",
       "Douglas Pratt",
+      "Roumen Solov",
       "Jeffrey H. Sacksner",
       "Moe Hashemi",
       "Nick Papatheodorakos",
@@ -31841,6 +31942,7 @@
     "catalog": "447",
     "instructors": [
       "Emanuela Chemolli",
+      "Melanie Briand",
       "Minghui Cheng"
     ]
   },
@@ -32172,7 +32274,8 @@
       "Robert Oppenheimer",
       "Samuel Clement",
       "Karim Boulos",
-      "William Ricardo Falcao"
+      "William Ricardo Falcao",
+      "Adel Raphael"
     ]
   },
   {
@@ -32466,6 +32569,7 @@
       "Dimiter Dryanov",
       "Nataliia Rossokhata",
       "Amey Kaloti",
+      "Carlo Pagano",
       "Nadia Lafrenière"
     ]
   },
@@ -32574,6 +32678,7 @@
       "Barbara Shapiro",
       "Abdulrahman Chikhouni",
       "Jisun Yu",
+      "Roumen Solov",
       "Seth Spain",
       "Moe Hashemi",
       "Behshad Azodideylami"
@@ -32749,6 +32854,7 @@
       "Pawel Gora",
       "Tristan Freiberg",
       "Alexey Kokotov",
+      "Dimiter Dryanov",
       "Amey Kaloti",
       "Nadia Lafrenière"
     ]
@@ -32892,6 +32998,7 @@
     "subject": "MARK",
     "catalog": "457",
     "instructors": [
+      "Reza Nasserzadeh",
       "Brent Pearce",
       "Tieshan Li",
       "Nasserzadeh Seyed Mohammad"
@@ -33066,7 +33173,8 @@
       "Sonia Benghiat",
       "Shahab Shaabani",
       "Sina Mohammadtaheri",
-      "Jasem Tati"
+      "Jasem Tati",
+      "Maryam Jabbari Khasraghi"
     ]
   },
   {
@@ -33511,6 +33619,7 @@
       "Almaz Butaev",
       "Michael David Hadid",
       "Patrick Aaron Moore",
+      "Shan Shi",
       "Yang Zhao",
       "Shardul Vikram",
       "Anastasis Kratsios",
@@ -34475,7 +34584,8 @@
       "Steven H. Appelbaum",
       "Muhammad Jamal",
       "Jeffrey H. Sacksner",
-      "Gordon Leonard"
+      "Gordon Leonard",
+      "Adel Raphael"
     ]
   },
   {
@@ -34636,7 +34746,9 @@
       "Malik Balogoun",
       "Yongkun Li",
       "Ionica Groparu",
-      "Ben Hersey"
+      "Ben Hersey",
+      "Samir Karam",
+      "Serly Ishkhanian"
     ]
   },
   {
@@ -34771,6 +34883,7 @@
       "Ion Stiharu",
       "Sam Eskandarian",
       "Ayhan Ince",
+      "Sivakumar Narayanswamy",
       "Amar Sabih"
     ]
   },
@@ -35008,7 +35121,8 @@
       "Martin Pugh",
       "Ramin Sedaghati",
       "Mamoun Medraj",
-      "Navid Sharifi"
+      "Navid Sharifi",
+      "Amar Sabih"
     ]
   },
   {
@@ -35205,7 +35319,8 @@
       "John Cheung",
       "Hany Alaa Eldin Gomaa",
       "Francois Tardy",
-      "Suraj Joshi"
+      "Suraj Joshi",
+      "Sivakumar Narayanswamy"
     ]
   },
   {
@@ -36201,6 +36316,7 @@
       "Thomas Raleigh",
       "Meghant Sudan",
       "Guillaume Beaulac",
+      "Michael Hallett",
       "Gregory A. Lavers",
       "Alexander Antonopoulos",
       "Andrea Falcon",
@@ -37541,7 +37657,8 @@
       "Edgardo Galvez",
       "Zeljko Bulut",
       "Wentworth L. Brookes",
-      "Patrick Doane"
+      "Patrick Doane",
+      "George Bepete"
     ]
   },
   {
@@ -38009,6 +38126,7 @@
       "Fenwick Mckelvey",
       "Meghan Joy",
       "Andre Lecours",
+      "Daniel Douek",
       "Diarra Gaoussou",
       "Joanne Downs"
     ]
@@ -38037,6 +38155,7 @@
     "subject": "POLI",
     "catalog": "362",
     "instructors": [
+      "Jean Claude Danis",
       "Guy Lachapelle",
       "Anna-maria Moubayed"
     ]
@@ -38073,6 +38192,7 @@
     "instructors": [
       "Maben Poirier",
       "Joanna Maria Valiquette",
+      "Michelle Baert",
       "Brooke Jeffrey",
       "Tina Rupcic",
       "Marlene Sokolon",
@@ -38813,6 +38933,8 @@
     "subject": "POLI",
     "catalog": "324",
     "instructors": [
+      "Mohamed Sesay",
+      "Daniel Douek",
       "James Kelly",
       "Joanne Downs"
     ]
@@ -38876,9 +38998,12 @@
     "catalog": "341",
     "instructors": [
       "Badr El Fekkak",
+      "James Devine",
+      "Julie Norman",
       "Arjun Tremblay",
       "Mireille Paquet",
-      "Michelle Baert"
+      "Michelle Baert",
+      "Daniel Douek"
     ]
   },
   {
@@ -38901,8 +39026,10 @@
     "catalog": "340",
     "instructors": [
       "Maria Peluso",
+      "James Devine",
       "Emmanuelle Richez",
       "Michelle Baert",
+      "Daniel Douek",
       "Rick Bisaillon",
       "Joanne Downs",
       "Richard P. Bisaillon"
@@ -39161,7 +39288,8 @@
       "Rick Bisaillon",
       "Monika Thakur",
       "Julian Schofield",
-      "Mark Paradis"
+      "Mark Paradis",
+      "Julian Spencer-churchill"
     ]
   },
   {
@@ -39251,7 +39379,8 @@
       "Leander Schneider",
       "Axel Huelsemeyer",
       "Joanne Downs",
-      "Eric Haney"
+      "Eric Haney",
+      "Julian Spencer-churchill"
     ]
   },
   {
@@ -39272,6 +39401,7 @@
     "instructors": [
       "Stan Nachfolger",
       "Peter Stoett",
+      "Jean Claude Danis",
       "Henry Habib",
       "Maxwell Silverman",
       "Robert Cox Jr.",
@@ -39324,6 +39454,7 @@
     "catalog": "363",
     "instructors": [
       "Andrew Gollner",
+      "Michelle Baert",
       "Pierre Ouellet",
       "Thibaud Henin",
       "Harold Chorney",
@@ -39360,6 +39491,7 @@
     "catalog": "345",
     "instructors": [
       "Stephen Gallagher",
+      "James Devine",
       "Ryan Mckinnell",
       "Jason Ferrell",
       "Eleni Panagiotarakou"
@@ -40964,7 +41096,8 @@
     "instructors": [
       "Jean-roch Laurence",
       "Shelagh Freedman",
-      "Lucie Bonneville"
+      "Lucie Bonneville",
+      "Elizaveta Solomonova"
     ]
   },
   {
@@ -41959,6 +42092,7 @@
       "Lucie Bonneville",
       "Walter Marcantoni",
       "Erwin Neumark",
+      "Charles Leger",
       "Fereshteh Mehrabi"
     ]
   },
@@ -42545,6 +42679,7 @@
       "Caitlin Mcguire",
       "Trevor Shawn Kiernander",
       "Sylvain J.d. Bouthillette",
+      "David Lerue",
       "Caroline  Hart",
       "Juliana Espana Keller",
       "Juliana España Keller",
@@ -44304,6 +44439,7 @@
     "subject": "SOCI",
     "catalog": "270",
     "instructors": [
+      "Anna-liisa Aunio",
       "Mark Sussman"
     ]
   },
@@ -44445,7 +44581,8 @@
     "subject": "ANTH",
     "catalog": "355",
     "instructors": [
-      "Joseph O\u0027shea"
+      "Joseph O\u0027shea",
+      "Jonathan Wald"
     ]
   },
   {
@@ -45795,6 +45932,7 @@
       "Shauheen Zahirazami",
       "Javad  Sadri",
       "Denis Rinfret",
+      "Volker Haarslev",
       "Nancy Acemian",
       "Bahareh Goodarzi",
       "Chun Wang",
@@ -45822,7 +45960,8 @@
       "Ali Jannatpour",
       "Shin Hwei Tan",
       "Zhuolin Xu",
-      "Xiaowen Zhang"
+      "Xiaowen Zhang",
+      "Hussein Olleik"
     ]
   },
   {
@@ -46344,6 +46483,7 @@
     "catalog": "308",
     "instructors": [
       "Kathy Kennedy",
+      "Enrique Gonzalez Romero",
       "Sandeep Bhagwati",
       "John Donahue",
       "Monir Wahhab",
@@ -46576,6 +46716,7 @@
       "Helen Fillipou",
       "Malcolm Whiteway",
       "Yaffa Elling",
+      "Enrique Gonzalez Romero",
       "Anny Guimont",
       "Anastasios Carayannis",
       "Kelly Gheyara",
@@ -48059,6 +48200,7 @@
       "June Ruivivar",
       "Chaoqun Zheng",
       "Rhonda Chung",
+      "Sumanthra Govender",
       "Carol Johnson",
       "Carey Nelson",
       "Cesar Telo"
@@ -51806,12 +51948,14 @@
     "subject": "COMP",
     "catalog": "6721",
     "instructors": [
+      "Volker Haarslev",
       "Leila C. Kosseim",
       "Rene Witte",
       "Sabine Bergler",
       "Mahdi Hosseini",
       "Nora Houari",
-      "Arash Azarfar"
+      "Arash Azarfar",
+      "Ahmed Alagha"
     ]
   },
   {
@@ -52387,7 +52531,8 @@
     "subject": "ENGR",
     "catalog": "6511",
     "instructors": [
-      "Emre Erkmen"
+      "Emre Erkmen",
+      "Jassim Hassan"
     ]
   },
   {
@@ -53019,6 +53164,7 @@
       "Luis Sotelo Castro",
       "K. Macdonald",
       "Rosanna Maule",
+      "Iwa Nawrocki",
       "Kathleen A Macdonald",
       "Stephen Monteiro",
       "Susan Surette",
@@ -53181,6 +53327,7 @@
       "Ana Marinescu",
       "Howard J Campbell",
       "Neil A. Fernandes",
+      "Philippe Colas",
       "Fabienne Cyrius"
     ]
   },
@@ -56831,6 +56978,7 @@
       "Gregory Butler",
       "Vasev Chvatal",
       "Tanja Tajmel",
+      "Volker Haarslev",
       "Denis Pankratov",
       "Mirco Ravanelli",
       "Brigitte Jaumard",
@@ -56853,7 +57001,9 @@
     "title": "SELECT TOPICS-COMMUN STUDIES",
     "subject": "COMS",
     "catalog": "300",
-    "instructors": []
+    "instructors": [
+      "Christopher Gutierrez"
+    ]
   },
   {
     "_id": "COMS498",
@@ -60603,7 +60753,8 @@
     "subject": "HIST",
     "catalog": "387",
     "instructors": [
-      "Erica Lehrer"
+      "Erica Lehrer",
+      "Brian Lewis"
     ]
   },
   {
@@ -61066,6 +61217,7 @@
       "Maria Boutchkova",
       "Zhou Tingyu",
       "Ravi Mateti",
+      "Rahul Ravi",
       "Kun Ho Kim",
       "Erkan Yonder"
     ]
@@ -61516,6 +61668,7 @@
       "Stan Nachfolger",
       "Joanna Bottenberg",
       "Pierre Fregeau",
+      "Jean Claude Danis",
       "Doreen Green",
       "Neil Caplan",
       "Paulos Milkias",
@@ -66067,6 +66220,7 @@
     "catalog": "645",
     "instructors": [
       "Alan Hochstein",
+      "Rahul Ravi",
       "Sergey Gelman"
     ]
   },
@@ -66290,7 +66444,8 @@
     "subject": "SCOM",
     "catalog": "610",
     "instructors": [
-      "Malleswara Rao Talla"
+      "Malleswara Rao Talla",
+      "Satyaveer Chauhan"
     ]
   },
   {
@@ -67835,7 +67990,8 @@
     "catalog": "343",
     "instructors": [
       "Erin Elizabeth Lynch",
-      "Sonia Hamel"
+      "Sonia Hamel",
+      "Jonathan Wald"
     ]
   },
   {
@@ -69432,6 +69588,7 @@
     "subject": "GEOG",
     "catalog": "310",
     "instructors": [
+      "Sarah Turner",
       "Craig Townsend",
       "Nalini Mohabir",
       "Ian Van Haren",
@@ -70353,6 +70510,7 @@
     "subject": "INDU",
     "catalog": "6310",
     "instructors": [
+      "Mohammad Jeihoonian",
       "Makbule Kandakoglu"
     ]
   },
@@ -71100,7 +71258,8 @@
     "catalog": "363",
     "instructors": [
       "Essam Mansour",
-      "Ali Jannatpour"
+      "Ali Jannatpour",
+      "Hussein Olleik"
     ]
   },
   {
@@ -71117,7 +71276,8 @@
     "catalog": "280",
     "instructors": [
       "Debaraj Sen",
-      "Noomen Ben Ghorbel"
+      "Noomen Ben Ghorbel",
+      "Hamid Pezeshk"
     ]
   },
   {
@@ -72250,7 +72410,9 @@
     "title": "Project Management for Construction",
     "subject": "BCEE",
     "catalog": "478",
-    "instructors": []
+    "instructors": [
+      "Jong Won Ma"
+    ]
   },
   {
     "_id": "GPCB683",
@@ -74776,7 +74938,8 @@
     "subject": "COMM",
     "catalog": "213",
     "instructors": [
-      "Bahareh Amirshahi"
+      "Bahareh Amirshahi",
+      "Parisa Foroutan"
     ]
   },
   {
@@ -76667,7 +76830,9 @@
     "title": "Logic, Proofs, and Discrete Structures",
     "subject": "MATH",
     "catalog": "222",
-    "instructors": []
+    "instructors": [
+      "Jeremy Macdonald"
+    ]
   },
   {
     "_id": "MECH451",
@@ -76693,7 +76858,9 @@
     "title": "Directed Studies in Political Science",
     "subject": "POLI",
     "catalog": "359",
-    "instructors": []
+    "instructors": [
+      "Julie Norman"
+    ]
   },
   {
     "_id": "POLI437",

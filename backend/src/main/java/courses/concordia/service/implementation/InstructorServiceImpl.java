@@ -190,7 +190,6 @@ public class InstructorServiceImpl implements InstructorService {
             instructor.setAvgRating(avgExperienceAndRating);
             instructor.setAvgDifficulty(avgDifficulty);
             instructor.setReviewCount(reviews.size());
-            System.out.println(instructor.get_id() + " " + courses);
             instructorRepository.save(instructor);
         });
         log.info("Instructors statistics updated successfully");
