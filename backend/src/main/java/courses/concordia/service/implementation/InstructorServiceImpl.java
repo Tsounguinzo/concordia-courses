@@ -185,6 +185,39 @@ public class InstructorServiceImpl implements InstructorService {
                     .filter(Objects::nonNull)
                     .map(courseIdSplit -> new Instructor.Course(courseIdSplit[0], courseIdSplit[1]))
                     .collect(Collectors.toSet());
+
+            Map<Integer, Long> difficultyCount = reviews.stream()
+                    .collect(Collectors.groupingBy(Review::getDifficulty, Collectors.counting()));
+
+            int[] difficultyDistribution = {
+                    Math.toIntExact(difficultyCount.getOrDefault(1, 0L)),
+                    Math.toIntExact(difficultyCount.getOrDefault(2, 0L)),
+                    Math.toIntExact(difficultyCount.getOrDefault(3, 0L)),
+                    Math.toIntExact(difficultyCount.getOrDefault(4, 0L)),
+                    Math.toIntExact(difficultyCount.getOrDefault(5, 0L))
+            };
+
+            Map<Integer, Long> experienceAndRatingCount = reviews.stream()
+                    .mapToInt(review -> {
+                        if (review.getType().equals("course")) {
+                            return review.getExperience();
+                        } else {
+                            return review.getRating();
+                        }
+                    })
+                    .boxed()
+                    .collect(Collectors.groupingBy(i -> i, Collectors.counting()));
+
+            int[] experienceAndRatingDistribution = {
+                    Math.toIntExact(experienceAndRatingCount.getOrDefault(1, 0L)),
+                    Math.toIntExact(experienceAndRatingCount.getOrDefault(2, 0L)),
+                    Math.toIntExact(experienceAndRatingCount.getOrDefault(3, 0L)),
+                    Math.toIntExact(experienceAndRatingCount.getOrDefault(4, 0L)),
+                    Math.toIntExact(experienceAndRatingCount.getOrDefault(5, 0L))
+            };
+
+            instructor.setDifficultyDistribution(difficultyDistribution);
+            instructor.setRatingDistribution(experienceAndRatingDistribution);
             instructor.setTags(tags);
             instructor.addCourses(courses);
             instructor.setAvgRating(avgExperienceAndRating);

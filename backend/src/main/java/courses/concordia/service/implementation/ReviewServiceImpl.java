@@ -98,16 +98,16 @@ public class ReviewServiceImpl implements ReviewService {
                         .findByInstructorIdAndUserIdAndType(reviewDto.getInstructorId(), reviewDto.getUserId(), reviewDto.getType())
                         .map(r -> updateReviewFromDto(r, reviewDto))
                         .orElseGet(() -> createReviewFromDto(reviewDto));
-                updateInstructorRatingCoursesAndTags(review);
+                review = reviewRepository.save(review);
+                updateInstructorRatingCoursesAndTags(review.getInstructorId());
             } else {
                 review = reviewRepository
                         .findByCourseIdAndUserIdAndType(reviewDto.getCourseId(), reviewDto.getUserId(), reviewDto.getType())
                         .map(r -> updateReviewFromDto(r, reviewDto))
                         .orElseGet(() -> createReviewFromDto(reviewDto));
+                review = reviewRepository.save(review);
                 updateCourseExperience(review.getCourseId());
             }
-
-            review = reviewRepository.save(review);
 
             return ReviewMapper.toDto(review);
         } else {
@@ -165,7 +165,7 @@ public class ReviewServiceImpl implements ReviewService {
         } else {
             if (review.get().getType().equals("instructor")){
                 reviewRepository.deleteById(id);
-                updateInstructorRatingCoursesAndTags(review.get());
+                updateInstructorRatingCoursesAndTags(review.get().getInstructorId());
             } else {
                 reviewRepository.deleteById(id);
                 updateCourseExperience(review.get().getCourseId());
@@ -440,6 +440,9 @@ public class ReviewServiceImpl implements ReviewService {
         int reviewsCount = reviews.size();
         Course course = courseRepository.findById(courseId).orElse(null);
         if (course != null) {
+            int[][] distributions = getDistributions(reviews);
+            course.setDifficultyDistribution(distributions[0]);
+            course.setExperienceDistribution(distributions[1]);
             course.setAvgExperience(avgExperienceAndRating);
             course.setAvgDifficulty(avgDifficulty);
             course.setReviewCount(reviewsCount);
@@ -450,10 +453,9 @@ public class ReviewServiceImpl implements ReviewService {
     /**
      * Updates the average rating, difficulty and tags for a prof based on its reviews.
      *
-     * @param review The review object.
+     * @param instructorId The ID of the instructor.
      */
-    private void updateInstructorRatingCoursesAndTags(Review review){
-        String instructorId = review.getInstructorId();
+    private void updateInstructorRatingCoursesAndTags(String instructorId){
         List<Review> reviews = reviewRepository.findAllByInstructorId(instructorId);
         double avgExperienceAndRating = reviews.stream().mapToDouble(r -> {
             if (r.getType().equals("course")) {
@@ -471,6 +473,9 @@ public class ReviewServiceImpl implements ReviewService {
                 .collect(Collectors.toSet());
         Instructor instructor = instructorRepository.findById(instructorId).orElse(null);
         if (instructor != null) {
+            int[][] distributions = getDistributions(reviews);
+            instructor.setDifficultyDistribution(distributions[0]);
+            instructor.setRatingDistribution(distributions[1]);
             instructor.setTags(tags);
             instructor.getCourses().addAll(courses);
             instructor.setAvgRating(avgExperienceAndRating);
@@ -480,6 +485,39 @@ public class ReviewServiceImpl implements ReviewService {
         }
     }
 
+    private int[][] getDistributions(List<Review> reviews) {
+        Map<Integer, Long> difficultyCount = reviews.stream()
+                .collect(Collectors.groupingBy(Review::getDifficulty, Collectors.counting()));
+
+        int[] difficultyDistribution = {
+                Math.toIntExact(difficultyCount.getOrDefault(1, 0L)),
+                Math.toIntExact(difficultyCount.getOrDefault(2, 0L)),
+                Math.toIntExact(difficultyCount.getOrDefault(3, 0L)),
+                Math.toIntExact(difficultyCount.getOrDefault(4, 0L)),
+                Math.toIntExact(difficultyCount.getOrDefault(5, 0L))
+        };
+
+        Map<Integer, Long> experienceAndRatingCount = reviews.stream()
+                .mapToInt(review -> {
+                    if (review.getType().equals("course")) {
+                        return review.getExperience();
+                    } else {
+                        return review.getRating();
+                    }
+                })
+                .boxed()
+                .collect(Collectors.groupingBy(i -> i, Collectors.counting()));
+
+        int[] experienceAndRatingDistribution = {
+                Math.toIntExact(experienceAndRatingCount.getOrDefault(1, 0L)),
+                Math.toIntExact(experienceAndRatingCount.getOrDefault(2, 0L)),
+                Math.toIntExact(experienceAndRatingCount.getOrDefault(3, 0L)),
+                Math.toIntExact(experienceAndRatingCount.getOrDefault(4, 0L)),
+                Math.toIntExact(experienceAndRatingCount.getOrDefault(5, 0L))
+        };
+
+        return new int[][] {difficultyDistribution, experienceAndRatingDistribution};
+    }
     /**
      * Checks if the user ID is blacklisted.
      *

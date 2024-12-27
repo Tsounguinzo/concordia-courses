@@ -30,10 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -182,6 +179,39 @@ public class CourseServiceImpl implements CourseService {
                     return review.getRating();
                 }
             }).average().orElse(0);
+
+            Map<Integer, Long> difficultyCount = reviews.stream()
+                    .collect(Collectors.groupingBy(Review::getDifficulty, Collectors.counting()));
+
+            int[] difficultyDistribution = {
+                    Math.toIntExact(difficultyCount.getOrDefault(1, 0L)),
+                    Math.toIntExact(difficultyCount.getOrDefault(2, 0L)),
+                    Math.toIntExact(difficultyCount.getOrDefault(3, 0L)),
+                    Math.toIntExact(difficultyCount.getOrDefault(4, 0L)),
+                    Math.toIntExact(difficultyCount.getOrDefault(5, 0L))
+            };
+
+            Map<Integer, Long> experienceAndRatingCount = reviews.stream()
+                    .mapToInt(review -> {
+                        if (review.getType().equals("course")) {
+                            return review.getExperience();
+                        } else {
+                            return review.getRating();
+                        }
+                    })
+                    .boxed()
+                    .collect(Collectors.groupingBy(i -> i, Collectors.counting()));
+
+            int[] experienceAndRatingDistribution = {
+                    Math.toIntExact(experienceAndRatingCount.getOrDefault(1, 0L)),
+                    Math.toIntExact(experienceAndRatingCount.getOrDefault(2, 0L)),
+                    Math.toIntExact(experienceAndRatingCount.getOrDefault(3, 0L)),
+                    Math.toIntExact(experienceAndRatingCount.getOrDefault(4, 0L)),
+                    Math.toIntExact(experienceAndRatingCount.getOrDefault(5, 0L))
+            };
+
+            course.setDifficultyDistribution(difficultyDistribution);
+            course.setExperienceDistribution(experienceAndRatingDistribution);
             course.setAvgDifficulty(avgDifficulty);
             course.setAvgExperience(avgExperienceAndRating);
             course.setReviewCount(reviews.size());

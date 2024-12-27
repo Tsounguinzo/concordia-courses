@@ -36,8 +36,10 @@ public class Instructor {
     private String externalLink;
     @ToString.Exclude @EqualsAndHashCode.Exclude
     private double avgDifficulty = 0.0;
+    private int[] difficultyDistribution = new int[5];
     @ToString.Exclude @EqualsAndHashCode.Exclude
     private double avgRating = 0.0;
+    private int[] ratingDistribution = new int[5];
     @ToString.Exclude @EqualsAndHashCode.Exclude
     private int reviewCount = 0;
     @ToString.Exclude @EqualsAndHashCode.Exclude
