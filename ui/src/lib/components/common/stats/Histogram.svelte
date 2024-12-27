@@ -5,8 +5,7 @@
     import {twMerge} from "tailwind-merge";
     import HistogramBar from "./HistogramBar.svelte";
 
-    export let data: number[];
-    export let max: number;
+    export let distribution: number[];
     export let width: number;
     export let height: number;
     export let gap: number = 0;
@@ -18,10 +17,7 @@
         loaded.set(true);
     });
 
-    $: distribution = data.reduce((acc, curr) => {
-        acc[curr - 1]++;
-        return acc;
-    }, Array(max).fill(0))
+    $: totalCount = distribution.reduce((acc, count) => acc + count, 0);
 </script>
 
 <div class={twMerge('relative w-fit', $$props.class)}>
@@ -30,7 +26,7 @@
             <div class='flex flex-col items-center text-xs'>
                 <HistogramBar
                         width={width / distribution.length - gap}
-                        height={!$loaded ? 0 : (count / data.length) * (height - 12)}
+                        height={!$loaded ? 0 : (count / totalCount) * (height - 12)}
                         count={count}
                         gap={gap}
                 />

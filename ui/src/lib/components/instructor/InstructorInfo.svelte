@@ -82,14 +82,30 @@
             </p>
             {#if instructor.reviewCount}
                 <div class='grow py-3'/>
-                <InstructorInfoStats class='md:hidden' {allReviews} type="instructor"/>
+                <InstructorInfoStats
+                        class='md:hidden'
+                        type="instructor"
+                        avgExperienceAndRating={instructor.avgRating}
+                        experienceAndRatingDistribution={instructor.ratingDistribution}
+                        avgDifficulty={instructor.avgDifficulty}
+                        difficultyDistribution={instructor.difficultyDistribution}
+                        reviewsCount={instructor.reviewCount}
+                />
                 <p class='mt-4 text-sm text-gray-500 dark:text-gray-400'>
                     {instructor.reviewCount} review(s)
                 </p>
             {/if}
         </div>
         <div class='ml-10 hidden w-5/12 justify-center rounded-md bg-neutral-50 py-6 dark:bg-neutral-800 md:flex lg:mt-6'>
-            <InstructorInfoStats variant='large' {allReviews} type="instructor"/>
+            <InstructorInfoStats
+                    variant='large'
+                    type="instructor"
+                    avgExperienceAndRating={instructor.avgRating}
+                    experienceAndRatingDistribution={instructor.ratingDistribution}
+                    avgDifficulty={instructor.avgDifficulty}
+                    difficultyDistribution={instructor.difficultyDistribution}
+                    reviewsCount={instructor.reviewCount}
+            />
         </div>
     </div>
     <div class={twMerge("absolute top-4 right-4", color)}>

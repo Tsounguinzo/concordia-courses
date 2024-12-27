@@ -8,6 +8,8 @@ export type Instructor = {
     tags: string[];
     avgDifficulty: number;
     avgRating: number;
+    difficultyDistribution: number[];
+    ratingDistribution: number[];
     reviewCount: number;
     aiSummary: string;
     lastSummaryUpdate: Date;

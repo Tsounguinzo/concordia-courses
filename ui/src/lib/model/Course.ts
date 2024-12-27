@@ -11,6 +11,8 @@ export type Course = {
     title: string;
     avgDifficulty: number;
     avgExperience: number;
+    difficultyDistribution: number[];
+    experienceDistribution: number[];
     reviewCount: number;
     classUnit: number;
     ConUCourseID: string;

@@ -1,14 +1,16 @@
 <script lang="ts">
-    import type {Review} from "$lib/model/Review";
     import {onMount} from "svelte";
     import {writable} from "svelte/store";
-    import sum from "lodash/sum";
     import {twMerge} from "tailwind-merge";
     import {round2Decimals} from "$lib/utils";
     import Stat from "./Stat.svelte";
     import Histogram from "./Histogram.svelte";
 
-    export let allReviews: Review[];
+    export let avgDifficulty: number;
+    export let experienceAndRatingDistribution: number[];
+    export let avgExperienceAndRating: number;
+    export let difficultyDistribution: number[];
+    export let reviewsCount: number;
     export let variant: 'small' | 'medium' | 'large' = 'small';
     export let type: 'course' | 'instructor' = 'course';
 
@@ -26,18 +28,9 @@
     };
 
     const lg = useMediaQuery('(min-width: 1024px)');
-
-    $: rating = allReviews.map((r) => r?.rating);
-    $: experience = allReviews.map((r) => r?.experience);
-    $: ratingAndExperience = rating.concat(experience);
-    $: averageRatingAndExperience = (sum(experience) + sum(rating)) / allReviews.length;
-    $: difficulties = allReviews.map((r) => r.difficulty);
-    $: averageDifficulty = sum(difficulties) / allReviews.length;
-
 </script>
 
-{#if allReviews.length}
-    {#key allReviews}
+{#if reviewsCount > 0}
         <div class={twMerge('flex gap-x-4 bg-transparent' ,$$props.class,
         variant === 'large'
           ? 'flex-col gap-y-1 lg:flex-row lg:gap-x-2'
@@ -47,7 +40,7 @@
             <div class='md:rounded-xl md:p-2'>
                 <Stat
                         title={`${type === 'course' ? 'Experience' : 'Clarity Rating'} Score`}
-                        value={round2Decimals(averageRatingAndExperience)}
+                        value={round2Decimals(avgExperienceAndRating)}
                         icon='star'
                         variant={variant}
                 />
@@ -55,8 +48,7 @@
                 <Histogram
                         width={180}
                         height={$lg ? 132 : 80}
-                        data={ratingAndExperience}
-                        max={5}
+                        distribution={experienceAndRatingDistribution}
                         gap={10}
                         class='mx-auto hidden sm:block'
                         caption={`${type === 'course' ? 'Experience' : 'Clarity Rating'} Distribution`}
@@ -66,7 +58,7 @@
             <div class='md:rounded-xl md:p-2'>
                 <Stat
                         title='Difficulty Score'
-                        value={round2Decimals(averageDifficulty)}
+                        value={round2Decimals(avgDifficulty)}
                         icon='flame'
                         variant={variant}
                 />
@@ -74,13 +66,11 @@
                 <Histogram
                         width={180}
                         height={$lg ? 132 : 80}
-                        data={difficulties}
-                        max={5}
+                        distribution={difficultyDistribution}
                         gap={10}
                         class='mx-auto hidden sm:block'
                         caption="Difficulty Distribution"
                 />
             </div>
         </div>
-    {/key}
 {/if}
