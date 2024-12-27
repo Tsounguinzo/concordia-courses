@@ -17,7 +17,7 @@
         loaded.set(true);
     });
 
-    $: totalCount = distribution.reduce((acc, count) => acc + count, 0);
+    $: totalCount = distribution?.reduce((acc, count) => acc + count, 0) || 0;
 </script>
 
 <div class={twMerge('relative w-fit', $$props.class)}>
