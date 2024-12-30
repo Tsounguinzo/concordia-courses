@@ -31,6 +31,7 @@
 </script>
 
 {#if reviewsCount > 0}
+    {#key difficultyDistribution}
         <div class={twMerge('flex gap-x-4 bg-transparent' ,$$props.class,
         variant === 'large'
           ? 'flex-col gap-y-1 lg:flex-row lg:gap-x-2'
@@ -73,4 +74,5 @@
                 />
             </div>
         </div>
+    {/key}
 {/if}
