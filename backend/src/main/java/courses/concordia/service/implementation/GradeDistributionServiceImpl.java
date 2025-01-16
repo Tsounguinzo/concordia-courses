@@ -28,7 +28,7 @@ public class GradeDistributionServiceImpl implements GradeDistributionService {
     @Override
     public GradeDistributionDto getGradeDistribution(String courseSubject, String courseCatalog) {
         log.info("Fetching grade distribution for course: {}", courseSubject + courseCatalog);
-        GradeDistribution gradeDistribution = gradeDistributionRepository.findTopByCourseSubjectAndCourseCatalogOrderByYearDesc(courseSubject, courseCatalog);
+        GradeDistribution gradeDistribution = gradeDistributionRepository.findTopByCourseSubjectAndCourseCatalogOrderByYearDescTermAsc(courseSubject, courseCatalog);
 
         if (gradeDistribution != null) {
             return modelMapper.map(gradeDistribution, GradeDistributionDto.class);

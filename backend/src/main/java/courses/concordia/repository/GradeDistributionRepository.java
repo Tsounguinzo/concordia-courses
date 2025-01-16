@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface GradeDistributionRepository extends MongoRepository<GradeDistribution, String> {
-    GradeDistribution findTopByCourseSubjectAndCourseCatalogOrderByYearDesc(String courseSubject, String courseCatalog);
+    GradeDistribution findTopByCourseSubjectAndCourseCatalogOrderByYearDescTermAsc(String courseSubject, String courseCatalog);
 }
