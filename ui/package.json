@@ -30,6 +30,7 @@
 	},
 	"dependencies": {
 		"@k4ung/svelte-otp": "^0.0.9",
+		"@lottiefiles/dotlottie-svelte": "^0.4.4",
 		"@macfja/svelte-expirable": "^1.0.1",
 		"@tailwindcss/typography": "^0.5.10",
 		"@thumbmarkjs/thumbmarkjs": "^0.14.8",

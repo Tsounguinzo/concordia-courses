@@ -7,6 +7,7 @@
     import Marquee from "$lib/components/common/animation/Marquee.svelte";
     import DotPattern from "$lib/components/common/animation/DotPattern.svelte";
     import {ChevronRight} from "lucide-svelte";
+    import ExtensionPromo from "$lib/components/common/ExtensionPromo.svelte";
 
     const {courses, instructors, coursesIndex, instructorsIndex} = getSearchIndex();
 
@@ -116,13 +117,15 @@
             Concordia Courses cumulates 62,739+ reviews for over 4,872 instructors.
         </p>
 
-        <a href="https://chat.concordia.courses/register" class="group relative mx-auto flex max-w-fit flex-row items-center justify-center rounded-2xl bg-white/40 px-4 py-1.5 text-sm font-medium shadow-[inset_0_-8px_10px_#8fdfff1f] backdrop-blur-sm transition-shadow duration-500 ease-out [--bg-size:300%] hover:shadow-[inset_0_-5px_10px_#8fdfff3f] dark:bg-black/40">
+        <ExtensionPromo />
+
+        <!--a href="https://chat.concordia.courses/register" class="group relative mx-auto flex max-w-fit flex-row items-center justify-center rounded-2xl bg-white/40 px-4 py-1.5 text-sm font-medium shadow-[inset_0_-8px_10px_#8fdfff1f] backdrop-blur-sm transition-shadow duration-500 ease-out [--bg-size:300%] hover:shadow-[inset_0_-5px_10px_#8fdfff3f] dark:bg-black/40">
             <div class="absolute inset-0 block h-full w-full animate-gradient bg-gradient-to-r from-[#ffaa40]/50 via-[#9c40ff]/50 to-[#ffaa40]/50 bg-[length:var(--bg-size)_100%] p-[1px] ![mask-composite:subtract] [border-radius:inherit] [mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)]"/>
             <span class='inline animate-gradient bg-gradient-to-r from-[#ffaa40] via-[#9c40ff] to-[#ffaa40] bg-[length:var(--bg-size)_100%] bg-clip-text text-transparent'>
                 ✨ Introducing ConcordiaAI
             </span>
             <ChevronRight size={24} class="ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5"/>
-        </a>
+        </a-->
 
         <div class="relative w-full">
             <CourseSearchBar results={$searchResults} handleInputChange={handleInputChange}/>
