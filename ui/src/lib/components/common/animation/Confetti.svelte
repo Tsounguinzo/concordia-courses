@@ -47,8 +47,10 @@
     };
 
     $: {
-        w = window.innerWidth;
-        h = window.innerHeight;
+        if (typeof window !== 'undefined') {
+            w = window.innerWidth;
+            h = window.innerHeight;
+        }
     }
 
 </script>
