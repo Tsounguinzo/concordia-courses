@@ -2,19 +2,17 @@ import pkg from 'flexsearch';
 import type { Index as typeIndex } from 'flexsearch';
 const { Index } = pkg;
 
-import data from './data/searchCourses.json';
+import courseData from './data/searchCourses.json';
+import instructorsList from './data/instructorsList.json';
 import {searchResults} from "$lib/store";
 import type {CourseData} from "$lib/types";
-import uniq from "lodash/uniq";
 
 let coursesIndex: typeIndex | null = null;
 let instructorsIndex: typeIndex | null = null;
 
 export const getSearchIndex = () => {
-    const courses = data as CourseData[];
-    const instructors: string[] = uniq(
-        courses.flatMap((course: CourseData) => course.instructors)
-    );
+    const courses = courseData as CourseData[];
+    const instructors: string[] = instructorsList as string[];
 
     if (coursesIndex === null) {
         coursesIndex = new Index({

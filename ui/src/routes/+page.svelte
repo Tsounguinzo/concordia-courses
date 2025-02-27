@@ -6,8 +6,6 @@
     import Reviewcard from "$lib/components/common/animation/Reviewcard.svelte";
     import Marquee from "$lib/components/common/animation/Marquee.svelte";
     import DotPattern from "$lib/components/common/animation/DotPattern.svelte";
-    import {ChevronRight} from "lucide-svelte";
-    import ExtensionPromo from "$lib/components/common/ExtensionPromo.svelte";
 
     const {courses, instructors, coursesIndex, instructorsIndex} = getSearchIndex();
 
@@ -114,7 +112,7 @@
             7,832+ courses.<br/> Concordia Courses.
         </h1>
         <p class="text-base text-gray-600 dark:text-gray-400 sm:text-lg">
-            Concordia Courses cumulates 63,050+ reviews for over 4,872 instructors.
+            Concordia Courses cumulates 63,351+ reviews for over 4,872 instructors.
         </p>
 
         <!--ExtensionPromo/-->
