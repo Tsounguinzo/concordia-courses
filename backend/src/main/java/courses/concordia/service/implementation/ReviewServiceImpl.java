@@ -60,7 +60,7 @@ public class ReviewServiceImpl implements ReviewService {
             if (coursesData != null) {
                 coursesData.forEach((key, values) -> values.forEach(value -> {
                     String courseKey = key + value;
-                    Instructor.Course course = new Instructor.Course(key, value);
+                    Instructor.Course course = new Instructor.Course(key, value, "concordia-university");
                     courseMap.put(courseKey, course);
                 }));
             }

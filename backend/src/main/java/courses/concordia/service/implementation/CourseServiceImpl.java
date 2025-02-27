@@ -225,7 +225,7 @@ public class CourseServiceImpl implements CourseService {
     public List<CourseInstructorDto> getInstructors(String id) {
         log.info("Retrieving instructors for course with ID {}", id);
         CourseDto course = getCourseById(id);
-        return instructorRepository.findByCoursesContaining(Set.of(new Instructor.Course(course.getSubject(), course.getCatalog())))
+        return instructorRepository.findByCoursesContaining(Set.of(new Instructor.Course(course.getSubject(), course.getCatalog(), "concordia-university")))
                 .stream()
                 .map(instructor -> modelMapper.map(instructor, CourseInstructorDto.class))
                 .collect(Collectors.toList());

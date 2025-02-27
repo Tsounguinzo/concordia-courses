@@ -18,6 +18,7 @@ export type Instructor = {
 export type Course = {
     subject: string;
     catalog: string;
+    schoolId: string;
 }
 
 export type CourseInstructor = {

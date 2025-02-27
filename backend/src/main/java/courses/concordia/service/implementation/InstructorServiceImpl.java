@@ -167,23 +167,24 @@ public class InstructorServiceImpl implements InstructorService {
                     .flatMap(Set::stream)
                     .collect(Collectors.toSet());
             Set<Instructor.Course> courses = reviews.stream()
-                    .map(Review::getCourseId)
-                    .filter(courseId -> courseId != null && !courseId.isBlank())
-                    .map(courseId -> {
-                        // some exceptions CEWPMOD1, CEWPMOD4, CEWPMOD4B, CEBDMOD10, CEENMOD6C, CEBUMOD6A
+                    .filter(review -> review.getCourseId() != null && !review.getCourseId().isBlank())
+                    .map(review -> {
+                        String courseId = review.getCourseId();
+                        String schoolId = review.getSchoolId();
+
+                        // Handle special cases
                         if (courseId.startsWith("CEWPMOD") ||
                                 courseId.startsWith("CEBDMOD") ||
                                 courseId.startsWith("CEENMOD") ||
                                 courseId.startsWith("CEBUMOD")) {
-                            // Split manually for these patterns
                             int splitIndex = courseId.indexOf("MOD");
-                            return new String[]{courseId.substring(0, splitIndex), courseId.substring(splitIndex)};
+                            return new Instructor.Course(courseId.substring(0, splitIndex), courseId.substring(splitIndex), schoolId);
                         }
+
                         Matcher matcher = Pattern.compile("(\\D*)(\\d.*)").matcher(courseId);
-                        return matcher.matches() ? new String[]{matcher.group(1), matcher.group(2)} : null;
+                        return matcher.matches() ? new Instructor.Course(matcher.group(1), matcher.group(2), schoolId) : null;
                     })
                     .filter(Objects::nonNull)
-                    .map(courseIdSplit -> new Instructor.Course(courseIdSplit[0], courseIdSplit[1]))
                     .collect(Collectors.toSet());
 
             Map<Integer, Long> difficultyCount = reviews.stream()

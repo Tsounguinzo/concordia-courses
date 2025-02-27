@@ -247,7 +247,7 @@
 
     <div class="mx-auto mt-10 max-w-5xl md:mt-0">
         <div class="mx-auto flex max-w-5xl overflow-hidden">
-            <InstructorInfo instructor={$instructor} allReviews={$allReviews ?? []}/>
+            <InstructorInfo instructor={$instructor}/>
         </div>
 
         <div class="mx-auto mt-4 max-w-5xl">

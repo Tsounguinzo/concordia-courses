@@ -1,20 +1,22 @@
 <script lang="ts">
-    import {courseIdToUrlParam, experienceToIcon, spliceCourseCode} from "$lib/utils";
+    import {courseIdToUrlParam, experienceToIcon, schoolIdToName } from "$lib/utils";
     import type {Instructor} from "$lib/model/Instructor";
     import InstructorTags from "$lib/components/instructor/InstructorTags.svelte";
     import InstructorInfoStats from "$lib/components/common/stats/InfoStats.svelte";
-    import type {Review} from "$lib/model/Review";
     import {twMerge} from "tailwind-merge";
     import {ExternalLink} from "lucide-svelte";
 
     export let instructor: Instructor;
-    export let allReviews: Review[];
 
     $: [color, icon] = experienceToIcon(instructor.avgRating);
-    $: externalCourses = allReviews
-        .filter(review => review.schoolId === "mcgill-university")
-        .map(review => review.courseId)
-        .filter((courseId, index, self) => self.indexOf(courseId) === index);
+
+    $: coursesBySchoolId = instructor.courses.reduce<Record<string, typeof instructor.courses>>((acc, course) => {
+        const schoolId = course?.schoolId || "concordia-university";
+        if (!acc[schoolId]) acc[schoolId] = [];
+        acc[schoolId].push(course);
+        return acc;
+    }, {});
+
 </script>
 
 
@@ -44,42 +46,39 @@
                 </h2>
             {/if}
             <InstructorTags instructor={instructor} variant='large'/>
-            <p class='mt-4 text-gray-700 dark:text-gray-400'>
                 {#if instructor.courses.length}
-                    <div>
-                        <div>Teaches or has taught the following course(s):</div>
-                        <div class='max-w-sm flex flex-wrap'>
-                            {#each instructor.courses as course, index}
-                                <div class="mt-1 ml-1">
-                                    <a class='font-medium transition hover:text-primary-600'
-                                       href={`/course/${courseIdToUrlParam(course.subject + course.catalog)}`}>
-                                        {`${course.subject} ${course.catalog}`}
-                                    </a>
-                                    {index < instructor.courses.length - 1 ? "," : ""}
-                                </div>
-                            {/each}
-                        </div>
-                        {#if externalCourses.length}
-                            <div class='mt-4'>
-                                <div>Courses taught at McGill universities:</div>
-                                <div class='max-w-sm flex flex-wrap'>
-                                    {#each externalCourses as courseId, index}
-                                        <div class="mt-1 ml-1">
+                    {#each Object.entries(coursesBySchoolId) as [schoolId, courses]}
+                        <div class='mt-4 text-gray-700 dark:text-gray-400'>
+                            <div>Courses taught at {schoolIdToName(schoolId)}:</div>
+                            <div class='max-w-sm flex flex-wrap'>
+                                {#each courses as course, index}
+                                    <div class="mt-1 ml-1">
+                                        {#if schoolId === "concordia-university"}
                                             <a class='font-medium transition hover:text-primary-600'
-                                               href={`https://mcgill.courses/course/${courseIdToUrlParam(courseId)}`}>
-                                                {spliceCourseCode(courseId, ' ')}
+                                               href={`/course/${courseIdToUrlParam(course.subject + course.catalog)}`}>
+                                                {`${course.subject} ${course.catalog}`}
                                             </a>
-                                            {index < externalCourses.length - 1 ? "," : ""}
-                                        </div>
-                                    {/each}
-                                </div>
+                                        {:else if schoolId === "mcgill-university"}
+                                            <a class='font-medium transition hover:text-primary-600'
+                                               href={`https://mcgill.courses/course/${courseIdToUrlParam(course.subject + course.catalog)}`}>
+                                                {`${course.subject} ${course.catalog}`}
+                                            </a>
+                                        {:else}
+                                            <span class='font-medium transition hover:text-primary-600'>
+                                                {`${course.subject} ${course.catalog}`}
+                                            </span>
+                                        {/if}
+                                        {index < courses.length - 1 ? "," : ""}
+                                    </div>
+                                {/each}
                             </div>
-                        {/if}
-                    </div>
+                        </div>
+                    {/each}
                 {:else}
-                    This professor hasn't taught any courses that have been reviewed yet.
+                    <p class='mt-4 text-gray-700 dark:text-gray-400'>
+                        This professor hasn't taught any courses that have been reviewed yet.
+                    </p>
                 {/if}
-            </p>
             {#if instructor.reviewCount}
                 <div class='grow py-3'/>
                 <InstructorInfoStats

@@ -61,6 +61,7 @@ public class Instructor {
     public static class Course {
         private String subject;
         private String catalog;
+        private String schoolId;
     }
 
     @Getter
