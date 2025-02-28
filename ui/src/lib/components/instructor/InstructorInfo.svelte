@@ -63,6 +63,16 @@
                                                href={`https://mcgill.courses/course/${courseIdToUrlParam(course.subject + course.catalog)}`}>
                                                 {`${course.subject} ${course.catalog}`}
                                             </a>
+                                        {:else if schoolId === "waterloo-university"}
+                                            <a class='font-medium transition hover:text-primary-600'
+                                               href={`https://uwflow.com/course/${course.subject.toLowerCase()}${course.catalog.toLowerCase()}`}>
+                                                {`${course.subject} ${course.catalog}`}
+                                            </a>
+                                        {:else if schoolId === "university-of-toronto"}
+                                            <a class='font-medium transition hover:text-primary-600'
+                                               href={`https://uofthub.ca/course/${course.subject + course.catalog}`}>
+                                                {`${course.subject} ${course.catalog}`}
+                                            </a>
                                         {:else}
                                             <span class='font-medium transition hover:text-primary-600'>
                                                 {`${course.subject} ${course.catalog}`}
