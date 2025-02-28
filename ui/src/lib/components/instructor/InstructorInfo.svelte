@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {courseIdToUrlParam, experienceToIcon, schoolIdToName } from "$lib/utils";
+    import { courseUrlBySchool, experienceToIcon, schoolIdToName} from "$lib/utils";
     import type {Instructor} from "$lib/model/Instructor";
     import InstructorTags from "$lib/components/instructor/InstructorTags.svelte";
     import InstructorInfoStats from "$lib/components/common/stats/InfoStats.svelte";
@@ -52,34 +52,11 @@
                             <div>Courses taught at {schoolIdToName(schoolId)}:</div>
                             <div class='max-w-sm flex flex-wrap'>
                                 {#each courses as course, index}
-                                    <div class="mt-1 ml-1">
-                                        {#if schoolId === "concordia-university"}
-                                            <a class='font-medium transition hover:text-primary-600'
-                                               href={`/course/${courseIdToUrlParam(course.subject + course.catalog)}`}>
-                                                {`${course.subject} ${course.catalog}`}
-                                            </a>
-                                        {:else if schoolId === "mcgill-university"}
-                                            <a class='font-medium transition hover:text-primary-600'
-                                               href={`https://mcgill.courses/course/${courseIdToUrlParam(course.subject + course.catalog)}`}>
-                                                {`${course.subject} ${course.catalog}`}
-                                            </a>
-                                        {:else if schoolId === "waterloo-university"}
-                                            <a class='font-medium transition hover:text-primary-600'
-                                               href={`https://uwflow.com/course/${course.subject.toLowerCase()}${course.catalog.toLowerCase()}`}>
-                                                {`${course.subject} ${course.catalog}`}
-                                            </a>
-                                        {:else if schoolId === "university-of-toronto"}
-                                            <a class='font-medium transition hover:text-primary-600'
-                                               href={`https://uofthub.ca/course/${course.subject + course.catalog}`}>
-                                                {`${course.subject} ${course.catalog}`}
-                                            </a>
-                                        {:else}
-                                            <span class='font-medium transition hover:text-primary-600'>
-                                                {`${course.subject} ${course.catalog}`}
-                                            </span>
-                                        {/if}
-                                        {index < courses.length - 1 ? "," : ""}
-                                    </div>
+                                    <a class='font-medium transition hover:text-primary-600 mt-1 ml-1"'
+                                       href={courseUrlBySchool(schoolId, course.subject + course.catalog)}>
+                                        {`${course.subject} ${course.catalog}`}
+                                    </a>
+                                    {index < courses.length - 1 ? "," : ""}
                                 {/each}
                             </div>
                         </div>

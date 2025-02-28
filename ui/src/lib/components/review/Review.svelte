@@ -6,7 +6,7 @@
     import {BadgeCheck, Edit} from "lucide-svelte";
     import LoginPrompt from "./LoginPrompt.svelte";
     import {
-        courseIdToUrlParam,
+        courseUrlBySchool,
         determineReviewFor,
         instructorIdToName,
         spliceCourseCode,
@@ -151,7 +151,7 @@
                 </a>
             {:else }
                 Written for{' '}
-                <a href={review?.schoolId === "mcgill-university" ? `https://mcgill.courses/course/${courseIdToUrlParam(review.courseId)}` : `/course/${courseIdToUrlParam(review.courseId)}`}
+                <a href={courseUrlBySchool(review.schoolId, review.courseId)}
                    class='font-medium transition hover:text-primary-600'>
                     {spliceCourseCode(review.courseId, ' ')}
                 </a>

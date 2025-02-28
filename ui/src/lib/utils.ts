@@ -61,6 +61,21 @@ export const courseNameToId = (name: string) =>
 export const schoolIdToName = (id: string) =>
     id?.split('-').map(capitalize).join(' ');
 
+export const courseUrlBySchool = (schoolId: string, courseId: string) => {
+    if (schoolId === "concordia-university") {
+        return `/course/${courseIdToUrlParam(courseId)}`;
+    } else if (schoolId === "mcgill-university") {
+        return `https://mcgill.courses/course/${courseIdToUrlParam(courseId)}`;
+    } else if (schoolId === "waterloo-university") {
+        return `https://uwflow.com/course/${courseId.toLowerCase()}`;
+    } else if (schoolId === "university-of-toronto") {
+        return `https://uofthub.ca/course/${courseId}`;
+    } else {
+        return '#';
+    }
+}
+
+
 export const spliceCourseCode = (courseCode: string, delimiter: string) => {
     const firstIntIndex = courseCode?.search(/\d/);
     if (firstIntIndex === undefined || firstIntIndex === -1) {
