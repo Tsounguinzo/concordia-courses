@@ -52,10 +52,12 @@
                             <div>Courses taught at {schoolIdToName(schoolId)}:</div>
                             <div class='max-w-sm flex flex-wrap'>
                                 {#each courses as course, index}
-                                    <a class='font-medium transition hover:text-primary-600 mt-1 ml-1"'
-                                       href={courseUrlBySchool(schoolId, course.subject + course.catalog)}>
-                                        {`${course.subject} ${course.catalog}`}
-                                    </a>
+                                    <div class="mt-1 ml-1">
+                                        <a class='font-medium transition hover:text-primary-600'
+                                        href={courseUrlBySchool(schoolId, course.subject + course.catalog)}>
+                                            {`${course.subject} ${course.catalog}`}
+                                        </a>
+                                    </div>
                                     {index < courses.length - 1 ? "," : ""}
                                 {/each}
                             </div>
