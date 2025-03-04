@@ -1,9 +1,10 @@
 import courses from '$lib/data/searchCourses.json';
+import instructors from '$lib/data/instructorsList.json';
 import {generateSitemapEntries} from "$lib/utils";
 
 export async function GET() {
 
-    const urls = generateSitemapEntries(courses);
+    const urls = generateSitemapEntries(courses, instructors);
 
 
     return new Response(

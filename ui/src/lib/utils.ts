@@ -249,7 +249,7 @@ type UrlEntry = {
 };
 
 
-export const generateSitemapEntries = (courses: Course[]): UrlEntry[] => {
+export const generateSitemapEntries = (courses: Course[], instructors: string[]): UrlEntry[] => {
     const urls: UrlEntry[] = [];
 
     courses.forEach((course) => {
@@ -259,14 +259,14 @@ export const generateSitemapEntries = (courses: Course[]): UrlEntry[] => {
             changefreq: 'daily',
             priority: 1.0,
         });
+    });
 
-        course.instructors.forEach((instructor) => {
-            const instructorUrl = `https://concordia.courses/instructor/${instructorNameToUrlParam(instructor)}`;
-            urls.push({
-                loc: instructorUrl,
-                changefreq: 'daily',
-                priority: 1.0,
-            });
+    instructors.forEach((instructor) => {
+        const instructorUrl = `https://concordia.courses/instructor/${instructorNameToUrlParam(instructor)}`;
+        urls.push({
+            loc: instructorUrl,
+            changefreq: 'daily',
+            priority: 1.0,
         });
     });
 
