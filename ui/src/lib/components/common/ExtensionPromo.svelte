@@ -14,12 +14,11 @@
 >
     <div class="promo-card">
         <div class="icon-container">
-            <EyesAnimation width={30} height={30} />
+            <EyesAnimation width={30} height={30} class="max-sm:hidden"/>
         </div>
         <div class="text-container flex max-sm:flex-col">
-            <span class="new-badge">New</span>
-            <span class="promo-text">Visual Schedule Builder Export Extension</span>
-            <Chrome size={24} />
+            <!--span class="new-badge">New</span-->
+            <span class="promo-text">Export your Visual Schedule Builder Calendar to Google Calendar</span>
         </div>
         <div class="arrow">→</div>
     </div>
