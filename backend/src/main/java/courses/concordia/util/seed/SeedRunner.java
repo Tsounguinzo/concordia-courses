@@ -15,23 +15,23 @@ public class SeedRunner {
 
     private static final Map<String, String> TERM_CODE_MAPPING = new HashMap<>();
     private static final Map<String, String> CODE_TERM_MAPPING = new HashMap<>();
-    private static final String SEED_FILENAME = "2024_2025_concordia_courses.json";
+    private static final String SEED_FILENAME = "2025_2026_concordia_courses.json";
 
     static {
-        TERM_CODE_MAPPING.put("2231", "Summer 2024");
-        TERM_CODE_MAPPING.put("2241", "Summer 2025");
-        TERM_CODE_MAPPING.put("2242", "Fall 2024");
-        TERM_CODE_MAPPING.put("2243", "Fall/Winter 2024-2025");
-        TERM_CODE_MAPPING.put("2244", "Winter 2025");
-        TERM_CODE_MAPPING.put("2245", "Spring 2025");
-        TERM_CODE_MAPPING.put("2246", "Summer 2025");
+        TERM_CODE_MAPPING.put("2241", "Summer 2025"); // 224 -> 2024 and 1 -> Summer, 2024 because Summer 2025 is in the 2024-2025 academic year
+        TERM_CODE_MAPPING.put("2251", "Summer 2026");
+        TERM_CODE_MAPPING.put("2252", "Fall 2025");
+        TERM_CODE_MAPPING.put("2253", "Fall/Winter 2025-2026");
+        TERM_CODE_MAPPING.put("2254", "Winter 2026");
+        TERM_CODE_MAPPING.put("2255", "Spring 2026");
+        TERM_CODE_MAPPING.put("2256", "Summer 2026");
+        CODE_TERM_MAPPING.put("Summer 2026", "2251");
+        CODE_TERM_MAPPING.put("Fall 2025", "2252");
+        CODE_TERM_MAPPING.put("Fall/Winter 2025-2026", "2253");
+        CODE_TERM_MAPPING.put("Winter 2026", "2254");
+        CODE_TERM_MAPPING.put("Spring 2026", "2255");
         CODE_TERM_MAPPING.put("Summer 2025", "2241");
-        CODE_TERM_MAPPING.put("Fall 2024", "2242");
-        CODE_TERM_MAPPING.put("Fall/Winter 2024-2025", "2243");
-        CODE_TERM_MAPPING.put("Winter 2025", "2244");
-        CODE_TERM_MAPPING.put("Spring 2025", "2245");
-        CODE_TERM_MAPPING.put("Summer 2024", "2231");
-        // CODE_TERM_MAPPING.put("Summer", "2246");
+        // CODE_TERM_MAPPING.put("Summer", "2256");
     }
 
     public static void main(String[] args) {
@@ -85,7 +85,7 @@ public class SeedRunner {
                 for (String term : terms) {
                     var blocks = new LinkedHashSet<Course.Block>();
                     for (CourseWithDetails blockDetails : coursesBlock) {
-                        if (blockDetails.getTermCode().equals(CODE_TERM_MAPPING.get(term)) || term.startsWith("Summer") && (blockDetails.getTermCode().equals("2246"))) {
+                        if (blockDetails.getTermCode().equals(CODE_TERM_MAPPING.get(term)) || term.startsWith("Summer") && (blockDetails.getTermCode().equals("2256"))) {
                             blocks.add(new Course.Block(
                                     blockDetails.getComponentCode(),
                                     blockDetails.getLocationCode(),
