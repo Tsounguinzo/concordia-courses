@@ -150,39 +150,40 @@ public class InstructorServiceImpl implements InstructorService {
     @Override
     public void updateInstructorsStatistics() {
         log.info("Updating Instructors statistics");
+
         List<Instructor> instructors = instructorRepository.findAll();
-        instructors.forEach(instructor -> {
+        List<Instructor> updatedInstructors = new ArrayList<>();
+
+        for (Instructor instructor : instructors) {
             Query query = new Query(Criteria.where("instructorId").is(instructor.get_id()));
             List<Review> reviews = mongoTemplate.find(query, Review.class);
+
             double avgDifficulty = reviews.stream().mapToDouble(Review::getDifficulty).average().orElse(0.0);
-            double avgExperienceAndRating = reviews.stream().mapToDouble(review -> {
-                if (review.getType().equals("course")) {
-                    return review.getExperience();
-                } else {
-                    return review.getRating();
-                }
-            }).average().orElse(0);
+            double avgExperienceAndRating = reviews.stream()
+                    .mapToDouble(review -> "course".equals(review.getType()) ? review.getExperience() : review.getRating())
+                    .average().orElse(0.0);
+
             Set<Instructor.Tag> tags = reviews.stream()
                     .map(Review::getTags)
                     .flatMap(Set::stream)
                     .collect(Collectors.toSet());
+
             Set<Instructor.Course> courses = reviews.stream()
                     .filter(review -> review.getCourseId() != null && !review.getCourseId().isBlank())
                     .map(review -> {
                         String courseId = review.getCourseId();
                         String schoolId = review.getSchoolId();
 
-                        // Handle special cases
-                        if (courseId.startsWith("CEWPMOD") ||
-                                courseId.startsWith("CEBDMOD") ||
-                                courseId.startsWith("CEENMOD") ||
-                                courseId.startsWith("CEBUMOD")) {
+                        if (courseId.startsWith("CEWPMOD") || courseId.startsWith("CEBDMOD")
+                                || courseId.startsWith("CEENMOD") || courseId.startsWith("CEBUMOD")) {
                             int splitIndex = courseId.indexOf("MOD");
                             return new Instructor.Course(courseId.substring(0, splitIndex), courseId.substring(splitIndex), schoolId);
                         }
 
                         Matcher matcher = Pattern.compile("(\\D*)(\\d.*)").matcher(courseId);
-                        return matcher.matches() ? new Instructor.Course(matcher.group(1), matcher.group(2), schoolId) : null;
+                        return matcher.matches()
+                                ? new Instructor.Course(matcher.group(1), matcher.group(2), schoolId)
+                                : null;
                     })
                     .filter(Objects::nonNull)
                     .collect(Collectors.toSet());
@@ -190,43 +191,34 @@ public class InstructorServiceImpl implements InstructorService {
             Map<Integer, Long> difficultyCount = reviews.stream()
                     .collect(Collectors.groupingBy(Review::getDifficulty, Collectors.counting()));
 
-            int[] difficultyDistribution = {
-                    Math.toIntExact(difficultyCount.getOrDefault(1, 0L)),
-                    Math.toIntExact(difficultyCount.getOrDefault(2, 0L)),
-                    Math.toIntExact(difficultyCount.getOrDefault(3, 0L)),
-                    Math.toIntExact(difficultyCount.getOrDefault(4, 0L)),
-                    Math.toIntExact(difficultyCount.getOrDefault(5, 0L))
-            };
+            int[] difficultyDistribution = new int[5];
+            for (int i = 1; i <= 5; i++) {
+                difficultyDistribution[i - 1] = Math.toIntExact(difficultyCount.getOrDefault(i, 0L));
+            }
 
-            Map<Integer, Long> experienceAndRatingCount = reviews.stream()
-                    .mapToInt(review -> {
-                        if (review.getType().equals("course")) {
-                            return review.getExperience();
-                        } else {
-                            return review.getRating();
-                        }
-                    })
+            Map<Integer, Long> ratingCount = reviews.stream()
+                    .mapToInt(review -> "course".equals(review.getType()) ? review.getExperience() : review.getRating())
                     .boxed()
                     .collect(Collectors.groupingBy(i -> i, Collectors.counting()));
 
-            int[] experienceAndRatingDistribution = {
-                    Math.toIntExact(experienceAndRatingCount.getOrDefault(1, 0L)),
-                    Math.toIntExact(experienceAndRatingCount.getOrDefault(2, 0L)),
-                    Math.toIntExact(experienceAndRatingCount.getOrDefault(3, 0L)),
-                    Math.toIntExact(experienceAndRatingCount.getOrDefault(4, 0L)),
-                    Math.toIntExact(experienceAndRatingCount.getOrDefault(5, 0L))
-            };
+            int[] ratingDistribution = new int[5];
+            for (int i = 1; i <= 5; i++) {
+                ratingDistribution[i - 1] = Math.toIntExact(ratingCount.getOrDefault(i, 0L));
+            }
 
             instructor.setDifficultyDistribution(difficultyDistribution);
-            instructor.setRatingDistribution(experienceAndRatingDistribution);
+            instructor.setRatingDistribution(ratingDistribution);
             instructor.setTags(tags);
             instructor.addCourses(courses);
             instructor.setAvgRating(avgExperienceAndRating);
             instructor.setAvgDifficulty(avgDifficulty);
             instructor.setReviewCount(reviews.size());
-            instructorRepository.save(instructor);
-        });
-        log.info("Instructors statistics updated successfully");
+
+            updatedInstructors.add(instructor);
+        }
+
+        instructorRepository.saveAll(updatedInstructors);
+        log.info("Instructors statistics updated for {} instructors", updatedInstructors.size());
     }
 
     @Override

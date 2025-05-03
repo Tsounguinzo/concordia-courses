@@ -1,6 +1,7 @@
 package courses.concordia.service.implementation;
 
 import com.google.gson.reflect.TypeToken;
+import com.mongodb.bulk.BulkWriteResult;
 import courses.concordia.dto.model.course.CourseDto;
 import courses.concordia.dto.model.course.CourseFilterDto;
 import courses.concordia.dto.model.course.CourseReviewsDto;
@@ -22,9 +23,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.*;
+import org.springframework.data.mongodb.core.BulkOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -154,10 +157,35 @@ public class CourseServiceImpl implements CourseService {
      */
     @Override
     public void updateCourses(MultipartFile file) {
-        log.info("Updating courses schedules from file: {}", file.getOriginalFilename());
+        log.info("Updating course schedules from file: {}", file.getOriginalFilename());
         List<Course> courses = processCourseFile(file);
-        courses.forEach(this::updateSchedules);
-        log.info("{} courses updated successfully", courses.size());
+
+        if (courses.isEmpty()) {
+            log.warn("No courses found in file: {}", file.getOriginalFilename());
+            return;
+        }
+
+        BulkOperations bulkOps = mongoTemplate.bulkOps(BulkOperations.BulkMode.UNORDERED, Course.class);
+
+        for (Course course : courses) {
+            if (course.get_id() == null) {
+                log.warn("Skipping course without ID: {}", course);
+                continue;
+            }
+
+            Query query = new Query(Criteria.where("_id").is(course.get_id()));
+            Update update = new Update()
+                    .set("schedules", course.getSchedules())
+                    .set("terms", course.getTerms())
+                    .set("classUnit", course.getClassUnit())
+                    .set("conUCourseID", course.getConUCourseID());
+
+            bulkOps.upsert(query, update);
+        }
+
+        BulkWriteResult result = bulkOps.execute();
+        log.info("Courses batch update completed. Matched: {}, Modified: {}, Upserts: {}",
+                result.getMatchedCount(), result.getModifiedCount(), result.getUpserts().size());
     }
 
     /**
@@ -168,20 +196,23 @@ public class CourseServiceImpl implements CourseService {
     public void updateCoursesStatistics() {
         log.info("Updating courses statistics");
         List<Course> courses = courseRepository.findAll();
-        courses.forEach(course -> {
-            Query query = new Query(Criteria.where("courseId").is(course.get_id()));
-            List<Review> reviews = mongoTemplate.find(query, Review.class);
+
+        BulkOperations bulkOps = mongoTemplate.bulkOps(BulkOperations.BulkMode.UNORDERED, Course.class);
+
+        for (Course course : courses) {
+            Query query = new Query(Criteria.where("_id").is(course.get_id()));
+            List<Review> reviews = mongoTemplate.find(new Query(Criteria.where("courseId").is(course.get_id())), Review.class);
+
             double avgDifficulty = reviews.stream().mapToDouble(Review::getDifficulty).average().orElse(0);
-            double avgExperienceAndRating = reviews.stream().mapToDouble(review -> {
-                if (review.getType().equals("course")) {
-                    return review.getExperience();
-                } else {
-                    return review.getRating();
-                }
-            }).average().orElse(0);
+            double avgExperienceAndRating = reviews.stream().mapToDouble(review ->
+                    "course".equals(review.getType()) ? review.getExperience() : review.getRating()).average().orElse(0);
 
             Map<Integer, Long> difficultyCount = reviews.stream()
                     .collect(Collectors.groupingBy(Review::getDifficulty, Collectors.counting()));
+            Map<Integer, Long> experienceCount = reviews.stream()
+                    .mapToInt(r -> "course".equals(r.getType()) ? r.getExperience() : r.getRating())
+                    .boxed()
+                    .collect(Collectors.groupingBy(i -> i, Collectors.counting()));
 
             int[] difficultyDistribution = {
                     Math.toIntExact(difficultyCount.getOrDefault(1, 0L)),
@@ -191,33 +222,27 @@ public class CourseServiceImpl implements CourseService {
                     Math.toIntExact(difficultyCount.getOrDefault(5, 0L))
             };
 
-            Map<Integer, Long> experienceAndRatingCount = reviews.stream()
-                    .mapToInt(review -> {
-                        if (review.getType().equals("course")) {
-                            return review.getExperience();
-                        } else {
-                            return review.getRating();
-                        }
-                    })
-                    .boxed()
-                    .collect(Collectors.groupingBy(i -> i, Collectors.counting()));
-
-            int[] experienceAndRatingDistribution = {
-                    Math.toIntExact(experienceAndRatingCount.getOrDefault(1, 0L)),
-                    Math.toIntExact(experienceAndRatingCount.getOrDefault(2, 0L)),
-                    Math.toIntExact(experienceAndRatingCount.getOrDefault(3, 0L)),
-                    Math.toIntExact(experienceAndRatingCount.getOrDefault(4, 0L)),
-                    Math.toIntExact(experienceAndRatingCount.getOrDefault(5, 0L))
+            int[] experienceDistribution = {
+                    Math.toIntExact(experienceCount.getOrDefault(1, 0L)),
+                    Math.toIntExact(experienceCount.getOrDefault(2, 0L)),
+                    Math.toIntExact(experienceCount.getOrDefault(3, 0L)),
+                    Math.toIntExact(experienceCount.getOrDefault(4, 0L)),
+                    Math.toIntExact(experienceCount.getOrDefault(5, 0L))
             };
 
-            course.setDifficultyDistribution(difficultyDistribution);
-            course.setExperienceDistribution(experienceAndRatingDistribution);
-            course.setAvgDifficulty(avgDifficulty);
-            course.setAvgExperience(avgExperienceAndRating);
-            course.setReviewCount(reviews.size());
-            courseRepository.save(course);
-        });
-        log.info("Courses statistics updated successfully");
+            Update update = new Update()
+                    .set("difficultyDistribution", difficultyDistribution)
+                    .set("experienceDistribution", experienceDistribution)
+                    .set("avgDifficulty", avgDifficulty)
+                    .set("avgExperience", avgExperienceAndRating)
+                    .set("reviewCount", reviews.size());
+
+            bulkOps.upsert(query, update);
+        }
+
+        BulkWriteResult result = bulkOps.execute();
+        log.info("Courses statistics batch update completed. Modified: {}, Upserts: {}",
+                result.getModifiedCount(), result.getUpserts().size());
     }
 
     @Cacheable(value = "courseInstructorsCache", key = "#id")
@@ -229,17 +254,6 @@ public class CourseServiceImpl implements CourseService {
                 .stream()
                 .map(instructor -> modelMapper.map(instructor, CourseInstructorDto.class))
                 .collect(Collectors.toList());
-    }
-
-    private void updateSchedules(Course course) {
-        courseRepository.findById(course.get_id())
-                .ifPresentOrElse(existingCourse -> {
-                    existingCourse.setSchedules(course.getSchedules());
-                    existingCourse.setTerms(course.getTerms());
-                    existingCourse.setClassUnit(course.getClassUnit());
-                    existingCourse.setConUCourseID(course.getConUCourseID());
-                    courseRepository.save(existingCourse);
-                }, () -> courseRepository.save(course));
     }
 
     private List<Course> processCourseFile(MultipartFile file) {
