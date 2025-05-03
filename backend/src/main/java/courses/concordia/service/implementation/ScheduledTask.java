@@ -29,13 +29,13 @@ public class ScheduledTask {
     private final EmailServiceImpl emailService;
 
     static {
-        TERM_CODE_MAPPING.put("2231", "Summer 2024");
         TERM_CODE_MAPPING.put("2241", "Summer 2025");
-        TERM_CODE_MAPPING.put("2242", "Fall 2024");
-        TERM_CODE_MAPPING.put("2243", "Fall/Winter 2024-2025");
-        TERM_CODE_MAPPING.put("2244", "Winter 2025");
-        TERM_CODE_MAPPING.put("2245", "Spring 2025");
-        TERM_CODE_MAPPING.put("2246", "Summer 2025");
+        TERM_CODE_MAPPING.put("2251", "Summer 2026");
+        TERM_CODE_MAPPING.put("2252", "Fall 2025");
+        TERM_CODE_MAPPING.put("2253", "Fall/Winter 2025-2026");
+        TERM_CODE_MAPPING.put("2254", "Winter 2026");
+        TERM_CODE_MAPPING.put("2255", "Spring 2026");
+        TERM_CODE_MAPPING.put("2256", "Summer 2026");
 
         // Initialize reverse mapping
         for (Map.Entry<String, String> entry : TERM_CODE_MAPPING.entrySet()) {
