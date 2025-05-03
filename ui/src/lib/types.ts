@@ -51,4 +51,4 @@ export const feedSortByOptions = [
         'Hot',
         'New',
     ] as const;
-export const termsOptions = ["Summer 2024","Fall 2024","Fall/Winter 2024-2025","Winter 2025","Spring 2025","Summer 2025"] as const;
+export const termsOptions = ["Summer 2025","Fall 2025","Fall/Winter 2025-2026","Winter 2026","Spring 2026","Summer 2026"] as const;
