@@ -8,12 +8,9 @@ import courses.concordia.dto.response.ProcessingResult;
 import courses.concordia.exception.CustomExceptionFactory;
 import courses.concordia.exception.EntityType;
 import courses.concordia.exception.ExceptionType;
-import courses.concordia.model.Course;
-import courses.concordia.model.Instructor;
-import courses.concordia.model.Review;
-import courses.concordia.repository.CourseRepository;
-import courses.concordia.repository.InstructorRepository;
-import courses.concordia.repository.ReviewRepository;
+import courses.concordia.dto.model.ResourceLinkDto;
+import courses.concordia.model.*;
+import courses.concordia.repository.*;
 import courses.concordia.service.ReviewService;
 import courses.concordia.service.TokenBlacklistService;
 import courses.concordia.util.JsonUtils;
@@ -44,6 +41,8 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
     private final CourseRepository courseRepository;
     private final InstructorRepository instructorRepository;
+    private final CommentRepository commentRepository;
+    private final ResourceLinkRepository resourceLinkRepository;
     private final TokenBlacklistService blacklistService;
     private final MongoTemplate mongoTemplate;
     private final ModelMapper modelMapper;
@@ -92,20 +91,80 @@ public class ReviewServiceImpl implements ReviewService {
         checkBlacklistedUser(reviewDto.getUserId());
 
         Review review;
+        boolean isNewReview;
+
         if (reviewDto.getType() != null) {
             if (reviewDto.getType().equals("instructor")) {
-                review = reviewRepository
-                        .findByInstructorIdAndUserIdAndType(reviewDto.getInstructorId(), reviewDto.getUserId(), reviewDto.getType())
+                Optional<Review> existingReviewOpt = reviewRepository
+                        .findByInstructorIdAndUserIdAndType(reviewDto.getInstructorId(), reviewDto.getUserId(), reviewDto.getType());
+                isNewReview = existingReviewOpt.isEmpty();
+                review = existingReviewOpt
                         .map(r -> updateReviewFromDto(r, reviewDto))
                         .orElseGet(() -> createReviewFromDto(reviewDto));
-                review = reviewRepository.save(review);
+            } else {
+                Optional<Review> existingReviewOpt = reviewRepository
+                        .findByCourseIdAndUserIdAndType(reviewDto.getCourseId(), reviewDto.getUserId(), reviewDto.getType());
+                isNewReview = existingReviewOpt.isEmpty();
+                review = existingReviewOpt
+                        .map(r -> updateReviewFromDto(r, reviewDto))
+                        .orElseGet(() -> createReviewFromDto(reviewDto));
+            }
+
+            // Handle ResourceLinks
+            if (reviewDto.getResourceLinks() != null) {
+                List<ResourceLink> resourceLinks = reviewDto.getResourceLinks().stream()
+                        .map(dto -> modelMapper.map(dto, ResourceLink.class))
+                        .collect(Collectors.toList());
+
+                if (isNewReview) {
+                    // For new reviews, all resource links are new
+                    List<ResourceLink> savedResourceLinks = resourceLinkRepository.saveAll(resourceLinks);
+                    review.setResourceLinks(new ArrayList<>(savedResourceLinks));
+                } else {
+                    // For existing reviews, identify new, updated, and deleted resource links
+                    List<ResourceLink> existingResourceLinks = review.getResourceLinks();
+                    List<ResourceLink> updatedResourceLinks = new ArrayList<>();
+
+                    // Process incoming resource links
+                    for (ResourceLink currentLink : resourceLinks) {
+                        if (currentLink.get_id() != null) {
+                            // Attempt to find and update existing link
+                            Optional<ResourceLink> foundLink = existingResourceLinks.stream()
+                                    .filter(rl -> rl.get_id().equals(currentLink.get_id()))
+                                    .findFirst();
+                            if (foundLink.isPresent()) {
+                                ResourceLink linkToUpdate = foundLink.get();
+                                modelMapper.map(currentLink, linkToUpdate); // Update fields
+                                updatedResourceLinks.add(resourceLinkRepository.save(linkToUpdate));
+                            } else {
+                                // ID present but not found in existing list - treat as new (or handle error)
+                                currentLink.set_id(null); // Ensure it's treated as new by MongoDB
+                                updatedResourceLinks.add(resourceLinkRepository.save(currentLink));
+                            }
+                        } else {
+                            // New link (no ID)
+                            updatedResourceLinks.add(resourceLinkRepository.save(currentLink));
+                        }
+                    }
+
+                    // Identify and delete links that were removed
+                    List<ResourceLink> linksToDelete = existingResourceLinks.stream()
+                            .filter(existingLink -> resourceLinks.stream()
+                                    .noneMatch(newLink -> existingLink.get_id().equals(newLink.get_id())))
+                            .collect(Collectors.toList());
+                    if (!linksToDelete.isEmpty()) {
+                        resourceLinkRepository.deleteAll(linksToDelete);
+                    }
+                    review.setResourceLinks(updatedResourceLinks);
+                }
+            }
+
+
+            review = reviewRepository.save(review);
+
+            if (reviewDto.getType().equals("instructor")) {
                 updateInstructorRatingCoursesAndTags(review.getInstructorId());
             } else {
-                review = reviewRepository
-                        .findByCourseIdAndUserIdAndType(reviewDto.getCourseId(), reviewDto.getUserId(), reviewDto.getType())
-                        .map(r -> updateReviewFromDto(r, reviewDto))
-                        .orElseGet(() -> createReviewFromDto(reviewDto));
-                review = reviewRepository.save(review);
                 updateCourseExperience(review.getCourseId());
             }
 
@@ -122,7 +181,10 @@ public class ReviewServiceImpl implements ReviewService {
      * @return A new Review entity.
      */
     private Review createReviewFromDto(ReviewDto reviewDto) {
-        return reviewRepository.save(modelMapper.map(reviewDto, Review.class));
+        Review review = modelMapper.map(reviewDto, Review.class);
+        // Resource links will be handled after this stage in addOrUpdateReview
+        review.setResourceLinks(new ArrayList<>()); // Initialize to avoid null pointer if not set by DTO
+        return review; // Not saving here, will be saved in addOrUpdateReview after resource links handling
     }
 
     public boolean reviewDoesNotExist(Review review) {
@@ -137,9 +199,13 @@ public class ReviewServiceImpl implements ReviewService {
      * @return The updated Review entity.
      */
     private Review updateReviewFromDto(Review existingReview, ReviewDto reviewDto) {
+        // Preserve existing resource links, they will be explicitly managed
+        List<ResourceLink> currentResourceLinks = new ArrayList<>(existingReview.getResourceLinks());
         modelMapper.map(reviewDto, existingReview);
+        existingReview.setResourceLinks(currentResourceLinks); // Restore after mapping
         if (reviewDto.getTags().isEmpty()) existingReview.setTags(Collections.emptySet()); // By default, ModelMapper does not map empty collections
-        return reviewRepository.save(existingReview);
+        // Not saving here, will be saved in addOrUpdateReview after resource links handling
+        return existingReview;
     }
 
     /**
@@ -535,5 +601,33 @@ public class ReviewServiceImpl implements ReviewService {
 
     private RuntimeException CustomException(String... args) {
         return CustomExceptionFactory.throwCustomException(EntityType.REVIEW, ExceptionType.CUSTOM_EXCEPTION, args);
+    }
+
+    @Transactional
+    public ReviewDto addCommentToReview(String reviewId, Comment comment) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> exception(reviewId));
+
+        // Save the comment first to get its ID
+        Comment savedComment = commentRepository.save(comment);
+
+        review.getComments().add(savedComment);
+        reviewRepository.save(review);
+        return ReviewMapper.toDto(review);
+    }
+
+    @Transactional
+    public ReviewDto deleteCommentFromReview(String reviewId, String commentId) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> exception(reviewId));
+
+        boolean removed = review.getComments().removeIf(c -> c.get_id().equals(commentId));
+        if (!removed) {
+            throw CustomExceptionFactory.throwCustomException(EntityType.COMMENT, ExceptionType.ENTITY_NOT_FOUND, commentId);
+        }
+
+        commentRepository.deleteById(commentId);
+        reviewRepository.save(review);
+        return ReviewMapper.toDto(review);
     }
 }

@@ -15,8 +15,13 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.time.LocalDateTime;
+
+import courses.concordia.dto.model.CommentDto;
+import courses.concordia.dto.model.ResourceLinkDto;
 
 @Getter
 @Setter
@@ -58,4 +63,7 @@ public class ReviewDto {
 
     // School specific ratings
     private String schoolId;
+
+    private List<CommentDto> comments = new ArrayList<>();
+    private List<ResourceLinkDto> resourceLinks = new ArrayList<>();
 }

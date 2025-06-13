@@ -13,14 +13,20 @@
         timeFrame
     } from "$lib/utils.js";
     import type {Review} from "$lib/model/Review";
+    import type {Comment} from "$lib/model/Comment"; // Added
+    import type {ResourceLink} from "$lib/model/ResourceLink"; // Added
     import type {Writable} from "svelte/store";
     import {writable} from "svelte/store";
+    import {page} from '$app/stores'; // Added for user ID
+    import {repo} from '$lib/repo'; // Added for comment actions
     import {format} from 'date-fns';
     import IconRating from "./IconRating.svelte";
     import ReviewInteractions from "./ReviewInteractions.svelte";
     import type {Interaction} from "$lib/model/Interaction";
     import Share from "$lib/components/common/Share.svelte";
-    import {onMount} from "svelte";
+    import {onMount, createEventDispatcher} from "svelte"; // Added createEventDispatcher
+
+    const dispatch = createEventDispatcher(); // Added dispatcher
 
     export let canModify: boolean;
     export let title: string = '';
@@ -38,7 +44,61 @@
     let now: Date = new Date();
     let displayTime: string;
 
-    $: shortDate = format(review.timestamp ?? Date.now(), 'P');
+    // For optimistic updates of comments
+    let displayedComments: Comment[] = review.comments || [];
+    $: displayedComments = review.comments || [];
+
+    let newCommentText: string = '';
+
+    async function handleAddComment() {
+        if (!newCommentText.trim()) return;
+        try {
+            const response = await repo.addComment(review._id, { content: newCommentText.trim() });
+            if (response.ok) {
+                const updatedReviewWithNewComment = await response.json(); // Assuming API returns updated review or just the new comment array part
+                // Optimistically add. Backend DTO for review should contain the full comment list now
+                // Or if the service returns the full ReviewDto (as it does)
+                if (updatedReviewWithNewComment.payload) { // Assuming payload is the updated ReviewDto
+                     review = {...review, ...updatedReviewWithNewComment.payload}; // Update the review prop
+                     displayedComments = review.comments || [];
+                     dispatch('commentchanged', { updatedReview: review });
+                }
+                newCommentText = '';
+            } else {
+                console.error("Failed to add comment:", await response.text());
+                // TODO: Show error to user
+            }
+        } catch (error) {
+            console.error("Error adding comment:", error);
+            // TODO: Show error to user
+        }
+    }
+
+    async function handleDeleteComment(commentId: string) {
+        try {
+            const response = await repo.deleteComment(review._id, commentId);
+            if (response.ok) {
+                 const updatedReviewAfterDelete = await response.json();
+                 if (updatedReviewAfterDelete.payload) { // Assuming payload is the updated ReviewDto
+                    review = {...review, ...updatedReviewAfterDelete.payload}; // Update the review prop
+                    displayedComments = review.comments || [];
+                    dispatch('commentchanged', { updatedReview: review });
+                 }
+            } else {
+                console.error("Failed to delete comment:", await response.text());
+                // TODO: Show error to user
+            }
+        } catch (error) {
+            console.error("Error deleting comment:", error);
+            // TODO: Show error to user
+        }
+    }
+
+    function formatCommentTimestamp(timestamp: string): string {
+        return format(new Date(timestamp), 'MMM d, yyyy h:mm a');
+    }
+
+    $: shortDate = format(new Date(review.timestamp) ?? Date.now(), 'P');
     $: longDate = format(review.timestamp ?? Date.now(), 'EEEE, MMMM d, yyyy');
     $: displayTime = timeFrame(new Date(review.timestamp), now);
 
@@ -198,8 +258,66 @@
                 {#if shareable}
                 <Share sharedLink={`https://concordia.courses/shared?id=${review._id}`}
                        reviewFor={determineReviewFor(review)}/>
-                    {/if}
+                {/if}
             </div>
+        </div>
+    </div>
+
+    <!-- Resource Links Section -->
+    {#if review.resourceLinks && review.resourceLinks.length > 0}
+        <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+            <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Useful Resources:</h4>
+            <ul class="list-disc list-inside space-y-1">
+                {#each review.resourceLinks as link}
+                    <li>
+                        <a href={link.url} target="_blank" rel="noopener noreferrer"
+                           class="text-primary-600 dark:text-primary-400 hover:underline text-sm break-all">
+                            {link.description || link.url}
+                        </a>
+                        {#if link.description && link.url !== link.description}
+                            <span class="text-xs text-gray-500 dark:text-gray-400 ml-1 break-all">({link.url})</span>
+                        {/if}
+                    </li>
+                {/each}
+            </ul>
+        </div>
+    {/if}
+
+    <!-- Comments Section -->
+    <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+        <h4 class="text-md font-semibold text-gray-700 dark:text-gray-300 mb-2">Comments ({displayedComments.length})</h4>
+        <!-- Add Comment Form -->
+        <div class="mb-3">
+            <textarea class="w-full p-2 border border-gray-300 rounded-md dark:bg-neutral-700 dark:border-neutral-600 dark:text-gray-200 text-sm"
+                      rows="2" placeholder="Add a public comment..." bind:value={newCommentText}></textarea>
+            <div class="flex justify-end mt-1">
+                <button class="btn btn-primary btn-sm" on:click={handleAddComment} disabled={!newCommentText.trim()}>
+                    Submit Comment
+                </button>
+            </div>
+        </div>
+
+        <!-- List Comments -->
+        <div class="space-y-3">
+            {#each displayedComments as comment (comment._id)}
+                <div class="p-2 border border-gray-200 dark:border-neutral-600 rounded-md bg-gray-50 dark:bg-neutral-750 text-sm">
+                    <p class="text-gray-800 dark:text-gray-200 break-words">{@html comment.content.replace(/\n/g, '<br>')}</p>
+                    <div class="text-xs text-gray-500 dark:text-gray-400 mt-1 flex justify-between items-center">
+                        <span>
+                            User: <span class="font-medium">{comment.userId.substring(0, 8)}...</span> {/* Show part of UserID or implement username fetching */}
+                            - {formatCommentTimestamp(comment.timestamp)}
+                        </span>
+                        {#if $page.data.user?.id === comment.userId || $page.data.user?.roles?.includes('admin')}
+                            <button class="text-red-500 hover:text-red-700 dark:hover:text-red-400 text-xs"
+                                    on:click={() => handleDeleteComment(comment._id)}>
+                                Delete
+                            </button>
+                        {/if}
+                    </div>
+                </div>
+            {:else}
+                <p class="text-xs text-gray-500 dark:text-gray-400">No comments yet. Be the first to comment!</p>
+            {/each}
         </div>
     </div>
 </div>

@@ -8,9 +8,12 @@ import courses.concordia.dto.response.ProcessingResult;
 import courses.concordia.model.User;
 import courses.concordia.service.InteractionService;
 import courses.concordia.service.NotificationService;
+import courses.concordia.dto.model.CommentDto;
+import courses.concordia.model.Comment;
 import courses.concordia.service.ReviewService;
 import courses.concordia.service.UserService;
 import io.micrometer.core.annotation.Timed;
+import org.modelmapper.ModelMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,8 +35,11 @@ public class ReviewController {
     private final UserService userService;
     private final InteractionService interactionService;
     private final NotificationService notificationService;
+    private final ModelMapper modelMapper; // Added for DTO mapping
     @Value("${beaudelaire.uploadKey}")
     private String uploadKey;
+
+    // Constructor will be updated by Lombok's @RequiredArgsConstructor to include ModelMapper
 
     @Timed(value = "reviews.upload", description = "Upload reviews file")
     @PutMapping("/upload")
@@ -134,5 +140,41 @@ public class ReviewController {
     public ResponseEntity<String> deleteDuplicateReviews() {
         ProcessingResult result = reviewService.deleteDuplicateReviews();
         return ResponseEntity.ok("Duplicate reviews deleted successfully. " + result.getDeletedCount() + " reviews were deleted.");
+    }
+
+    // Endpoints for Comments
+
+    @Timed(value = "reviews.comments.add", description = "Add comment to a review")
+    @PostMapping("/{reviewId}/comments")
+    public ResponseEntity<Response<?>> addCommentToReview(
+            @PathVariable String reviewId,
+            @RequestBody CommentDto commentDto) {
+        User user = userService.getAuthenticatedUser();
+        if (user == null && commentDto.getUserId() == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Response.unauthorized());
+        }
+        if (user != null) {
+            commentDto.setUserId(user.get_id());
+        }
+
+        Comment comment = modelMapper.map(commentDto, Comment.class);
+        ReviewDto updatedReview = reviewService.addCommentToReview(reviewId, comment);
+        // TODO: Consider if notifications are needed for comments
+        return ResponseEntity.status(HttpStatus.CREATED).body(Response.ok().setPayload(updatedReview));
+    }
+
+    @Timed(value = "reviews.comments.delete", description = "Delete comment from a review")
+    @DeleteMapping("/{reviewId}/comments/{commentId}")
+    public ResponseEntity<Response<?>> deleteCommentFromReview(
+            @PathVariable String reviewId,
+            @PathVariable String commentId) {
+        // Optional: Add validation to ensure the user deleting the comment is the one who posted it or an admin
+        User user = userService.getAuthenticatedUser();
+        if (user == null) { // Basic check, more sophisticated checks might be needed
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Response.unauthorized());
+        }
+
+        ReviewDto updatedReview = reviewService.deleteCommentFromReview(reviewId, commentId);
+        return ResponseEntity.ok(Response.ok().setPayload(updatedReview));
     }
 }

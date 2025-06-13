@@ -17,6 +17,25 @@
     export let variant: 'course' | 'instructor' | 'school' = 'course';
     export let isSubmitting: boolean;
 
+    // State for new resource link inputs
+    let newLinkUrl: string = '';
+    let newLinkDescription: string = '';
+
+    function addResourceLink() {
+        if (!newLinkUrl.trim()) return; // Basic validation: URL cannot be empty
+        const newLink = { url: newLinkUrl.trim(), description: newLinkDescription.trim() };
+        const updatedResourceLinks = [...(props.values.resourceLinks || []), newLink];
+        setFieldValue('resourceLinks', updatedResourceLinks);
+        newLinkUrl = ''; // Clear input fields
+        newLinkDescription = '';
+    }
+
+    function removeResourceLink(index: number) {
+        const updatedResourceLinks = [...(props.values.resourceLinks || [])];
+        updatedResourceLinks.splice(index, 1);
+        setFieldValue('resourceLinks', updatedResourceLinks);
+    }
+
 </script>
 <div style="max-width: calc(100vw - 10rem); max-height: calc(100vh - 10rem);" class='overflow-auto scrollbar-hide'>
     <div class='flex flex-col'>
@@ -100,6 +119,33 @@
         />
         <FieldError name='content'/>
     </div>
+
+    <!-- Resource Links Section -->
+    <div class='py-3'>
+        <h4 class="text-md font-medium text-gray-700 dark:text-gray-300 mb-2">Useful Resources (Optional)</h4>
+        {#if props.values.resourceLinks && props.values.resourceLinks.length > 0}
+            {#each props.values.resourceLinks as link, i}
+                <div class="flex items-center mb-2 p-2 border border-gray-200 dark:border-neutral-600 rounded-md">
+                    <div class="flex-grow">
+                        <a href={link.url} target="_blank" rel="noopener noreferrer" class="text-blue-600 dark:text-blue-400 hover:underline break-all text-sm">
+                            {link.url}
+                        </a>
+                        {#if link.description}
+                        <p class="text-xs text-gray-500 dark:text-gray-400 break-all">{link.description}</p>
+                        {/if}
+                    </div>
+                    <button type="button" on:click={() => removeResourceLink(i)} class="btn btn-error btn-sm ml-2">Remove</button>
+                </div>
+            {/each}
+        {/if}
+        <div class="flex items-center mt-2">
+            <input type="url" placeholder="New Resource URL (e.g., https://example.com)" bind:value={newLinkUrl} class="input input-bordered w-full mr-2 text-sm" />
+            <input type="text" placeholder="Short Description (Optional)" bind:value={newLinkDescription} class="input input-bordered w-full mr-2 text-sm" />
+            <button type="button" on:click={addResourceLink} class="btn btn-primary btn-sm whitespace-nowrap">Add Link</button>
+        </div>
+    </div>
+    <!-- End of Resource Links Section -->
+
     <div class='flex flex-col'>
         {#if variant === 'instructor'}
             <FieldLabel For='tags'>Tags (0 min. - 3 max.)</FieldLabel>

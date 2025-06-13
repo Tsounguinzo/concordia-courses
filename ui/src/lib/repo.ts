@@ -127,6 +127,7 @@ export const repo = {
                 rating: values.rating,
                 tags: values.tags,
                 schoolId: values.school,
+                resourceLinks: values.resourceLinks || [],
             }),
         });
     },
@@ -147,7 +148,8 @@ export const repo = {
                 tags: values.tags,
                 schoolId: values.school,
                 userId: review.userId,
-                likes: review.likes
+                likes: review.likes,
+                resourceLinks: values.resourceLinks || review.resourceLinks || [], // Use new links, fallback to existing, then empty
             }),
         });
     },
@@ -447,5 +449,17 @@ export const repo = {
         subject: string, catalog: string,
     ): Promise<Response> {
         return await client.get(`/grades/distribution?course=${subject}-${catalog}`);
+    },
+
+    // Comment methods
+    async addComment(reviewId: string, comment: { content: string }): Promise<Response> {
+        return await client.post(`/reviews/${reviewId}/comments`, {
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(comment),
+        });
+    },
+
+    async deleteComment(reviewId: string, commentId: string): Promise<Response> {
+        return await client.delete(`/reviews/${reviewId}/comments/${commentId}`);
     },
 };

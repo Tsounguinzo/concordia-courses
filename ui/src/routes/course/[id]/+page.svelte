@@ -197,6 +197,13 @@
         goto("/explore");
     }
 
+    function handleCommentChanged(updatedReview: Review) {
+        allReviews.update(currentReviews => {
+            if (!currentReviews) return []; // Should not happen if a review was updated
+            return currentReviews.map(r => r._id === updatedReview._id ? updatedReview : r);
+        });
+    }
+
     // Check if the user has a review
     $: userReview = $allReviews?.find((r) => r.userId === user?.id || r.userId === visitor);
 
@@ -362,6 +369,7 @@
                                     review={review}
                                     interactions={$userInteractions}
                                     updateLikes={updateLikes(review)}
+                                    on:commentchanged={(event) => handleCommentChanged(event.detail.updatedReview)}
                             />
                         {/each}
                     {/if}
@@ -471,6 +479,7 @@
                                         review={review}
                                         interactions={$userInteractions}
                                         updateLikes={updateLikes(review)}
+                                        on:commentchanged={(event) => handleCommentChanged(event.detail.updatedReview)}
                                 />
                             {/each}
                         {/if}

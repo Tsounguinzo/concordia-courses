@@ -16,6 +16,8 @@ import lombok.experimental.Accessors;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.time.LocalDateTime;
 
@@ -62,4 +64,7 @@ public class Review {
 
     // School specific ratings
     private String schoolId;
+
+    private List<Comment> comments = new ArrayList<>();
+    private List<ResourceLink> resourceLinks = new ArrayList<>();
 }

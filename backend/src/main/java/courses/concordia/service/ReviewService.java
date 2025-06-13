@@ -3,6 +3,7 @@ package courses.concordia.service;
 import courses.concordia.dto.model.review.ReviewDto;
 import courses.concordia.dto.model.review.ReviewFilterDto;
 import courses.concordia.dto.response.ProcessingResult;
+import courses.concordia.model.Comment;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -18,4 +19,7 @@ public interface ReviewService {
     ProcessingResult deleteDuplicateReviews();
 
     ProcessingResult deleteReviewsWithNonExistentInstructorIds();
+
+    ReviewDto addCommentToReview(String reviewId, Comment comment);
+    ReviewDto deleteCommentFromReview(String reviewId, String commentId);
 }

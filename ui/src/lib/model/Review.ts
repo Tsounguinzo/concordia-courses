@@ -1,10 +1,13 @@
+import type { Comment } from './Comment';
+import type { ResourceLink } from './ResourceLink';
+
 export type ReviewType = 'course' | 'instructor' | 'school';
 
 export type Review = {
     _id: string;
     type: ReviewType;
     content: string;
-    timestamp: Date;
+    timestamp: string; // Changed from Date to string for consistency with DTOs
     likes: number;
     userId: string;
 
@@ -22,4 +25,8 @@ export type Review = {
 
     // School specific ratings
     schoolId: string;
+
+    // New fields
+    comments?: Comment[];
+    resourceLinks?: ResourceLink[];
 };
