@@ -185,6 +185,7 @@
                                     <InstructorOrCourseReview
                                             canModify={false}
                                             handleDelete={() => null}
+                                            updateComments={undefined}
                                             {review}
                                     />
                                 </div>

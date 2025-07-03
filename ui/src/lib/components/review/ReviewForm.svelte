@@ -26,7 +26,7 @@
         const newLink = { url: newLinkUrl.trim(), description: newLinkDescription.trim() };
         const updatedResourceLinks = [...(props.values.resourceLinks || []), newLink];
         setFieldValue('resourceLinks', updatedResourceLinks);
-        newLinkUrl = ''; // Clear input fields
+        newLinkUrl = '';
         newLinkDescription = '';
     }
 
@@ -121,27 +121,154 @@
     </div>
 
     <!-- Resource Links Section -->
-    <div class='py-3'>
-        <h4 class="text-md font-medium text-gray-700 dark:text-gray-300 mb-2">Useful Resources (Optional)</h4>
+    <div class='py-4'>
+        <div class="flex items-center gap-2 mb-4">
+            <FieldLabel For='content'>Useful Resource (Optional)</FieldLabel>
+        </div>
+        
+        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+            Share helpful links like study guides, practice exams, course websites, or other resources that helped you succeed.
+        </p>
+
+        <!-- Existing Resource Links -->
         {#if props.values.resourceLinks && props.values.resourceLinks.length > 0}
-            {#each props.values.resourceLinks as link, i}
-                <div class="flex items-center mb-2 p-2 border border-gray-200 dark:border-neutral-600 rounded-md">
-                    <div class="flex-grow">
-                        <a href={link.url} target="_blank" rel="noopener noreferrer" class="text-blue-600 dark:text-blue-400 hover:underline break-all text-sm">
-                            {link.url}
-                        </a>
-                        {#if link.description}
-                        <p class="text-xs text-gray-500 dark:text-gray-400 break-all">{link.description}</p>
-                        {/if}
+            <div class="space-y-3 mb-4">
+                {#each props.values.resourceLinks as link, i}
+                    <div class="group relative overflow-hidden rounded-lg border border-gray-200 dark:border-neutral-600 bg-white dark:bg-neutral-700 p-4 transition-all duration-200 hover:border-primary-300 dark:hover:border-primary-400 hover:shadow-md">
+                        <div class="flex items-center gap-3">
+                                <div class="flex-shrink-0 mt-0.5">
+                                    <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center group-hover:bg-primary-200 dark:group-hover:bg-primary-800/40 transition-colors duration-200">
+                                        <svg class="w-5 h-5 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="flex-grow min-w-0">
+                                    {#if link.description}
+                                    <h5 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">
+                                        {link.description}
+                                    </h5>
+                                    {/if}
+                                    <a href={link.url} target="_blank" rel="noopener noreferrer"
+                                       class="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 break-all transition-colors duration-150 underline decoration-transparent hover:decoration-current underline-offset-2">
+                                        {link.url}
+                                    </a>
+                                </div>
+                                <div class="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                    <button
+                                        type="button"
+                                        on:click={() => removeResourceLink(i)}
+                                        class="p-2 text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition-colors duration-150 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20"
+                                        title="Remove resource">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
                     </div>
-                    <button type="button" on:click={() => removeResourceLink(i)} class="btn btn-error btn-sm ml-2">Remove</button>
-                </div>
-            {/each}
+                {/each}
+            </div>
         {/if}
-        <div class="flex items-center mt-2">
-            <input type="url" placeholder="New Resource URL (e.g., https://example.com)" bind:value={newLinkUrl} class="input input-bordered w-full mr-2 text-sm" />
-            <input type="text" placeholder="Short Description (Optional)" bind:value={newLinkDescription} class="input input-bordered w-full mr-2 text-sm" />
-            <button type="button" on:click={addResourceLink} class="btn btn-primary btn-sm whitespace-nowrap">Add Link</button>
+
+        <!-- Add New Resource Form -->
+        <div class="border-2 border-dashed border-gray-300 dark:border-neutral-600 rounded-xl p-6 transition-all duration-200 hover:border-primary-300 dark:hover:border-primary-400 hover:bg-gray-50 dark:hover:bg-neutral-800/50">
+            <div class="text-center mb-4">
+                <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+                    <svg class="w-6 h-6 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                </div>
+                <h5 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">Add a helpful resource</h5>
+                <p class="text-xs text-gray-500 dark:text-gray-400">Share links that made a difference in your learning</p>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Resource URL *
+                    </label>
+                    <div class="relative">
+                        <input 
+                            type="url" 
+                            placeholder="https://example.com/study-guide" 
+                            bind:value={newLinkUrl} 
+                            class="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-neutral-600 rounded-lg 
+                                   bg-white dark:bg-neutral-700 text-gray-900 dark:text-gray-200 
+                                   placeholder-gray-500 dark:placeholder-gray-400 text-sm
+                                   transition-all duration-200 ease-in-out
+                                   focus:border-primary-400 focus:ring-2 focus:ring-primary-100 dark:focus:ring-primary-900/20
+                                   hover:border-gray-400 dark:hover:border-neutral-500" />
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Description
+                    </label>
+                    <div class="relative">
+                        <input 
+                            type="text" 
+                            placeholder="e.g., 'Comprehensive study guide with practice problems'" 
+                            bind:value={newLinkDescription} 
+                            class="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-neutral-600 rounded-lg 
+                                   bg-white dark:bg-neutral-700 text-gray-900 dark:text-gray-200 
+                                   placeholder-gray-500 dark:placeholder-gray-400 text-sm
+                                   transition-all duration-200 ease-in-out
+                                   focus:border-primary-400 focus:ring-2 focus:ring-primary-100 dark:focus:ring-primary-900/20
+                                   hover:border-gray-400 dark:hover:border-neutral-500" />
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-end">
+                    <button 
+                        type="button" 
+                        on:click={addResourceLink} 
+                        disabled={!newLinkUrl.trim()}
+                        class="group relative overflow-hidden px-6 py-3 bg-primary-600 text-white text-sm font-medium rounded-lg
+                               transition-all duration-200 ease-in-out
+                               hover:bg-primary-700 hover:shadow-lg hover:shadow-primary-200 dark:hover:shadow-primary-900/30
+                               focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800
+                               disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary-600 disabled:hover:shadow-none
+                               active:scale-95">
+                        <span class="relative z-10 flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                            </svg>
+                            Add Resource
+                        </span>
+                        <div class="absolute inset-0 bg-gradient-to-r from-primary-600 to-primary-500 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Helper Text -->
+        <div class="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+            <div class="flex items-start gap-2">
+                <svg class="w-4 h-4 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <div class="text-sm text-blue-800 dark:text-blue-200">
+                    <p class="font-medium mb-1">💡 Great resources to share:</p>
+                    <ul class="text-xs space-y-1 list-disc list-inside ml-4">
+                        <li>Professor's course website or syllabus</li>
+                        <li>Textbook companion sites with practice problems</li>
+                        <li>Online tutorials or video series</li>
+                        <li>Study guides or cheat sheets you found helpful</li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
     <!-- End of Resource Links Section -->

@@ -12,6 +12,7 @@
 
     // Types
     import type { Review } from "$lib/model/Review";
+    import type { Comment } from "$lib/model/Comment";
     import type { Instructor } from "$lib/model/Instructor";
     import type { Interaction } from "$lib/model/Interaction";
     import type { SortFilterDto } from "$lib/types";
@@ -204,6 +205,22 @@
         };
     };
 
+    // Update comments locally
+    const updateComments = (review: Review) => {
+        return (comments: Comment[]) => {
+            const current = get(allReviews);
+            if (!current) return;
+            const updated = [...current];
+            const found = updated.find((r) => r._id === review._id);
+            if (!found) {
+                toast.error("Can't update comments for review that doesn't exist.");
+                return;
+            }
+            found.comments = comments;
+            allReviews.set(updated);
+        };
+    };
+
     // When user changes sort => reset offset & refetch
     function handleSortChange(event) {
         const [sortBy, instrName, courseName] = event.detail;
@@ -283,6 +300,7 @@
                                     review={review}
                                     interactions={$userInteractions}
                                     updateLikes={updateLikes(review)}
+                                    updateComments={updateComments(review)}
                             />
                         {/each}
                     {/if}

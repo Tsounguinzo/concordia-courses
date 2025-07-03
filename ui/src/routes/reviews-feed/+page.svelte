@@ -5,7 +5,7 @@
     import Skeleton from "$lib/components/common/loader/Skeleton.svelte";
     import Spinner from "$lib/components/common/loader/Spinning.svelte";
     import {feedSortByOptions} from "$lib/types";
-    import {writable} from "svelte/store";
+    import {get, writable} from "svelte/store";
     import {repo} from "$lib/repo";
     import {toast} from "svelte-sonner";
     import {onMount} from "svelte";
@@ -18,6 +18,7 @@
     import {instructorIdToName} from "$lib/utils.js";
     import {visitorId} from "$lib/store";
     import {mode} from "mode-watcher";
+    import type {Comment} from "$lib/model/Comment";
 
     type SortByType = (typeof feedSortByOptions)[number];
 
@@ -116,6 +117,21 @@
             }
         };
     };
+
+    const updateComments = (review: Review) => {
+        return (comments: Comment[]) => {
+            if (reviews) {
+                const updated = reviews.slice();
+                const found = updated.find((r) => r._id === review._id);
+                if (!found) {
+                    toast.error("Can't update comments for review that doesn't exist.");
+                    return;
+                }
+                found.comments = comments;
+                reviews = updated;
+            }
+        };
+    };
 </script>
 
 <Seo title="Reviews Feed" description="Reviews feed for courses at concordia.courses" ogTitle="Reviews Feed | Concordia.courses" ogDescription="Reviews feed for courses at concordia.courses" ogImageAlt="concordia.courses Reviews page Snapshot" ogImage="og-image-feed.png"/>
@@ -132,6 +148,7 @@
                             title={review?.type === 'instructor' ? instructorIdToName(review?.instructorId) : spliceCourseCode(review?.courseId, " ")}
                             interactions={$userInteractions}
                             updateLikes={updateLikes(review)}
+                            updateComments={updateComments(review)}
                             class='rounded-md my-1.5'
                             review={review}
                             canModify={false}

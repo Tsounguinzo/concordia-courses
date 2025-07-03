@@ -451,15 +451,31 @@ export const repo = {
         return await client.get(`/grades/distribution?course=${subject}-${catalog}`);
     },
 
-    // Comment methods
-    async addComment(reviewId: string, comment: { content: string }): Promise<Response> {
+    async addComment(reviewId: string, content: string, userId?: string | null): Promise<Response> {
         return await client.post(`/reviews/${reviewId}/comments`, {
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(comment),
+            body: JSON.stringify({
+                content,
+                timestamp: ISOFormattedDateUTC4(new Date()),
+                userId
+            }),
         });
     },
 
-    async deleteComment(reviewId: string, commentId: string): Promise<Response> {
-        return await client.delete(`/reviews/${reviewId}/comments/${commentId}`);
+    async deleteComment(reviewId: string, commentId: string, userId?: string | null): Promise<Response> {
+        return await client.delete(`/reviews/${reviewId}/comments/${commentId}`, {
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId }),
+        });
+    },
+
+    async updateComment(reviewId: string, commentId: string, content: string, userId?: string | null): Promise<Response> {
+        return await client.put(`/reviews/${reviewId}/comments/${commentId}`, {
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                content,
+                userId
+            }),
+        });
     },
 };

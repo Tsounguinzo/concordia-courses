@@ -7,6 +7,7 @@
 
     // Models / Utils
     import type { Review } from "$lib/model/Review";
+    import type { Comment } from "$lib/model/Comment";
     import type { Course } from "$lib/model/Course";
     import type { Interaction } from "$lib/model/Interaction";
     import type { GradeDistribution } from "$lib/model/GradeDistribution";
@@ -197,12 +198,22 @@
         goto("/explore");
     }
 
-    function handleCommentChanged(updatedReview: Review) {
-        allReviews.update(currentReviews => {
-            if (!currentReviews) return []; // Should not happen if a review was updated
-            return currentReviews.map(r => r._id === updatedReview._id ? updatedReview : r);
-        });
-    }
+    // Update comments in the local store
+    const updateComments = (review: Review) => {
+        return (comments: Comment[]) => {
+            const currentAll = get(allReviews);
+            if (currentAll) {
+                const updated = currentAll.slice();
+                const r = updated.find((x) => x._id === review._id);
+                if (!r) {
+                    toast.error("Can't update comments for a missing review.");
+                    return;
+                }
+                r.comments = comments;
+                allReviews.set(updated);
+            }
+        };
+    };
 
     // Check if the user has a review
     $: userReview = $allReviews?.find((r) => r.userId === user?.id || r.userId === visitor);
@@ -369,7 +380,7 @@
                                     review={review}
                                     interactions={$userInteractions}
                                     updateLikes={updateLikes(review)}
-                                    on:commentchanged={(event) => handleCommentChanged(event.detail.updatedReview)}
+                                    updateComments={updateComments(review)}
                             />
                         {/each}
                     {/if}
@@ -479,7 +490,7 @@
                                         review={review}
                                         interactions={$userInteractions}
                                         updateLikes={updateLikes(review)}
-                                        on:commentchanged={(event) => handleCommentChanged(event.detail.updatedReview)}
+                                        updateComments={updateComments(review)}
                                 />
                             {/each}
                         {/if}

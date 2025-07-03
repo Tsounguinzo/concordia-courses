@@ -33,7 +33,7 @@
         tags: review.tags,
         school: review.schoolId,
         course: review.courseId,
-        resourceLinks: review.resourceLinks || [] // Added for resource links
+        resourceLinks: review.resourceLinks || []
     };
 
     const handleClose = () => {

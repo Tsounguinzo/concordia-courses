@@ -35,11 +35,9 @@ public class ReviewController {
     private final UserService userService;
     private final InteractionService interactionService;
     private final NotificationService notificationService;
-    private final ModelMapper modelMapper; // Added for DTO mapping
+    private final ModelMapper modelMapper;
     @Value("${beaudelaire.uploadKey}")
     private String uploadKey;
-
-    // Constructor will be updated by Lombok's @RequiredArgsConstructor to include ModelMapper
 
     @Timed(value = "reviews.upload", description = "Upload reviews file")
     @PutMapping("/upload")
@@ -142,39 +140,68 @@ public class ReviewController {
         return ResponseEntity.ok("Duplicate reviews deleted successfully. " + result.getDeletedCount() + " reviews were deleted.");
     }
 
-    // Endpoints for Comments
-
     @Timed(value = "reviews.comments.add", description = "Add comment to a review")
     @PostMapping("/{reviewId}/comments")
-    public ResponseEntity<Response<?>> addCommentToReview(
+    public Response<?> addCommentToReview(
             @PathVariable String reviewId,
             @RequestBody CommentDto commentDto) {
         User user = userService.getAuthenticatedUser();
+
         if (user == null && commentDto.getUserId() == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Response.unauthorized());
+            return Response.unauthorized();
         }
+
         if (user != null) {
             commentDto.setUserId(user.get_id());
         }
 
-        Comment comment = modelMapper.map(commentDto, Comment.class);
-        ReviewDto updatedReview = reviewService.addCommentToReview(reviewId, comment);
-        // TODO: Consider if notifications are needed for comments
-        return ResponseEntity.status(HttpStatus.CREATED).body(Response.ok().setPayload(updatedReview));
+        ReviewDto updatedReview = reviewService.addCommentToReview(reviewId, commentDto);
+        return Response.ok().setPayload(updatedReview);
     }
 
     @Timed(value = "reviews.comments.delete", description = "Delete comment from a review")
     @DeleteMapping("/{reviewId}/comments/{commentId}")
-    public ResponseEntity<Response<?>> deleteCommentFromReview(
+    public Response<?> deleteCommentFromReview(
             @PathVariable String reviewId,
-            @PathVariable String commentId) {
-        // Optional: Add validation to ensure the user deleting the comment is the one who posted it or an admin
+            @PathVariable String commentId,
+            @RequestBody(required = false) Map<String, String> requestBody) {
+
         User user = userService.getAuthenticatedUser();
-        if (user == null) { // Basic check, more sophisticated checks might be needed
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Response.unauthorized());
+        String userId = null;
+
+        if (user != null) {
+            userId = user.get_id();
+        } else if (requestBody != null && requestBody.containsKey("userId")) {
+            userId = requestBody.get("userId");
         }
 
-        ReviewDto updatedReview = reviewService.deleteCommentFromReview(reviewId, commentId);
-        return ResponseEntity.ok(Response.ok().setPayload(updatedReview));
+        if (userId == null) {
+            return Response.unauthorized();
+        }
+
+        ReviewDto updatedReview = reviewService.deleteCommentFromReview(reviewId, commentId, userId);
+        return Response.ok().setPayload(updatedReview);
+    }
+
+    @Timed(value = "reviews.comments.update", description = "Update comment in a review")
+    @PutMapping("/{reviewId}/comments/{commentId}")
+    public Response<?> updateCommentInReview(
+            @PathVariable String reviewId,
+            @PathVariable String commentId,
+            @RequestBody CommentDto commentDto) {
+        User user = userService.getAuthenticatedUser();
+
+        if (user == null && commentDto.getUserId() == null) {
+            return Response.unauthorized();
+        }
+
+        String userId = user != null ? user.get_id() : commentDto.getUserId();
+
+        if (userId == null) {
+            return Response.unauthorized();
+        }
+
+        ReviewDto updatedReview = reviewService.updateCommentInReview(reviewId, commentId, commentDto, userId);
+        return Response.ok().setPayload(updatedReview);
     }
 }
