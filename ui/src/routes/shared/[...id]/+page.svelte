@@ -46,6 +46,7 @@
                             review={review}
                             interactions={[]}
                             updateLikes={undefined}
+                            updateComments={undefined}
                     />
                 </div>
                 <BackgroundBeams/>

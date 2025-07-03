@@ -127,6 +127,7 @@ export const repo = {
                 rating: values.rating,
                 tags: values.tags,
                 schoolId: values.school,
+                resourceLinks: values.resourceLinks || [],
             }),
         });
     },
@@ -147,7 +148,8 @@ export const repo = {
                 tags: values.tags,
                 schoolId: values.school,
                 userId: review.userId,
-                likes: review.likes
+                likes: review.likes,
+                resourceLinks: values.resourceLinks || review.resourceLinks || [], // Use new links, fallback to existing, then empty
             }),
         });
     },
@@ -447,5 +449,33 @@ export const repo = {
         subject: string, catalog: string,
     ): Promise<Response> {
         return await client.get(`/grades/distribution?course=${subject}-${catalog}`);
+    },
+
+    async addComment(reviewId: string, content: string, userId?: string | null): Promise<Response> {
+        return await client.post(`/reviews/${reviewId}/comments`, {
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                content,
+                timestamp: ISOFormattedDateUTC4(new Date()),
+                userId
+            }),
+        });
+    },
+
+    async deleteComment(reviewId: string, commentId: string, userId?: string | null): Promise<Response> {
+        return await client.delete(`/reviews/${reviewId}/comments/${commentId}`, {
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId }),
+        });
+    },
+
+    async updateComment(reviewId: string, commentId: string, content: string, userId?: string | null): Promise<Response> {
+        return await client.put(`/reviews/${reviewId}/comments/${commentId}`, {
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                content,
+                userId
+            }),
+        });
     },
 };

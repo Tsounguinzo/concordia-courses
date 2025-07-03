@@ -32,7 +32,8 @@
         rating: review.rating,
         tags: review.tags,
         school: review.schoolId,
-        course: review.courseId
+        course: review.courseId,
+        resourceLinks: review.resourceLinks || []
     };
 
     const handleClose = () => {

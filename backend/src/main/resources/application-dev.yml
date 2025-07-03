@@ -35,6 +35,16 @@ rt:
   secret: FFB8EA10274A8B65C913736BD9A4CD56200079ADBBD66865C72EF3D17C7E80B6 # random 1 - 256 hex characters
   exp: 2592000 # 30 days
 
+allowed:
+  host:  localhost:8080
+
+beaudelaire:
+  uploadKey: yesso
+
+openai:
+  apiKey: test-api-key
+  modelName: gpt-3.5-turbo
+
 cookie:
   secure: false
   httpOnly: true
@@ -46,4 +56,5 @@ app:
 server:
   port: 8080
   forward-headers-strategy: native
+  max-http-header-size: 64KB
 

@@ -29,6 +29,7 @@
         tags: [],
         school: '',
         course: '',
+        resourceLinks: [],
         honeypot: ''
     };
 

@@ -7,6 +7,7 @@ package courses.concordia.exception;
 public enum EntityType {
     USER,
     COURSE,
+    COMMENT,
     INTERACTION,
     NOTIFICATION,
     REVIEW,
