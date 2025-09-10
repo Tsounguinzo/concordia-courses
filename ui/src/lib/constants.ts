@@ -4,7 +4,6 @@ export const navigationItems = [
   { name: 'Home', href: '/' },
   { name: 'Explore', href: '/explore' },
   { name: 'Reviews', href: '/reviews-feed' },
-  { name: 'About', href: '/about' },
   { name: 'Search', href: '/search' },
   { name: 'Grade Distribution', href: '/grades' },
 ];

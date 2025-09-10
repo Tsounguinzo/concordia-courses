@@ -12,7 +12,6 @@
             {label: "Home", icon: Home, href: "/"},
             {label: "Explore", icon: Search, href: "/explore"},
             {label: "Reviews", icon: GalleryVerticalEnd, href: "/reviews-feed"},
-            {label: "About", icon: Info, href: "/about"},
             {label: "Search", icon: TextSearch, href: "/search"},
             {label: "Grade Distribution", icon: Upload, href: "/grades"},
         ]

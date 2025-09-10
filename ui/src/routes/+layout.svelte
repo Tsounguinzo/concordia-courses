@@ -4,7 +4,6 @@
     import {onMount} from "svelte";
     import {Toaster} from "svelte-sonner";
     import Footer from "$lib/components/layout/Footer.svelte";
-    import {page} from "$app/stores";
     import {injectSpeedInsights} from '@vercel/speed-insights/sveltekit';
     import {inject} from '@vercel/analytics'
     import {dev} from "$app/environment";
@@ -46,7 +45,7 @@
 <Toaster closeButton position="top-center"/>
 <div class='min-h-screen overflow-auto bg-slate-200 pb-5 transition duration-300 ease-in-out dark:bg-neutral-900'>
     <Navbar/>
-    <main class={$page.url.pathname.match(/\//) ? '' : 'mx-2 md:mx-16 lg:mx-24 xl:mx-40'}>
+    <main class='mx-2 md:mx-16 lg:mx-24 xl:mx-40'>
         <slot/>
     </main>
     <div class="hidden lg:block fixed bottom-2 left-1/2 ">
