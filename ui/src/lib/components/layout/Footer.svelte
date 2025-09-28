@@ -20,6 +20,7 @@
     export let left = 8;
     export let bottom = 8;
     let moving = false;
+    let hoveredLabel = "";
 
     function onMouseDown() {
         moving = true;
@@ -50,8 +51,11 @@
             >
                 {#each navs.navbar as item}
                     <DockIcon {mouseX} {magnification} {distance}>
-                        <Tooltip text={item.label} offset={{x: -5, y:8}}>
-                            <a href={item.href} class="block hover:bg-primary-500/80 transition-all duration-200 rounded-full p-3 mx-0">
+                        <Tooltip text={item.label} show={hoveredLabel === item.label} offset={{x: -5, y: -12}}>
+                            <a href={item.href} class="block hover:bg-primary-500/80 transition-all duration-200 rounded-full p-3 mx-0"
+                               on:mouseenter={() => hoveredLabel = item.label}
+                               on:mouseleave={() => hoveredLabel = ""}
+                            >
                                 <svelte:component this={item.icon} size={22} strokeWidth={1.2}/>
                             </a>
                         </Tooltip>
