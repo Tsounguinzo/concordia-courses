@@ -17,5 +17,6 @@ export type Course = {
     classUnit: number;
     ConUCourseID: string;
     notes: string;
+    resourceLinks?: string[];
     schedules: Schedule[];
 };

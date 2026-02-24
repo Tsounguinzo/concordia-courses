@@ -33,7 +33,7 @@
     import AddReviewForm from "$lib/components/review/AddReviewForm.svelte";
     import Seo from "$lib/components/common/Seo.svelte";
     import Confetti from "$lib/components/common/animation/Confetti.svelte";
-    import CourseDistributionAndNotes from "$lib/components/course/CourseDistributionAndNotes.svelte";
+    import CourseDistributionAndResources from "$lib/components/course/CourseDistributionAndResources.svelte";
 
     // Repo & store
     import { repo } from "$lib/repo";
@@ -324,20 +324,20 @@
                     </p>
                 </a>
 
-                <!-- Grade Distribution / Notes -->
-                {#if $gradeDistribution || $course?.notes}
+                <!-- Grade Distribution / Resources -->
+                {#if $gradeDistribution || $course?.resourceLinks?.length}
                     <h2 class="text-center mb-2 text-xl font-bold leading-none text-gray-700 dark:text-gray-200">
-                        {#if $gradeDistribution && $course?.notes}
-                            Grades Distribution and Notes
+                        {#if $gradeDistribution && $course?.resourceLinks?.length}
+                            Grades Distribution and Resources
                         {:else if $gradeDistribution}
                             Grades Distribution
-                        {:else if $course?.notes}
-                            Notes
+                        {:else if $course?.resourceLinks?.length}
+                            Resources
                         {/if}
                     </h2>
-                    <CourseDistributionAndNotes
+                    <CourseDistributionAndResources
                             class="mb-4"
-                            notesUrl={$course?.notes}
+                            resourceLinks={$course?.resourceLinks}
                             gradeDistribution={$gradeDistribution}
                             courseCode={$course?._id}
                     />
@@ -438,18 +438,18 @@
                 </p>
             </a>
 
-            {#if $gradeDistribution || $course?.notes}
+            {#if $gradeDistribution || $course?.resourceLinks?.length}
                 <h2 class="text-center mb-2 text-xl font-bold leading-none text-gray-700 dark:text-gray-200">
-                    {#if $gradeDistribution && $course?.notes}
-                        Grades Distribution and Notes
+                    {#if $gradeDistribution && $course?.resourceLinks?.length}
+                        Grades Distribution and Resources
                     {:else if $gradeDistribution}
                         Grades Distribution
-                    {:else if $course?.notes}
-                        Notes
+                    {:else if $course?.resourceLinks?.length}
+                        Resources
                     {/if}
                 </h2>
-                <CourseDistributionAndNotes
-                        notesUrl={$course?.notes}
+                <CourseDistributionAndResources
+                        resourceLinks={$course?.resourceLinks}
                         gradeDistribution={$gradeDistribution}
                         courseCode={$course?._id}
                 />

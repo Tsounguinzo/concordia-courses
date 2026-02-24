@@ -24,6 +24,8 @@ public class CourseMapper {
         dto.setDifficultyDistribution(course.getDifficultyDistribution());
         dto.setExperienceDistribution(course.getExperienceDistribution());
         dto.setReviewCount(course.getReviewCount());
+        dto.setNotes(course.getNotes());
+        dto.setResourceLinks(course.getResourceLinks());
         dto.setSchedules(course.getSchedules().stream().map(CourseMapper::toScheduleDto).collect(Collectors.toList()));
         return dto;
     }

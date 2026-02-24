@@ -11,7 +11,11 @@
         <div class='space-y-7 p-6'>
             <ReqsBlock
                     title='Notes'
-                    text={course.prerequisites.trim()}
+                    text={course.notes?.trim() ?? ''}
+            />
+            <ReqsBlock
+                    title='Prerequisite/Corequisite'
+                    text={course.prerequisites?.trim() ?? ''}
             />
         </div>
     </div>

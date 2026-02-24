@@ -25,6 +25,7 @@ public class Course {
     private double classUnit;
     private String ConUCourseID;
     private String notes;
+    private String[] resourceLinks;
     @ToString.Exclude @EqualsAndHashCode.Exclude
     private double avgDifficulty = 0.0;
     private int[] difficultyDistribution = new int[5];
