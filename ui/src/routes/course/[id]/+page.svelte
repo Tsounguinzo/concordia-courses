@@ -415,18 +415,18 @@
 
             <!-- Right column -->
             <div class="col-span-2 space-y-5">
-                <InstructorsBoard instructors={$instructors}/>
                 <CourseRequirements course={$course}/>
+                <InstructorsBoard instructors={$instructors}/>
             </div>
         </div>
 
         <!-- Mobile layout (lg:hidden) -->
         <div class="flex flex-col lg:hidden">
             <div class="mb-4 flex">
-                <InstructorsBoard instructors={$instructors} />
+                <CourseRequirements course={$course} />
             </div>
             <div class="mb-4 flex">
-                <CourseRequirements course={$course} />
+                <InstructorsBoard instructors={$instructors} />
             </div>
 
             <a href="/grades" class="block mb-3 rounded-md bg-blue-50 p-3 text-sm">

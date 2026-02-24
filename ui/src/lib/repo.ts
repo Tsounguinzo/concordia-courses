@@ -396,16 +396,20 @@ export const repo = {
         (input: RequestInfo | URL, init?: RequestInit | undefined): Promise<Response>;
         (arg0: string): any;
     }, cookies: string): Promise<string|null> {
-        const backendURL = `${backendUrl}/api/v1/auth/user`;
-        const response = await fetch(backendURL, {
-            credentials: 'include',
-            headers: {
-                'Cookie': cookies,
-            },
-        });
-        if(response.ok){
-            const body = await response.json();
-            return body.payload;
+        try {
+            const backendURL = `${backendUrl}/api/v1/auth/user`;
+            const response = await fetch(backendURL, {
+                credentials: 'include',
+                headers: {
+                    'Cookie': cookies,
+                },
+            });
+            if(response.ok){
+                const body = await response.json();
+                return body.payload;
+            }
+        } catch (error) {
+            console.warn('Failed to fetch authenticated user:', error);
         }
         return null;
     },

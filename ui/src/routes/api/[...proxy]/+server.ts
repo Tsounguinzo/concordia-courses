@@ -1,6 +1,15 @@
 import {backendUrl} from "$lib/constants";
 import type {RequestOptions} from "$lib/types";
 
+const buildSafeJsonHeaders = (sourceHeaders: Headers) => {
+    const headers = new Headers(sourceHeaders);
+    headers.delete('content-encoding');
+    headers.delete('content-length');
+    headers.delete('transfer-encoding');
+    headers.set('content-type', 'application/json; charset=utf-8');
+    return headers;
+};
+
 const sendRequest = async ({ request, url, method, requestBody = null }) => {
     const query = url.search ? `${backendUrl}${url.pathname}${url.search}` : `${backendUrl}${url.pathname}`;
     try {
@@ -29,11 +38,17 @@ const sendRequest = async ({ request, url, method, requestBody = null }) => {
         if (!response.ok) {
             //console.error(`Request to ${query.replace(/[\n\r]/g, "")} failed with status: ${response.status}`);
             const errorMessage = responseData.errors?.message || 'Unknown error';
-            return new Response(JSON.stringify(errorMessage), { status: response.status});
+            return new Response(JSON.stringify(errorMessage), {
+                status: response.status,
+                headers: buildSafeJsonHeaders(response.headers)
+            });
         }
 
         //console.log(`Request to ${query.replace(/[\n\r]/g, "")} was successful`);
-        return new Response(JSON.stringify(responseData.payload), { status: 200, headers: response.headers });
+        return new Response(JSON.stringify(responseData.payload), {
+            status: 200,
+            headers: buildSafeJsonHeaders(response.headers)
+        });
     } catch (error) {
         //console.error(`Request to ${query.replace(/[\n\r]/g, "")} failed:`, error.message);
         return new Response(JSON.stringify({ error: "Internal server error", message: error.message }), { status: 500 });
