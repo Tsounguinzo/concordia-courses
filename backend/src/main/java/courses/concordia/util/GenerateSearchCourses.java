@@ -21,7 +21,12 @@ public class GenerateSearchCourses {
     public static void main(String[] args) throws Exception {
         List<Course> courses = JsonUtils.getData(COURSE_FILE_PATH, new TypeToken<List<Course>>() {});
         List<Instructor> instructors = JsonUtils.getData(INSTRUCTOR_FILE_PATH, new TypeToken<List<Instructor>>() {});
-
+        if (courses == null) {
+            throw new IllegalStateException("Failed to load courses JSON from " + COURSE_FILE_PATH);
+        }
+        if (instructors == null) {
+            throw new IllegalStateException("Failed to load instructors JSON from " + INSTRUCTOR_FILE_PATH);
+        }
         // Map instructors to their courses
         Map<String, List<String>> courseInstructors = instructors.stream()
                 .flatMap(instructor -> {
@@ -73,7 +78,12 @@ public class GenerateSearchCourses {
         JsonUtils.toJson(allInstructors, INSTRUCTORS_LIST_FILE_PATH.toString());
 
         // All courses subject
-        Set<String> courseSubjects = courses.stream().map(Course::getSubject).collect(Collectors.toSet());
+        Set<String> courseSubjects = courses.stream()
+                .map(Course::getSubject)
+                .filter(Objects::nonNull)
+                .map(String::trim)
+                .filter(subject -> !subject.isEmpty())
+                .collect(Collectors.toSet());
 
         JsonUtils.toJson(result, SEARCH_FILE_PATH.toString());
         JsonUtils.toJson(courseSubjects, COURSE_CODES_FILE_PATH.toString());
