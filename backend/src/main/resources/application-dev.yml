@@ -57,4 +57,7 @@ server:
   port: 8080
   forward-headers-strategy: native
   max-http-header-size: 64KB
-
+  compression:
+    enabled: true
+    min-response-size: 2KB
+    mime-types: application/json
