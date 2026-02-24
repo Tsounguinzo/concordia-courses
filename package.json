@@ -1,0 +1,15 @@
+{
+  "name": "concordia-courses-workspace",
+  "private": true,
+  "scripts": {
+    "setup": "npm --prefix ui install --legacy-peer-deps",
+    "services:up": "docker-compose up -d",
+    "services:down": "docker-compose down",
+    "dev:backend": "cd backend && export JAVA_HOME=$(/usr/libexec/java_home -v 17) && export PATH=\"$JAVA_HOME/bin:$PATH\" && if [ -f .mvn/wrapper/maven-wrapper.properties ]; then ./mvnw -Ddev.local=true spring-boot:run -Dspring-boot.run.profiles=dev; else mvn -Ddev.local=true spring-boot:run -Dspring-boot.run.profiles=dev; fi",
+    "dev:frontend": "npm --prefix ui run dev",
+    "dev": "npm run services:up && npx concurrently -k -n backend,frontend -c green,blue \"npm run dev:backend\" \"npm run dev:frontend\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

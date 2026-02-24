@@ -2,6 +2,8 @@ package courses.concordia.security;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -22,11 +24,15 @@ public class SecurityConfig{
     private final HostCheckFilter hostCheckFilter;
 
     private final AuthenticationProvider authenticationProvider;
+    private final Environment environment;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        if (!environment.acceptsProfiles(Profiles.of("dev"))) {
+            http.requiresChannel(channel -> channel.anyRequest().requiresSecure()); // enforce https outside local dev
+        }
 
         return http
-                .requiresChannel(channel -> channel.anyRequest().requiresSecure())//enforce https
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/api-docs").permitAll()
                         .requestMatchers("/swagger-ui.html").permitAll()

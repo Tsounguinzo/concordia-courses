@@ -57,7 +57,7 @@ The platform adopts a microservices architecture for scalability and maintainabi
 ### Prerequisites
 
 - Node.js and npm
-- Java JDK 17+ and Maven
+- Java JDK 17+
 - Docker
 
 ### Installation
@@ -67,54 +67,35 @@ The platform adopts a microservices architecture for scalability and maintainabi
 ```bash
 git clone https://github.com/Tsounguinzo/concordia-courses.git
 ```
-2. **Start MongoDB and Redis using Docker Compose**
-
-The repository includes a docker-compose.yml file that defines the MongoDB and Redis services. Use Docker Compose to start these services:
+2. **Install frontend and root workspace dependencies**
 ```bash
-docker-compose up -d
+npm run setup
 ```
 
-3. **Backend Setup**
-
-Navigate to the backend directory. Before running the application, ensure it's configured to connect to the MongoDB and Redis instances started by Docker Compose. Then, run the Spring Boot application in the dev profile to initialize the database with any required seed data:
-```bash
-cd backend
-./mvnw clean install
-```
-
-Comment out the following lines in the `SecurityConfig.java` file to https enforcement:
+Comment out the following lines in `SecurityConfig.java` to disable HTTPS enforcement locally:
 ```java
 //.requiresChannel(channel -> channel.anyRequest().requiresSecure())//enforce https
 ```
 
 To generate new seeding data for the database, run the main method in the `SeedRunner.java` file:
 ```bash
+cd backend
 ./mvnw exec:java -Dexec.mainClass="com.concordia.courses.backend.SeedData"
-```
-
-4. **Frontend Setup**
-
-Install the necessary npm packages and start the Svelte development server:
-```bash
-cd ../ui
-npm install
-npm run build
 ```
 
 ### Running the Application
 
-- **Start the Backend Service**
+- **Run everything (MongoDB + Redis + backend + frontend) from the project root**
 ```bash
-cd backend
-./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
-```
-
-- **Serve the Frontend**
-```bash
-cd ../ui
 npm run dev
 ```
-The frontend application will be accessible at http://localhost:5173, and it will communicate with the backend API for operations.
+
+This starts:
+- MongoDB and Redis via Docker Compose
+- Spring Boot backend with the `dev` profile
+- Svelte frontend dev server
+
+The frontend is available at http://localhost:5173 and connects to the backend API.
 
 ### Development
 
@@ -170,4 +151,3 @@ Beaudelaire @ Beaudelaire@tutamail.com
 
 ### Mentions
 mcgill.courses have led to the inspiration of concordia.courses with regard to its functionality and design.
-
