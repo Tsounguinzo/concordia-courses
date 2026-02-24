@@ -5,6 +5,7 @@ import com.mongodb.bulk.BulkWriteResult;
 import courses.concordia.dto.model.course.CourseDto;
 import courses.concordia.dto.model.course.CourseFilterDto;
 import courses.concordia.dto.model.course.CourseReviewsDto;
+import courses.concordia.dto.model.home.HomeStatsDto;
 import courses.concordia.dto.model.instructor.CourseInstructorDto;
 import courses.concordia.dto.model.review.ReviewDto;
 import courses.concordia.dto.model.review.ReviewSortingDto;
@@ -16,11 +17,13 @@ import courses.concordia.model.Instructor;
 import courses.concordia.model.Review;
 import courses.concordia.repository.CourseRepository;
 import courses.concordia.repository.InstructorRepository;
+import courses.concordia.repository.ReviewRepository;
 import courses.concordia.service.CourseService;
 import courses.concordia.util.JsonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.*;
 import org.springframework.data.mongodb.core.BulkOperations;
@@ -43,6 +46,7 @@ import java.util.stream.Collectors;
 public class CourseServiceImpl implements CourseService {
     private final CourseRepository courseRepository;
     private final InstructorRepository instructorRepository;
+    private final ReviewRepository reviewRepository;
     private final MongoTemplate mongoTemplate;
     private final ModelMapper modelMapper;
 
@@ -155,6 +159,7 @@ public class CourseServiceImpl implements CourseService {
      *
      * @param file The file containing the updated course information.
      */
+    @CacheEvict(value = "homeStatsCache", allEntries = true)
     @Override
     public void updateCourses(MultipartFile file) {
         log.info("Updating course schedules from file: {}", file.getOriginalFilename());
@@ -254,6 +259,16 @@ public class CourseServiceImpl implements CourseService {
                 .stream()
                 .map(instructor -> modelMapper.map(instructor, CourseInstructorDto.class))
                 .collect(Collectors.toList());
+    }
+
+    @Cacheable(value = "homeStatsCache", key = "'default'")
+    @Override
+    public HomeStatsDto getHomeStats() {
+        return new HomeStatsDto(
+                courseRepository.count(),
+                reviewRepository.count(),
+                instructorRepository.count()
+        );
     }
 
     private List<Course> processCourseFile(MultipartFile file) {

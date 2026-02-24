@@ -52,6 +52,12 @@ public class CourseController {
         return ResponseEntity.ok("Courses stats updated successfully");
     }
 
+    @Timed(value = "home.stats.get", description = "Get homepage stats")
+    @GetMapping("/home/stats")
+    public Response<?> getHomeStats() {
+        return Response.ok().setPayload(courseService.getHomeStats());
+    }
+
     @Timed(value = "courses.get", description = "Get course by ID")
     @PostMapping("/{id}")
     public Response<?> getCourseByIdWithReviews(

@@ -3,6 +3,7 @@ package courses.concordia.service;
 import courses.concordia.dto.model.course.CourseDto;
 import courses.concordia.dto.model.course.CourseFilterDto;
 import courses.concordia.dto.model.course.CourseReviewsDto;
+import courses.concordia.dto.model.home.HomeStatsDto;
 import courses.concordia.dto.model.instructor.CourseInstructorDto;
 import courses.concordia.dto.model.review.ReviewSortingDto;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,4 +17,5 @@ public interface CourseService {
     void updateCoursesStatistics();
     List<CourseInstructorDto> getInstructors(String id);
     CourseReviewsDto getCourseAndReviewsByIdPaginated(String id, int limit, int offset, String userId, ReviewSortingDto sortType);
+    HomeStatsDto getHomeStats();
 }

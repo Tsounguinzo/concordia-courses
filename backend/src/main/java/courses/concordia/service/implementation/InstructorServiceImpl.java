@@ -18,6 +18,7 @@ import courses.concordia.util.JsonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.*;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -222,6 +223,7 @@ public class InstructorServiceImpl implements InstructorService {
     }
 
     @Override
+    @CacheEvict(value = "homeStatsCache", allEntries = true)
     public ProcessingResult uploadInstructors(MultipartFile file) {
         log.info("Starting to upload instructors from file: {}", file.getOriginalFilename());
         List<InstructorDto> instructors = processInstructorFile(file);

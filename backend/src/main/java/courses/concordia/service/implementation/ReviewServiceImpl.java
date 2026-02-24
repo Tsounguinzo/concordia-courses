@@ -84,7 +84,8 @@ public class ReviewServiceImpl implements ReviewService {
             @CacheEvict(value = "instructorsCacheWithFilters", allEntries = true, condition = "#reviewDto.type.equals('instructor')"),
             @CacheEvict(value = "reviewsCacheWithFilters", allEntries = true),
             @CacheEvict(value = "instructorsCache", allEntries = true),
-            @CacheEvict(value = "courseInstructorsCache", key = "#reviewDto.courseId")
+            @CacheEvict(value = "courseInstructorsCache", key = "#reviewDto.courseId"),
+            @CacheEvict(value = "homeStatsCache", allEntries = true)
     })
     @Transactional
     @Override
@@ -222,7 +223,8 @@ public class ReviewServiceImpl implements ReviewService {
             @CacheEvict(value = "instructorsCacheWithFilters", allEntries = true),
             @CacheEvict(value = "reviewsCacheWithFilters", allEntries = true),
             @CacheEvict(value = "instructorsCache", allEntries = true),
-            @CacheEvict(value = "courseInstructorsCache", key = "#courseId")
+            @CacheEvict(value = "courseInstructorsCache", key = "#courseId"),
+            @CacheEvict(value = "homeStatsCache", allEntries = true)
     })
     @Transactional
     @Override
@@ -301,6 +303,7 @@ public class ReviewServiceImpl implements ReviewService {
      * @return A ProcessingResult object containing the result of the review upload.
      */
     @Override
+    @CacheEvict(value = "homeStatsCache", allEntries = true)
     public ProcessingResult uploadReviews(MultipartFile file) {
         log.info("Starting to upload reviews from file: {}", file.getOriginalFilename());
         List<ReviewDto> reviewDtos = processReviewFile(file);
@@ -367,6 +370,7 @@ public class ReviewServiceImpl implements ReviewService {
      * @return a ProcessingResult containing information about how many duplicates were deleted
      */
     @Override
+    @CacheEvict(value = "homeStatsCache", allEntries = true)
     public ProcessingResult deleteDuplicateReviews() {
         ProcessingResult result = new ProcessingResult();
 
@@ -408,6 +412,7 @@ public class ReviewServiceImpl implements ReviewService {
      * @return a ProcessingResult containing info about how many reviews were deleted
      */
     @Override
+    @CacheEvict(value = "homeStatsCache", allEntries = true)
     public ProcessingResult deleteReviewsWithNonExistentInstructorIds() {
         ProcessingResult result = new ProcessingResult();
 

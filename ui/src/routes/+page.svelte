@@ -8,6 +8,9 @@
     import DotPattern from "$lib/components/common/animation/DotPattern.svelte";
     import ExtensionPromo from "$lib/components/common/ExtensionPromo.svelte";
     import {ChevronRight} from "lucide-svelte";
+    import type {HomePageStats} from "$lib/model/HomePageStats";
+
+    export let data: { homeStats: HomePageStats };
 
     const {courses, instructors, coursesIndex, instructorsIndex} = getSearchIndex();
 
@@ -99,6 +102,9 @@
         }
     ];
 
+    const numberFormatter = new Intl.NumberFormat("en-US");
+    const formatCount = (value: number) => numberFormatter.format(value);
+
 </script>
 
 <Seo title="Home" description="Home page of concordia.courses"/>
@@ -111,10 +117,10 @@
 
     <div class="relative z-10 flex flex-col gap-6 text-center">
         <h1 class="max-[320px]:text-3xl text-4xl  font-bold leading-snug text-gray-900 dark:text-gray-200 sm:text-5xl lg:text-6xl">
-            7,832+ courses.<br/> Concordia Courses.
+            {formatCount(data.homeStats.totalCourses)} courses.<br/> Concordia Courses.
         </h1>
         <p class="text-base text-gray-600 dark:text-gray-400 sm:text-lg">
-            Concordia Courses cumulates 64,506 reviews for over 4,872 instructors.
+            Concordia Courses cumulates {formatCount(data.homeStats.totalReviews)} reviews for {formatCount(data.homeStats.totalInstructors)} instructors.
         </p>
 
         <!--ExtensionPromo/-->
