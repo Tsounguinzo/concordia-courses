@@ -142,7 +142,9 @@ public class AtlasSearchController {
                 instructor.setFirstName(doc.getString("firstName"));
                 instructor.setLastName(doc.getString("lastName"));
                 instructor.setCourses(new HashSet<>(((ArrayList<Instructor.Course>) doc.get("courses"))));
-                instructor.setDepartments(((ArrayList<String>) doc.get("departments")).stream().map(Instructor.Department::valueOf).collect(Collectors.toSet()));
+                instructor.setDepartments(((ArrayList<String>) doc.get("departments")).stream()
+                        .map(Instructor.Department::fromString)
+                        .collect(Collectors.toSet()));
                 instructor.setTags(((ArrayList<String>) doc.get("tags")).stream().map(Instructor.Tag::valueOf).collect(Collectors.toSet()));
                 instructor.setAvgDifficulty(doc.getDouble("avgDifficulty"));
                 instructor.setAvgRating(doc.getDouble("avgRating"));

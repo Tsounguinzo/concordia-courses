@@ -133,6 +133,7 @@ public class Instructor {
     @AllArgsConstructor
     @JsonAdapter(InstructorDepartmentDeserializer.class)
     public enum Department {
+        UNKNOWN(""),
         ANDRAGOGY("Andragogy"),
         APPLIED_HUMAN_SCIENCES("Applied Human Sciences"),
         APPLIED_SOCIAL_SCIENCE("Applied Social Science"),
@@ -247,7 +248,7 @@ public class Instructor {
          */
         public static Department fromString(String text) {
             if (text == null || text.isEmpty()) {
-                return null;
+                return UNKNOWN;
             }
 
             if (text.equalsIgnoreCase("Accounting")) {
@@ -279,7 +280,7 @@ public class Instructor {
                 }
             }
 
-            return bestMatch;
+            return highestMatchCount > 0 ? bestMatch : UNKNOWN;
         }
 
     }
