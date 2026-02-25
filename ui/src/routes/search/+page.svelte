@@ -29,6 +29,7 @@
         isEmpty: true,
         searchAttempted: false
     };
+
     const noop = () => {
     };
     const noopLikesUpdate = (_likes: number) => {
@@ -241,8 +242,8 @@
             <div class="columns-1 md:columns-2 min-[1300px]:columns-3">
                 {#each reviews as review, i (review._id)}
                     <button
-                            class="mb-2 w-full break-inside-avoid text-left"
-                            in:fly="{{ y: 20, duration: 350, delay: i * 25 }}"
+                            class="mb-2 w-full"
+                            in:fly="{{ y: 50, duration: 600, delay: i * 100 }}"
                             on:click={() => handleClick(review)}
                     >
                         <ReviewComponent
