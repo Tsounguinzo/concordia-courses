@@ -1,13 +1,17 @@
 package courses.concordia.model;
 
 import com.google.gson.annotations.JsonAdapter;
-import courses.concordia.json.FlexibleStringTypeAdapter;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 
 @Document(collection = "resourceLinks")
@@ -16,10 +20,30 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResourceLink {
-    @JsonAdapter(FlexibleStringTypeAdapter.class)
+    @JsonAdapter(ResourceLinkIdAdapter.class)
     private String _id;
     private String userId;
     private String url;
     private String description;
     private LocalDateTime timestamp;
+
+    static class ResourceLinkIdAdapter implements JsonDeserializer<String> {
+        @Override
+        public String deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            if (json == null || json.isJsonNull()) {
+                return null;
+            }
+
+            if (json.isJsonPrimitive()) {
+                return json.getAsString();
+            }
+
+            if (json.isJsonObject() && json.getAsJsonObject().has("$oid")) {
+                JsonElement oid = json.getAsJsonObject().get("$oid");
+                return oid != null && oid.isJsonPrimitive() ? oid.getAsString() : json.toString();
+            }
+
+            return json.toString();
+        }
+    }
 }
