@@ -61,15 +61,6 @@ public class ApplicationConfig {
                 .setFieldMatchingEnabled(true)
                 .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PUBLIC)
                 .setMethodAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PUBLIC);
-
-        // Avoid reflective instantiation of JDK time classes on Java 17 module boundaries.
-        modelMapper.addConverter(new AbstractConverter<LocalDateTime, LocalDateTime>() {
-            @Override
-            protected LocalDateTime convert(LocalDateTime source) {
-                return source;
-            }
-        });
-
         return modelMapper;
         //https://github.com/modelmapper/modelmapper/issues/212
     }
