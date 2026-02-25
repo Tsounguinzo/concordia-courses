@@ -3,6 +3,7 @@ package courses.concordia.config;
 
 import courses.concordia.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.AbstractConverter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.time.LocalDateTime;
 
 @Configuration
 @RequiredArgsConstructor
@@ -58,6 +61,15 @@ public class ApplicationConfig {
                 .setFieldMatchingEnabled(true)
                 .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PUBLIC)
                 .setMethodAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PUBLIC);
+
+        // Avoid reflective instantiation of JDK time classes on Java 17 module boundaries.
+        modelMapper.addConverter(new AbstractConverter<LocalDateTime, LocalDateTime>() {
+            @Override
+            protected LocalDateTime convert(LocalDateTime source) {
+                return source;
+            }
+        });
+
         return modelMapper;
         //https://github.com/modelmapper/modelmapper/issues/212
     }
