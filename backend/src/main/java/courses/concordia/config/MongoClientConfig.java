@@ -16,7 +16,7 @@ import org.springframework.data.convert.WritingConverter;
 
 @Configuration
 @Slf4j
-@EnableMongoAuditing //enable the automatic setting of @CreatedDate
+@EnableMongoAuditing
 public class MongoClientConfig extends AbstractMongoClientConfiguration {
 
     @Value("${spring.data.mongodb.database}")

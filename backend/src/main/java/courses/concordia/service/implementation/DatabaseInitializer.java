@@ -4,35 +4,39 @@ import com.google.gson.reflect.TypeToken;
 import courses.concordia.model.Course;
 import courses.concordia.model.GradeDistribution;
 import courses.concordia.model.Instructor;
-import courses.concordia.model.Review;
 import courses.concordia.repository.CourseRepository;
 import courses.concordia.repository.GradeDistributionRepository;
 import courses.concordia.repository.InstructorRepository;
-import courses.concordia.repository.ReviewRepository;
 import courses.concordia.util.JsonUtils;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Service
 @Slf4j
 public class DatabaseInitializer {
 
-    private final ReviewRepository reviewRepository;
     private final CourseRepository courseRepository;
     private final InstructorRepository instructorRepository;
     private final GradeDistributionRepository gradeDistributionRepository;
     private final Environment environment;
+    private final CacheManager cacheManager;
 
     @Value("${app.init-db:false}")
     private boolean initDb;
@@ -67,69 +71,173 @@ public class DatabaseInitializer {
     }
 
     private void seedDatabase() {
-        log.info("Seeding database from directory: {}", seedDirPath);
-        Path seedDir = Paths.get(seedDirPath);
-        try (var files = Files.walk(seedDir)) {
-            files.filter(Files::isRegularFile)
-                    .forEach(this::processSeedFile);
-        } catch (IOException e) {
-            log.error("Failed to access or process seed directory: {}", seedDirPath, e);
+        List<Path> seedDirectories = resolveSeedDirectories();
+        if (seedDirectories.isEmpty()) {
+            log.error("No seed directories were found. Checked configured path: {}", seedDirPath);
+            return;
         }
+
+        log.info("Seeding database from directories: {}", seedDirectories);
+        List<Path> allSeedFiles = new ArrayList<>();
+
+        for (Path directory : seedDirectories) {
+            try (var files = Files.walk(directory)) {
+                files.filter(Files::isRegularFile)
+                        .forEach(allSeedFiles::add);
+            } catch (IOException e) {
+                log.error("Failed to access or process seed directory: {}", directory, e);
+            }
+        }
+
+        if (allSeedFiles.isEmpty()) {
+            log.warn("No seed files found in directories: {}", seedDirectories);
+            return;
+        }
+
+        allSeedFiles.sort(Comparator.comparing(Path::toString));
+
+        List<Path> courseFiles = allSeedFiles.stream().filter(this::isCourseFile).toList();
+        List<Path> instructorFiles = allSeedFiles.stream().filter(this::isInstructorFile).toList();
+        List<Path> distributionFiles = allSeedFiles.stream().filter(this::isDistributionFile).toList();
+
+        courseFiles = preferDbFiles(courseFiles, "db.courses.json", "db.course.json");
+        instructorFiles = preferDbFiles(instructorFiles, "db.instructors.json", "db.instructor.json");
+        courseFiles = uniqueByFileName(courseFiles);
+        instructorFiles = uniqueByFileName(instructorFiles);
+        distributionFiles = uniqueByFileName(distributionFiles);
+
+        processCourseFiles(courseFiles);
+        processInstructorFiles(instructorFiles);
+        processDistributionFiles(distributionFiles);
+        evictSeedSensitiveCaches();
     }
 
-    private void processSeedFile(Path path) {
-        if (path.toString().endsWith("courses.json")) {
-            processCourseFile(path);
-        } else if (path.toString().endsWith("instructors.json")) {
-            processInstructorFile(path);
-        } else if (path.toString().endsWith("reviews.json")) {
-            processReviewFile(path);
-        } else if (path.toString().endsWith("distribution.json")) {
-            gradesDistributionFile(path);
-        }
+    private List<Path> resolveSeedDirectories() {
+        Set<Path> candidates = new LinkedHashSet<>();
+        candidates.add(Paths.get(seedDirPath));
+        candidates.add(Paths.get("backend", "src", "main", "resources", "seeds"));
+        candidates.add(Paths.get("src", "main", "resources", "seeds"));
+        candidates.add(Paths.get("backend", "src", "main", "resources", "data"));
+        candidates.add(Paths.get("src", "main", "resources", "data"));
+
+        return candidates.stream()
+                .map(Path::normalize)
+                .filter(Files::exists)
+                .filter(Files::isDirectory)
+                .toList();
     }
 
-    private void gradesDistributionFile(Path path) {
+    private boolean isCourseFile(Path path) {
+        String fileName = path.getFileName().toString().toLowerCase();
+        return fileName.endsWith("courses.json") || fileName.equals("db.course.json");
+    }
+
+    private boolean isInstructorFile(Path path) {
+        String fileName = path.getFileName().toString().toLowerCase();
+        return fileName.endsWith("instructors.json") || fileName.equals("db.instructor.json");
+    }
+
+    private boolean isDistributionFile(Path path) {
+        return path.getFileName().toString().toLowerCase().endsWith("distribution.json");
+    }
+
+    private List<Path> preferDbFiles(List<Path> files, String pluralDbFile, String singularDbFile) {
+        List<Path> preferred = files.stream()
+                .filter(path -> {
+                    String fileName = path.getFileName().toString().toLowerCase();
+                    return fileName.equals(pluralDbFile) || fileName.equals(singularDbFile);
+                })
+                .toList();
+        return preferred.isEmpty() ? files : preferred;
+    }
+
+    private List<Path> uniqueByFileName(List<Path> files) {
+        Set<String> seen = new LinkedHashSet<>();
+        List<Path> unique = new ArrayList<>();
+        for (Path file : files) {
+            String fileName = file.getFileName().toString().toLowerCase();
+            if (seen.add(fileName)) {
+                unique.add(file);
+            }
+        }
+        return unique;
+    }
+
+    private void evictSeedSensitiveCaches() {
+        List<String> cachesToEvict = List.of(
+                "coursesCacheWithFilters",
+                "coursesCache",
+                "courseReviewsCache",
+                "courseInstructorsCache",
+                "instructorsCacheWithFilters",
+                "instructorsCache",
+                "instructorReviewsCache",
+                "reviewsCacheWithFilters",
+                "homeStatsCache",
+                "gradeDistribution"
+        );
+
+        for (String cacheName : cachesToEvict) {
+            Cache cache = cacheManager.getCache(cacheName);
+            if (cache != null) {
+                cache.clear();
+            }
+        }
+        log.info("Cleared seed-sensitive caches after database initialization.");
+    }
+
+    private void processDistributionFiles(List<Path> files) {
+        if (files.isEmpty()) {
+            return;
+        }
+        List<GradeDistribution> allDistributions = new ArrayList<>();
         try {
-            List<GradeDistribution> gradeDistributions = JsonUtils.getData(path, new TypeToken<List<GradeDistribution>>(){});
+            for (Path path : files) {
+                List<GradeDistribution> gradeDistributions = JsonUtils.getData(path, new TypeToken<List<GradeDistribution>>(){});
+                allDistributions.addAll(gradeDistributions);
+            }
             gradeDistributionRepository.deleteAll();
-            gradeDistributionRepository.saveAll(gradeDistributions);
-            log.info("Successfully loaded and saved {} grade distributions from {}", gradeDistributions.size(), path);
+            gradeDistributionRepository.saveAll(allDistributions);
+            log.info("Successfully loaded and saved {} grade distributions from {}", allDistributions.size(), files);
         } catch (Exception e) {
-            log.error("Failed to load grade distributions from {}: {}", path, e.getMessage(), e);
+            log.error("Failed to load grade distributions from {}: {}", files, e.getMessage(), e);
         }
     }
 
-    private void processCourseFile(Path path) {
+    private void processCourseFiles(List<Path> files) {
+        if (files.isEmpty()) {
+            return;
+        }
+        List<Course> allCourses = new ArrayList<>();
         try {
-            List<Course> courses = JsonUtils.getData(path, new TypeToken<List<Course>>(){});
+            for (Path path : files) {
+                List<Course> courses = JsonUtils.getData(path, new TypeToken<List<Course>>(){});
+                allCourses.addAll(courses);
+            }
             courseRepository.deleteAll();
-            courseRepository.saveAll(courses);
-            log.info("Successfully loaded and saved {} courses from {}", courses.size(), path);
+            courseRepository.saveAll(allCourses);
+            log.info("Successfully loaded and saved {} courses from {}", allCourses.size(), files);
         } catch (Exception e) {
-            log.error("Failed to load courses from {}: {}", path, e.getMessage(), e);
+            log.error("Failed to load courses from {}: {}", files, e.getMessage(), e);
         }
     }
 
-    private void processInstructorFile(Path path) {
+    private void processInstructorFiles(List<Path> files) {
+        if (files.isEmpty()) {
+            return;
+        }
+        List<Instructor> allInstructors = new ArrayList<>();
         try {
-            List<Instructor> instructors = JsonUtils.getData(path, new TypeToken<List<Instructor>>(){});
+            for (Path path : files) {
+                List<Instructor> instructors = JsonUtils.getData(path, new TypeToken<List<Instructor>>(){});
+                allInstructors.addAll(instructors);
+            }
             instructorRepository.deleteAll();
-            instructorRepository.saveAll(instructors);
-            log.info("Successfully loaded and saved {} instructors from {}", instructors.size(), path);
+            instructorRepository.saveAll(allInstructors);
+            log.info("Successfully loaded and saved {} instructors from {}", allInstructors.size(), files);
         } catch (Exception e) {
-            log.error("Failed to load instructors from {}: {}", path, e.getMessage(), e);
+            log.error("Failed to load instructors from {}: {}", files, e.getMessage(), e);
         }
     }
 
-    private void processReviewFile(Path path) {
-        try {
-            List<Review> reviews = JsonUtils.getData(path, new TypeToken<List<Review>>(){});
-            reviewRepository.deleteAll();
-            reviewRepository.saveAll(reviews);
-            log.info("Successfully loaded and saved {} reviews from {}", reviews.size(), path);
-        } catch (Exception e) {
-            log.error("Failed to load reviews from {}: {}", path, e.getMessage(), e);
-        }
-    }
 }

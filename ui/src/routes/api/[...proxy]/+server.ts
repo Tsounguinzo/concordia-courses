@@ -6,9 +6,6 @@ const buildSafeJsonHeaders = (sourceHeaders: Headers) => {
     headers.delete('content-encoding');
     headers.delete('content-length');
     headers.delete('transfer-encoding');
-    headers.delete('host');
-    headers.delete('content-length');
-    headers.delete('connection');
     headers.set('content-type', 'application/json; charset=utf-8');
     return headers;
 };
@@ -18,7 +15,7 @@ const sendRequest = async ({ request, url, method, requestBody = null }) => {
     try {
         const options: RequestOptions = {
             method,
-            headers: buildSafeJsonHeaders(request.headers),
+            headers: request.headers,
         };
 
         if (requestBody) {
