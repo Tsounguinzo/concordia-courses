@@ -176,7 +176,6 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
 					<release>${java.version}</release>
-					<proc>full</proc>
 					<annotationProcessorPaths>
 						<path>
 							<groupId>org.projectlombok</groupId>
