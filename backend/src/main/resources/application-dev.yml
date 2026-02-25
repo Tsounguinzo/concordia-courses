@@ -35,9 +35,6 @@ rt:
   secret: FFB8EA10274A8B65C913736BD9A4CD56200079ADBBD66865C72EF3D17C7E80B6 # random 1 - 256 hex characters
   exp: 2592000 # 30 days
 
-allowed:
-  host:  localhost:8080
-
 beaudelaire:
   uploadKey: yesso
 

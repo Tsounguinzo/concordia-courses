@@ -1,5 +1,7 @@
 package courses.concordia.model;
 
+import com.google.gson.annotations.JsonAdapter;
+import courses.concordia.json.FlexibleStringTypeAdapter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Comment {
+    @JsonAdapter(FlexibleStringTypeAdapter.class)
     private String _id;
     private String userId;
     private String content;

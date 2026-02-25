@@ -4,9 +4,11 @@ import com.google.gson.reflect.TypeToken;
 import courses.concordia.model.Course;
 import courses.concordia.model.GradeDistribution;
 import courses.concordia.model.Instructor;
+import courses.concordia.model.Review;
 import courses.concordia.repository.CourseRepository;
 import courses.concordia.repository.GradeDistributionRepository;
 import courses.concordia.repository.InstructorRepository;
+import courses.concordia.repository.ReviewRepository;
 import courses.concordia.util.JsonUtils;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +36,7 @@ public class DatabaseInitializer {
 
     private final CourseRepository courseRepository;
     private final InstructorRepository instructorRepository;
+    private final ReviewRepository reviewRepository;
     private final GradeDistributionRepository gradeDistributionRepository;
     private final Environment environment;
     private final CacheManager cacheManager;
@@ -98,16 +101,20 @@ public class DatabaseInitializer {
 
         List<Path> courseFiles = allSeedFiles.stream().filter(this::isCourseFile).toList();
         List<Path> instructorFiles = allSeedFiles.stream().filter(this::isInstructorFile).toList();
+        List<Path> reviewFiles = allSeedFiles.stream().filter(this::isReviewFile).toList();
         List<Path> distributionFiles = allSeedFiles.stream().filter(this::isDistributionFile).toList();
 
         courseFiles = preferDbFiles(courseFiles, "db.courses.json", "db.course.json");
         instructorFiles = preferDbFiles(instructorFiles, "db.instructors.json", "db.instructor.json");
+        reviewFiles = preferDbFiles(reviewFiles, "db.reviews.json", "db.review.json");
         courseFiles = uniqueByFileName(courseFiles);
         instructorFiles = uniqueByFileName(instructorFiles);
+        reviewFiles = uniqueByFileName(reviewFiles);
         distributionFiles = uniqueByFileName(distributionFiles);
 
         processCourseFiles(courseFiles);
         processInstructorFiles(instructorFiles);
+        processReviewFiles(reviewFiles);
         processDistributionFiles(distributionFiles);
         evictSeedSensitiveCaches();
     }
@@ -139,6 +146,11 @@ public class DatabaseInitializer {
 
     private boolean isDistributionFile(Path path) {
         return path.getFileName().toString().toLowerCase().endsWith("distribution.json");
+    }
+
+    private boolean isReviewFile(Path path) {
+        String fileName = path.getFileName().toString().toLowerCase();
+        return fileName.endsWith("reviews.json") || fileName.equals("db.review.json");
     }
 
     private List<Path> preferDbFiles(List<Path> files, String pluralDbFile, String singularDbFile) {
@@ -194,7 +206,11 @@ public class DatabaseInitializer {
         try {
             for (Path path : files) {
                 List<GradeDistribution> gradeDistributions = JsonUtils.getData(path, new TypeToken<List<GradeDistribution>>(){});
-                allDistributions.addAll(gradeDistributions);
+                if (gradeDistributions != null) {
+                    allDistributions.addAll(gradeDistributions);
+                } else {
+                    log.warn("Skipping distribution file due to parse/read failure: {}", path);
+                }
             }
             gradeDistributionRepository.deleteAll();
             gradeDistributionRepository.saveAll(allDistributions);
@@ -212,7 +228,11 @@ public class DatabaseInitializer {
         try {
             for (Path path : files) {
                 List<Course> courses = JsonUtils.getData(path, new TypeToken<List<Course>>(){});
-                allCourses.addAll(courses);
+                if (courses != null) {
+                    allCourses.addAll(courses);
+                } else {
+                    log.warn("Skipping course file due to parse/read failure: {}", path);
+                }
             }
             courseRepository.deleteAll();
             courseRepository.saveAll(allCourses);
@@ -230,13 +250,39 @@ public class DatabaseInitializer {
         try {
             for (Path path : files) {
                 List<Instructor> instructors = JsonUtils.getData(path, new TypeToken<List<Instructor>>(){});
-                allInstructors.addAll(instructors);
+                if (instructors != null) {
+                    allInstructors.addAll(instructors);
+                } else {
+                    log.warn("Skipping instructor file due to parse/read failure: {}", path);
+                }
             }
             instructorRepository.deleteAll();
             instructorRepository.saveAll(allInstructors);
             log.info("Successfully loaded and saved {} instructors from {}", allInstructors.size(), files);
         } catch (Exception e) {
             log.error("Failed to load instructors from {}: {}", files, e.getMessage(), e);
+        }
+    }
+
+    private void processReviewFiles(List<Path> files) {
+        if (files.isEmpty()) {
+            return;
+        }
+        List<Review> allReviews = new ArrayList<>();
+        try {
+            for (Path path : files) {
+                List<Review> reviews = JsonUtils.getData(path, new TypeToken<List<Review>>() {});
+                if (reviews != null) {
+                    allReviews.addAll(reviews);
+                } else {
+                    log.warn("Skipping review file due to parse/read failure: {}", path);
+                }
+            }
+            reviewRepository.deleteAll();
+            reviewRepository.saveAll(allReviews);
+            log.info("Successfully loaded and saved {} reviews from {}", allReviews.size(), files);
+        } catch (Exception e) {
+            log.error("Failed to load reviews from {}: {}", files, e.getMessage(), e);
         }
     }
 

@@ -238,10 +238,10 @@
                 Found <span class="font-bold text-primary-500">{$resultCount}</span> reviews
             </div>
 
-            <div class="mx-auto flex w-full max-w-5xl flex-col">
+            <div class="columns-1 md:columns-2 min-[1300px]:columns-3">
                 {#each reviews as review, i (review._id)}
                     <button
-                            class="w-full text-left"
+                            class="mb-2 w-full break-inside-avoid text-left"
                             in:fly="{{ y: 20, duration: 350, delay: i * 25 }}"
                             on:click={() => handleClick(review)}
                     >
